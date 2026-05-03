@@ -9,6 +9,7 @@ interface Member {
   email: string | null;
   slack_user_id: string | null;
   shell_balance: number;
+  group_number: number | null;
   is_admin: boolean;
   is_active: boolean;
   created_at: string;
@@ -29,6 +30,7 @@ export default function MembersPage() {
     phone_last4: "",
     email: "",
     slack_user_id: "",
+    group_number: "" as string,
     survey_completed: false,
     is_admin: false,
   });
@@ -41,6 +43,7 @@ export default function MembersPage() {
     phone_last4: "",
     email: "",
     slack_user_id: "",
+    group_number: "" as string,
     is_admin: false,
     is_active: true,
   });
@@ -100,7 +103,10 @@ export default function MembersPage() {
     const res = await fetch("/api/admin/members", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(addForm),
+      body: JSON.stringify({
+        ...addForm,
+        group_number: addForm.group_number ? parseInt(addForm.group_number) : null,
+      }),
     });
 
     const data = await res.json();
@@ -117,6 +123,7 @@ export default function MembersPage() {
       phone_last4: "",
       email: "",
       slack_user_id: "",
+      group_number: "",
       survey_completed: false,
       is_admin: false,
     });
@@ -131,6 +138,7 @@ export default function MembersPage() {
       phone_last4: member.phone_last4,
       email: member.email || "",
       slack_user_id: member.slack_user_id || "",
+      group_number: member.group_number ? String(member.group_number) : "",
       is_admin: member.is_admin,
       is_active: member.is_active,
     });
@@ -154,7 +162,11 @@ export default function MembersPage() {
     const res = await fetch("/api/admin/members", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: editModal.id, ...editForm }),
+      body: JSON.stringify({
+        id: editModal.id,
+        ...editForm,
+        group_number: editForm.group_number ? parseInt(editForm.group_number) : null,
+      }),
     });
 
     const data = await res.json();
@@ -195,6 +207,7 @@ export default function MembersPage() {
           <thead className="bg-amber-100">
             <tr>
               <th className="text-left px-4 py-3 text-amber-800">이름</th>
+              <th className="text-center px-4 py-3 text-amber-800">조</th>
               <th className="text-left px-4 py-3 text-amber-800">뒷4자리</th>
               <th className="text-left px-4 py-3 text-amber-800">Slack ID</th>
               <th className="text-right px-4 py-3 text-amber-800">🐚 잔고</th>
@@ -212,6 +225,9 @@ export default function MembersPage() {
                       어드민
                     </span>
                   )}
+                </td>
+                <td className="px-4 py-3 text-center text-amber-700">
+                  {member.group_number ? `${member.group_number}조` : "-"}
                 </td>
                 <td className="px-4 py-3 text-amber-700">
                   {member.phone_last4}
@@ -320,6 +336,24 @@ export default function MembersPage() {
               className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
               placeholder="U0123456789"
             />
+
+            <label className="block text-sm text-amber-800 mb-1">
+              조 (선택)
+            </label>
+            <select
+              value={addForm.group_number}
+              onChange={(e) =>
+                setAddForm({ ...addForm, group_number: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              <option value="">선택 안 함</option>
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <option key={n} value={String(n)}>
+                  {n}조
+                </option>
+              ))}
+            </select>
 
             <div className="flex items-center gap-4 mb-4">
               <label className="flex items-center gap-2 text-sm text-amber-800 cursor-pointer">
@@ -439,6 +473,22 @@ export default function MembersPage() {
               }
               className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
+
+            <label className="block text-sm text-amber-800 mb-1">조</label>
+            <select
+              value={editForm.group_number}
+              onChange={(e) =>
+                setEditForm({ ...editForm, group_number: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              <option value="">선택 안 함</option>
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <option key={n} value={String(n)}>
+                  {n}조
+                </option>
+              ))}
+            </select>
 
             <div className="flex items-center gap-4 mb-6">
               <label className="flex items-center gap-2 text-sm text-amber-800 cursor-pointer">
