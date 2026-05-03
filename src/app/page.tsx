@@ -12,7 +12,7 @@ interface RankingEntry {
 type TabType = "weekly" | "total";
 
 export default function RankingPage() {
-  const [tab, setTab] = useState<TabType>("weekly");
+  const [tab, setTab] = useState<TabType>("total");
   const [ranking, setRanking] = useState<RankingEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,7 +57,7 @@ export default function RankingPage() {
                 : "text-amber-600 hover:text-amber-800"
             }`}
           >
-            📅 주간 랭킹
+            📅 현재 랭킹
           </button>
           <button
             onClick={() => setTab("total")}
@@ -67,7 +67,7 @@ export default function RankingPage() {
                 : "text-amber-600 hover:text-amber-800"
             }`}
           >
-            🏆 누적 랭킹
+            🏆 받은 셸 랭킹
           </button>
         </div>
 
@@ -80,7 +80,7 @@ export default function RankingPage() {
             <p className="text-4xl mb-3">🐚</p>
             <p className="text-amber-500">
               {tab === "weekly"
-                ? "이번 주는 아직 기록이 없어요"
+                ? "아직 기록이 없어요"
                 : "아직 기록이 없어요"}
             </p>
           </div>

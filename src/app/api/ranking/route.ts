@@ -65,43 +65,23 @@ export async function GET(request: NextRequest) {
 
   if (type === "total") {
     const { data, error } = await supabase
-      .from("shell_transactions")
-      .select("member_id, amount, members!inner(name, is_active)")
-      .eq("reason", "MEMBER_GIFT");
+      .from("members")
+      .select("id, name, shell_balance")
+      .eq("is_active", true)
+      .gt("shell_balance", 0)
+      .order("shell_balance", { ascending: false })
+      .limit(50);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const aggregated = new Map<
-      string,
-      { member_id: string; name: string; total: number }
-    >();
-
-    for (const row of data || []) {
-      const member = row.members as unknown as {
-        name: string;
-        is_active: boolean;
-      };
-      if (!member.is_active) continue;
-
-      const existing = aggregated.get(row.member_id);
-      if (existing) {
-        existing.total += row.amount;
-      } else {
-        aggregated.set(row.member_id, {
-          member_id: row.member_id,
-          name: member.name,
-          total: row.amount,
-        });
-      }
-    }
-
-    const ranking = Array.from(aggregated.values())
-      .filter((m) => m.total > 0)
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 50)
-      .map((m, i) => ({ rank: i + 1, ...m }));
+    const ranking = (data || []).map((m, i) => ({
+      rank: i + 1,
+      member_id: m.id,
+      name: m.name,
+      total: m.shell_balance,
+    }));
 
     return NextResponse.json({ type: "total", ranking });
   }
