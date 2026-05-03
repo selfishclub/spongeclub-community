@@ -13,6 +13,19 @@ const BALANCE_CHECK_PATTERN = /^!(셸|잔고|shell|balance)$/i;
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
+
+  let parsed;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  // Slack URL 검증은 서명 검증 전에 처리 (초기 설정용)
+  if (parsed.type === "url_verification") {
+    return NextResponse.json({ challenge: parsed.challenge });
+  }
+
   const timestamp = request.headers.get("x-slack-request-timestamp") || "";
   const signature = request.headers.get("x-slack-signature") || "";
 
@@ -22,12 +35,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const payload = JSON.parse(body);
-
-  // Slack URL 검증 (초기 설정용)
-  if (payload.type === "url_verification") {
-    return NextResponse.json({ challenge: payload.challenge });
-  }
+  const payload = parsed;
 
   // 이벤트 처리
   if (payload.type === "event_callback") {

@@ -12,19 +12,25 @@ export function verifySlackSignature(
   timestamp: string,
   body: string
 ): boolean {
-  const fiveMinutesAgo = Math.floor(Date.now() / 1000) - 60 * 5;
-  if (parseInt(timestamp) < fiveMinutesAgo) return false;
+  try {
+    const fiveMinutesAgo = Math.floor(Date.now() / 1000) - 60 * 5;
+    if (parseInt(timestamp) < fiveMinutesAgo) return false;
 
-  const sigBasestring = `v0:${timestamp}:${body}`;
-  const mySignature =
-    "v0=" +
-    crypto
-      .createHmac("sha256", signingSecret)
-      .update(sigBasestring)
-      .digest("hex");
+    const sigBasestring = `v0:${timestamp}:${body}`;
+    const mySignature =
+      "v0=" +
+      crypto
+        .createHmac("sha256", signingSecret)
+        .update(sigBasestring)
+        .digest("hex");
 
-  return crypto.timingSafeEqual(
-    Buffer.from(mySignature),
-    Buffer.from(signature)
-  );
+    if (mySignature.length !== signature.length) return false;
+
+    return crypto.timingSafeEqual(
+      Buffer.from(mySignature),
+      Buffer.from(signature)
+    );
+  } catch {
+    return false;
+  }
 }
