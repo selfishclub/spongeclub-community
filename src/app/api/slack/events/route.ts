@@ -4,15 +4,18 @@ import {
   getMemberBySlackId,
   sendShellGift,
   getShellBalance,
+  submitSnsVerification,
+  submitSkillShare,
 } from "@/lib/shell-service";
 
 // 셸 송신 패턴: !보내기 @멤버 이유 (이유는 선택)
 const SHELL_GIFT_PATTERN = /^!보내기\s+<@(\w+)>\s*(.*)?/;
 // 잔고 확인 패턴: !잔고
 const BALANCE_CHECK_PATTERN = /^!(셸|잔고|shell|balance)$/i;
-
-// 셸 보내기 결과를 모아서 보여줄 전용 채널
-const SHELL_FEED_CHANNEL = "C0B19KV8538";
+// SNS 인증 패턴: !sns인증하기 URL
+const SNS_VERIFY_PATTERN = /^!sns인증하기\s+(https?:\/\/\S+)/;
+// 스킬 공유 패턴: !스킬공유하기 URL
+const SKILL_SHARE_PATTERN = /^!스킬공유하기\s+(https?:\/\/\S+)/;
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -54,6 +57,20 @@ export async function POST(request: NextRequest) {
       if (giftMatch) {
         const reason = (giftMatch[2] || "").trim();
         await handleShellGift(event.user, giftMatch[1], event.channel, reason);
+        return NextResponse.json({ ok: true });
+      }
+
+      // SNS 인증 처리
+      const snsMatch = event.text.match(SNS_VERIFY_PATTERN);
+      if (snsMatch) {
+        await handleSnsVerify(event.user, snsMatch[1], event.channel);
+        return NextResponse.json({ ok: true });
+      }
+
+      // 스킬 공유 처리
+      const skillMatch = event.text.match(SKILL_SHARE_PATTERN);
+      if (skillMatch) {
+        await handleSkillShare(event.user, skillMatch[1], event.channel);
         return NextResponse.json({ ok: true });
       }
 
@@ -116,6 +133,62 @@ async function handleShellGift(
   await getSlackClient().chat.postMessage({
     channel,
     text: msg,
+  });
+}
+
+async function handleSnsVerify(slackUserId: string, url: string, channel: string) {
+  const member = await getMemberBySlackId(slackUserId);
+  if (!member) {
+    await getSlackClient().chat.postMessage({
+      channel,
+      text: "스폰지클럽에 등록되지 않은 멤버예요. 어드민에게 문의해주세요!",
+    });
+    return;
+  }
+
+  const result = await submitSnsVerification(member.id, url);
+
+  if (!result.success) {
+    const msgs: Record<string, string> = {
+      DAILY_LIMIT: "오늘은 이미 SNS 인증을 신청했어요! 내일 다시 해주세요 🐚",
+      TX_FAILED: "신청 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
+    };
+    await getSlackClient().chat.postMessage({
+      channel,
+      text: msgs[result.error!] || "알 수 없는 오류가 발생했어요.",
+    });
+    return;
+  }
+
+  await getSlackClient().chat.postMessage({
+    channel,
+    text: `📸 <@${slackUserId}>님의 SNS 인증 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +2🐚이 지급됩니다.`,
+  });
+}
+
+async function handleSkillShare(slackUserId: string, url: string, channel: string) {
+  const member = await getMemberBySlackId(slackUserId);
+  if (!member) {
+    await getSlackClient().chat.postMessage({
+      channel,
+      text: "스폰지클럽에 등록되지 않은 멤버예요. 어드민에게 문의해주세요!",
+    });
+    return;
+  }
+
+  const result = await submitSkillShare(member.id, url);
+
+  if (!result.success) {
+    await getSlackClient().chat.postMessage({
+      channel,
+      text: "신청 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
+    });
+    return;
+  }
+
+  await getSlackClient().chat.postMessage({
+    channel,
+    text: `📚 <@${slackUserId}>님의 스킬 공유 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +1🐚이 지급됩니다.`,
   });
 }
 

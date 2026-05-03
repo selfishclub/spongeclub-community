@@ -104,6 +104,121 @@ export async function sendShellGift(
   return { success: true, giftCount: todayCount + 1 };
 }
 
+// SNS 인증 신청 (대기 상태로 저장)
+export async function submitSnsVerification(
+  memberId: string,
+  url: string
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = createAdminClient();
+  const today = new Date().toISOString().split("T")[0];
+
+  // 오늘 SNS 인증 횟수 체크
+  const { data: limit } = await supabase
+    .from("daily_limits")
+    .select("sns_verifies, gifts_sent")
+    .eq("member_id", memberId)
+    .eq("date", today)
+    .single();
+
+  if (limit && limit.sns_verifies >= 1) {
+    return { success: false, error: "DAILY_LIMIT" };
+  }
+
+  const { error } = await supabase.from("shell_requests").insert({
+    member_id: memberId,
+    type: "SNS_VERIFY",
+    url,
+    status: "PENDING",
+  });
+
+  if (error) return { success: false, error: "TX_FAILED" };
+
+  // 일일 한도 업데이트
+  await supabase.from("daily_limits").upsert(
+    {
+      member_id: memberId,
+      date: today,
+      gifts_sent: (limit as { gifts_sent: number; sns_verifies: number } | null)?.gifts_sent ?? 0,
+      sns_verifies: ((limit as { gifts_sent: number; sns_verifies: number } | null)?.sns_verifies ?? 0) + 1,
+    },
+    { onConflict: "member_id,date" }
+  );
+
+  return { success: true };
+}
+
+// 스킬 공유 신청 (대기 상태로 저장)
+export async function submitSkillShare(
+  memberId: string,
+  url: string
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = createAdminClient();
+
+  const { error } = await supabase.from("shell_requests").insert({
+    member_id: memberId,
+    type: "SKILL_SHARE",
+    url,
+    status: "PENDING",
+  });
+
+  if (error) return { success: false, error: "TX_FAILED" };
+  return { success: true };
+}
+
+// 어드민: 신청 승인 (셸 지급)
+export async function approveShellRequest(requestId: string, adminId: string) {
+  const supabase = createAdminClient();
+
+  const { data: req, error: reqError } = await supabase
+    .from("shell_requests")
+    .select("*")
+    .eq("id", requestId)
+    .eq("status", "PENDING")
+    .single();
+
+  if (reqError || !req) return { success: false, error: "NOT_FOUND" };
+
+  const amount = req.type === "SNS_VERIFY" ? 2 : 1;
+  const reasonDetail = req.type === "SNS_VERIFY" ? "SNS 인증" : "스킬 공유";
+
+  // 트랜잭션 기록
+  await supabase.from("shell_transactions").insert({
+    member_id: req.member_id,
+    amount,
+    reason: req.type,
+    reason_detail: `${reasonDetail}: ${req.url}`,
+    created_by: adminId,
+  });
+
+  // 잔고 업데이트
+  await supabase.rpc("increment_shell_balance", {
+    p_member_id: req.member_id,
+    p_amount: amount,
+  });
+
+  // 신청 상태 업데이트
+  await supabase
+    .from("shell_requests")
+    .update({ status: "APPROVED", reviewed_by: adminId, reviewed_at: new Date().toISOString() })
+    .eq("id", requestId);
+
+  return { success: true };
+}
+
+// 어드민: 신청 거부
+export async function rejectShellRequest(requestId: string, adminId: string) {
+  const supabase = createAdminClient();
+
+  const { error } = await supabase
+    .from("shell_requests")
+    .update({ status: "REJECTED", reviewed_by: adminId, reviewed_at: new Date().toISOString() })
+    .eq("id", requestId)
+    .eq("status", "PENDING");
+
+  if (error) return { success: false, error: error.message };
+  return { success: true };
+}
+
 // 어드민 수동 셸 조정
 export async function adminAdjustShell(
   memberId: string,
