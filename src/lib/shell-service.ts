@@ -113,12 +113,13 @@ export async function submitSnsVerification(
   const today = new Date().toISOString().split("T")[0];
 
   // 오늘 SNS 인증 횟수 체크
-  const { data: limit } = await supabase
+  const { data: limitRows } = await supabase
     .from("daily_limits")
-    .select("sns_verifies, gifts_sent")
+    .select("sns_verifies,gifts_sent")
     .eq("member_id", memberId)
-    .eq("date", today)
-    .single();
+    .eq("date", today);
+
+  const limit = limitRows && limitRows.length > 0 ? limitRows[0] : null;
 
   if (limit && limit.sns_verifies >= 1) {
     return { success: false, error: "DAILY_LIMIT" };
@@ -138,8 +139,8 @@ export async function submitSnsVerification(
     {
       member_id: memberId,
       date: today,
-      gifts_sent: (limit as { gifts_sent: number; sns_verifies: number } | null)?.gifts_sent ?? 0,
-      sns_verifies: ((limit as { gifts_sent: number; sns_verifies: number } | null)?.sns_verifies ?? 0) + 1,
+      gifts_sent: limit?.gifts_sent ?? 0,
+      sns_verifies: (limit?.sns_verifies ?? 0) + 1,
     },
     { onConflict: "member_id,date" }
   );

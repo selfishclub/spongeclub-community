@@ -12,10 +12,10 @@ import {
 const SHELL_GIFT_PATTERN = /^!보내기\s+<@(\w+)>\s*(.*)?/;
 // 잔고 확인 패턴: !잔고
 const BALANCE_CHECK_PATTERN = /^!(셸|잔고|shell|balance)$/i;
-// SNS 인증 패턴: !sns인증하기 URL
-const SNS_VERIFY_PATTERN = /^!sns인증하기\s+(https?:\/\/\S+)/;
+// SNS 인증 패턴: !sns인증하기 URL (Slack은 URL을 <https://...|label> 형태로 변환)
+const SNS_VERIFY_PATTERN = /^!sns인증하기\s+<?([^>|]+)/;
 // 스킬 공유 패턴: !스킬공유하기 URL
-const SKILL_SHARE_PATTERN = /^!스킬공유하기\s+(https?:\/\/\S+)/;
+const SKILL_SHARE_PATTERN = /^!스킬공유하기\s+<?([^>|]+)/;
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
