@@ -1,0 +1,101 @@
+"use client";
+
+import { useState } from "react";
+
+interface ImportResult {
+  success: number;
+  failed: number;
+  errors: string[];
+}
+
+export default function ImportPage() {
+  const [file, setFile] = useState<File | null>(null);
+  const [result, setResult] = useState<ImportResult | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!file) return;
+    setLoading(true);
+    setResult(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/admin/members/import", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    setResult(data);
+    setLoading(false);
+  };
+
+  return (
+    <div>
+      <h1 className="text-2xl font-bold text-amber-900 mb-6">
+        CSV 일괄 등록
+      </h1>
+
+      <div className="bg-white rounded-lg border border-amber-200 p-6 mb-6">
+        <h2 className="text-sm font-semibold text-amber-800 mb-3">
+          CSV 형식
+        </h2>
+        <code className="block bg-amber-50 p-3 rounded text-xs text-amber-800 mb-4">
+          name,phone_last4,email,slack_user_id,survey_completed
+          <br />
+          홍길동,1234,hong@email.com,U0123ABCDEF,true
+          <br />
+          김영희,5678,,U0456GHIJKL,true
+        </code>
+        <ul className="text-xs text-amber-600 space-y-1">
+          <li>
+            - <strong>name, phone_last4</strong>: 필수
+          </li>
+          <li>
+            - <strong>email, slack_user_id</strong>: 선택 (빈 값 가능)
+          </li>
+          <li>
+            - <strong>survey_completed</strong>: true이면 가입 보너스 +10셸
+            자동 지급
+          </li>
+        </ul>
+      </div>
+
+      <div className="bg-white rounded-lg border border-amber-200 p-6">
+        <input
+          type="file"
+          accept=".csv"
+          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          className="mb-4 text-sm"
+        />
+        <br />
+        <button
+          onClick={handleSubmit}
+          disabled={!file || loading}
+          className="px-6 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50 text-sm"
+        >
+          {loading ? "처리 중..." : "업로드 및 등록"}
+        </button>
+      </div>
+
+      {result && (
+        <div className="mt-6 bg-white rounded-lg border border-amber-200 p-6">
+          <h2 className="text-lg font-semibold text-amber-900 mb-3">
+            등록 결과
+          </h2>
+          <p className="text-sm text-green-700 mb-1">
+            성공: {result.success}명
+          </p>
+          <p className="text-sm text-red-600 mb-3">실패: {result.failed}명</p>
+          {result.errors.length > 0 && (
+            <ul className="text-xs text-red-500 space-y-1">
+              {result.errors.map((err, i) => (
+                <li key={i}>- {err}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
