@@ -18,6 +18,11 @@ interface Member {
 export default function MembersPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [search, setSearch] = useState("");
+  const [groupFilter, setGroupFilter] = useState("");
+  const [activeFilter, setActiveFilter] = useState("");
+  const [slackFilter, setSlackFilter] = useState("");
+  const [sortKey, setSortKey] = useState<"name" | "group_number" | "shell_balance" | "created_at">("created_at");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [adjustModal, setAdjustModal] = useState<Member | null>(null);
   const [adjustAmount, setAdjustAmount] = useState("");
   const [adjustReason, setAdjustReason] = useState("");
@@ -59,12 +64,42 @@ export default function MembersPage() {
     fetchMembers();
   }, []);
 
-  const filtered = members.filter(
-    (m) =>
-      m.name.includes(search) ||
-      m.phone_last4.includes(search) ||
-      m.slack_user_id?.includes(search)
-  );
+  const handleSort = (key: typeof sortKey) => {
+    if (sortKey === key) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  };
+
+  const sortIndicator = (key: typeof sortKey) =>
+    sortKey === key ? (sortDir === "asc" ? " ↑" : " ↓") : "";
+
+  const filtered = members
+    .filter((m) => {
+      const matchSearch =
+        !search ||
+        m.name.includes(search) ||
+        m.phone_last4.includes(search) ||
+        m.slack_user_id?.includes(search);
+      const matchGroup =
+        !groupFilter || String(m.group_number) === groupFilter;
+      const matchActive =
+        !activeFilter ||
+        (activeFilter === "active" ? m.is_active : !m.is_active);
+      const matchSlack =
+        !slackFilter ||
+        (slackFilter === "linked" ? !!m.slack_user_id : !m.slack_user_id);
+      return matchSearch && matchGroup && matchActive && matchSlack;
+    })
+    .sort((a, b) => {
+      const dir = sortDir === "asc" ? 1 : -1;
+      if (sortKey === "name") return a.name.localeCompare(b.name) * dir;
+      if (sortKey === "shell_balance") return (a.shell_balance - b.shell_balance) * dir;
+      if (sortKey === "group_number") return ((a.group_number ?? 99) - (b.group_number ?? 99)) * dir;
+      return (new Date(a.created_at).getTime() - new Date(b.created_at).getTime()) * dir;
+    });
 
   const handleAdjust = async () => {
     if (!adjustModal || !adjustAmount || !adjustReason) return;
@@ -194,23 +229,56 @@ export default function MembersPage() {
         </button>
       </div>
 
-      <input
-        type="text"
-        placeholder="이름, 전화번호, Slack ID로 검색..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full md:w-80 px-4 py-2 border border-amber-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-amber-400"
-      />
+      <div className="flex flex-wrap gap-3 mb-4">
+        <input
+          type="text"
+          placeholder="이름, 전화번호, Slack ID 검색..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
+        />
+        <select
+          value={groupFilter}
+          onChange={(e) => setGroupFilter(e.target.value)}
+          className="px-3 py-2 border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+        >
+          <option value="">전체 조</option>
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <option key={n} value={String(n)}>{n}조</option>
+          ))}
+        </select>
+        <select
+          value={activeFilter}
+          onChange={(e) => setActiveFilter(e.target.value)}
+          className="px-3 py-2 border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+        >
+          <option value="">전체 상태</option>
+          <option value="active">활성</option>
+          <option value="inactive">비활성</option>
+        </select>
+        <select
+          value={slackFilter}
+          onChange={(e) => setSlackFilter(e.target.value)}
+          className="px-3 py-2 border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+        >
+          <option value="">Slack 전체</option>
+          <option value="linked">연결됨</option>
+          <option value="unlinked">미연결</option>
+        </select>
+      </div>
+      <p className="text-sm text-amber-600 mb-4">
+        총 <strong>{filtered.length}</strong>명 / 전체 {members.length}명
+      </p>
 
       <div className="bg-white rounded-lg border border-amber-200 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-amber-100">
             <tr>
-              <th className="text-left px-4 py-3 text-amber-800">이름</th>
-              <th className="text-center px-4 py-3 text-amber-800">조</th>
+              <th className="text-left px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("name")}>이름{sortIndicator("name")}</th>
+              <th className="text-center px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("group_number")}>조{sortIndicator("group_number")}</th>
               <th className="text-left px-4 py-3 text-amber-800">뒷4자리</th>
               <th className="text-left px-4 py-3 text-amber-800">Slack ID</th>
-              <th className="text-right px-4 py-3 text-amber-800">🐚 잔고</th>
+              <th className="text-right px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("shell_balance")}>🐚 잔고{sortIndicator("shell_balance")}</th>
               <th className="text-center px-4 py-3 text-amber-800">상태</th>
               <th className="text-center px-4 py-3 text-amber-800">액션</th>
             </tr>
