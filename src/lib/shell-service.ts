@@ -59,7 +59,8 @@ export async function getTodayGiftCount(memberId: string): Promise<number> {
 // 셸 송신 (시스템 발행 — 송신자 차감 없음, 수신자 +1)
 export async function sendShellGift(
   senderId: string,
-  receiverId: string
+  receiverId: string,
+  reason?: string
 ): Promise<{ success: boolean; error?: string; giftCount?: number }> {
   if (senderId === receiverId) {
     return { success: false, error: "SELF_SEND" };
@@ -77,7 +78,7 @@ export async function sendShellGift(
     member_id: receiverId,
     amount: 1,
     reason: "MEMBER_GIFT",
-    reason_detail: "셸 선물 받음",
+    reason_detail: reason || "셸 선물 받음",
     related_member_id: senderId,
   });
 

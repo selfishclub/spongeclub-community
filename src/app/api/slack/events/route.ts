@@ -6,8 +6,8 @@ import {
   getShellBalance,
 } from "@/lib/shell-service";
 
-// 셸 송신 패턴: @멤버 +1🐚 (메시지는 선택)
-const SHELL_GIFT_PATTERN = /<@(\w+)>\s*\+1\s*🐚/;
+// 셸 송신 패턴: @멤버 +1🐚 이유 (이유는 선택)
+const SHELL_GIFT_PATTERN = /<@(\w+)>\s*\+1\s*🐚\s*(.*)?/;
 // 잔고 확인 패턴: !셸 또는 !잔고
 const BALANCE_CHECK_PATTERN = /^!(셸|잔고|shell|balance)$/i;
 
@@ -49,7 +49,8 @@ export async function POST(request: NextRequest) {
       // 셸 송신 처리
       const giftMatch = event.text.match(SHELL_GIFT_PATTERN);
       if (giftMatch) {
-        await handleShellGift(event.user, giftMatch[1], event.channel);
+        const reason = (giftMatch[2] || "").trim();
+        await handleShellGift(event.user, giftMatch[1], event.channel, reason);
         return NextResponse.json({ ok: true });
       }
 
@@ -68,7 +69,8 @@ export async function POST(request: NextRequest) {
 async function handleShellGift(
   senderSlackId: string,
   receiverSlackId: string,
-  channel: string
+  channel: string,
+  reason: string
 ) {
   const sender = await getMemberBySlackId(senderSlackId);
   if (!sender) {
@@ -88,7 +90,7 @@ async function handleShellGift(
     return;
   }
 
-  const result = await sendShellGift(sender.id, receiver.id);
+  const result = await sendShellGift(sender.id, receiver.id, reason);
 
   if (!result.success) {
     const errorMessages: Record<string, string> = {
@@ -103,9 +105,13 @@ async function handleShellGift(
     return;
   }
 
+  let msg = `🐚 <@${senderSlackId}>님이 <@${receiverSlackId}>님에게 오늘의 셸을 보냈어요!`;
+  if (reason) {
+    msg += `\n💬 "${reason}"`;
+  }
   await getSlackClient().chat.postMessage({
     channel,
-    text: `🐚 <@${senderSlackId}>님이 <@${receiverSlackId}>님에게 오늘의 셸을 보냈어요!`,
+    text: msg,
   });
 }
 
