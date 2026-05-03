@@ -66,7 +66,7 @@ export async function sendShellGift(
   }
 
   const todayCount = await getTodayGiftCount(senderId);
-  if (todayCount >= 3) {
+  if (todayCount >= 1) {
     return { success: false, error: "DAILY_LIMIT" };
   }
 

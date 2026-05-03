@@ -93,7 +93,7 @@ async function handleShellGift(
   if (!result.success) {
     const errorMessages: Record<string, string> = {
       SELF_SEND: "자기 자신에게는 셸을 보낼 수 없어요! 🐚",
-      DAILY_LIMIT: "오늘 셸 송신 한도(3회)를 다 사용했어요! 내일 다시 보내주세요 🐚",
+      DAILY_LIMIT: "오늘의 셸은 이미 보냈어요! 내일 다시 보내주세요 🐚",
       TX_FAILED: "셸 송신 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
     };
     await getSlackClient().chat.postMessage({
@@ -105,7 +105,7 @@ async function handleShellGift(
 
   await getSlackClient().chat.postMessage({
     channel,
-    text: `🐚 <@${senderSlackId}>님이 <@${receiverSlackId}>님에게 셸을 보냈어요! (오늘 ${result.giftCount}/3회)`,
+    text: `🐚 <@${senderSlackId}>님이 <@${receiverSlackId}>님에게 오늘의 셸을 보냈어요!`,
   });
 }
 
