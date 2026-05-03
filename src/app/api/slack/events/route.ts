@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifySlackSignature, getSlackClient } from "@/lib/slack";
+import { getSlackClient } from "@/lib/slack";
 import {
   getMemberBySlackId,
   sendShellGift,
