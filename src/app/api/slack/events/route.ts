@@ -113,19 +113,10 @@ async function handleShellGift(
     msg += `\n💬 "${reason}"`;
   }
 
-  // 전용 채널에 결과 게시
   await getSlackClient().chat.postMessage({
-    channel: SHELL_FEED_CHANNEL,
+    channel,
     text: msg,
   });
-
-  // 보낸 채널이 전용 채널이 아니면, 보낸 사람에게 확인 메시지
-  if (channel !== SHELL_FEED_CHANNEL) {
-    await getSlackClient().chat.postMessage({
-      channel,
-      text: `🐚 셸을 보냈어요! <#${SHELL_FEED_CHANNEL}>에서 확인할 수 있어요.`,
-    });
-  }
 }
 
 async function handleBalanceCheck(slackUserId: string, channel: string) {
