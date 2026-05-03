@@ -11,6 +11,9 @@ const SHELL_GIFT_PATTERN = /^!보내기\s+<@(\w+)>\s*(.*)?/;
 // 잔고 확인 패턴: !잔고
 const BALANCE_CHECK_PATTERN = /^!(셸|잔고|shell|balance)$/i;
 
+// 셸 보내기 결과를 모아서 보여줄 전용 채널
+const SHELL_FEED_CHANNEL = "C0B19KV8538";
+
 export async function POST(request: NextRequest) {
   const body = await request.text();
 
@@ -109,10 +112,20 @@ async function handleShellGift(
   if (reason) {
     msg += `\n💬 "${reason}"`;
   }
+
+  // 전용 채널에 결과 게시
   await getSlackClient().chat.postMessage({
-    channel,
+    channel: SHELL_FEED_CHANNEL,
     text: msg,
   });
+
+  // 보낸 채널이 전용 채널이 아니면, 보낸 사람에게 확인 메시지
+  if (channel !== SHELL_FEED_CHANNEL) {
+    await getSlackClient().chat.postMessage({
+      channel,
+      text: `🐚 셸을 보냈어요! <#${SHELL_FEED_CHANNEL}>에서 확인할 수 있어요.`,
+    });
+  }
 }
 
 async function handleBalanceCheck(slackUserId: string, channel: string) {
