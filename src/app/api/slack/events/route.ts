@@ -6,9 +6,9 @@ import {
   getShellBalance,
 } from "@/lib/shell-service";
 
-// 셸 송신 패턴: @멤버 +1🐚 이유 (이유는 선택)
-const SHELL_GIFT_PATTERN = /<@(\w+)>\s*\+1\s*🐚\s*(.*)?/;
-// 잔고 확인 패턴: !셸 또는 !잔고
+// 셸 송신 패턴: !보내기 @멤버 이유 (이유는 선택)
+const SHELL_GIFT_PATTERN = /^!보내기\s+<@(\w+)>\s*(.*)?/;
+// 잔고 확인 패턴: !잔고
 const BALANCE_CHECK_PATTERN = /^!(셸|잔고|shell|balance)$/i;
 
 export async function POST(request: NextRequest) {
