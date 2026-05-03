@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       if (!mentionMatch) {
         return NextResponse.json({
           response_type: "ephemeral",
-          text: "사용법: `/보내기 @멤버이름 이유`\n예: `/보내기 @비비안 오늘 도움 고마워!`",
+          text: `사용법: \`${command} @멤버이름 이유\`\n예: \`${command} @비비안 오늘 도움 고마워!\``,
         });
       }
 
