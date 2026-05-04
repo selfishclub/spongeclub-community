@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, members!shell_transactions_member_id_fkey(name, is_active)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)")
       .gte("created_at", mondayUTC.toISOString());
 
     if (error) {
@@ -38,6 +38,7 @@ export async function GET(request: NextRequest) {
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean };
       if (!member.is_active) continue;
+      if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = aggregated.get(row.member_id);
       const absAmount = Math.abs(row.amount);
@@ -65,7 +66,7 @@ export async function GET(request: NextRequest) {
   if (type === "ranking") {
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, members!shell_transactions_member_id_fkey(name, is_active)");
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)");
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -76,6 +77,7 @@ export async function GET(request: NextRequest) {
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean };
       if (!member.is_active) continue;
+      if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = aggregated.get(row.member_id);
       const absAmount = Math.abs(row.amount);
@@ -107,7 +109,7 @@ export async function GET(request: NextRequest) {
   if (type === "spent") {
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, members!shell_transactions_member_id_fkey(name, is_active)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)")
       .lt("amount", 0);
 
     if (error) {
@@ -119,6 +121,7 @@ export async function GET(request: NextRequest) {
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean };
       if (!member.is_active) continue;
+      if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const absAmount = Math.abs(row.amount);
       const existing = aggregated.get(row.member_id);
@@ -146,7 +149,7 @@ export async function GET(request: NextRequest) {
   if (type === "earned") {
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, members!shell_transactions_member_id_fkey(name, is_active)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)")
       .gt("amount", 0);
 
     if (error) {
@@ -158,6 +161,7 @@ export async function GET(request: NextRequest) {
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean };
       if (!member.is_active) continue;
+      if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = aggregated.get(row.member_id);
       if (existing) {
@@ -184,7 +188,7 @@ export async function GET(request: NextRequest) {
   if (type === "group") {
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, members!shell_transactions_member_id_fkey(name, is_active, group_number)");
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, group_number)");
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -197,6 +201,7 @@ export async function GET(request: NextRequest) {
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean; group_number: number | null };
       if (!member.is_active || !member.group_number) continue;
+      if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = memberTotals.get(row.member_id);
       const absAmount = Math.abs(row.amount);
