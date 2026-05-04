@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     case "/보내기":
     case "/셸보내기": {
       // 형식: @멤버 이유
-      const mentionMatch = text.match(/^<@(\w+)\|[^>]*>\s*(.*)?/);
+      const mentionMatch = text.match(/^<@(\w+)(?:\|[^>]*)?>[\s]*(.*)?/);
       if (!mentionMatch) {
         return NextResponse.json({
           response_type: "ephemeral",
