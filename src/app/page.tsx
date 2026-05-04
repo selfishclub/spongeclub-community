@@ -530,7 +530,7 @@ export default function HomePage() {
       <div style={{ backgroundColor: "#E9ED12" }} className="shadow-md">
         <div className="max-w-lg mx-auto px-4 py-5">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-slate-900">스폰지클럽</h1>
+            <h1 className="text-xl font-bold text-slate-900">이기적인 스폰지들</h1>
             <div className="flex items-center gap-2">
               <Link
                 href="/sessions/new"
@@ -647,7 +647,7 @@ export default function HomePage() {
       </div>
 
       {showLoginModal && (
-        <LoginModal onClose={() => setShowLoginModal(false)} onSuccess={(m) => { setMember(m); setShowLoginModal(false); }} />
+        <LoginModal onClose={() => setShowLoginModal(false)} onSuccess={(m) => { setMember(m); setShowLoginModal(false); window.location.href = "/mypage"; }} />
       )}
     </div>
   );

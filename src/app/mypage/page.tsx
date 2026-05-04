@@ -32,12 +32,14 @@ const REASON_LABELS: Record<string, string> = {
   SESSION_REFUND: "공유회 환불",
   SNS_VERIFY: "SNS 인증",
   SKILL_SHARE: "스킬 공유",
-  MEMBER_GIFT: "셸 선물",
+  MEMBER_GIFT: "셸 선물 받음",
+  GIFT_RECEIVED: "셸 선물 받음",
+  GIFT_SENT: "셸 선물 보냄",
   TIP_RECEIVED: "팁 받음",
   ADMIN_ADJUSTMENT: "어드민 조정",
 };
 
-type TxTab = "all" | "earned" | "spent";
+type TxTab = "all" | "earned" | "spent" | "gift";
 
 export default function MyPage() {
   const router = useRouter();
@@ -363,57 +365,58 @@ export default function MyPage() {
           )}
         </div>
 
-        {/* SNS 인증 / 스킬 공유 2열 그리드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* SNS 인증 */}
-          <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
-            <h3 className="text-sm font-bold text-slate-800 mb-2">📱 SNS 인증</h3>
-            <p className="text-xs text-slate-500 mb-3">하루 1회, 승인 시 +2🐚</p>
+        {/* SNS 인증 */}
+        <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
+          <h3 className="text-sm font-bold text-slate-800 mb-2">SNS 인증</h3>
+          <p className="text-xs text-slate-500 mb-3">하루 1회, 승인 시 +2🐚</p>
+          <div className="flex gap-2">
             <input
               type="url"
               placeholder="게시물 URL"
               value={snsUrl}
               onChange={(e) => setSnsUrl(e.target.value)}
-              className="w-full px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300 mb-3"
+              className="flex-1 px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
             />
             <button
               onClick={handleSnsSubmit}
               disabled={!snsUrl.trim() || snsLoading}
-              className="w-full py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm"
+              className="px-4 py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm flex-shrink-0"
             >
-              {snsLoading ? "신청 중..." : "인증 신청"}
+              {snsLoading ? "..." : "신청"}
             </button>
-            {snsMsg && (
-              <p className={`text-xs mt-2 text-center ${snsMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
-                {snsMsg}
-              </p>
-            )}
           </div>
+          {snsMsg && (
+            <p className={`text-xs mt-2 ${snsMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
+              {snsMsg}
+            </p>
+          )}
+        </div>
 
-          {/* 스킬 공유 */}
-          <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
-            <h3 className="text-sm font-bold text-slate-800 mb-2">🎓 스킬 공유</h3>
-            <p className="text-xs text-slate-500 mb-3">승인 시 +1🐚</p>
+        {/* 스킬 공유 */}
+        <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
+          <h3 className="text-sm font-bold text-slate-800 mb-2">스킬 공유</h3>
+          <p className="text-xs text-slate-500 mb-3">승인 시 +1🐚</p>
+          <div className="flex gap-2">
             <input
               type="url"
               placeholder="공유 URL"
               value={skillUrl}
               onChange={(e) => setSkillUrl(e.target.value)}
-              className="w-full px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300 mb-3"
+              className="flex-1 px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
             />
             <button
               onClick={handleSkillSubmit}
               disabled={!skillUrl.trim() || skillLoading}
-              className="w-full py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm"
+              className="px-4 py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm flex-shrink-0"
             >
-              {skillLoading ? "신청 중..." : "공유 신청"}
+              {skillLoading ? "..." : "신청"}
             </button>
-            {skillMsg && (
-              <p className={`text-xs mt-2 text-center ${skillMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
-                {skillMsg}
-              </p>
-            )}
           </div>
+          {skillMsg && (
+            <p className={`text-xs mt-2 ${skillMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
+              {skillMsg}
+            </p>
+          )}
         </div>
 
         {/* 참여 공유회 */}
@@ -447,6 +450,7 @@ export default function MyPage() {
             ["all", "전체"],
             ["earned", "적립"],
             ["spent", "지출"],
+            ["gift", "선물"],
           ] as const).map(([key, label]) => (
             <button
               key={key}
