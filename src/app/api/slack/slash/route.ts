@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSlackClient } from "@/lib/slack";
 import {
   getMemberBySlackId,
   getShellBalance,
@@ -34,18 +35,51 @@ export async function POST(request: NextRequest) {
     case "/보내기":
     case "/셸보내기": {
       // 형식: @멤버 이유
-      const mentionMatch = text.match(/^<@(\w+)(?:\|[^>]*)?>[\s]*(.*)?/);
-      if (!mentionMatch) {
+      // Slack은 <@U123> 또는 @username 형식으로 보낼 수 있음
+      const idMatch = text.match(/^<@(\w+)(?:\|[^>]*)?>[\s]*(.*)?/);
+      const usernameMatch = text.match(/^@(\S+)\s*(.*)?/);
+
+      if (!idMatch && !usernameMatch) {
         return NextResponse.json({
           response_type: "ephemeral",
-          text: `사용법: \`${command} @멤버이름 이유\`\n예: \`${command} @비비안 오늘 도움 고마워!\`\n\n[디버그] 받은 텍스트: "${text}"`,
+          text: `사용법: \`${command} @멤버이름 이유\`\n예: \`${command} @비비안 오늘 도움 고마워!\``,
         });
       }
 
-      const receiverSlackId = mentionMatch[1];
-      const reason = (mentionMatch[2] || "").trim();
+      let receiver;
+      let reason: string;
 
-      const receiver = await getMemberBySlackId(receiverSlackId);
+      if (idMatch) {
+        reason = (idMatch[2] || "").trim();
+        receiver = await getMemberBySlackId(idMatch[1]);
+      } else {
+        const username = usernameMatch![1];
+        reason = (usernameMatch![2] || "").trim();
+        // username으로 Supabase에서 멤버 조회
+        const supabaseAdmin = (await import("@/lib/supabase")).createAdminClient();
+        const { data: members } = await supabaseAdmin
+          .from("members")
+          .select("*")
+          .eq("is_active", true);
+        // Slack CSV에서 가져온 username이나 이름으로 매칭
+        receiver = (members || []).find((m: { slack_user_id: string | null; name: string }) => {
+          // email 앞부분이 username인 경우가 많음
+          return m.name.toLowerCase() === username.toLowerCase();
+        }) || null;
+        // 못 찾으면 slack username으로 API 조회
+        if (!receiver) {
+          try {
+            const slackClient = getSlackClient();
+            const userList = await slackClient.users.list({});
+            const slackUser = userList.members?.find((u) => u.name === username);
+            if (slackUser?.id) {
+              receiver = await getMemberBySlackId(slackUser.id);
+            }
+          } catch {
+            // silently fail
+          }
+        }
+      }
       if (!receiver) {
         return NextResponse.json({
           response_type: "ephemeral",
@@ -67,7 +101,7 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      let msg = `🐚 <@${userId}>님이 <@${receiverSlackId}>님에게 오늘의 셸을 보냈어요!`;
+      let msg = `🐚 <@${userId}>님이 ${receiver.name}님에게 오늘의 셸을 보냈어요!`;
       if (reason) msg += `\n💬 "${reason}"`;
 
       return NextResponse.json({
