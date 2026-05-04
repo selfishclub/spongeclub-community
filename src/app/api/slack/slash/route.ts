@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       const balance = await getShellBalance(member.id);
       return NextResponse.json({
         response_type: "ephemeral",
-        text: `🐚 ${member.name}님의 셸 잔고: *${balance}개*`,
+        text: `🐚 ${member.name}님의 셸 잔고: *${balance}개*\n👉 마이페이지: https://spongeclub-community.vercel.app/mypage`,
       });
     }
 
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         response_type: "in_channel",
-        text: `📸 <@${userId}>님의 SNS 인증 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +2🐚이 지급됩니다.`,
+        text: `📸 <@${userId}>님의 SNS 인증 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +2🐚이 지급됩니다.\n👉 웹에서도 가능: https://spongeclub-community.vercel.app/mypage`,
       });
     }
 
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         response_type: "in_channel",
-        text: `📚 <@${userId}>님의 스킬 공유 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +1🐚이 지급됩니다.`,
+        text: `📚 <@${userId}>님의 스킬 공유 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +1🐚이 지급됩니다.\n👉 웹에서도 가능: https://spongeclub-community.vercel.app/mypage`,
       });
     }
 

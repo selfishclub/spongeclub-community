@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 // 멤버 정보 수정
 export async function PATCH(request: NextRequest) {
   const body = await request.json();
-  const { id, name, phone_last4, email, slack_user_id, is_admin, is_active, group_number } = body;
+  const { id, name, phone_last4, email, slack_user_id, is_admin, is_active, group_number, pin, pin_changed } = body;
 
   if (!id) {
     return NextResponse.json(
@@ -131,6 +131,8 @@ export async function PATCH(request: NextRequest) {
   if (group_number !== undefined) updateData.group_number = group_number;
   if (is_admin !== undefined) updateData.is_admin = is_admin;
   if (is_active !== undefined) updateData.is_active = is_active;
+  if (pin !== undefined) updateData.pin = pin;
+  if (pin_changed !== undefined) updateData.pin_changed = pin_changed;
 
   const { data: member, error: updateError } = await supabase
     .from("members")

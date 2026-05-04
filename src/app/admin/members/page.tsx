@@ -81,7 +81,6 @@ export default function MembersPage() {
       const matchSearch =
         !search ||
         m.name.includes(search) ||
-        m.phone_last4.includes(search) ||
         m.slack_user_id?.includes(search);
       const matchGroup =
         !groupFilter || String(m.group_number) === groupFilter;
@@ -232,7 +231,7 @@ export default function MembersPage() {
       <div className="flex flex-wrap gap-3 mb-4">
         <input
           type="text"
-          placeholder="이름, 전화번호, Slack ID 검색..."
+          placeholder="이름, Slack ID 검색..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
@@ -276,7 +275,6 @@ export default function MembersPage() {
             <tr>
               <th className="text-left px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("name")}>이름{sortIndicator("name")}</th>
               <th className="text-center px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("group_number")}>조{sortIndicator("group_number")}</th>
-              <th className="text-left px-4 py-3 text-amber-800">뒷4자리</th>
               <th className="text-left px-4 py-3 text-amber-800">Slack ID</th>
               <th className="text-right px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("shell_balance")}>🐚 잔고{sortIndicator("shell_balance")}</th>
               <th className="text-center px-4 py-3 text-amber-800">상태</th>
@@ -296,9 +294,6 @@ export default function MembersPage() {
                 </td>
                 <td className="px-4 py-3 text-center text-amber-700">
                   {member.group_number ? `${member.group_number}조` : "-"}
-                </td>
-                <td className="px-4 py-3 text-amber-700">
-                  {member.phone_last4}
                 </td>
                 <td className="px-4 py-3 text-amber-700 text-xs font-mono">
                   {member.slack_user_id || "-"}
@@ -326,6 +321,20 @@ export default function MembersPage() {
                       className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded hover:bg-amber-200"
                     >
                       셸 조정
+                    </button>
+                    <button
+                      onClick={async () => {
+                        if (!confirm(`${member.name}의 PIN을 0000으로 초기화할까요?`)) return;
+                        await fetch("/api/admin/members", {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ id: member.id, pin: "0000", pin_changed: false }),
+                        });
+                        alert("PIN이 초기화되었습니다.");
+                      }}
+                      className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded hover:bg-gray-200"
+                    >
+                      PIN 초기화
                     </button>
                   </div>
                 </td>

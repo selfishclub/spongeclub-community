@@ -26,6 +26,12 @@ export default function AdminLayout({
               CSV 등록
             </Link>
             <Link
+              href="/admin/sessions"
+              className="text-amber-700 hover:text-amber-900"
+            >
+              공유회
+            </Link>
+            <Link
               href="/admin/requests"
               className="text-amber-700 hover:text-amber-900"
             >
