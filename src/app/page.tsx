@@ -572,9 +572,12 @@ export default function HomePage() {
         {/* 활동 랭킹 */}
         <div className="mt-6">
           <h2 className="text-lg font-bold text-slate-800 mb-1">활동 랭킹</h2>
-          <p className="text-xs text-slate-500 mb-5 leading-relaxed">
-            잔고가 아닌, 적립하고 사용한 🐚의 총합입니다. 많이 벌고 많이 쓸수록 높아져요. 이기적공유에 활발히 참여해보세요!
-          </p>
+          <div className="bg-white/80 border border-cyan-200 rounded-2xl px-4 py-3 mb-5">
+            <p className="text-sm text-slate-700 leading-relaxed">
+              잔고가 아닌, 적립하고 사용한 🐚의 총합입니다.<br/>
+              <strong>많이 벌고 많이 쓸수록</strong> 높아져요. 이기적공유에 활발히 참여해보세요!
+            </p>
+          </div>
 
           <div className="flex rounded-xl bg-cyan-100 p-0.5 mb-4">
             <button
