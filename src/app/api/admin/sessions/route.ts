@@ -7,18 +7,23 @@ const SHELL_FEED_CHANNEL = "C0B19KV8538";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const status = searchParams.get("status") || "PENDING";
+  const status = searchParams.get("status") || "ALL";
 
   const supabase = createAdminClient();
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("sessions")
     .select(`
       id, title, description, category, scheduled_at, duration_minutes,
       entry_cost, capacity, status, zoom_link, created_at,
       host:members!sessions_host_id_fkey(id, name)
-    `)
-    .eq("status", status)
+    `);
+
+  if (status !== "ALL") {
+    query = query.eq("status", status);
+  }
+
+  const { data, error } = await query
     .order("scheduled_at", { ascending: true });
 
   if (error) {

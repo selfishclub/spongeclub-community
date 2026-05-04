@@ -19,13 +19,7 @@ export default function AdminLayout({
             >
               멤버 관리
             </Link>
-            <Link
-              href="/admin/members/import"
-              className="text-amber-700 hover:text-amber-900"
-            >
-              CSV 등록
-            </Link>
-            <Link
+<Link
               href="/admin/sessions"
               className="text-amber-700 hover:text-amber-900"
             >

@@ -28,6 +28,61 @@ export default function MembersPage() {
   const [adjustReason, setAdjustReason] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // 일괄 선택
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showBulkModal, setShowBulkModal] = useState(false);
+  const [bulkAmount, setBulkAmount] = useState("");
+  const [bulkReason, setBulkReason] = useState("");
+  const [bulkLoading, setBulkLoading] = useState(false);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    const allFilteredIds = filtered.map((m) => m.id);
+    const allSelected = allFilteredIds.every((id) => selectedIds.has(id));
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (allSelected) {
+        allFilteredIds.forEach((id) => next.delete(id));
+      } else {
+        allFilteredIds.forEach((id) => next.add(id));
+      }
+      return next;
+    });
+  };
+
+  const handleBulkAdjust = async () => {
+    if (!bulkAmount || !bulkReason || selectedIds.size === 0) return;
+    setBulkLoading(true);
+
+    const promises = Array.from(selectedIds).map((memberId) =>
+      fetch("/api/admin/members/adjust", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          memberId,
+          amount: parseInt(bulkAmount),
+          reason: bulkReason,
+        }),
+      })
+    );
+
+    await Promise.all(promises);
+    setShowBulkModal(false);
+    setBulkAmount("");
+    setBulkReason("");
+    setBulkLoading(false);
+    setSelectedIds(new Set());
+    fetchMembers();
+  };
+
   // 멤버 추가 모달
   const [showAddModal, setShowAddModal] = useState(false);
   const [addForm, setAddForm] = useState({
@@ -265,25 +320,95 @@ export default function MembersPage() {
           <option value="unlinked">미연결</option>
         </select>
       </div>
-      <p className="text-sm text-amber-600 mb-4">
-        총 <strong>{filtered.length}</strong>명 / 전체 {members.length}명
-      </p>
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-sm text-amber-600">
+          총 <strong>{filtered.length}</strong>명 / 전체 {members.length}명
+          {selectedIds.size > 0 && (
+            <span className="ml-2 text-amber-800 font-medium">
+              ({selectedIds.size}명 선택됨)
+            </span>
+          )}
+        </p>
+        {selectedIds.size > 0 && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                if (selectedIds.size === 1) {
+                  const m = members.find((m) => selectedIds.has(m.id));
+                  if (m) openEditModal(m);
+                } else {
+                  alert("수정은 1명만 선택해주세요.");
+                }
+              }}
+              className="px-3 py-1.5 text-xs bg-amber-50 text-amber-700 rounded border border-amber-200 hover:bg-amber-100"
+            >
+              수정
+            </button>
+            <button
+              onClick={() => setShowBulkModal(true)}
+              className="px-3 py-1.5 text-xs bg-amber-600 text-white rounded hover:bg-amber-700"
+            >
+              셸 조정
+            </button>
+            <button
+              onClick={async () => {
+                const names = members.filter((m) => selectedIds.has(m.id)).map((m) => m.name).join(", ");
+                if (!confirm(`${names}의 PIN을 0000으로 초기화할까요?`)) return;
+                await Promise.all(
+                  Array.from(selectedIds).map((id) =>
+                    fetch("/api/admin/members", {
+                      method: "PATCH",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ id, pin: "0000", pin_changed: false }),
+                    })
+                  )
+                );
+                alert("PIN이 초기화되었습니다.");
+              }}
+              className="px-3 py-1.5 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+            >
+              PIN 초기화
+            </button>
+            <button
+              onClick={() => setSelectedIds(new Set())}
+              className="px-3 py-1.5 text-xs text-amber-500 hover:text-amber-700"
+            >
+              선택 해제
+            </button>
+          </div>
+        )}
+      </div>
 
       <div className="bg-white rounded-lg border border-amber-200 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-amber-100">
             <tr>
+              <th className="px-3 py-3 w-10">
+                <input
+                  type="checkbox"
+                  checked={filtered.length > 0 && filtered.every((m) => selectedIds.has(m.id))}
+                  onChange={toggleSelectAll}
+                  className="rounded border-amber-300"
+                />
+              </th>
               <th className="text-left px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("name")}>이름{sortIndicator("name")}</th>
               <th className="text-center px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("group_number")}>조{sortIndicator("group_number")}</th>
               <th className="text-left px-4 py-3 text-amber-800">Slack ID</th>
               <th className="text-right px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("shell_balance")}>🐚 잔고{sortIndicator("shell_balance")}</th>
               <th className="text-center px-4 py-3 text-amber-800">상태</th>
-              <th className="text-center px-4 py-3 text-amber-800">액션</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((member) => (
-              <tr key={member.id} className="border-t border-amber-100">
+              <tr key={member.id} className={`border-t border-amber-100 ${selectedIds.has(member.id) ? "bg-amber-50" : ""}`}>
+                <td className="px-3 py-3">
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.has(member.id)}
+                    onChange={() => toggleSelect(member.id)}
+                    className="rounded border-amber-300"
+                  />
+                </td>
                 <td className="px-4 py-3 font-medium text-amber-900">
                   {member.name}
                   {member.is_admin && (
@@ -307,36 +432,6 @@ export default function MembersPage() {
                   >
                     {member.is_active ? "활성" : "비활성"}
                   </span>
-                </td>
-                <td className="px-4 py-3 text-center">
-                  <div className="flex gap-2 justify-center">
-                    <button
-                      onClick={() => openEditModal(member)}
-                      className="text-xs bg-amber-50 text-amber-700 px-3 py-1 rounded border border-amber-200 hover:bg-amber-100"
-                    >
-                      수정
-                    </button>
-                    <button
-                      onClick={() => setAdjustModal(member)}
-                      className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded hover:bg-amber-200"
-                    >
-                      셸 조정
-                    </button>
-                    <button
-                      onClick={async () => {
-                        if (!confirm(`${member.name}의 PIN을 0000으로 초기화할까요?`)) return;
-                        await fetch("/api/admin/members", {
-                          method: "PATCH",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ id: member.id, pin: "0000", pin_changed: false }),
-                        });
-                        alert("PIN이 초기화되었습니다.");
-                      }}
-                      className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded hover:bg-gray-200"
-                    >
-                      PIN 초기화
-                    </button>
-                  </div>
                 </td>
               </tr>
             ))}
@@ -608,6 +703,58 @@ export default function MembersPage() {
                 className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50"
               >
                 {loading ? "처리 중..." : "저장하기"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 일괄 셸 조정 모달 */}
+      {showBulkModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h2 className="text-lg font-bold text-amber-900 mb-4">
+              셸 일괄 조정 — {selectedIds.size}명 선택됨
+            </h2>
+            <p className="text-xs text-amber-600 mb-4">
+              {members.filter((m) => selectedIds.has(m.id)).map((m) => m.name).join(", ")}
+            </p>
+
+            <label className="block text-sm text-amber-800 mb-1">
+              조정 수량 (양수: 지급 / 음수: 차감)
+            </label>
+            <input
+              type="number"
+              value={bulkAmount}
+              onChange={(e) => setBulkAmount(e.target.value)}
+              className="w-full px-3 py-2 border border-amber-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              placeholder="예: 10 또는 -5"
+            />
+
+            <label className="block text-sm text-amber-800 mb-1">
+              사유 (필수)
+            </label>
+            <input
+              type="text"
+              value={bulkReason}
+              onChange={(e) => setBulkReason(e.target.value)}
+              className="w-full px-3 py-2 border border-amber-300 rounded mb-6 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              placeholder="예: 1주차 활동 보너스"
+            />
+
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => { setShowBulkModal(false); setBulkAmount(""); setBulkReason(""); }}
+                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+              >
+                취소
+              </button>
+              <button
+                onClick={handleBulkAdjust}
+                disabled={bulkLoading || !bulkAmount || !bulkReason}
+                className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50"
+              >
+                {bulkLoading ? "처리 중..." : `${selectedIds.size}명 일괄 조정`}
               </button>
             </div>
           </div>

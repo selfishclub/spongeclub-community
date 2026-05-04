@@ -38,9 +38,17 @@ const CATEGORIES = [
   { value: "LIFESTYLE", label: "일상/취미" },
 ];
 
+const STATUS_LABELS: Record<string, { label: string; bg: string; text: string }> = {
+  PENDING: { label: "대기 중", bg: "bg-yellow-100", text: "text-yellow-700" },
+  APPROVED: { label: "예정", bg: "bg-green-100", text: "text-green-700" },
+  COMPLETED: { label: "완료", bg: "bg-blue-100", text: "text-blue-700" },
+  REJECTED: { label: "거부", bg: "bg-red-100", text: "text-red-600" },
+  CANCELLED: { label: "취소", bg: "bg-gray-100", text: "text-gray-500" },
+};
+
 export default function AdminSessionsPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
-  const [statusFilter, setStatusFilter] = useState("PENDING");
+  const [statusFilter, setStatusFilter] = useState("ALL");
   const [loading, setLoading] = useState<string | null>(null);
 
   // 수동 등록 모달
@@ -173,86 +181,92 @@ export default function AdminSessionsPage() {
         </button>
       </div>
 
-      <div className="flex gap-3 mb-4">
-        {["PENDING", "APPROVED", "COMPLETED", "REJECTED"].map((s) => (
+      <div className="flex gap-2 mb-4 flex-wrap">
+        {[
+          ["ALL", "전체"],
+          ["PENDING", "대기 중"],
+          ["APPROVED", "예정"],
+          ["COMPLETED", "완료"],
+          ["REJECTED", "거부"],
+        ].map(([key, label]) => (
           <button
-            key={s}
-            onClick={() => setStatusFilter(s)}
+            key={key}
+            onClick={() => setStatusFilter(key)}
             className={`px-4 py-2 text-sm rounded-lg ${
-              statusFilter === s
+              statusFilter === key
                 ? "bg-amber-600 text-white"
                 : "bg-amber-100 text-amber-700 hover:bg-amber-200"
             }`}
           >
-            {s === "PENDING"
-              ? "대기 중"
-              : s === "APPROVED"
-                ? "예정"
-                : s === "COMPLETED"
-                  ? "완료"
-                  : "거부"}
+            {label}
           </button>
         ))}
       </div>
 
       <p className="text-sm text-amber-600 mb-4">총 {sessions.length}건</p>
 
-      <div className="space-y-3">
-        {sessions.map((s) => {
-          const hostName =
-            (s.host as unknown as { name: string } | null)?.name ?? "알 수 없음";
+      <div className="bg-white rounded-lg border border-amber-200 overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-amber-100">
+            <tr>
+              <th className="text-left px-4 py-3 text-amber-800">제목</th>
+              <th className="text-left px-4 py-3 text-amber-800">카테고리</th>
+              <th className="text-left px-4 py-3 text-amber-800">진행자</th>
+              <th className="text-left px-4 py-3 text-amber-800">일시</th>
+              <th className="text-right px-4 py-3 text-amber-800">가격</th>
+              <th className="text-center px-4 py-3 text-amber-800">참석</th>
+              <th className="text-center px-4 py-3 text-amber-800">상태</th>
+              <th className="text-center px-4 py-3 text-amber-800">액션</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sessions.map((s) => {
+              const hostName = (s.host as unknown as { name: string } | null)?.name ?? "-";
+              const st = STATUS_LABELS[s.status] || STATUS_LABELS.PENDING;
 
-          return (
-            <div
-              key={s.id}
-              className="bg-white rounded-lg border border-amber-200 p-4"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-amber-900">{s.title}</span>
-                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded">
+              return (
+                <tr key={s.id} className="border-t border-amber-100">
+                  <td className="px-4 py-3 font-medium text-amber-900">
+                    {s.title}
+                    {s.description && (
+                      <p className="text-xs text-amber-500 font-normal truncate max-w-[200px]">{s.description}</p>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">
                       {CATEGORY_LABELS[s.category] || s.category}
                     </span>
-                  </div>
-                  <p className="text-sm text-amber-600 mb-1">{s.description}</p>
-                  <div className="text-xs text-amber-500 space-y-0.5">
-                    <p>
-                      진행자: {hostName} | 가격: {s.entry_cost}🐚 | 참석:{" "}
-                      {s.attendee_count}명{s.capacity ? `/${s.capacity}명` : ""}
-                    </p>
-                    <p>
-                      일시: {new Date(s.scheduled_at).toLocaleString("ko-KR")} | {s.duration_minutes}분
-                    </p>
-                    {s.zoom_link && (
-                      <p>
-                        줌:{" "}
-                        <Link href={s.zoom_link} target="_blank" className="text-blue-600 hover:underline">
-                          {s.zoom_link}
-                        </Link>
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2 flex-shrink-0">
-                  {statusFilter === "PENDING" && (
-                    <>
-                      <button onClick={() => handleAction(s.id, "approve")} disabled={loading === s.id} className="px-3 py-1.5 text-xs bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">승인</button>
-                      <button onClick={() => handleAction(s.id, "reject")} disabled={loading === s.id} className="px-3 py-1.5 text-xs bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50">거부</button>
-                    </>
-                  )}
-                  {statusFilter === "APPROVED" && (
-                    <button onClick={() => handleAction(s.id, "complete")} disabled={loading === s.id} className="px-3 py-1.5 text-xs bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">완료 처리</button>
-                  )}
-                  {statusFilter === "COMPLETED" && <span className="text-xs text-green-600 font-medium">완료</span>}
-                  {statusFilter === "REJECTED" && <span className="text-xs text-red-500 font-medium">거부</span>}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-
+                  </td>
+                  <td className="px-4 py-3 text-amber-700">{hostName}</td>
+                  <td className="px-4 py-3 text-amber-700 text-xs">
+                    {new Date(s.scheduled_at).toLocaleDateString("ko-KR")}<br/>
+                    {new Date(s.scheduled_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}
+                  </td>
+                  <td className="px-4 py-3 text-right text-amber-900 font-medium">{s.entry_cost}🐚</td>
+                  <td className="px-4 py-3 text-center text-amber-700">
+                    {s.attendee_count}{s.capacity ? `/${s.capacity}` : ""}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <span className={`text-xs px-2 py-0.5 rounded ${st.bg} ${st.text}`}>{st.label}</span>
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <div className="flex gap-1 justify-center">
+                      {s.status === "PENDING" && (
+                        <>
+                          <button onClick={() => handleAction(s.id, "approve")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">승인</button>
+                          <button onClick={() => handleAction(s.id, "reject")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50">거부</button>
+                        </>
+                      )}
+                      {s.status === "APPROVED" && (
+                        <button onClick={() => handleAction(s.id, "complete")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">완료</button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
         {sessions.length === 0 && (
           <p className="text-center py-8 text-amber-500">해당 상태의 공유회가 없습니다.</p>
         )}
