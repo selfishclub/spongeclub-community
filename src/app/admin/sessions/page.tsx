@@ -51,6 +51,15 @@ export default function AdminSessionsPage() {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [loading, setLoading] = useState<string | null>(null);
 
+  // 수정 모달
+  const [editSession, setEditSession] = useState<Session | null>(null);
+  const [editForm, setEditForm] = useState({
+    title: "", description: "", category: "AI", date: "", time: "19:00",
+    duration: 60, entry_cost: 5, capacity: "", status: "PENDING",
+  });
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState("");
+
   // 수동 등록 모달
   const [showAddModal, setShowAddModal] = useState(false);
   const [members, setMembers] = useState<MemberOption[]>([]);
@@ -92,6 +101,58 @@ export default function AdminSessionsPage() {
         );
       });
   }, []);
+
+  const openEditSession = (s: Session) => {
+    setEditSession(s);
+    const d = new Date(s.scheduled_at);
+    setEditForm({
+      title: s.title,
+      description: s.description || "",
+      category: s.category,
+      date: d.toISOString().split("T")[0],
+      time: d.toTimeString().slice(0, 5),
+      duration: s.duration_minutes,
+      entry_cost: s.entry_cost,
+      capacity: s.capacity ? String(s.capacity) : "",
+      status: s.status,
+    });
+    setEditError("");
+  };
+
+  const handleEditSave = async () => {
+    if (!editSession) return;
+    setEditLoading(true);
+    setEditError("");
+
+    const scheduled_at = new Date(`${editForm.date}T${editForm.time}:00+09:00`).toISOString();
+
+    const res = await fetch("/api/admin/sessions", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: editSession.id,
+        title: editForm.title,
+        description: editForm.description,
+        category: editForm.category,
+        scheduled_at,
+        duration_minutes: editForm.duration,
+        entry_cost: editForm.entry_cost,
+        capacity: editForm.capacity ? parseInt(editForm.capacity) : null,
+        status: editForm.status,
+      }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      setEditError(data.error || "수정에 실패했습니다.");
+      setEditLoading(false);
+      return;
+    }
+
+    setEditSession(null);
+    setEditLoading(false);
+    fetchSessions();
+  };
 
   const handleAction = async (id: string, action: string) => {
     setLoading(id);
@@ -252,6 +313,7 @@ export default function AdminSessionsPage() {
                   </td>
                   <td className="px-4 py-3 text-center">
                     <div className="flex gap-1 justify-center flex-wrap">
+                      <button onClick={() => openEditSession(s)} className="px-2 py-1 text-xs bg-amber-50 text-amber-700 rounded border border-amber-200 hover:bg-amber-100">수정</button>
                       {s.status === "PENDING" && (
                         <>
                           <button onClick={() => handleAction(s.id, "approve")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">승인</button>
@@ -276,6 +338,72 @@ export default function AdminSessionsPage() {
           <p className="text-center py-8 text-amber-500">해당 상태의 공유회가 없습니다.</p>
         )}
       </div>
+
+      {/* 공유회 수정 모달 */}
+      {editSession && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 className="text-lg font-bold text-amber-900 mb-4">공유회 수정</h2>
+
+            {editError && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded mb-4">{editError}</p>}
+
+            <label className="block text-sm text-amber-800 mb-1">제목</label>
+            <input type="text" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} className="w-full px-3 py-2 border border-amber-300 rounded mb-3 text-sm" />
+
+            <label className="block text-sm text-amber-800 mb-1">설명</label>
+            <textarea value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} rows={2} className="w-full px-3 py-2 border border-amber-300 rounded mb-3 text-sm resize-none" />
+
+            <label className="block text-sm text-amber-800 mb-1">카테고리</label>
+            <select value={editForm.category} onChange={(e) => setEditForm({ ...editForm, category: e.target.value })} className="w-full px-3 py-2 border border-amber-300 rounded mb-3 text-sm">
+              {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+            </select>
+
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="block text-sm text-amber-800 mb-1">날짜</label>
+                <input type="date" value={editForm.date} onChange={(e) => setEditForm({ ...editForm, date: e.target.value })} className="w-full px-3 py-2 border border-amber-300 rounded text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm text-amber-800 mb-1">시간</label>
+                <input type="time" value={editForm.time} onChange={(e) => setEditForm({ ...editForm, time: e.target.value })} className="w-full px-3 py-2 border border-amber-300 rounded text-sm" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 mb-3">
+              <div>
+                <label className="block text-sm text-amber-800 mb-1">가격</label>
+                <input type="number" min={5} max={10} value={editForm.entry_cost} onChange={(e) => setEditForm({ ...editForm, entry_cost: parseInt(e.target.value) || 5 })} className="w-full px-3 py-2 border border-amber-300 rounded text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm text-amber-800 mb-1">길이(분)</label>
+                <select value={editForm.duration} onChange={(e) => setEditForm({ ...editForm, duration: parseInt(e.target.value) })} className="w-full px-3 py-2 border border-amber-300 rounded text-sm">
+                  <option value={30}>30분</option><option value={60}>60분</option><option value={90}>90분</option><option value={120}>120분</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm text-amber-800 mb-1">정원</label>
+                <input type="number" value={editForm.capacity} onChange={(e) => setEditForm({ ...editForm, capacity: e.target.value })} placeholder="무제한" min={1} className="w-full px-3 py-2 border border-amber-300 rounded text-sm" />
+              </div>
+            </div>
+
+            <label className="block text-sm text-amber-800 mb-1">상태</label>
+            <select value={editForm.status} onChange={(e) => setEditForm({ ...editForm, status: e.target.value })} className="w-full px-3 py-2 border border-amber-300 rounded mb-4 text-sm">
+              <option value="PENDING">대기 중</option>
+              <option value="APPROVED">예정</option>
+              <option value="COMPLETED">완료</option>
+              <option value="REJECTED">거부</option>
+              <option value="CANCELLED">취소</option>
+            </select>
+
+            <div className="flex gap-3 justify-end">
+              <button onClick={() => setEditSession(null)} className="px-4 py-2 text-sm text-amber-700">취소</button>
+              <button onClick={handleEditSave} disabled={editLoading || !editForm.title || !editForm.date} className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">
+                {editLoading ? "저장 중..." : "저장"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 공유회 수동 등록 모달 */}
       {showAddModal && (

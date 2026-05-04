@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase";
 import { approveSession, rejectSession, completeSession } from "@/lib/session-service";
 import { getSlackClient } from "@/lib/slack";
 
-const SHELL_FEED_CHANNEL = "C0B19KV8538";
+const SESSION_NOTIFY_CHANNEL = "C0B18TB1N3G";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
           const hostName = (session.host as unknown as { name: string } | null)?.name ?? "";
           const date = new Date(session.scheduled_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" });
           await getSlackClient().chat.postMessage({
-            channel: SHELL_FEED_CHANNEL,
+            channel: SESSION_NOTIFY_CHANNEL,
             text: `📆 새 공유회가 등록되었어요!\n*${session.title}* by ${hostName}\n🗓 ${date} | ${session.entry_cost}🐚\n👉 신청하기: https://spongeclub-community.vercel.app`,
           });
         }
@@ -101,6 +101,28 @@ export async function POST(request: NextRequest) {
 
   if (!result.success) {
     return NextResponse.json({ error: result.error }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true });
+}
+
+export async function PATCH(request: NextRequest) {
+  const body = await request.json();
+  const { id, ...updates } = body;
+
+  if (!id) {
+    return NextResponse.json({ error: "id 필수" }, { status: 400 });
+  }
+
+  const supabase = createAdminClient();
+
+  const { error } = await supabase
+    .from("sessions")
+    .update(updates)
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });

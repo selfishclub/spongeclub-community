@@ -24,6 +24,8 @@ interface RankingEntry {
   member_id: string;
   name: string;
   total: number;
+  earned?: number;
+  spent?: number;
 }
 
 interface Session {
@@ -495,7 +497,7 @@ export default function HomePage() {
   const [member, setMember] = useState<Member | null>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
-  const [rankType, setRankType] = useState<"weekly" | "ranking" | "group">("weekly");
+  const [rankTab, setRankTab] = useState<"ranking" | "group">("ranking");
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -506,11 +508,11 @@ export default function HomePage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/ranking?type=${rankType}`)
+    fetch(`/api/ranking?type=${rankTab}`)
       .then((r) => r.json())
       .then((data) => { setRanking(data.ranking || []); setLoading(false); })
       .catch(() => setLoading(false));
-  }, [rankType]);
+  }, [rankTab]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -570,51 +572,39 @@ export default function HomePage() {
         {/* 활동 랭킹 */}
         <div className="mt-6">
           <h2 className="text-lg font-bold text-slate-800 mb-1">활동 랭킹</h2>
-          <p className="text-xs text-slate-500 mb-4 leading-relaxed">
+          <p className="text-xs text-slate-500 mb-5 leading-relaxed">
             잔고가 아닌, 적립하고 사용한 🐚의 총합입니다. 많이 벌고 많이 쓸수록 높아져요. 이기적공유에 활발히 참여해보세요!
           </p>
-          <div className="mb-4">
-            <div className="flex rounded-xl bg-cyan-100 p-0.5">
-              <button
-                onClick={() => setRankType("weekly")}
-                className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                  rankType === "weekly" ? "bg-white text-slate-800 shadow-sm" : "text-cyan-700"
-                }`}
-              >
-                이번 주
-              </button>
-              <button
-                onClick={() => setRankType("ranking")}
-                className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                  rankType === "ranking" ? "bg-white text-slate-800 shadow-sm" : "text-cyan-700"
-                }`}
-              >
-                누적
-              </button>
-              <button
-                onClick={() => setRankType("group")}
-                className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
-                  rankType === "group" ? "bg-white text-slate-800 shadow-sm" : "text-cyan-700"
-                }`}
-              >
-                조별 누적
-              </button>
-            </div>
+
+          <div className="flex rounded-xl bg-cyan-100 p-0.5 mb-4">
+            <button
+              onClick={() => setRankTab("ranking")}
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
+                rankTab === "ranking" ? "bg-white text-slate-800 shadow-sm" : "text-cyan-700"
+              }`}
+            >
+              누적
+            </button>
+            <button
+              onClick={() => setRankTab("group")}
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
+                rankTab === "group" ? "bg-white text-slate-800 shadow-sm" : "text-cyan-700"
+              }`}
+            >
+              조별 누적
+            </button>
           </div>
 
           {loading ? (
             <div className="text-center py-8"><p className="text-cyan-500 animate-pulse">로딩 중...</p></div>
           ) : ranking.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-4xl mb-3">🐚</p>
-              <p className="text-slate-500">아직 기록이 없어요</p>
-            </div>
+            <p className="text-center py-6 text-slate-400 text-sm">아직 기록이 없어요</p>
           ) : (
             <div className="space-y-2">
               {ranking.map((entry) => (
                 <div
                   key={entry.member_id}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl transition-all ${
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl ${
                     entry.rank <= 3 ? "bg-white shadow-md border border-cyan-100" : "bg-white/60 border border-cyan-50 shadow-sm"
                   }`}
                 >
@@ -631,11 +621,16 @@ export default function HomePage() {
                       {entry.name}
                     </p>
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 text-right">
                     <span className={`font-bold ${entry.rank <= 3 ? "text-slate-800" : "text-slate-600 text-sm"}`}>
                       {entry.total}
                     </span>
                     <span className="ml-0.5 text-xs">🐚</span>
+                    <div className="text-[10px] text-slate-400 mt-0.5">
+                      <span className="text-green-600">+{entry.earned ?? 0}</span>
+                      {" "}
+                      <span className="text-red-400">-{entry.spent ?? 0}</span>
+                    </div>
                   </div>
                 </div>
               ))}

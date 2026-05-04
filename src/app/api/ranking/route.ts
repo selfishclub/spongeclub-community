@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ type: "weekly", ranking });
   }
 
-  // 전체 활동 랭킹: 적립 + 지출 합산이 큰 순서
+  // 전체 활동 랭킹: 적립 + 지출 분리
   if (type === "ranking") {
     const { data, error } = await supabase
       .from("shell_transactions")
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const aggregated = new Map<string, { member_id: string; name: string; total: number }>();
+    const aggregated = new Map<string, { member_id: string; name: string; total: number; earned: number; spent: number }>();
 
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean };
@@ -81,11 +81,15 @@ export async function GET(request: NextRequest) {
       const absAmount = Math.abs(row.amount);
       if (existing) {
         existing.total += absAmount;
+        if (row.amount > 0) existing.earned += row.amount;
+        else existing.spent += absAmount;
       } else {
         aggregated.set(row.member_id, {
           member_id: row.member_id,
           name: member.name,
           total: absAmount,
+          earned: row.amount > 0 ? row.amount : 0,
+          spent: row.amount < 0 ? absAmount : 0,
         });
       }
     }
@@ -186,10 +190,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const groupTotals = new Map<number, { group_number: number; total: number; member_count: number }>();
+    const groupTotals = new Map<number, { group_number: number; total: number; earned: number; spent: number; member_count: number }>();
 
-    // 먼저 멤버별 활동량 집계
-    const memberTotals = new Map<string, { group_number: number; total: number }>();
+    const memberTotals = new Map<string, { group_number: number; total: number; earned: number; spent: number }>();
 
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean; group_number: number | null };
@@ -199,19 +202,27 @@ export async function GET(request: NextRequest) {
       const absAmount = Math.abs(row.amount);
       if (existing) {
         existing.total += absAmount;
+        if (row.amount > 0) existing.earned += row.amount;
+        else existing.spent += absAmount;
       } else {
-        memberTotals.set(row.member_id, { group_number: member.group_number, total: absAmount });
+        memberTotals.set(row.member_id, {
+          group_number: member.group_number,
+          total: absAmount,
+          earned: row.amount > 0 ? row.amount : 0,
+          spent: row.amount < 0 ? absAmount : 0,
+        });
       }
     }
 
-    // 조별로 합산
-    for (const { group_number, total } of memberTotals.values()) {
+    for (const { group_number, total, earned, spent } of memberTotals.values()) {
       const existing = groupTotals.get(group_number);
       if (existing) {
         existing.total += total;
+        existing.earned += earned;
+        existing.spent += spent;
         existing.member_count += 1;
       } else {
-        groupTotals.set(group_number, { group_number, total, member_count: 1 });
+        groupTotals.set(group_number, { group_number, total, earned, spent, member_count: 1 });
       }
     }
 
@@ -222,6 +233,8 @@ export async function GET(request: NextRequest) {
         member_id: `group-${g.group_number}`,
         name: `${g.group_number}조`,
         total: g.total,
+        earned: g.earned,
+        spent: g.spent,
         member_count: g.member_count,
       }));
 
