@@ -81,7 +81,20 @@ export async function POST(request: NextRequest) {
   } else if (action === "reject") {
     result = await rejectSession(id);
   } else if (action === "complete") {
-    result = await completeSession(id, id); // TODO: 실제 adminId
+    result = await completeSession(id, id);
+  } else if (action === "cancel") {
+    const supabase = createAdminClient();
+    const { error } = await supabase
+      .from("sessions")
+      .update({ status: "CANCELLED" })
+      .eq("id", id);
+    result = error ? { success: false, error: error.message } : { success: true };
+  } else if (action === "delete") {
+    const supabase = createAdminClient();
+    // 참석자 먼저 삭제
+    await supabase.from("session_attendees").delete().eq("session_id", id);
+    const { error } = await supabase.from("sessions").delete().eq("id", id);
+    result = error ? { success: false, error: error.message } : { success: true };
   } else {
     return NextResponse.json({ error: "잘못된 action" }, { status: 400 });
   }

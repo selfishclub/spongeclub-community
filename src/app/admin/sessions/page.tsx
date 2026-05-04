@@ -188,6 +188,7 @@ export default function AdminSessionsPage() {
           ["APPROVED", "예정"],
           ["COMPLETED", "완료"],
           ["REJECTED", "거부"],
+          ["CANCELLED", "취소"],
         ].map(([key, label]) => (
           <button
             key={key}
@@ -250,7 +251,7 @@ export default function AdminSessionsPage() {
                     <span className={`text-xs px-2 py-0.5 rounded ${st.bg} ${st.text}`}>{st.label}</span>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <div className="flex gap-1 justify-center">
+                    <div className="flex gap-1 justify-center flex-wrap">
                       {s.status === "PENDING" && (
                         <>
                           <button onClick={() => handleAction(s.id, "approve")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">승인</button>
@@ -258,8 +259,12 @@ export default function AdminSessionsPage() {
                         </>
                       )}
                       {s.status === "APPROVED" && (
-                        <button onClick={() => handleAction(s.id, "complete")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">완료</button>
+                        <>
+                          <button onClick={() => handleAction(s.id, "complete")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">완료</button>
+                          <button onClick={() => { if (confirm("이 공유회를 취소할까요?")) handleAction(s.id, "cancel"); }} disabled={loading === s.id} className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200 disabled:opacity-50">취소</button>
+                        </>
                       )}
+                      <button onClick={() => { if (confirm("이 공유회를 삭제할까요? 복구할 수 없습니다.")) handleAction(s.id, "delete"); }} disabled={loading === s.id} className="px-2 py-1 text-xs text-red-400 hover:text-red-600">삭제</button>
                     </div>
                   </td>
                 </tr>
