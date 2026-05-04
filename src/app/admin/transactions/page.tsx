@@ -28,13 +28,30 @@ const REASON_LABELS: Record<string, string> = {
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [reasonFilter, setReasonFilter] = useState("");
+  const [cancelling, setCancelling] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchTransactions = () => {
     const params = reasonFilter ? `?reason=${reasonFilter}` : "";
     fetch(`/api/admin/transactions${params}`)
       .then((res) => res.json())
       .then((data) => setTransactions(data.transactions || []));
+  };
+
+  useEffect(() => {
+    fetchTransactions();
   }, [reasonFilter]);
+
+  const handleCancel = async (id: string) => {
+    if (!confirm("이 트랜잭션을 취소할까요? 반대 금액이 생성되고 잔고가 복구됩니다.")) return;
+    setCancelling(id);
+    await fetch("/api/admin/transactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, action: "cancel" }),
+    });
+    setCancelling(null);
+    fetchTransactions();
+  };
 
   return (
     <div>
@@ -66,6 +83,7 @@ export default function TransactionsPage() {
               <th className="text-right px-4 py-3 text-amber-800">셸</th>
               <th className="text-left px-4 py-3 text-amber-800">사유</th>
               <th className="text-left px-4 py-3 text-amber-800">상세</th>
+              <th className="text-center px-4 py-3 text-amber-800">액션</th>
             </tr>
           </thead>
           <tbody>
@@ -94,6 +112,21 @@ export default function TransactionsPage() {
                     <span className="ml-1 text-amber-400">
                       ({tx.related_member_name})
                     </span>
+                  )}
+                </td>
+                <td className="px-4 py-3 text-center">
+                  {tx.reason_detail?.startsWith("[취소됨]") ? (
+                    <span className="text-xs text-gray-400">취소됨</span>
+                  ) : tx.reason_detail?.startsWith("[취소]") ? (
+                    <span className="text-xs text-gray-400">취소 건</span>
+                  ) : (
+                    <button
+                      onClick={() => handleCancel(tx.id)}
+                      disabled={cancelling === tx.id}
+                      className="text-xs text-red-400 hover:text-red-600 disabled:opacity-50"
+                    >
+                      {cancelling === tx.id ? "..." : "취소"}
+                    </button>
                   )}
                 </td>
               </tr>
