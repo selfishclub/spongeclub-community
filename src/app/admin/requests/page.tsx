@@ -27,6 +27,7 @@ export default function RequestsPage() {
   const [requests, setRequests] = useState<ShellRequest[]>([]);
   const [statusFilter, setStatusFilter] = useState("PENDING");
   const [loading, setLoading] = useState<string | null>(null);
+  const [actionDone, setActionDone] = useState<Record<string, "approve" | "reject">>({});
 
   const fetchRequests = () => {
     fetch(`/api/admin/requests?status=${statusFilter}`)
@@ -35,6 +36,7 @@ export default function RequestsPage() {
   };
 
   useEffect(() => {
+    setActionDone({});
     fetchRequests();
   }, [statusFilter]);
 
@@ -46,7 +48,7 @@ export default function RequestsPage() {
       body: JSON.stringify({ id, action }),
     });
     setLoading(null);
-    fetchRequests();
+    setActionDone((prev) => ({ ...prev, [id]: action }));
   };
 
   return (
@@ -103,7 +105,7 @@ export default function RequestsPage() {
                 </p>
               </div>
 
-              {statusFilter === "PENDING" && (
+              {statusFilter === "PENDING" && !actionDone[req.id] && (
                 <div className="flex gap-2 flex-shrink-0">
                   <button
                     onClick={() => handleAction(req.id, "approve")}
@@ -120,6 +122,18 @@ export default function RequestsPage() {
                     거부
                   </button>
                 </div>
+              )}
+
+              {statusFilter === "PENDING" && actionDone[req.id] && (
+                <span
+                  className={`text-xs px-2 py-1 rounded font-medium ${
+                    actionDone[req.id] === "approve"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-600"
+                  }`}
+                >
+                  {actionDone[req.id] === "approve" ? "승인 완료" : "거부 완료"}
+                </span>
               )}
 
               {statusFilter !== "PENDING" && (

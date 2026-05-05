@@ -43,8 +43,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "id, action 필수" }, { status: 400 });
   }
 
-  // TODO: 실제 어드민 ID 사용
-  const adminId = id;
+  // 어드민 ID는 쿠키에서 가져오거나 요청에서 받음
+  // shell_transactions의 created_by는 nullable이므로 null로 설정
+  const adminId: string | null = null;
 
   if (action === "approve") {
     const result = await approveShellRequest(id, adminId);

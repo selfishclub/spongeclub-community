@@ -19,6 +19,7 @@ const REASON_LABELS: Record<string, string> = {
   SESSION_ATTEND: "공유회 입장",
   SESSION_REFUND: "공유회 환불",
   SNS_VERIFY: "SNS 인증",
+  SKILL_SHARE: "스킬 공유",
   MEMBER_GIFT: "셸 선물",
   TIP_GIVEN: "팁 보냄",
   TIP_RECEIVED: "팁 받음",

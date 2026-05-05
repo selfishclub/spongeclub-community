@@ -167,7 +167,7 @@ export async function submitSkillShare(
 }
 
 // 어드민: 신청 승인 (셸 지급)
-export async function approveShellRequest(requestId: string, adminId: string) {
+export async function approveShellRequest(requestId: string, adminId: string | null) {
   const supabase = createAdminClient();
 
   const { data: req, error: reqError } = await supabase
@@ -207,7 +207,7 @@ export async function approveShellRequest(requestId: string, adminId: string) {
 }
 
 // 어드민: 신청 거부
-export async function rejectShellRequest(requestId: string, adminId: string) {
+export async function rejectShellRequest(requestId: string, adminId: string | null) {
   const supabase = createAdminClient();
 
   const { error } = await supabase
