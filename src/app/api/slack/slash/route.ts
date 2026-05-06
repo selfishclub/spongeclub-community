@@ -27,6 +27,13 @@ export async function POST(request: NextRequest) {
   }
 
   switch (command) {
+    case "/이기적스폰지": {
+      return NextResponse.json({
+        response_type: "ephemeral",
+        text: "🐚 이기적 스폰지클럽 바로가기\n👉 https://spongeclub-community.vercel.app/",
+      });
+    }
+
     case "/잔고": {
       const balance = await getShellBalance(member.id);
       return NextResponse.json({
