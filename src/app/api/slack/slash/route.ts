@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
       const idMatch = text.match(/^<@(\w+)(?:\|[^>]*)?>[\s]*(.*)?/);
       const usernameMatch = text.match(/^@(\S+)\s*(.*)?/);
 
+      console.log("[셸보내기 DEBUG] text:", JSON.stringify(text), "idMatch:", idMatch, "usernameMatch:", usernameMatch);
+
       if (!idMatch && !usernameMatch) {
         return NextResponse.json({
           response_type: "ephemeral",
@@ -49,23 +51,51 @@ export async function POST(request: NextRequest) {
       let receiver;
       let reason: string;
 
+      // 전체 활성 멤버를 한 번 조회 (fallback 매칭에 공통 사용)
+      const supabaseAdmin = (await import("@/lib/supabase")).createAdminClient();
+      const { data: allMembers } = await supabaseAdmin
+        .from("members")
+        .select("*")
+        .eq("is_active", true);
+
       if (idMatch) {
+        const slackId = idMatch[1];
         reason = (idMatch[2] || "").trim();
-        receiver = await getMemberBySlackId(idMatch[1]);
+        console.log("[셸보내기 DEBUG] Slack ID로 조회:", slackId);
+        receiver = await getMemberBySlackId(slackId);
+
+        // fallback: Slack API로 display name 가져와서 DB name 매칭
+        if (!receiver) {
+          console.log("[셸보내기 DEBUG] slack_user_id로 못 찾음, Slack API fallback 시도");
+          try {
+            const slackClient = getSlackClient();
+            const userInfo = await slackClient.users.info({ user: slackId });
+            const displayName = userInfo.user?.profile?.display_name || userInfo.user?.real_name || "";
+            console.log("[셸보내기 DEBUG] Slack display_name:", displayName);
+            if (displayName) {
+              receiver = (allMembers || []).find((m: { name: string }) =>
+                m.name === displayName || m.name.includes(displayName) || displayName.includes(m.name)
+              ) || null;
+            }
+          } catch (e) {
+            console.log("[셸보내기 DEBUG] Slack API fallback 실패:", e);
+          }
+        }
       } else {
         const username = usernameMatch![1];
         reason = (usernameMatch![2] || "").trim();
-        // username으로 Supabase에서 멤버 조회
-        const supabaseAdmin = (await import("@/lib/supabase")).createAdminClient();
-        const { data: members } = await supabaseAdmin
-          .from("members")
-          .select("*")
-          .eq("is_active", true);
-        // Slack CSV에서 가져온 username이나 이름으로 매칭
-        receiver = (members || []).find((m: { slack_user_id: string | null; name: string }) => {
-          // email 앞부분이 username인 경우가 많음
-          return m.name.toLowerCase() === username.toLowerCase();
-        }) || null;
+        console.log("[셸보내기 DEBUG] username으로 조회:", username);
+        // 정확한 이름 매칭
+        receiver = (allMembers || []).find((m: { name: string }) =>
+          m.name.toLowerCase() === username.toLowerCase()
+        ) || null;
+        // 부분 매칭 (이름에 포함되는 경우)
+        if (!receiver) {
+          receiver = (allMembers || []).find((m: { name: string }) =>
+            m.name.toLowerCase().includes(username.toLowerCase()) ||
+            username.toLowerCase().includes(m.name.toLowerCase())
+          ) || null;
+        }
         // 못 찾으면 slack username으로 API 조회
         if (!receiver) {
           try {
@@ -80,6 +110,9 @@ export async function POST(request: NextRequest) {
           }
         }
       }
+
+      console.log("[셸보내기 DEBUG] receiver:", receiver ? `${receiver.name} (${receiver.id})` : "null");
+
       if (!receiver) {
         return NextResponse.json({
           response_type: "ephemeral",
