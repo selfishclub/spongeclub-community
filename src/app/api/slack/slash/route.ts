@@ -4,6 +4,7 @@ import {
   getMemberBySlackId,
   getShellBalance,
   sendShellGift,
+  getTodayGiftCount,
   submitSnsVerification,
   submitSkillShare,
 } from "@/lib/shell-service";
@@ -46,97 +47,77 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // 즉시 응답 후 after()로 백그라운드 처리
+      // 수신자 조회 (동기 — 빠른 실패 처리)
+      let receiver;
+      let reason: string;
+
+      if (idMatch) {
+        const slackId = idMatch[1];
+        reason = (idMatch[2] || "").trim();
+        receiver = await getMemberBySlackId(slackId);
+      } else {
+        const username = usernameMatch![1];
+        reason = (usernameMatch![2] || "").trim();
+
+        const supabaseAdmin = (await import("@/lib/supabase")).createAdminClient();
+        const { data: allMembers } = await supabaseAdmin
+          .from("members")
+          .select("*")
+          .eq("is_active", true);
+
+        receiver = (allMembers || []).find((m: { name: string }) =>
+          m.name.toLowerCase() === username.toLowerCase()
+        ) || null;
+        if (!receiver) {
+          receiver = (allMembers || []).find((m: { name: string }) =>
+            m.name.toLowerCase().includes(username.toLowerCase()) ||
+            username.toLowerCase().includes(m.name.toLowerCase())
+          ) || null;
+        }
+      }
+
+      if (!receiver) {
+        return NextResponse.json({
+          response_type: "ephemeral",
+          text: "받는 분이 스폰지클럽에 등록되지 않은 멤버예요.",
+        });
+      }
+
+      // 자기 자신 체크
+      if (member.id === receiver.id) {
+        return NextResponse.json({
+          response_type: "ephemeral",
+          text: "자기 자신에게는 셸을 보낼 수 없어요! 🐚",
+        });
+      }
+
+      // 일일 한도 체크
+      const todayCount = await getTodayGiftCount(member.id);
+      if (todayCount >= 1) {
+        return NextResponse.json({
+          response_type: "ephemeral",
+          text: "오늘의 셸은 이미 보냈어요! 내일 다시 보내주세요 🐚",
+        });
+      }
+
+      // 검증 통과 — 트랜잭션은 after()로 백그라운드 처리
+      const receiverId = receiver.id;
+      const receiverName = receiver.name;
+
       after(async () => {
         try {
-          let receiver;
-          let reason: string;
-
-          if (idMatch) {
-            const slackId = idMatch[1];
-            reason = (idMatch[2] || "").trim();
-            receiver = await getMemberBySlackId(slackId);
-
-            // fallback: Slack API로 display name → DB name 매칭
-            if (!receiver) {
-              const supabaseAdmin = (await import("@/lib/supabase")).createAdminClient();
-              const { data: allMembers } = await supabaseAdmin
-                .from("members")
-                .select("*")
-                .eq("is_active", true);
-
-              try {
-                const slackClient = getSlackClient();
-                const userInfo = await slackClient.users.info({ user: slackId });
-                const displayName = userInfo.user?.profile?.display_name || userInfo.user?.real_name || "";
-                if (displayName) {
-                  receiver = (allMembers || []).find((m: { name: string }) =>
-                    m.name === displayName || m.name.includes(displayName) || displayName.includes(m.name)
-                  ) || null;
-                }
-              } catch {
-                // Slack API fallback 실패
-              }
-            }
-          } else {
-            const username = usernameMatch![1];
-            reason = (usernameMatch![2] || "").trim();
-
-            const supabaseAdmin = (await import("@/lib/supabase")).createAdminClient();
-            const { data: allMembers } = await supabaseAdmin
-              .from("members")
-              .select("*")
-              .eq("is_active", true);
-
-            receiver = (allMembers || []).find((m: { name: string }) =>
-              m.name.toLowerCase() === username.toLowerCase()
-            ) || null;
-            if (!receiver) {
-              receiver = (allMembers || []).find((m: { name: string }) =>
-                m.name.toLowerCase().includes(username.toLowerCase()) ||
-                username.toLowerCase().includes(m.name.toLowerCase())
-              ) || null;
-            }
-            if (!receiver) {
-              try {
-                const slackClient = getSlackClient();
-                const userList = await slackClient.users.list({});
-                const slackUser = userList.members?.find((u) => u.name === username);
-                if (slackUser?.id) {
-                  receiver = await getMemberBySlackId(slackUser.id);
-                }
-              } catch {
-                // silently fail
-              }
-            }
-          }
-
-          if (!receiver) {
-            await sendSlackResponse(responseUrl, {
-              response_type: "ephemeral",
-              text: "받는 분이 스폰지클럽에 등록되지 않은 멤버예요.",
-              replace_original: true,
-            });
-            return;
-          }
-
-          const result = await sendShellGift(member.id, receiver.id, reason);
+          const result = await sendShellGift(member.id, receiverId, reason);
 
           if (!result.success) {
-            const msgs: Record<string, string> = {
-              SELF_SEND: "자기 자신에게는 셸을 보낼 수 없어요! 🐚",
-              DAILY_LIMIT: "오늘의 셸은 이미 보냈어요! 내일 다시 보내주세요 🐚",
-              TX_FAILED: "셸 송신 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
-            };
             await sendSlackResponse(responseUrl, {
               response_type: "ephemeral",
-              text: msgs[result.error!] || "알 수 없는 오류가 발생했어요.",
+              text: "셸 송신 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
               replace_original: true,
             });
             return;
           }
 
-          let msg = `🐚 <@${userId}>님이 ${receiver.name}님에게 오늘의 셸을 보냈어요!`;
+          let msg = `🐚 <@${userId}>님이 ${receiverName}님에게 오늘의 셸을 보냈어요!`;
           if (reason) msg += `\n💬 "${reason}"`;
 
           await sendSlackResponse(responseUrl, {
@@ -156,7 +137,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         response_type: "ephemeral",
-        text: "🐚 셸 보내는 중...",
+        text: `🐚 ${receiverName}님에게 셸 보내는 중...`,
       });
     }
 
