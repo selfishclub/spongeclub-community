@@ -158,13 +158,9 @@ export async function POST(request: NextRequest) {
 
       const result = await submitSnsVerification(member.id, url);
       if (!result.success) {
-        const msgs: Record<string, string> = {
-          DAILY_LIMIT: "오늘은 이미 SNS 인증을 신청했어요! 내일 다시 해주세요 🐚",
-          TX_FAILED: "신청 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
-        };
         return NextResponse.json({
           response_type: "ephemeral",
-          text: msgs[result.error!] || "알 수 없는 오류가 발생했어요.",
+          text: "신청 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
         });
       }
 

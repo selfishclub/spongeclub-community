@@ -125,12 +125,6 @@ export async function submitSnsVerification(
     .eq("member_id", memberId)
     .eq("date", today);
 
-  const limit = limitRows && limitRows.length > 0 ? limitRows[0] : null;
-
-  if (limit && limit.sns_verifies >= 1) {
-    return { success: false, error: "DAILY_LIMIT" };
-  }
-
   const { error } = await supabase.from("shell_requests").insert({
     member_id: memberId,
     type: "SNS_VERIFY",
@@ -139,17 +133,6 @@ export async function submitSnsVerification(
   });
 
   if (error) return { success: false, error: "TX_FAILED" };
-
-  // 일일 한도 업데이트
-  await supabase.from("daily_limits").upsert(
-    {
-      member_id: memberId,
-      date: today,
-      gifts_sent: limit?.gifts_sent ?? 0,
-      sns_verifies: (limit?.sns_verifies ?? 0) + 1,
-    },
-    { onConflict: "member_id,date" }
-  );
 
   return { success: true };
 }
