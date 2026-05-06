@@ -120,7 +120,16 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      const result = await sendShellGift(member.id, receiver.id, reason);
+      let result;
+      try {
+        result = await sendShellGift(member.id, receiver.id, reason);
+      } catch (e) {
+        console.error("[셸보내기 ERROR] sendShellGift 예외:", e);
+        return NextResponse.json({
+          response_type: "ephemeral",
+          text: "셸 송신 중 서버 오류가 발생했어요. 어드민에게 문의해주세요.",
+        });
+      }
 
       if (!result.success) {
         const msgs: Record<string, string> = {

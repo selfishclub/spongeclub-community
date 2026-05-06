@@ -86,10 +86,14 @@ export async function sendShellGift(
     return { success: false, error: "TX_FAILED" };
   }
 
-  await supabase.rpc("increment_shell_balance", {
+  const { error: rpcError } = await supabase.rpc("increment_shell_balance", {
     p_member_id: receiverId,
     p_amount: 1,
   });
+
+  if (rpcError) {
+    console.error("[sendShellGift] increment_shell_balance RPC 실패:", rpcError);
+  }
 
   await supabase.from("daily_limits").upsert(
     {
