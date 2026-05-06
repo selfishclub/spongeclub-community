@@ -60,6 +60,13 @@ export default function AdminSessionsPage() {
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState("");
 
+  // 강제 신청 모달
+  const [forceSession, setForceSession] = useState<Session | null>(null);
+  const [forceSearch, setForceSearch] = useState("");
+  const [forceLoading, setForceLoading] = useState(false);
+  const [forceError, setForceError] = useState("");
+  const [forceSuccess, setForceSuccess] = useState("");
+
   // 수동 등록 모달
   const [showAddModal, setShowAddModal] = useState(false);
   const [members, setMembers] = useState<MemberOption[]>([]);
@@ -168,6 +175,37 @@ export default function AdminSessionsPage() {
   const filteredMembers = members.filter((m) =>
     m.name.toLowerCase().includes(hostSearch.toLowerCase())
   );
+
+  const forceFilteredMembers = members.filter((m) =>
+    m.name.toLowerCase().includes(forceSearch.toLowerCase())
+  );
+
+  const handleForceRegister = async (memberId: string, memberName: string) => {
+    if (!forceSession) return;
+    if (!confirm(`${memberName}님을 "${forceSession.title}"에 강제 신청할까요? 셸이 차감됩니다.`)) return;
+
+    setForceLoading(true);
+    setForceError("");
+    setForceSuccess("");
+
+    const res = await fetch("/api/admin/sessions/force-register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: forceSession.id, member_id: memberId }),
+    });
+
+    const data = await res.json();
+    setForceLoading(false);
+
+    if (!res.ok) {
+      setForceError(data.error || "신청에 실패했어요.");
+      return;
+    }
+
+    setForceSuccess(`${memberName}님 신청 완료!`);
+    setForceSearch("");
+    fetchSessions();
+  };
 
   const handleAdd = async () => {
     if (!selectedHost || !addForm.title || !addForm.date) {
@@ -314,6 +352,9 @@ export default function AdminSessionsPage() {
                   <td className="px-4 py-3 text-center">
                     <div className="flex gap-1 justify-center flex-wrap">
                       <button onClick={() => openEditSession(s)} className="px-2 py-1 text-xs bg-amber-50 text-amber-700 rounded border border-amber-200 hover:bg-amber-100">수정</button>
+                      {(s.status === "APPROVED" || s.status === "PENDING") && (
+                        <button onClick={() => { setForceSession(s); setForceSearch(""); setForceError(""); setForceSuccess(""); }} className="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded border border-blue-200 hover:bg-blue-100">참석자 추가</button>
+                      )}
                       {s.status === "PENDING" && (
                         <>
                           <button onClick={() => handleAction(s.id, "approve")} disabled={loading === s.id} className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">승인</button>
@@ -400,6 +441,50 @@ export default function AdminSessionsPage() {
               <button onClick={handleEditSave} disabled={editLoading || !editForm.title || !editForm.date} className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">
                 {editLoading ? "저장 중..." : "저장"}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 강제 참석자 추가 모달 */}
+      {forceSession && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm mx-4">
+            <h2 className="text-lg font-bold text-amber-900 mb-1">참석자 강제 신청</h2>
+            <p className="text-sm text-amber-600 mb-4">{forceSession.title} ({forceSession.entry_cost}🐚)</p>
+
+            {forceError && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded mb-3">{forceError}</p>}
+            {forceSuccess && <p className="text-sm text-green-600 bg-green-50 px-3 py-2 rounded mb-3">{forceSuccess}</p>}
+
+            <input
+              type="text"
+              value={forceSearch}
+              onChange={(e) => setForceSearch(e.target.value)}
+              placeholder="멤버 이름 검색..."
+              className="w-full px-3 py-2 border border-amber-300 rounded mb-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+            />
+
+            <div className="max-h-48 overflow-y-auto border border-amber-200 rounded">
+              {forceSearch && forceFilteredMembers.length === 0 && (
+                <p className="text-xs text-amber-400 px-3 py-2">검색 결과 없음</p>
+              )}
+              {forceSearch && forceFilteredMembers.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => handleForceRegister(m.id, m.name)}
+                  disabled={forceLoading}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-amber-50 border-b border-amber-100 last:border-b-0 disabled:opacity-50"
+                >
+                  {m.name}
+                </button>
+              ))}
+              {!forceSearch && (
+                <p className="text-xs text-amber-400 px-3 py-2">이름을 입력하세요</p>
+              )}
+            </div>
+
+            <div className="flex justify-end mt-4">
+              <button onClick={() => setForceSession(null)} className="px-4 py-2 text-sm text-amber-700">닫기</button>
             </div>
           </div>
         </div>
