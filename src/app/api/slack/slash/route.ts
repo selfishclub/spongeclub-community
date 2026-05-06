@@ -135,10 +135,7 @@ export async function POST(request: NextRequest) {
         }
       });
 
-      return NextResponse.json({
-        response_type: "ephemeral",
-        text: `🐚 ${receiverName}님에게 셸 보내는 중...`,
-      });
+      return new NextResponse(null, { status: 200 });
     }
 
     case "/sns인증": {
