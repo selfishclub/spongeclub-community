@@ -1,4 +1,5 @@
 import { createAdminClient } from "./supabase";
+import { checkAndNotifyRankingChanges } from "./ranking-notify";
 
 export const CATEGORIES = {
   AI: { label: "AI", bg: "bg-blue-100", text: "text-blue-700", dot: "bg-blue-500" },
@@ -185,6 +186,7 @@ export async function registerForSession(memberId: string, sessionId: string) {
     transaction_id: tx?.id,
   });
 
+  checkAndNotifyRankingChanges().catch(() => {});
   return { success: true };
 }
 
@@ -248,5 +250,6 @@ export async function completeSession(sessionId: string, adminId: string) {
     p_amount: session.entry_cost,
   });
 
+  checkAndNotifyRankingChanges().catch(() => {});
   return { success: true };
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase";
+import { checkAndNotifyRankingChanges } from "@/lib/ranking-notify";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -96,5 +97,6 @@ export async function POST(request: NextRequest) {
     .update({ reason_detail: `[취소됨] ${tx.reason_detail || ""}` })
     .eq("id", id);
 
+  checkAndNotifyRankingChanges().catch(() => {});
   return NextResponse.json({ success: true });
 }

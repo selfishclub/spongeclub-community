@@ -1,4 +1,5 @@
 import { createAdminClient } from "./supabase";
+import { checkAndNotifyRankingChanges } from "./ranking-notify";
 
 // 멤버 조회 (slack_user_id로)
 export async function getMemberBySlackId(slackUserId: string) {
@@ -105,6 +106,7 @@ export async function sendShellGift(
     { onConflict: "member_id,date" }
   );
 
+  checkAndNotifyRankingChanges().catch(() => {});
   return { success: true, giftCount: todayCount + 1 };
 }
 
@@ -207,6 +209,7 @@ export async function approveShellRequest(requestId: string, adminId: string | n
     .update({ status: "APPROVED", reviewed_by: adminId, reviewed_at: new Date().toISOString() })
     .eq("id", requestId);
 
+  checkAndNotifyRankingChanges().catch(() => {});
   return { success: true };
 }
 
@@ -248,5 +251,6 @@ export async function adminAdjustShell(
     p_amount: amount,
   });
 
+  checkAndNotifyRankingChanges().catch(() => {});
   return { success: true };
 }
