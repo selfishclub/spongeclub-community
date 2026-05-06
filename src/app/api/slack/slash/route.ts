@@ -103,6 +103,7 @@ export async function POST(request: NextRequest) {
       // 검증 통과 — 트랜잭션은 after()로 백그라운드 처리
       const receiverId = receiver.id;
       const receiverName = receiver.name;
+      const receiverSlackId = receiver.slack_user_id;
 
       after(async () => {
         try {
@@ -117,7 +118,8 @@ export async function POST(request: NextRequest) {
             return;
           }
 
-          let msg = `🐚 <@${userId}>님이 ${receiverName}님에게 오늘의 셸을 보냈어요!`;
+          const receiverMention = receiverSlackId ? `<@${receiverSlackId}>` : receiverName;
+          let msg = `🐚 <@${userId}>님이 ${receiverMention}님에게 오늘의 셸을 보냈어요!`;
           if (reason) msg += `\n💬 "${reason}"`;
 
           await sendSlackResponse(responseUrl, {
