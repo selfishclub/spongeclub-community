@@ -85,6 +85,22 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: (m
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [memberOptions, setMemberOptions] = useState<{ id: string; name: string }[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selected, setSelected] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/auth/members")
+      .then((r) => r.json())
+      .then((data) => setMemberOptions(data.members || []))
+      .catch(() => {});
+  }, []);
+
+  const filtered = name.trim()
+    ? memberOptions.filter((m) =>
+        m.name.toLowerCase().includes(name.toLowerCase().trim())
+      )
+    : [];
 
   const handleLogin = async () => {
     if (!name.trim() || !pin) {
@@ -119,15 +135,46 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: (m
       <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
         <h2 className="text-lg font-bold text-slate-800 mb-4">로그인</h2>
         <div className="space-y-3">
-          <div>
+          <div className="relative">
             <label className="block text-sm text-slate-600 mb-1">이름</label>
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="이름을 입력해주세요"
+              onChange={(e) => {
+                setName(e.target.value);
+                setSelected(false);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+              placeholder="이름 일부를 입력하면 검색돼요"
+              autoComplete="off"
               className="w-full px-3 py-2.5 border border-cyan-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-300 text-sm"
             />
+            {showDropdown && !selected && filtered.length > 0 && (
+              <div className="absolute left-0 right-0 z-10 mt-1 bg-white border border-cyan-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                {filtered.slice(0, 20).map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      setName(m.name);
+                      setSelected(true);
+                      setShowDropdown(false);
+                    }}
+                    className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-cyan-50 transition-colors"
+                  >
+                    {m.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            {showDropdown && !selected && name.trim() && filtered.length === 0 && (
+              <div className="absolute left-0 right-0 z-10 mt-1 bg-white border border-cyan-200 rounded-xl shadow-lg px-3 py-2 text-xs text-slate-600">
+                일치하는 멤버가 없어요
+              </div>
+            )}
           </div>
           <div>
             <label className="block text-sm text-slate-600 mb-1">PIN (숫자 4자리)</label>
@@ -149,9 +196,9 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: (m
           >
             {loading ? "로그인 중..." : "로그인"}
           </button>
-          <p className="text-xs text-slate-400 text-center">초기 PIN은 0000이에요</p>
+          <p className="text-xs text-slate-600 text-center">초기 PIN은 0000이에요</p>
         </div>
-        <button onClick={onClose} className="mt-3 w-full text-center text-sm text-cyan-500">
+        <button onClick={onClose} className="mt-3 w-full text-center text-sm text-cyan-700">
           닫기
         </button>
       </div>
@@ -205,9 +252,9 @@ function MemberPickerModal({
         />
         <div className="flex-1 overflow-y-auto space-y-1">
           {loading ? (
-            <p className="text-center py-4 text-cyan-500 text-sm">로딩 중...</p>
+            <p className="text-center py-4 text-cyan-700 text-sm">로딩 중...</p>
           ) : filtered.length === 0 ? (
-            <p className="text-center py-4 text-slate-400 text-sm">검색 결과가 없어요</p>
+            <p className="text-center py-4 text-slate-600 text-sm">검색 결과가 없어요</p>
           ) : (
             filtered.map((m) => (
               <button
@@ -216,12 +263,12 @@ function MemberPickerModal({
                 className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-cyan-50 transition-colors flex justify-between items-center"
               >
                 <span className="text-sm text-slate-800 font-medium">{m.name}</span>
-                <span className="text-xs text-cyan-500">{m.shell_balance}셸</span>
+                <span className="text-xs text-cyan-700">{m.shell_balance}셸</span>
               </button>
             ))
           )}
         </div>
-        <button onClick={onClose} className="mt-3 w-full text-center text-sm text-cyan-500">닫기</button>
+        <button onClick={onClose} className="mt-3 w-full text-center text-sm text-cyan-700">닫기</button>
       </div>
     </div>
   );
@@ -295,21 +342,21 @@ function SessionDetailModal({
           {session.description && <p className="text-sm text-slate-600 mb-4">{session.description}</p>}
           <div className="space-y-2 text-sm mb-4">
             <div className="flex justify-between">
-              <span className="text-slate-500">진행자</span>
+              <span className="text-slate-700">진행자</span>
               <span className="text-slate-800 font-medium">{session.host_name}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-500">일시</span>
+              <span className="text-slate-700">일시</span>
               <span className="text-slate-800 font-medium">
                 {format(parseISO(session.scheduled_at), "M월 d일 (EEE) HH:mm", { locale: ko })}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-500">가격</span>
+              <span className="text-slate-700">가격</span>
               <span className="text-slate-800 font-medium">{session.entry_cost}셸</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-500">참석자</span>
+              <span className="text-slate-700">참석자</span>
               <span className="text-slate-800 font-medium">
                 {session.attendee_count}명{session.capacity ? ` / ${session.capacity}명` : ""}
               </span>
@@ -329,7 +376,7 @@ function SessionDetailModal({
               {registering ? "신청 중..." : `${session.entry_cost}셸 신청하기`}
             </button>
           )}
-          <button onClick={onClose} className="mt-3 w-full text-center text-sm text-cyan-500">닫기</button>
+          <button onClick={onClose} className="mt-3 w-full text-center text-sm text-cyan-700">닫기</button>
         </div>
       </div>
       {showPicker && (
@@ -398,12 +445,12 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
       </div>
 
       {loading ? (
-        <div className="text-center py-8"><p className="text-cyan-500 animate-pulse">로딩 중...</p></div>
+        <div className="text-center py-8"><p className="text-cyan-700 animate-pulse">로딩 중...</p></div>
       ) : (
         <>
           <div className="grid grid-cols-7 mb-1">
             {["월", "화", "수", "목", "금", "토", "일"].map((d) => (
-              <div key={d} className="text-center text-xs font-medium text-slate-500 py-1">{d}</div>
+              <div key={d} className="text-center text-xs font-medium text-slate-700 py-1">{d}</div>
             ))}
           </div>
           <div className="grid grid-cols-7 gap-px bg-cyan-100 rounded-2xl overflow-hidden shadow-sm">
@@ -423,7 +470,7 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                         <span className="text-[10px] text-slate-700 truncate leading-tight">{s.title}</span>
                       </button>
                     ))}
-                    {daySessions.length > 3 && <p className="text-[9px] text-slate-400 text-center">+{daySessions.length - 3}</p>}
+                    {daySessions.length > 3 && <p className="text-[9px] text-slate-600 text-center">+{daySessions.length - 3}</p>}
                   </div>
                 </div>
               );
@@ -454,11 +501,11 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                           <span className={`text-xs font-medium ${cat.text}`}>{CATEGORY_LABELS[s.category]}</span>
                         </div>
                         <p className="text-sm font-medium text-slate-800">{s.title}</p>
-                        <p className="text-xs text-slate-500 mt-1">{s.host_name}</p>
+                        <p className="text-xs text-slate-700 mt-1">{s.host_name}</p>
                       </div>
                       <div className="flex-shrink-0 text-right">
-                        <span className="text-xs text-slate-400 block">{format(sessionDate, "M/d (EEE)", { locale: ko })}</span>
-                        <span className="text-xs text-slate-400 block">{format(sessionDate, "HH:mm")}</span>
+                        <span className="text-xs text-slate-600 block">{format(sessionDate, "M/d (EEE)", { locale: ko })}</span>
+                        <span className="text-xs text-slate-600 block">{format(sessionDate, "HH:mm")}</span>
                         <span className={`inline-block text-xs font-medium px-1.5 py-0.5 rounded mt-1 ${statusTag.bg} ${statusTag.text}`}>{statusTag.label}</span>
                       </div>
                     </div>
@@ -599,9 +646,9 @@ export default function HomePage() {
           </div>
 
           {loading ? (
-            <div className="text-center py-8"><p className="text-cyan-500 animate-pulse">로딩 중...</p></div>
+            <div className="text-center py-8"><p className="text-cyan-700 animate-pulse">로딩 중...</p></div>
           ) : ranking.length === 0 ? (
-            <p className="text-center py-6 text-slate-400 text-sm">아직 기록이 없어요</p>
+            <p className="text-center py-6 text-slate-600 text-sm">아직 기록이 없어요</p>
           ) : (
             <div className="space-y-2">
               {ranking.map((entry) => (
@@ -629,7 +676,7 @@ export default function HomePage() {
                       {entry.total}
                     </span>
                     <span className="ml-0.5 text-xs">🐚</span>
-                    <div className="text-[10px] text-slate-400 mt-0.5">
+                    <div className="text-[10px] text-slate-600 mt-0.5">
                       <span className="text-green-600">+{entry.earned ?? 0}</span>
                       {" "}
                       <span className="text-red-400">-{entry.spent ?? 0}</span>
@@ -641,7 +688,7 @@ export default function HomePage() {
           )}
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-8 pb-8">셸은 멤버들의 인정의 표시에요</p>
+        <p className="text-center text-xs text-slate-600 mt-8 pb-8">셸은 멤버들의 인정의 표시에요</p>
       </div>
 
       {showLoginModal && (
