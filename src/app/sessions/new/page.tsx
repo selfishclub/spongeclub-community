@@ -97,7 +97,7 @@ export default function NewSessionPage() {
         <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-lg">
           <p className="text-4xl mb-4">🐚</p>
           <h2 className="text-xl font-bold text-amber-900 mb-2">신청 완료!</h2>
-          <p className="text-sm text-amber-600 mb-6">
+          <p className="text-sm text-amber-800 mb-6">
             어드민 승인 후 캘린더에 공개됩니다.
           </p>
           <button
@@ -116,7 +116,7 @@ export default function NewSessionPage() {
       <div className="max-w-lg mx-auto px-4 py-8">
         <button
           onClick={() => router.push("/")}
-          className="text-sm text-amber-500 mb-4 hover:text-amber-700"
+          className="text-sm text-amber-700 mb-4 hover:text-amber-900"
         >
           &larr; 돌아가기
         </button>
@@ -136,7 +136,7 @@ export default function NewSessionPage() {
                 <span className="text-sm text-amber-900 font-medium">{selectedHost.name}</span>
                 <button
                   onClick={() => { setSelectedHost(null); setHostSearch(""); }}
-                  className="text-xs text-amber-500 hover:text-amber-700"
+                  className="text-xs text-amber-700 hover:text-amber-900"
                 >
                   변경
                 </button>
@@ -154,7 +154,7 @@ export default function NewSessionPage() {
                 {showHostList && hostSearch && (
                   <div className="absolute z-10 w-full mt-1 bg-white border border-amber-200 rounded-lg shadow-lg max-h-40 overflow-y-auto">
                     {filteredMembers.length === 0 ? (
-                      <p className="text-xs text-amber-400 px-3 py-2">검색 결과 없음</p>
+                      <p className="text-xs text-amber-700 px-3 py-2">검색 결과 없음</p>
                     ) : (
                       filteredMembers.map((m) => (
                         <button
@@ -284,7 +284,7 @@ export default function NewSessionPage() {
             {loading ? "신청 중..." : "공유회 신청하기"}
           </button>
 
-          <p className="text-xs text-amber-400 text-center">
+          <p className="text-xs text-amber-700 text-center">
             어드민 승인 후 캘린더에 공개됩니다
           </p>
         </div>

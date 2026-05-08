@@ -37,6 +37,8 @@ const REASON_LABELS: Record<string, string> = {
   GIFT_SENT: "셸 선물 보냄",
   TIP_RECEIVED: "팁 받음",
   ADMIN_ADJUSTMENT: "어드민 조정",
+  VIDEO_GRANT: "영상 시청권",
+  VIDEO_GRANT_REFUND: "영상 시청권 환불",
 };
 
 type TxTab = "all" | "earned" | "spent" | "gift";
@@ -74,6 +76,19 @@ export default function MyPage() {
   const [skillUrl, setSkillUrl] = useState("");
   const [skillLoading, setSkillLoading] = useState(false);
   const [skillMsg, setSkillMsg] = useState("");
+
+  // 영상
+  interface MyVideo {
+    id: string;
+    title: string;
+    description: string | null;
+    expires_at: string;
+    embed_url: string | null;
+    thumbnail_url: string | null;
+  }
+  const [myVideos, setMyVideos] = useState<MyVideo[]>([]);
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
+  const [nowMs] = useState(() => Date.now());
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -114,6 +129,15 @@ export default function MyPage() {
         setTxLoading(false);
       });
   }, [member, txTab]);
+
+  // 내 영상
+  useEffect(() => {
+    if (!member) return;
+    fetch("/api/me/videos")
+      .then((r) => r.json())
+      .then((data) => setMyVideos(data.videos || []))
+      .catch(() => {});
+  }, [member]);
 
   // 드롭다운 외부 클릭 닫기
   useEffect(() => {
@@ -255,7 +279,7 @@ export default function MyPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-sky-100 via-cyan-50 to-white flex items-center justify-center">
-        <p className="text-cyan-500 animate-pulse">🫧 로딩 중...</p>
+        <p className="text-cyan-700 animate-pulse">🫧 로딩 중...</p>
       </div>
     );
   }
@@ -302,7 +326,7 @@ export default function MyPage() {
         {/* 셸 보내기 카드 */}
         <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
           <h3 className="text-sm font-bold text-slate-800 mb-3">🐚 셸 보내기</h3>
-          <p className="text-xs text-slate-500 mb-3">하루 1회, 다른 멤버에게 셸을 보낼 수 있어요.</p>
+          <p className="text-xs text-slate-700 mb-3">하루 1회, 다른 멤버에게 셸을 보낼 수 있어요.</p>
 
           {/* 멤버 검색 */}
           <div className="relative mb-3" ref={dropdownRef}>
@@ -321,7 +345,7 @@ export default function MyPage() {
             {showMemberDropdown && shellSearch && !shellReceiver && (
               <div className="absolute z-10 mt-1 w-full bg-white border border-cyan-200 rounded-xl shadow-lg max-h-40 overflow-y-auto">
                 {filteredMembers.length === 0 ? (
-                  <p className="px-3 py-2 text-xs text-slate-400">결과 없음</p>
+                  <p className="px-3 py-2 text-xs text-slate-600">결과 없음</p>
                 ) : (
                   filteredMembers.map((m) => (
                     <button
@@ -365,59 +389,116 @@ export default function MyPage() {
           )}
         </div>
 
-        {/* SNS 인증 */}
-        <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
-          <h3 className="text-sm font-bold text-slate-800 mb-2">SNS 인증</h3>
-          <p className="text-xs text-slate-500 mb-3">하루 1회, 승인 시 +2🐚</p>
-          <div className="flex gap-2">
-            <input
-              type="url"
-              placeholder="게시물 URL"
-              value={snsUrl}
-              onChange={(e) => setSnsUrl(e.target.value)}
-              className="flex-1 px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
-            />
-            <button
-              onClick={handleSnsSubmit}
-              disabled={!snsUrl.trim() || snsLoading}
-              className="px-4 py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm flex-shrink-0"
-            >
-              {snsLoading ? "..." : "신청"}
-            </button>
+        {/* 시청 가능한 영상 */}
+        {myVideos.length > 0 && (
+          <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
+            <h3 className="text-sm font-bold text-slate-800 mb-3">🎬 내 영상</h3>
+            <div className="space-y-3">
+              {myVideos.map((v) => {
+                const expiresAt = new Date(v.expires_at);
+                const daysLeft = Math.ceil((expiresAt.getTime() - nowMs) / (1000 * 60 * 60 * 24));
+                const isPlaying = playingVideoId === v.id;
+                return (
+                  <div key={v.id} className="border border-cyan-100 rounded-xl overflow-hidden">
+                    {isPlaying && v.embed_url ? (
+                      <div className="aspect-video bg-black">
+                        <iframe
+                          src={v.embed_url}
+                          title={v.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                        />
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setPlayingVideoId(v.id)}
+                        className="block w-full relative aspect-video bg-slate-200 group"
+                      >
+                        {v.thumbnail_url && (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img src={v.thumbnail_url} alt={v.title} className="w-full h-full object-cover" />
+                        )}
+                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 flex items-center justify-center transition-colors">
+                          <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center">
+                            <span className="text-cyan-600 text-2xl ml-1">▶</span>
+                          </div>
+                        </div>
+                      </button>
+                    )}
+                    <div className="p-3">
+                      <p className="text-sm font-semibold text-slate-800">{v.title}</p>
+                      {v.description && (
+                        <p className="text-xs text-slate-700 mt-1 line-clamp-2">{v.description}</p>
+                      )}
+                      <p className="text-xs text-amber-800 mt-1">
+                        ⏰ {daysLeft > 0 ? `${daysLeft}일 남음` : "오늘 만료"}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          {snsMsg && (
-            <p className={`text-xs mt-2 ${snsMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
-              {snsMsg}
-            </p>
-          )}
-        </div>
+        )}
 
-        {/* 스킬 공유 */}
-        <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
-          <h3 className="text-sm font-bold text-slate-800 mb-2">스킬 공유</h3>
-          <p className="text-xs text-slate-500 mb-3">승인 시 +1🐚</p>
-          <div className="flex gap-2">
-            <input
-              type="url"
-              placeholder="공유 URL"
-              value={skillUrl}
-              onChange={(e) => setSkillUrl(e.target.value)}
-              className="flex-1 px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
-            />
-            <button
-              onClick={handleSkillSubmit}
-              disabled={!skillUrl.trim() || skillLoading}
-              className="px-4 py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm flex-shrink-0"
-            >
-              {skillLoading ? "..." : "신청"}
-            </button>
+        {/* SNS 인증 — Slack에서 신청하도록 변경. 기능은 유지하고 UI만 숨김 */}
+        {false && (
+          <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
+            <h3 className="text-sm font-bold text-slate-800 mb-2">SNS 인증</h3>
+            <p className="text-xs text-slate-700 mb-3">하루 1회, 승인 시 +2🐚</p>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                placeholder="게시물 URL"
+                value={snsUrl}
+                onChange={(e) => setSnsUrl(e.target.value)}
+                className="flex-1 px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
+              />
+              <button
+                onClick={handleSnsSubmit}
+                disabled={!snsUrl.trim() || snsLoading}
+                className="px-4 py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm flex-shrink-0"
+              >
+                {snsLoading ? "..." : "신청"}
+              </button>
+            </div>
+            {snsMsg && (
+              <p className={`text-xs mt-2 ${snsMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
+                {snsMsg}
+              </p>
+            )}
           </div>
-          {skillMsg && (
-            <p className={`text-xs mt-2 ${skillMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
-              {skillMsg}
-            </p>
-          )}
-        </div>
+        )}
+
+        {/* 스킬 공유 — Slack에서 신청하도록 변경. 기능은 유지하고 UI만 숨김 */}
+        {false && (
+          <div className="bg-white rounded-2xl p-5 border border-cyan-100 shadow-md">
+            <h3 className="text-sm font-bold text-slate-800 mb-2">스킬 공유</h3>
+            <p className="text-xs text-slate-700 mb-3">승인 시 +1🐚</p>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                placeholder="공유 URL"
+                value={skillUrl}
+                onChange={(e) => setSkillUrl(e.target.value)}
+                className="flex-1 px-3 py-2 border border-cyan-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-300"
+              />
+              <button
+                onClick={handleSkillSubmit}
+                disabled={!skillUrl.trim() || skillLoading}
+                className="px-4 py-2 bg-cyan-500 text-white font-medium rounded-xl hover:bg-cyan-600 disabled:opacity-50 transition-colors text-sm flex-shrink-0"
+              >
+                {skillLoading ? "..." : "신청"}
+              </button>
+            </div>
+            {skillMsg && (
+              <p className={`text-xs mt-2 ${skillMsg.includes("완료") ? "text-green-600" : "text-red-500"}`}>
+                {skillMsg}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* 참여 공유회 */}
         {sessionAttendTx.length > 0 && (
@@ -433,7 +514,7 @@ export default function MyPage() {
                     <p className="text-sm text-slate-700 truncate">
                       {tx.reason_detail || "공유회 참여"}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-600">
                       {new Date(tx.created_at).toLocaleString("ko-KR")}
                     </p>
                   </div>
@@ -468,9 +549,9 @@ export default function MyPage() {
 
         {/* 트랜잭션 목록 */}
         {txLoading ? (
-          <p className="text-center py-8 text-cyan-500 animate-pulse">🫧 로딩 중...</p>
+          <p className="text-center py-8 text-cyan-700 animate-pulse">🫧 로딩 중...</p>
         ) : transactions.length === 0 ? (
-          <p className="text-center py-8 text-slate-400">내역이 없어요</p>
+          <p className="text-center py-8 text-slate-600">내역이 없어요</p>
         ) : (
           <div className="space-y-2">
             {transactions.map((tx) => (
@@ -483,9 +564,9 @@ export default function MyPage() {
                     {REASON_LABELS[tx.reason] || tx.reason}
                   </p>
                   {tx.reason_detail && (
-                    <p className="text-xs text-slate-500 truncate">{tx.reason_detail}</p>
+                    <p className="text-xs text-slate-700 truncate">{tx.reason_detail}</p>
                   )}
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-xs text-slate-600 mt-0.5">
                     {new Date(tx.created_at).toLocaleString("ko-KR")}
                   </p>
                 </div>
@@ -548,7 +629,7 @@ export default function MyPage() {
             {member.pin_changed && (
               <button
                 onClick={() => { setShowPinModal(false); setNewPin(""); setPinError(""); }}
-                className="mt-2 w-full text-center text-sm text-cyan-500"
+                className="mt-2 w-full text-center text-sm text-cyan-700"
               >
                 닫기
               </button>

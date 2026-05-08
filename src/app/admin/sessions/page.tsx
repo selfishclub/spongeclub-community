@@ -295,7 +295,7 @@ export default function AdminSessionsPage() {
             className={`px-4 py-2 text-sm rounded-lg ${
               statusFilter === key
                 ? "bg-amber-600 text-white"
-                : "bg-amber-100 text-amber-700 hover:bg-amber-200"
+                : "bg-amber-100 text-amber-900 hover:bg-amber-200"
             }`}
           >
             {label}
@@ -303,7 +303,7 @@ export default function AdminSessionsPage() {
         ))}
       </div>
 
-      <p className="text-sm text-amber-600 mb-4">총 {sessions.length}건</p>
+      <p className="text-sm text-amber-800 mb-4">총 {sessions.length}건</p>
 
       <div className="bg-white rounded-lg border border-amber-200 overflow-hidden">
         <table className="w-full text-sm">
@@ -329,21 +329,21 @@ export default function AdminSessionsPage() {
                   <td className="px-4 py-3 font-medium text-amber-900">
                     {s.title}
                     {s.description && (
-                      <p className="text-xs text-amber-500 font-normal truncate max-w-[200px]">{s.description}</p>
+                      <p className="text-xs text-amber-700 font-normal truncate max-w-[200px]">{s.description}</p>
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">
+                    <span className="text-xs bg-amber-50 text-amber-900 px-2 py-0.5 rounded">
                       {CATEGORY_LABELS[s.category] || s.category}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-amber-700">{hostName}</td>
-                  <td className="px-4 py-3 text-amber-700 text-xs">
+                  <td className="px-4 py-3 text-amber-900">{hostName}</td>
+                  <td className="px-4 py-3 text-amber-900 text-xs">
                     {new Date(s.scheduled_at).toLocaleDateString("ko-KR")}<br/>
                     {new Date(s.scheduled_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}
                   </td>
                   <td className="px-4 py-3 text-right text-amber-900 font-medium">{s.entry_cost}🐚</td>
-                  <td className="px-4 py-3 text-center text-amber-700">
+                  <td className="px-4 py-3 text-center text-amber-900">
                     {s.attendee_count}{s.capacity ? `/${s.capacity}` : ""}
                   </td>
                   <td className="px-4 py-3 text-center">
@@ -351,7 +351,7 @@ export default function AdminSessionsPage() {
                   </td>
                   <td className="px-4 py-3 text-center">
                     <div className="flex gap-1 justify-center flex-wrap">
-                      <button onClick={() => openEditSession(s)} className="px-2 py-1 text-xs bg-amber-50 text-amber-700 rounded border border-amber-200 hover:bg-amber-100">수정</button>
+                      <button onClick={() => openEditSession(s)} className="px-2 py-1 text-xs bg-amber-50 text-amber-900 rounded border border-amber-200 hover:bg-amber-100">수정</button>
                       {(s.status === "APPROVED" || s.status === "PENDING") && (
                         <button onClick={() => { setForceSession(s); setForceSearch(""); setForceError(""); setForceSuccess(""); }} className="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded border border-blue-200 hover:bg-blue-100">참석자 추가</button>
                       )}
@@ -376,7 +376,7 @@ export default function AdminSessionsPage() {
           </tbody>
         </table>
         {sessions.length === 0 && (
-          <p className="text-center py-8 text-amber-500">해당 상태의 공유회가 없습니다.</p>
+          <p className="text-center py-8 text-amber-700">해당 상태의 공유회가 없습니다.</p>
         )}
       </div>
 
@@ -437,7 +437,7 @@ export default function AdminSessionsPage() {
             </select>
 
             <div className="flex gap-3 justify-end">
-              <button onClick={() => setEditSession(null)} className="px-4 py-2 text-sm text-amber-700">취소</button>
+              <button onClick={() => setEditSession(null)} className="px-4 py-2 text-sm text-amber-900">취소</button>
               <button onClick={handleEditSave} disabled={editLoading || !editForm.title || !editForm.date} className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">
                 {editLoading ? "저장 중..." : "저장"}
               </button>
@@ -451,7 +451,7 @@ export default function AdminSessionsPage() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-sm mx-4">
             <h2 className="text-lg font-bold text-amber-900 mb-1">참석자 강제 신청</h2>
-            <p className="text-sm text-amber-600 mb-4">{forceSession.title} ({forceSession.entry_cost}🐚)</p>
+            <p className="text-sm text-amber-800 mb-4">{forceSession.title} ({forceSession.entry_cost}🐚)</p>
 
             {forceError && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded mb-3">{forceError}</p>}
             {forceSuccess && <p className="text-sm text-green-600 bg-green-50 px-3 py-2 rounded mb-3">{forceSuccess}</p>}
@@ -466,7 +466,7 @@ export default function AdminSessionsPage() {
 
             <div className="max-h-48 overflow-y-auto border border-amber-200 rounded">
               {forceSearch && forceFilteredMembers.length === 0 && (
-                <p className="text-xs text-amber-400 px-3 py-2">검색 결과 없음</p>
+                <p className="text-xs text-amber-700 px-3 py-2">검색 결과 없음</p>
               )}
               {forceSearch && forceFilteredMembers.map((m) => (
                 <button
@@ -479,12 +479,12 @@ export default function AdminSessionsPage() {
                 </button>
               ))}
               {!forceSearch && (
-                <p className="text-xs text-amber-400 px-3 py-2">이름을 입력하세요</p>
+                <p className="text-xs text-amber-700 px-3 py-2">이름을 입력하세요</p>
               )}
             </div>
 
             <div className="flex justify-end mt-4">
-              <button onClick={() => setForceSession(null)} className="px-4 py-2 text-sm text-amber-700">닫기</button>
+              <button onClick={() => setForceSession(null)} className="px-4 py-2 text-sm text-amber-900">닫기</button>
             </div>
           </div>
         </div>
@@ -505,7 +505,7 @@ export default function AdminSessionsPage() {
             {selectedHost ? (
               <div className="flex items-center justify-between px-3 py-2 border border-amber-300 rounded mb-3">
                 <span className="text-sm font-medium text-amber-900">{selectedHost.name}</span>
-                <button onClick={() => { setSelectedHost(null); setHostSearch(""); }} className="text-xs text-amber-500">변경</button>
+                <button onClick={() => { setSelectedHost(null); setHostSearch(""); }} className="text-xs text-amber-700">변경</button>
               </div>
             ) : (
               <div className="relative mb-3">
@@ -520,7 +520,7 @@ export default function AdminSessionsPage() {
                 {showHostList && hostSearch && (
                   <div className="absolute z-10 w-full mt-1 bg-white border border-amber-200 rounded shadow-lg max-h-32 overflow-y-auto">
                     {filteredMembers.length === 0 ? (
-                      <p className="text-xs text-amber-400 px-3 py-2">없음</p>
+                      <p className="text-xs text-amber-700 px-3 py-2">없음</p>
                     ) : (
                       filteredMembers.map((m) => (
                         <button key={m.id} onClick={() => { setSelectedHost(m); setShowHostList(false); setHostSearch(""); }} className="w-full text-left px-3 py-2 text-sm hover:bg-amber-50">{m.name}</button>
@@ -580,7 +580,7 @@ export default function AdminSessionsPage() {
             </select>
 
             <div className="flex gap-3 justify-end">
-              <button onClick={() => { setShowAddModal(false); setAddError(""); }} className="px-4 py-2 text-sm text-amber-700">취소</button>
+              <button onClick={() => { setShowAddModal(false); setAddError(""); }} className="px-4 py-2 text-sm text-amber-900">취소</button>
               <button onClick={handleAdd} disabled={addLoading || !selectedHost || !addForm.title || !addForm.date} className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50">
                 {addLoading ? "등록 중..." : "등록하기"}
               </button>

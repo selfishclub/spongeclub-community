@@ -90,7 +90,7 @@ export default function TransactionsPage() {
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id} className="border-t border-amber-100">
-                <td className="px-4 py-3 text-amber-600 text-xs">
+                <td className="px-4 py-3 text-amber-800 text-xs">
                   {new Date(tx.created_at).toLocaleString("ko-KR")}
                 </td>
                 <td className="px-4 py-3 font-medium text-amber-900">
@@ -102,15 +102,15 @@ export default function TransactionsPage() {
                   {tx.amount > 0 ? "+" : ""}
                   {tx.amount}
                 </td>
-                <td className="px-4 py-3 text-amber-700">
+                <td className="px-4 py-3 text-amber-900">
                   <span className="bg-amber-50 px-2 py-0.5 rounded text-xs">
                     {REASON_LABELS[tx.reason] || tx.reason}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-amber-600 text-xs">
+                <td className="px-4 py-3 text-amber-800 text-xs">
                   {tx.reason_detail}
                   {tx.related_member_name && (
-                    <span className="ml-1 text-amber-400">
+                    <span className="ml-1 text-amber-700">
                       ({tx.related_member_name})
                     </span>
                   )}
@@ -135,7 +135,7 @@ export default function TransactionsPage() {
           </tbody>
         </table>
         {transactions.length === 0 && (
-          <p className="text-center py-8 text-amber-500">
+          <p className="text-center py-8 text-amber-700">
             트랜잭션이 없습니다.
           </p>
         )}

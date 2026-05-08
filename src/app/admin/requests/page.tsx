@@ -63,7 +63,7 @@ export default function RequestsPage() {
             className={`px-4 py-2 text-sm rounded-lg ${
               statusFilter === s
                 ? "bg-amber-600 text-white"
-                : "bg-amber-100 text-amber-700 hover:bg-amber-200"
+                : "bg-amber-100 text-amber-900 hover:bg-amber-200"
             }`}
           >
             {s === "PENDING" ? "대기 중" : s === "APPROVED" ? "승인됨" : "거부됨"}
@@ -71,7 +71,7 @@ export default function RequestsPage() {
         ))}
       </div>
 
-      <p className="text-sm text-amber-600 mb-4">총 {requests.length}건</p>
+      <p className="text-sm text-amber-800 mb-4">총 {requests.length}건</p>
 
       <div className="space-y-3">
         {requests.map((req) => (
@@ -85,10 +85,10 @@ export default function RequestsPage() {
                   <span className="font-medium text-amber-900">
                     {req.member_name}
                   </span>
-                  <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded">
+                  <span className="text-xs bg-amber-100 text-amber-900 px-2 py-0.5 rounded">
                     {TYPE_LABELS[req.type] || req.type}
                   </span>
-                  <span className="text-xs text-amber-500">
+                  <span className="text-xs text-amber-700">
                     +{TYPE_SHELLS[req.type]}🐚
                   </span>
                 </div>
@@ -100,7 +100,7 @@ export default function RequestsPage() {
                 >
                   {req.url}
                 </a>
-                <p className="text-xs text-amber-400 mt-1">
+                <p className="text-xs text-amber-700 mt-1">
                   {new Date(req.created_at).toLocaleString("ko-KR")}
                 </p>
               </div>
@@ -152,7 +152,7 @@ export default function RequestsPage() {
         ))}
 
         {requests.length === 0 && (
-          <p className="text-center py-8 text-amber-500">
+          <p className="text-center py-8 text-amber-700">
             {statusFilter === "PENDING"
               ? "대기 중인 신청이 없습니다."
               : "해당 상태의 신청이 없습니다."}
