@@ -15,25 +15,31 @@ export default function AdminLayout({
           <div className="flex gap-6 text-sm">
             <Link
               href="/admin/members"
-              className="text-amber-700 hover:text-amber-900"
+              className="text-amber-900 hover:text-amber-950"
             >
               멤버 관리
             </Link>
 <Link
               href="/admin/sessions"
-              className="text-amber-700 hover:text-amber-900"
+              className="text-amber-900 hover:text-amber-950"
             >
               공유회
             </Link>
             <Link
+              href="/admin/videos"
+              className="text-amber-900 hover:text-amber-950"
+            >
+              영상
+            </Link>
+            <Link
               href="/admin/requests"
-              className="text-amber-700 hover:text-amber-900"
+              className="text-amber-900 hover:text-amber-950"
             >
               신청 관리
             </Link>
             <Link
               href="/admin/transactions"
-              className="text-amber-700 hover:text-amber-900"
+              className="text-amber-900 hover:text-amber-950"
             >
               트랜잭션 로그
             </Link>
