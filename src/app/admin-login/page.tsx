@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
         <h1 className="text-xl font-bold text-amber-900 mb-2">
           🐚 어드민 로그인
         </h1>
-        <p className="text-sm text-amber-700 mb-6">
+        <p className="text-sm text-amber-900 mb-6">
           어드민 비밀번호를 입력해주세요.
         </p>
         <input

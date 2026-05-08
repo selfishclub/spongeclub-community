@@ -47,7 +47,7 @@ export default function ImportPage() {
           <br />
           김영희,5678,,U0456GHIJKL,true
         </code>
-        <ul className="text-xs text-amber-600 space-y-1">
+        <ul className="text-xs text-amber-800 space-y-1">
           <li>
             - <strong>name, phone_last4</strong>: 필수
           </li>

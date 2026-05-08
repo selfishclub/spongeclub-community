@@ -48,7 +48,7 @@ export default function AdminDashboard() {
           <h2 className="text-lg font-semibold text-amber-900 mb-2">
             멤버 관리
           </h2>
-          <p className="text-amber-700 text-sm">
+          <p className="text-amber-900 text-sm">
             멤버 목록 조회, 셸 수동 조정, 트랜잭션 확인
           </p>
         </Link>
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
           <h2 className="text-lg font-semibold text-amber-900 mb-2">
             CSV 일괄 등록
           </h2>
-          <p className="text-amber-700 text-sm">
+          <p className="text-amber-900 text-sm">
             멤버 CSV 업로드, 가입 보너스 자동 지급
           </p>
         </Link>
@@ -81,7 +81,7 @@ function StatCard({
 }) {
   const content = (
     <div className="bg-white rounded-lg border border-amber-200 p-6">
-      <p className="text-sm text-amber-600 mb-1">{label}</p>
+      <p className="text-sm text-amber-800 mb-1">{label}</p>
       <p className="text-3xl font-bold text-amber-900">
         {icon && <span className="mr-1">{icon}</span>}
         {value}

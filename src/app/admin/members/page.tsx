@@ -321,7 +321,7 @@ export default function MembersPage() {
         </select>
       </div>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-amber-600">
+        <p className="text-sm text-amber-800">
           총 <strong>{filtered.length}</strong>명 / 전체 {members.length}명
           {selectedIds.size > 0 && (
             <span className="ml-2 text-amber-800 font-medium">
@@ -340,7 +340,7 @@ export default function MembersPage() {
                   alert("수정은 1명만 선택해주세요.");
                 }
               }}
-              className="px-3 py-1.5 text-xs bg-amber-50 text-amber-700 rounded border border-amber-200 hover:bg-amber-100"
+              className="px-3 py-1.5 text-xs bg-amber-50 text-amber-900 rounded border border-amber-200 hover:bg-amber-100"
             >
               수정
             </button>
@@ -371,7 +371,7 @@ export default function MembersPage() {
             </button>
             <button
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 text-xs text-amber-500 hover:text-amber-700"
+              className="px-3 py-1.5 text-xs text-amber-700 hover:text-amber-900"
             >
               선택 해제
             </button>
@@ -417,10 +417,10 @@ export default function MembersPage() {
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-center text-amber-700">
+                <td className="px-4 py-3 text-center text-amber-900">
                   {member.group_number ? `${member.group_number}조` : "-"}
                 </td>
-                <td className="px-4 py-3 text-amber-700 text-xs font-mono">
+                <td className="px-4 py-3 text-amber-900 text-xs font-mono">
                   {member.slack_user_id || "-"}
                 </td>
                 <td className="px-4 py-3 text-right font-bold text-amber-900">
@@ -438,7 +438,7 @@ export default function MembersPage() {
           </tbody>
         </table>
         {filtered.length === 0 && (
-          <p className="text-center py-8 text-amber-500">멤버가 없습니다.</p>
+          <p className="text-center py-8 text-amber-700">멤버가 없습니다.</p>
         )}
       </div>
 
@@ -538,7 +538,7 @@ export default function MembersPage() {
                       survey_completed: e.target.checked,
                     })
                   }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  className="rounded border-amber-300 text-amber-800 focus:ring-amber-400"
                 />
                 사전 설문 완료
               </label>
@@ -549,14 +549,14 @@ export default function MembersPage() {
                   onChange={(e) =>
                     setAddForm({ ...addForm, is_admin: e.target.checked })
                   }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  className="rounded border-amber-300 text-amber-800 focus:ring-amber-400"
                 />
                 어드민
               </label>
             </div>
 
             {addForm.survey_completed && (
-              <p className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded mb-4">
+              <p className="text-xs text-amber-800 bg-amber-50 px-3 py-2 rounded mb-4">
                 🐚 사전 설문 완료 시 가입 보너스 10셸이 자동 지급됩니다.
               </p>
             )}
@@ -567,7 +567,7 @@ export default function MembersPage() {
                   setShowAddModal(false);
                   setAddError("");
                 }}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                className="px-4 py-2 text-sm text-amber-900 hover:text-amber-950"
               >
                 취소
               </button>
@@ -670,7 +670,7 @@ export default function MembersPage() {
                   onChange={(e) =>
                     setEditForm({ ...editForm, is_admin: e.target.checked })
                   }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  className="rounded border-amber-300 text-amber-800 focus:ring-amber-400"
                 />
                 어드민
               </label>
@@ -681,7 +681,7 @@ export default function MembersPage() {
                   onChange={(e) =>
                     setEditForm({ ...editForm, is_active: e.target.checked })
                   }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  className="rounded border-amber-300 text-amber-800 focus:ring-amber-400"
                 />
                 활성
               </label>
@@ -693,7 +693,7 @@ export default function MembersPage() {
                   setEditModal(null);
                   setEditError("");
                 }}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                className="px-4 py-2 text-sm text-amber-900 hover:text-amber-950"
               >
                 취소
               </button>
@@ -716,7 +716,7 @@ export default function MembersPage() {
             <h2 className="text-lg font-bold text-amber-900 mb-4">
               셸 일괄 조정 — {selectedIds.size}명 선택됨
             </h2>
-            <p className="text-xs text-amber-600 mb-4">
+            <p className="text-xs text-amber-800 mb-4">
               {members.filter((m) => selectedIds.has(m.id)).map((m) => m.name).join(", ")}
             </p>
 
@@ -745,7 +745,7 @@ export default function MembersPage() {
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => { setShowBulkModal(false); setBulkAmount(""); setBulkReason(""); }}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                className="px-4 py-2 text-sm text-amber-900 hover:text-amber-950"
               >
                 취소
               </button>
@@ -768,7 +768,7 @@ export default function MembersPage() {
             <h2 className="text-lg font-bold text-amber-900 mb-4">
               🐚 셸 조정 — {adjustModal.name}
             </h2>
-            <p className="text-sm text-amber-600 mb-4">
+            <p className="text-sm text-amber-800 mb-4">
               현재 잔고: {adjustModal.shell_balance}개
             </p>
 
@@ -797,7 +797,7 @@ export default function MembersPage() {
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setAdjustModal(null)}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                className="px-4 py-2 text-sm text-amber-900 hover:text-amber-950"
               >
                 취소
               </button>

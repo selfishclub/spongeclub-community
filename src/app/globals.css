@@ -23,4 +23,19 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Placeholder 가독성 보강 — 너무 흐리지 않게 */
+input::placeholder,
+textarea::placeholder {
+  color: #64748b; /* slate-500 */
+  opacity: 1;
+}
+
+/* 작은 정보 텍스트가 너무 작지 않도록 — 12px 미만 방지 */
+.text-xs {
+  font-size: 0.78rem; /* 12.5px */
+  line-height: 1.1rem;
 }
