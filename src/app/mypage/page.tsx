@@ -343,7 +343,8 @@ export default function MyPage() {
           </section>
         )}
 
-        {/* SNS 인증 */}
+        {/* SNS 인증 — 숨김 (Slack 제출 유도, 기능은 유지) */}
+        {false && (
         <section className="border-2 border-[var(--ink-10)] p-5">
           <h3 className="text-sm font-extrabold text-[var(--ink)] mb-1">SNS 인증</h3>
           <p className="text-xs text-[var(--ink-30)] mb-4 font-medium">승인 시 +2셸</p>
@@ -356,8 +357,10 @@ export default function MyPage() {
           </div>
           {snsMsg && <p className={`text-xs mt-3 font-medium ${snsMsg.includes("완료") ? "text-[var(--ink)]" : "text-red-500"}`}>{snsMsg}</p>}
         </section>
+        )}
 
-        {/* 스킬 공유 */}
+        {/* 스킬 공유 — 숨김 (Slack 제출 유도, 기능은 유지) */}
+        {false && (
         <section className="border-2 border-[var(--ink-10)] p-5">
           <h3 className="text-sm font-extrabold text-[var(--ink)] mb-1">스킬 공유</h3>
           <p className="text-xs text-[var(--ink-30)] mb-4 font-medium">승인 시 +1셸</p>
@@ -370,6 +373,7 @@ export default function MyPage() {
           </div>
           {skillMsg && <p className={`text-xs mt-3 font-medium ${skillMsg.includes("완료") ? "text-[var(--ink)]" : "text-red-500"}`}>{skillMsg}</p>}
         </section>
+        )}
 
         {/* 참여 공유회 */}
         {sessionAttendTx.length > 0 && (
