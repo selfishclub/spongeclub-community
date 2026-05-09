@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <circle cx="40" cy="40" r="38" fill="#FFFBEB" stroke="#FCD34D" stroke-width="2.5"/>
+  <!-- sparkle bg -->
+  <circle cx="18" cy="22" r="2" fill="#F472B6" opacity="0.6"/>
+  <circle cx="62" cy="22" r="2" fill="#7DD3FC" opacity="0.6"/>
+  <circle cx="18" cy="58" r="1.5" fill="#A78BFA" opacity="0.6"/>
+  <circle cx="62" cy="58" r="1.5" fill="#34D399" opacity="0.6"/>
+  <!-- sponge body -->
+  <rect x="26" y="30" width="28" height="24" rx="6" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+  <!-- holes -->
+  <circle cx="33" cy="38" r="2" fill="#FBBF24"/>
+  <circle cx="44" cy="42" r="2.5" fill="#FBBF24"/>
+  <circle cx="36" cy="48" r="1.5" fill="#FBBF24"/>
+  <circle cx="47" cy="36" r="1.5" fill="#FBBF24"/>
+  <!-- face -->
+  <circle cx="35" cy="40" r="2.5" fill="white"/>
+  <circle cx="45" cy="40" r="2.5" fill="white"/>
+  <circle cx="36" cy="39.5" r="1.5" fill="#1E293B"/>
+  <circle cx="46" cy="39.5" r="1.5" fill="#1E293B"/>
+  <circle cx="36.5" cy="39" r="0.6" fill="white"/>
+  <circle cx="46.5" cy="39" r="0.6" fill="white"/>
+  <!-- big happy smile -->
+  <path d="M35 45c2 3 6 3 8 0" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <!-- blush -->
+  <circle cx="31" cy="44" r="2.5" fill="#FECACA" opacity="0.5"/>
+  <circle cx="49" cy="44" r="2.5" fill="#FECACA" opacity="0.5"/>
+  <!-- crown -->
+  <path d="M28 30l4-8 4 5 4-7 4 7 4-5 4 8z" fill="#FBBF24" stroke="#F59E0B" stroke-width="1.2"/>
+  <!-- crown gems -->
+  <circle cx="36" cy="26" r="1.5" fill="#EF4444"/>
+  <circle cx="40" cy="23" r="1.5" fill="#3B82F6"/>
+  <circle cx="44" cy="26" r="1.5" fill="#22C55E"/>
+  <!-- arms -->
+  <path d="M26 42c-3 0-6 1-7 3s1 3 3 2" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.2"/>
+  <path d="M54 42c3 0 6 1 7 3s-1 3-3 2" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.2"/>
+  <!-- legs -->
+  <rect x="32" y="54" width="5" height="6" rx="2.5" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.2"/>
+  <rect x="43" y="54" width="5" height="6" rx="2.5" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.2"/>
+</svg>

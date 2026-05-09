@@ -26,18 +26,18 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
       .gte("created_at", mondayUTC.toISOString());
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const aggregated = new Map<string, { member_id: string; name: string; total: number }>();
+    const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean };
-      if (!member.is_active) continue;
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      if (!member.is_active || member.is_admin) continue;
       if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = aggregated.get(row.member_id);
@@ -48,6 +48,7 @@ export async function GET(request: NextRequest) {
         aggregated.set(row.member_id, {
           member_id: row.member_id,
           name: member.name,
+          profile_image: member.profile_image,
           total: absAmount,
         });
       }
@@ -56,7 +57,7 @@ export async function GET(request: NextRequest) {
     const ranking = Array.from(aggregated.values())
       .filter((m) => m.total > 0)
       .sort((a, b) => b.total - a.total)
-      .slice(0, 10)
+      .slice(0, 5)
       .map((m, i) => ({ rank: i + 1, ...m }));
 
     return NextResponse.json({ type: "weekly", ranking });
@@ -66,17 +67,17 @@ export async function GET(request: NextRequest) {
   if (type === "ranking") {
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)");
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)");
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const aggregated = new Map<string, { member_id: string; name: string; total: number; earned: number; spent: number }>();
+    const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number; earned: number; spent: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean };
-      if (!member.is_active) continue;
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      if (!member.is_active || member.is_admin) continue;
       if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = aggregated.get(row.member_id);
@@ -89,6 +90,7 @@ export async function GET(request: NextRequest) {
         aggregated.set(row.member_id, {
           member_id: row.member_id,
           name: member.name,
+          profile_image: member.profile_image,
           total: absAmount,
           earned: row.amount > 0 ? row.amount : 0,
           spent: row.amount < 0 ? absAmount : 0,
@@ -99,7 +101,7 @@ export async function GET(request: NextRequest) {
     const ranking = Array.from(aggregated.values())
       .filter((m) => m.total > 0)
       .sort((a, b) => b.total - a.total)
-      .slice(0, 10)
+      .slice(0, 5)
       .map((m, i) => ({ rank: i + 1, ...m }));
 
     return NextResponse.json({ type: "ranking", ranking });
@@ -109,18 +111,18 @@ export async function GET(request: NextRequest) {
   if (type === "spent") {
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
       .lt("amount", 0);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const aggregated = new Map<string, { member_id: string; name: string; total: number }>();
+    const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean };
-      if (!member.is_active) continue;
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      if (!member.is_active || member.is_admin) continue;
       if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const absAmount = Math.abs(row.amount);
@@ -131,6 +133,7 @@ export async function GET(request: NextRequest) {
         aggregated.set(row.member_id, {
           member_id: row.member_id,
           name: member.name,
+          profile_image: member.profile_image,
           total: absAmount,
         });
       }
@@ -139,7 +142,7 @@ export async function GET(request: NextRequest) {
     const ranking = Array.from(aggregated.values())
       .filter((m) => m.total > 0)
       .sort((a, b) => b.total - a.total)
-      .slice(0, 10)
+      .slice(0, 5)
       .map((m, i) => ({ rank: i + 1, ...m }));
 
     return NextResponse.json({ type: "spent", ranking });
@@ -149,18 +152,18 @@ export async function GET(request: NextRequest) {
   if (type === "earned") {
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
       .gt("amount", 0);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const aggregated = new Map<string, { member_id: string; name: string; total: number }>();
+    const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean };
-      if (!member.is_active) continue;
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      if (!member.is_active || member.is_admin) continue;
       if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = aggregated.get(row.member_id);
@@ -170,6 +173,7 @@ export async function GET(request: NextRequest) {
         aggregated.set(row.member_id, {
           member_id: row.member_id,
           name: member.name,
+          profile_image: member.profile_image,
           total: row.amount,
         });
       }
@@ -178,7 +182,7 @@ export async function GET(request: NextRequest) {
     const ranking = Array.from(aggregated.values())
       .filter((m) => m.total > 0)
       .sort((a, b) => b.total - a.total)
-      .slice(0, 10)
+      .slice(0, 5)
       .map((m, i) => ({ rank: i + 1, ...m }));
 
     return NextResponse.json({ type: "earned", ranking });
@@ -199,8 +203,8 @@ export async function GET(request: NextRequest) {
     const memberTotals = new Map<string, { group_number: number; total: number; earned: number; spent: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean; group_number: number | null };
-      if (!member.is_active || !member.group_number) continue;
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; group_number: number | null };
+      if (!member.is_active || member.is_admin || !member.group_number) continue;
       if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
       const existing = memberTotals.get(row.member_id);

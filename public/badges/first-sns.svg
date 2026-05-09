@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <!-- bg -->
+  <circle cx="40" cy="40" r="38" fill="#FFF1F2" stroke="#FDA4AF" stroke-width="2.5"/>
+  <!-- starfish body -->
+  <g transform="translate(40,42)">
+    <path d="M0-18L5-6 17-8 10 2 14 14 2 9-2 9-14 14-10 2-17-8-5-6z" fill="#FB923C" stroke="#EA580C" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- dots on body -->
+    <circle cx="-2" cy="-8" r="1.2" fill="#FDBA74"/>
+    <circle cx="5" cy="2" r="1" fill="#FDBA74"/>
+    <circle cx="-6" cy="3" r="1.2" fill="#FDBA74"/>
+    <circle cx="1" cy="6" r="1" fill="#FDBA74"/>
+    <!-- face -->
+    <circle cx="-4" cy="-2" r="2" fill="#1E293B"/>
+    <circle cx="4" cy="-2" r="2" fill="#1E293B"/>
+    <circle cx="-3.2" cy="-2.8" r="0.8" fill="white"/>
+    <circle cx="4.8" cy="-2.8" r="0.8" fill="white"/>
+    <!-- smile -->
+    <path d="M-3 2c1.5 2 4.5 2 6 0" stroke="#1E293B" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+    <!-- blush -->
+    <circle cx="-7" cy="1" r="2" fill="#FECACA" opacity="0.6"/>
+    <circle cx="7" cy="1" r="2" fill="#FECACA" opacity="0.6"/>
+  </g>
+</svg>

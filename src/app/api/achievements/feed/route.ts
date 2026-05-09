@@ -1,0 +1,85 @@
+import { NextResponse } from "next/server";
+import { createAdminClient } from "@/lib/supabase";
+
+// GET /api/achievements/feed
+// 배지 Top 3 + 최근 획득 피드
+export async function GET() {
+  const supabase = createAdminClient();
+
+  // Top 3: 배지 많은 순
+  const { data: topData } = await supabase
+    .from("member_achievements")
+    .select("member_id, members!member_achievements_member_id_fkey(name, is_active, is_admin, profile_image)");
+
+  const badgeCounts = new Map<string, { member_id: string; name: string; profile_image: string | null; count: number }>();
+
+  for (const row of topData || []) {
+    const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+    if (!member.is_active || member.is_admin) continue;
+
+    const existing = badgeCounts.get(row.member_id);
+    if (existing) {
+      existing.count++;
+    } else {
+      badgeCounts.set(row.member_id, {
+        member_id: row.member_id,
+        name: member.name,
+        profile_image: member.profile_image,
+        count: 1,
+      });
+    }
+  }
+
+  const top3 = Array.from(badgeCounts.values())
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3)
+    .map((m, i) => ({ rank: i + 1, ...m }));
+
+  // Top 3 멤버의 배지 목록도 가져오기
+  const top3Ids = top3.map((t) => t.member_id);
+  const { data: top3Badges } = await supabase
+    .from("member_achievements")
+    .select("member_id, achievements(slug, name, icon)")
+    .in("member_id", top3Ids.length > 0 ? top3Ids : ["none"]);
+
+  const top3WithBadges = top3.map((t) => ({
+    ...t,
+    badges: (top3Badges || [])
+      .filter((b) => b.member_id === t.member_id)
+      .map((b) => {
+        const a = b.achievements as unknown as { slug: string; name: string; icon: string };
+        return { slug: a.slug, name: a.name, icon: a.icon };
+      }),
+  }));
+
+  // 최근 배지 획득 피드 (최신 10건)
+  const { data: recentData } = await supabase
+    .from("member_achievements")
+    .select(`
+      earned_at,
+      members!member_achievements_member_id_fkey(name, is_active, is_admin, profile_image),
+      achievements(slug, name, icon)
+    `)
+    .order("earned_at", { ascending: false })
+    .limit(10);
+
+  const recent = (recentData || [])
+    .filter((row) => {
+      const member = row.members as unknown as { name: string; is_active: boolean };
+      return member.is_active;
+    })
+    .map((row) => {
+      const member = row.members as unknown as { name: string; is_admin: boolean; profile_image: string | null };
+      const achievement = row.achievements as unknown as { slug: string; name: string; icon: string };
+      return {
+        name: member.name,
+        profile_image: member.profile_image,
+        badge_name: achievement.name,
+        badge_slug: achievement.slug,
+        badge_icon: achievement.icon,
+        earned_at: row.earned_at,
+      };
+    });
+
+  return NextResponse.json({ top3: top3WithBadges, recent });
+}

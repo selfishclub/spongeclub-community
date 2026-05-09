@@ -15,13 +15,13 @@ async function computeIndividualRanking(): Promise<RankEntry[]> {
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("shell_transactions")
-    .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active)");
+    .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin)");
 
   const aggregated = new Map<string, { id: string; name: string; total: number }>();
 
   for (const row of data || []) {
-    const member = row.members as unknown as { name: string; is_active: boolean };
-    if (!member.is_active) continue;
+    const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean };
+    if (!member.is_active || member.is_admin) continue;
     if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
     const existing = aggregated.get(row.member_id);
@@ -49,13 +49,13 @@ async function computeGroupRanking(): Promise<RankEntry[]> {
   const supabase = createAdminClient();
   const { data } = await supabase
     .from("shell_transactions")
-    .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, group_number)");
+    .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, group_number)");
 
   const memberTotals = new Map<string, { group_number: number; total: number }>();
 
   for (const row of data || []) {
-    const member = row.members as unknown as { name: string; is_active: boolean; group_number: number | null };
-    if (!member.is_active || !member.group_number) continue;
+    const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; group_number: number | null };
+    if (!member.is_active || member.is_admin || !member.group_number) continue;
     if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
     const existing = memberTotals.get(row.member_id);

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <circle cx="40" cy="40" r="38" fill="#FFF7ED" stroke="#FDBA74" stroke-width="2.5"/>
+  <!-- clam shell bottom -->
+  <path d="M20 44c0 8 9 16 20 16s20-8 20-16z" fill="#FBBF24" stroke="#F59E0B" stroke-width="1.5"/>
+  <!-- shell ridges bottom -->
+  <path d="M25 44c3 6 7 12 15 14" stroke="#F59E0B" stroke-width="1" opacity="0.4" fill="none"/>
+  <path d="M35 44c2 6 3 12 5 14" stroke="#F59E0B" stroke-width="1" opacity="0.4" fill="none"/>
+  <path d="M45 44c-1 6-1 12-5 14" stroke="#F59E0B" stroke-width="1" opacity="0.4" fill="none"/>
+  <path d="M55 44c-3 6-7 12-15 14" stroke="#F59E0B" stroke-width="1" opacity="0.4" fill="none"/>
+  <!-- clam shell top -->
+  <path d="M20 44c0-10 9-20 20-20s20 10 20 20z" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+  <!-- shell ridges top -->
+  <path d="M25 44c1-8 5-16 15-18" stroke="#FBBF24" stroke-width="1.2" opacity="0.6" fill="none"/>
+  <path d="M33 44c0-8 2-14 7-18" stroke="#FBBF24" stroke-width="1.2" opacity="0.6" fill="none"/>
+  <path d="M47 44c0-8-2-14-7-18" stroke="#FBBF24" stroke-width="1.2" opacity="0.6" fill="none"/>
+  <path d="M55 44c-1-8-5-16-15-18" stroke="#FBBF24" stroke-width="1.2" opacity="0.6" fill="none"/>
+  <!-- pearl -->
+  <circle cx="40" cy="46" r="6" fill="white" stroke="#E5E7EB" stroke-width="1"/>
+  <circle cx="38" cy="44" r="2" fill="#F3F4F6" opacity="0.8"/>
+  <!-- face on pearl -->
+  <circle cx="38" cy="45" r="1" fill="#1E293B"/>
+  <circle cx="42" cy="45" r="1" fill="#1E293B"/>
+  <path d="M39 48c0.5 0.5 1.5 0.5 2 0" stroke="#1E293B" stroke-width="0.8" stroke-linecap="round" fill="none"/>
+  <!-- blush -->
+  <circle cx="36" cy="47" r="1.5" fill="#FECACA" opacity="0.5"/>
+  <circle cx="44" cy="47" r="1.5" fill="#FECACA" opacity="0.5"/>
+</svg>

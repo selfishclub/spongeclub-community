@@ -1,5 +1,6 @@
 import { createAdminClient } from "./supabase";
 import { checkAndNotifyRankingChanges } from "./ranking-notify";
+import { checkAchievements } from "./achievement-service";
 
 export const CATEGORIES = {
   AI: { label: "AI", bg: "bg-blue-100", text: "text-blue-700", dot: "bg-blue-500" },
@@ -187,6 +188,7 @@ export async function registerForSession(memberId: string, sessionId: string) {
   });
 
   checkAndNotifyRankingChanges().catch(() => {});
+  checkAchievements(memberId).catch(() => {});
   return { success: true };
 }
 
@@ -251,5 +253,6 @@ export async function completeSession(sessionId: string, adminId: string) {
   });
 
   checkAndNotifyRankingChanges().catch(() => {});
+  checkAchievements(session.host_id).catch(() => {});
   return { success: true };
 }
