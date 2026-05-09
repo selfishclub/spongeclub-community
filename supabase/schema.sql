@@ -86,6 +86,34 @@ CREATE TABLE sns_verifications (
   created_at timestamptz DEFAULT now()
 );
 
+-- 6-1. videos / video_grants (영상 시청 기능)
+CREATE TABLE videos (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  title text NOT NULL,
+  youtube_url text NOT NULL,
+  description text,
+  cost integer NOT NULL DEFAULT 0,
+  expires_at timestamptz NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now(),
+  created_by uuid REFERENCES members(id)
+);
+
+CREATE INDEX idx_videos_expires ON videos(expires_at);
+
+CREATE TABLE video_grants (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  video_id uuid NOT NULL REFERENCES videos(id) ON DELETE CASCADE,
+  member_id uuid NOT NULL REFERENCES members(id),
+  granted_at timestamptz DEFAULT now(),
+  granted_by uuid REFERENCES members(id),
+  transaction_id uuid REFERENCES shell_transactions(id),
+  UNIQUE(video_id, member_id)
+);
+
+CREATE INDEX idx_video_grants_member ON video_grants(member_id);
+CREATE INDEX idx_video_grants_video ON video_grants(video_id);
+
 -- 7. shell_balance 증감 RPC 함수
 CREATE OR REPLACE FUNCTION increment_shell_balance(p_member_id uuid, p_amount integer)
 RETURNS void AS $$
@@ -114,6 +142,10 @@ CREATE TRIGGER sessions_updated_at
   BEFORE UPDATE ON sessions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
+CREATE TRIGGER videos_updated_at
+  BEFORE UPDATE ON videos
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
 -- 9. RLS 비활성화 (service_role_key로만 접근하므로)
 ALTER TABLE members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE shell_transactions ENABLE ROW LEVEL SECURITY;
@@ -121,5 +153,7 @@ ALTER TABLE daily_limits ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE session_attendees ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sns_verifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE videos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE video_grants ENABLE ROW LEVEL SECURITY;
 
 -- service_role은 RLS를 자동 bypass하므로 별도 정책 불필요

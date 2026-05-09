@@ -27,4 +27,18 @@ body {
   color: var(--ink);
   font-family: 'Pretendard Variable', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Placeholder 가독성 보강 */
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-50);
+  opacity: 1;
+}
+
+/* 작은 정보 텍스트가 너무 작지 않도록 — 12px 미만 방지 */
+.text-xs {
+  font-size: 0.78rem; /* 12.5px */
+  line-height: 1.1rem;
 }

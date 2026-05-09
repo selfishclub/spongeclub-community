@@ -34,6 +34,15 @@ interface Transaction {
   created_at: string;
 }
 
+interface MyVideo {
+  id: string;
+  title: string;
+  description: string | null;
+  expires_at: string;
+  embed_url: string | null;
+  thumbnail_url: string | null;
+}
+
 const REASON_LABELS: Record<string, string> = {
   SIGNUP_BONUS: "가입 보너스",
   SESSION_HOST: "공유회 개최",
@@ -46,6 +55,8 @@ const REASON_LABELS: Record<string, string> = {
   GIFT_SENT: "셸 선물 보냄",
   TIP_RECEIVED: "팁 받음",
   ADMIN_ADJUSTMENT: "어드민 조정",
+  VIDEO_GRANT: "영상 시청권",
+  VIDEO_GRANT_REFUND: "영상 시청권 환불",
 };
 
 type TxTab = "all" | "earned" | "spent" | "gift";
@@ -83,6 +94,11 @@ export default function MyPage() {
   const [badges, setBadges] = useState<Badge[]>([]);
   const [txExpanded, setTxExpanded] = useState(false);
 
+  // 영상
+  const [myVideos, setMyVideos] = useState<MyVideo[]>([]);
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
+  const [nowMs] = useState(() => Date.now());
+
   useEffect(() => {
     fetch("/api/auth/me").then((r) => r.json()).then((data) => {
       if (!data.member) router.push("/");
@@ -110,6 +126,16 @@ export default function MyPage() {
     fetch(`/api/auth/my-transactions?type=${txTab}`).then((r) => r.json()).then((data) => { setTransactions(data.transactions || []); setTxLoading(false); });
   }, [member, txTab]);
 
+  // 내 영상
+  useEffect(() => {
+    if (!member) return;
+    fetch("/api/me/videos")
+      .then((r) => r.json())
+      .then((data) => setMyVideos(data.videos || []))
+      .catch(() => {});
+  }, [member]);
+
+  // 드롭다운 외부 클릭 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setShowMemberDropdown(false);
@@ -263,6 +289,59 @@ export default function MyPage() {
           </button>
           {shellMsg && <p className={`text-sm mt-3 text-center font-medium ${shellMsg.includes("보냈") ? "text-[var(--ink)]" : "text-red-500"}`}>{shellMsg}</p>}
         </section>
+
+        {/* 시청 가능한 영상 */}
+        {myVideos.length > 0 && (
+          <section className="border-2 border-[var(--ink-10)] p-5">
+            <h3 className="text-sm font-extrabold text-[var(--ink)] mb-3">내 영상</h3>
+            <div className="space-y-3">
+              {myVideos.map((v) => {
+                const expiresAt = new Date(v.expires_at);
+                const daysLeft = Math.ceil((expiresAt.getTime() - nowMs) / (1000 * 60 * 60 * 24));
+                const isPlaying = playingVideoId === v.id;
+                return (
+                  <div key={v.id} className="border-2 border-[var(--ink-10)] overflow-hidden">
+                    {isPlaying && v.embed_url ? (
+                      <div className="aspect-video bg-[var(--ink)]">
+                        <iframe
+                          src={v.embed_url}
+                          title={v.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                        />
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setPlayingVideoId(v.id)}
+                        className="block w-full relative aspect-video bg-[var(--ink-05)] group"
+                      >
+                        {v.thumbnail_url && (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img src={v.thumbnail_url} alt={v.title} className="w-full h-full object-cover" />
+                        )}
+                        <div className="absolute inset-0 bg-[var(--ink)]/30 group-hover:bg-[var(--ink)]/40 flex items-center justify-center transition-colors">
+                          <div className="w-14 h-14 bg-[var(--paper)]/90 flex items-center justify-center">
+                            <span className="text-[var(--ink)] text-2xl ml-1">▶</span>
+                          </div>
+                        </div>
+                      </button>
+                    )}
+                    <div className="p-3">
+                      <p className="text-sm font-bold text-[var(--ink)]">{v.title}</p>
+                      {v.description && (
+                        <p className="text-xs text-[var(--ink-50)] mt-1 line-clamp-2">{v.description}</p>
+                      )}
+                      <p className="text-xs text-[var(--ink-50)] mt-1 font-medium">
+                        {daysLeft > 0 ? `${daysLeft}일 남음` : "오늘 만료"}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* SNS 인증 */}
         <section className="border-2 border-[var(--ink-10)] p-5">

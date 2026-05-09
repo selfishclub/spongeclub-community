@@ -97,6 +97,22 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: (m
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [memberOptions, setMemberOptions] = useState<{ id: string; name: string }[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selected, setSelected] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/auth/members")
+      .then((r) => r.json())
+      .then((data) => setMemberOptions(data.members || []))
+      .catch(() => {});
+  }, []);
+
+  const filtered = name.trim()
+    ? memberOptions.filter((m) =>
+        m.name.toLowerCase().includes(name.toLowerCase().trim())
+      )
+    : [];
 
   const handleLogin = async () => {
     if (!name.trim() || !pin) { setError("이름과 PIN을 입력해주세요."); return; }
@@ -120,10 +136,46 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: (m
       <div className="bg-[var(--paper)] w-full max-w-sm p-7 shadow-2xl" style={{ borderRadius: 0 }} onClick={(e) => e.stopPropagation()}>
         <h2 className="text-2xl font-extrabold text-[var(--ink)] mb-6">로그인</h2>
         <div className="space-y-4">
-          <div>
+          <div className="relative">
             <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">이름</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름을 입력해주세요"
-              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium transition-colors" />
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                setSelected(false);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+              placeholder="이름 일부를 입력하면 검색돼요"
+              autoComplete="off"
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium transition-colors"
+            />
+            {showDropdown && !selected && filtered.length > 0 && (
+              <div className="absolute left-0 right-0 z-10 mt-1 bg-[var(--paper)] border-2 border-[var(--ink-10)] shadow-lg max-h-48 overflow-y-auto">
+                {filtered.slice(0, 20).map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      setName(m.name);
+                      setSelected(true);
+                      setShowDropdown(false);
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-sm text-[var(--ink)] font-medium hover:bg-[var(--yellow-dim)] transition-colors border-b border-[var(--ink-05)] last:border-0"
+                  >
+                    {m.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            {showDropdown && !selected && name.trim() && filtered.length === 0 && (
+              <div className="absolute left-0 right-0 z-10 mt-1 bg-[var(--paper)] border-2 border-[var(--ink-10)] shadow-lg px-4 py-2.5 text-xs text-[var(--ink-30)] font-medium">
+                일치하는 멤버가 없어요
+              </div>
+            )}
           </div>
           <div>
             <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">PIN</label>
