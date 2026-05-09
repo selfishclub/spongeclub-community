@@ -1,42 +1,51 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const NAV_ITEMS = [
+  { href: "/admin/members", label: "멤버 관리" },
+  { href: "/admin/sessions", label: "공유회" },
+  { href: "/admin/requests", label: "신청 관리" },
+  { href: "/admin/suggestions", label: "추천" },
+  { href: "/admin/transactions", label: "트랜잭션 로그" },
+];
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
   return (
-    <div className="min-h-screen bg-amber-50">
-      <nav className="bg-white border-b border-amber-200 px-6 py-4">
+    <div className="min-h-screen bg-[var(--paper)]">
+      <nav className="bg-[var(--ink)] border-b-2 border-[var(--ink)] px-6 py-0">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/admin" className="text-xl font-bold text-amber-900">
-            🐚 스폰지클럽 어드민
+          <Link
+            href="/admin/members"
+            className="text-base font-extrabold text-[var(--paper)] tracking-tight py-4"
+          >
+            스폰지클럽 어드민
           </Link>
-          <div className="flex gap-6 text-sm">
-            <Link
-              href="/admin/members"
-              className="text-amber-700 hover:text-amber-900"
-            >
-              멤버 관리
-            </Link>
-<Link
-              href="/admin/sessions"
-              className="text-amber-700 hover:text-amber-900"
-            >
-              공유회
-            </Link>
-            <Link
-              href="/admin/requests"
-              className="text-amber-700 hover:text-amber-900"
-            >
-              신청 관리
-            </Link>
-            <Link
-              href="/admin/transactions"
-              className="text-amber-700 hover:text-amber-900"
-            >
-              트랜잭션 로그
-            </Link>
+          <div className="flex">
+            {NAV_ITEMS.map((item) => {
+              const isActive =
+                pathname === item.href || pathname?.startsWith(item.href + "/");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`px-4 py-4 text-xs font-extrabold uppercase tracking-wider transition-colors border-b-2 -mb-[2px] ${
+                    isActive
+                      ? "text-[var(--yellow)] border-[var(--yellow)]"
+                      : "text-[var(--paper)]/60 border-transparent hover:text-[var(--paper)]"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </nav>

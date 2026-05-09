@@ -81,6 +81,7 @@ export default function MyPage() {
   const [skillMsg, setSkillMsg] = useState("");
 
   const [badges, setBadges] = useState<Badge[]>([]);
+  const [txExpanded, setTxExpanded] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/me").then((r) => r.json()).then((data) => {
@@ -105,6 +106,7 @@ export default function MyPage() {
   useEffect(() => {
     if (!member) return;
     setTxLoading(true);
+    setTxExpanded(false);
     fetch(`/api/auth/my-transactions?type=${txTab}`).then((r) => r.json()).then((data) => { setTransactions(data.transactions || []); setTxLoading(false); });
   }, [member, txTab]);
 
@@ -327,7 +329,7 @@ export default function MyPage() {
             <p className="text-center py-12 text-[var(--ink-30)] text-sm">내역이 없어요</p>
           ) : (
             <div className="border-t-2 border-[var(--ink-10)]">
-              {transactions.map((tx) => (
+              {(txExpanded ? transactions : transactions.slice(0, 3)).map((tx) => (
                 <div key={tx.id} className="flex items-center justify-between px-4 py-3 border-b border-[var(--ink-10)] hover:bg-[var(--yellow-dim)] transition-colors">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-[var(--ink)]">{REASON_LABELS[tx.reason] || tx.reason}</p>
@@ -339,6 +341,12 @@ export default function MyPage() {
                   </span>
                 </div>
               ))}
+              {transactions.length > 3 && (
+                <button onClick={() => setTxExpanded(!txExpanded)}
+                  className="w-full py-3 text-xs font-bold text-[var(--ink-50)] hover:text-[var(--ink)] hover:bg-[var(--ink-05)] transition-colors">
+                  {txExpanded ? "접기" : `더보기 (${transactions.length - 3}건)`}
+                </button>
+              )}
             </div>
           )}
         </section>

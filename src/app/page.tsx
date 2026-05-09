@@ -243,6 +243,73 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
   );
 }
 
+// ─── Suggest Modal ──────────────────────────────────────────────────────────
+
+function SuggestModal({ onClose }: { onClose: () => void }) {
+  const [suggesterName, setSuggesterName] = useState("");
+  const [targetName, setTargetName] = useState("");
+  const [topic, setTopic] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    if (!suggesterName.trim() || !targetName.trim() || !topic.trim()) { setError("모든 항목을 입력해주세요."); return; }
+    setLoading(true); setError("");
+    try {
+      const res = await fetch("/api/sessions/suggest", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ suggester_name: suggesterName.trim(), target_name: targetName.trim(), topic: topic.trim() }),
+      });
+      if (!res.ok) { const data = await res.json(); setError(data.error || "제출에 실패했어요."); }
+      else setDone(true);
+    } catch { setError("네트워크 오류가 발생했어요."); }
+    finally { setLoading(false); }
+  };
+
+  const inputClass = "w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium transition-colors";
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60 backdrop-blur-sm px-4" onClick={onClose}>
+      <div className="bg-[var(--paper)] w-full max-w-sm p-7 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        {done ? (
+          <div className="text-center py-6">
+            <div className="bg-[var(--yellow)] inline-block px-4 py-2 mb-4"><span className="text-sm font-extrabold text-[var(--ink)]">제출 완료!</span></div>
+            <p className="text-sm text-[var(--ink-50)]">추천이 전달됐어요. 감사합니다!</p>
+            <button onClick={onClose} className="mt-6 w-full py-3 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 transition-opacity">닫기</button>
+          </div>
+        ) : (
+          <>
+            <h2 className="text-xl font-extrabold text-[var(--ink)] mb-2">공유회 추천하기</h2>
+            <p className="text-xs text-[var(--ink-30)] mb-6 font-medium">듣고 싶은 공유회를 추천해주세요</p>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">내 이름</label>
+                <input type="text" value={suggesterName} onChange={(e) => setSuggesterName(e.target.value)} placeholder="추천하는 사람" className={inputClass} />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">누구한테 듣고 싶은지</label>
+                <input type="text" value={targetName} onChange={(e) => setTargetName(e.target.value)} placeholder="진행자 이름" className={inputClass} />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">어떤 주제</label>
+                <textarea value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="듣고 싶은 내용을 간략하게"
+                  className={`${inputClass} resize-none h-20`} />
+              </div>
+              {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+              <button onClick={handleSubmit} disabled={loading}
+                className="w-full py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
+                {loading ? "제출 중..." : "추천하기"}
+              </button>
+            </div>
+            <button onClick={onClose} className="mt-4 w-full text-center text-sm text-[var(--ink-30)] hover:text-[var(--ink)] transition-colors">닫기</button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Badge Ticker ───────────────────────────────────────────────────────────
 
 function BadgeTicker({ feed }: { feed: BadgeFeedEntry[] }) {
@@ -438,6 +505,7 @@ export default function HomePage() {
   const [rankTab, setRankTab] = useState<"ranking" | "group">("ranking");
   const [badgeTop3, setBadgeTop3] = useState<BadgeTop3Entry[]>([]);
   const [badgeFeed, setBadgeFeed] = useState<BadgeFeedEntry[]>([]);
+  const [showSuggestModal, setShowSuggestModal] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/me").then((r) => r.json()).then((data) => { setMember(data.member || null); setAuthChecked(true); }).catch(() => setAuthChecked(true));
@@ -454,26 +522,20 @@ export default function HomePage() {
       {/* ── Header ── */}
       <header className="sticky top-0 z-40 bg-[var(--paper)] border-b-2 border-[var(--ink)]">
         <div className="max-w-lg mx-auto px-5 py-3 flex items-center justify-between">
-          <h1 className="text-base font-extrabold text-[var(--ink)] tracking-tight">이기적인 스폰지들</h1>
-          <div className="flex items-center gap-2">
-            <Link href="/sessions/new"
-              className="px-4 py-2 bg-[var(--yellow)] text-[var(--ink)] text-xs font-extrabold hover:opacity-80 transition-opacity">
-              공유회 열기
-            </Link>
-            {authChecked && (
-              member ? (
-                <Link href="/mypage"
-                  className="px-4 py-2 border-2 border-[var(--ink)] text-[var(--ink)] text-xs font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors">
-                  마이페이지
-                </Link>
-              ) : (
-                <button onClick={() => setShowLoginModal(true)}
-                  className="px-4 py-2 border-2 border-[var(--ink)] text-[var(--ink)] text-xs font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors">
-                  로그인
-                </button>
-              )
-            )}
-          </div>
+          <h1 className="text-base font-extrabold text-[var(--ink)] tracking-tight">🧽 이기적인 스폰지들</h1>
+          {authChecked && (
+            member ? (
+              <Link href="/mypage"
+                className="px-4 py-2 border-2 border-[var(--ink)] text-[var(--ink)] text-xs font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors">
+                마이페이지
+              </Link>
+            ) : (
+              <button onClick={() => setShowLoginModal(true)}
+                className="px-4 py-2 border-2 border-[var(--ink)] text-[var(--ink)] text-xs font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors">
+                로그인
+              </button>
+            )
+          )}
         </div>
       </header>
 
@@ -481,6 +543,18 @@ export default function HomePage() {
 
         {/* ── 캘린더 ── */}
         <CalendarSection member={member} onLoginRequired={() => setShowLoginModal(true)} />
+
+        {/* ── 공유회 액션 ── */}
+        <div className="flex gap-0">
+          <button onClick={() => setShowSuggestModal(true)}
+            className="flex-1 py-3.5 border-2 border-[var(--ink)] bg-[var(--paper)] text-[var(--ink)] text-sm font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors">
+            공유자 추천하기
+          </button>
+          <Link href="/sessions/new"
+            className="flex-1 py-3.5 border-2 border-l-0 border-[var(--ink)] bg-[var(--yellow)] text-[var(--ink)] text-sm font-extrabold hover:opacity-80 transition-opacity text-center">
+            공유회 직접 열기
+          </Link>
+        </div>
 
         {/* ── 배지 랭킹 ── */}
         {(badgeTop3.length > 0 || badgeFeed.length > 0) && (
@@ -586,6 +660,10 @@ export default function HomePage() {
 
       {showLoginModal && (
         <LoginModal onClose={() => setShowLoginModal(false)} onSuccess={(m) => { setMember(m); setShowLoginModal(false); window.location.href = "/mypage"; }} />
+      )}
+
+      {showSuggestModal && (
+        <SuggestModal onClose={() => setShowSuggestModal(false)} />
       )}
     </div>
   );

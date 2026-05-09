@@ -121,12 +121,17 @@ export async function submitSnsVerification(
   const supabase = createAdminClient();
   const today = new Date().toISOString().split("T")[0];
 
-  // 오늘 SNS 인증 횟수 체크
-  const { data: limitRows } = await supabase
-    .from("daily_limits")
-    .select("sns_verifies,gifts_sent")
-    .eq("member_id", memberId)
-    .eq("date", today);
+  // URL 중복 체크
+  const { data: existing } = await supabase
+    .from("shell_requests")
+    .select("id")
+    .eq("url", url)
+    .eq("type", "SNS_VERIFY")
+    .limit(1);
+
+  if (existing && existing.length > 0) {
+    return { success: false, error: "이미 신청된 URL이에요." };
+  }
 
   const { error } = await supabase.from("shell_requests").insert({
     member_id: memberId,
@@ -146,6 +151,18 @@ export async function submitSkillShare(
   url: string
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = createAdminClient();
+
+  // URL 중복 체크
+  const { data: existing } = await supabase
+    .from("shell_requests")
+    .select("id")
+    .eq("url", url)
+    .eq("type", "SKILL_SHARE")
+    .limit(1);
+
+  if (existing && existing.length > 0) {
+    return { success: false, error: "이미 신청된 URL이에요." };
+  }
 
   const { error } = await supabase.from("shell_requests").insert({
     member_id: memberId,

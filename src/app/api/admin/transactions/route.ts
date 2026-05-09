@@ -5,6 +5,7 @@ import { checkAndNotifyRankingChanges } from "@/lib/ranking-notify";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const reason = searchParams.get("reason");
+  const member_id = searchParams.get("member_id");
 
   const supabase = createAdminClient();
 
@@ -28,6 +29,10 @@ export async function GET(request: NextRequest) {
 
   if (reason) {
     query = query.eq("reason", reason);
+  }
+
+  if (member_id) {
+    query = query.eq("member_id", member_id);
   }
 
   const { data, error } = await query;

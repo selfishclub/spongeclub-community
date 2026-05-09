@@ -274,10 +274,10 @@ export default function MembersPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-amber-900">멤버 관리</h1>
+        <h1 className="text-2xl font-extrabold text-[var(--ink)]">멤버 관리</h1>
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-4 py-2 text-sm bg-amber-600 text-white rounded-lg hover:bg-amber-700 font-medium"
+          className="px-4 py-2.5 text-xs font-extrabold bg-[var(--ink)] text-[var(--paper)] hover:opacity-90 transition-opacity"
         >
           + 멤버 추가
         </button>
@@ -289,12 +289,12 @@ export default function MembersPage() {
           placeholder="이름, Slack ID 검색..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm"
+          className="px-4 py-2.5 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm"
         />
         <select
           value={groupFilter}
           onChange={(e) => setGroupFilter(e.target.value)}
-          className="px-3 py-2 border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="px-3 py-2.5 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm"
         >
           <option value="">전체 조</option>
           {[1, 2, 3, 4, 5, 6].map((n) => (
@@ -304,7 +304,7 @@ export default function MembersPage() {
         <select
           value={activeFilter}
           onChange={(e) => setActiveFilter(e.target.value)}
-          className="px-3 py-2 border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="px-3 py-2.5 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm"
         >
           <option value="">전체 상태</option>
           <option value="active">활성</option>
@@ -313,18 +313,19 @@ export default function MembersPage() {
         <select
           value={slackFilter}
           onChange={(e) => setSlackFilter(e.target.value)}
-          className="px-3 py-2 border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="px-3 py-2.5 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm"
         >
           <option value="">Slack 전체</option>
           <option value="linked">연결됨</option>
           <option value="unlinked">미연결</option>
         </select>
       </div>
+
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-amber-600">
-          총 <strong>{filtered.length}</strong>명 / 전체 {members.length}명
+        <p className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest">
+          {filtered.length}명 / 전체 {members.length}명
           {selectedIds.size > 0 && (
-            <span className="ml-2 text-amber-800 font-medium">
+            <span className="ml-2 text-[var(--ink)]">
               ({selectedIds.size}명 선택됨)
             </span>
           )}
@@ -340,13 +341,13 @@ export default function MembersPage() {
                   alert("수정은 1명만 선택해주세요.");
                 }
               }}
-              className="px-3 py-1.5 text-xs bg-amber-50 text-amber-700 rounded border border-amber-200 hover:bg-amber-100"
+              className="px-3 py-1.5 text-xs font-bold border-2 border-[var(--ink)] text-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors"
             >
               수정
             </button>
             <button
               onClick={() => setShowBulkModal(true)}
-              className="px-3 py-1.5 text-xs bg-amber-600 text-white rounded hover:bg-amber-700"
+              className="px-3 py-1.5 text-xs font-bold bg-[var(--yellow)] text-[var(--ink)] hover:opacity-80 transition-opacity"
             >
               셸 조정
             </button>
@@ -365,13 +366,13 @@ export default function MembersPage() {
                 );
                 alert("PIN이 초기화되었습니다.");
               }}
-              className="px-3 py-1.5 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+              className="px-3 py-1.5 text-xs font-bold bg-[var(--ink-05)] text-[var(--ink-50)] hover:bg-[var(--ink-10)] transition-colors"
             >
               PIN 초기화
             </button>
             <button
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 text-xs text-amber-500 hover:text-amber-700"
+              className="px-3 py-1.5 text-xs text-[var(--ink-30)] hover:text-[var(--ink)]"
             >
               선택 해제
             </button>
@@ -379,56 +380,54 @@ export default function MembersPage() {
         )}
       </div>
 
-      <div className="bg-white rounded-lg border border-amber-200 overflow-hidden">
+      <div className="border-2 border-[var(--ink-10)] overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-amber-100">
+          <thead className="bg-[var(--ink-05)]">
             <tr>
               <th className="px-3 py-3 w-10">
                 <input
                   type="checkbox"
                   checked={filtered.length > 0 && filtered.every((m) => selectedIds.has(m.id))}
                   onChange={toggleSelectAll}
-                  className="rounded border-amber-300"
                 />
               </th>
-              <th className="text-left px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("name")}>이름{sortIndicator("name")}</th>
-              <th className="text-center px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("group_number")}>조{sortIndicator("group_number")}</th>
-              <th className="text-left px-4 py-3 text-amber-800">Slack ID</th>
-              <th className="text-right px-4 py-3 text-amber-800 cursor-pointer select-none" onClick={() => handleSort("shell_balance")}>🐚 잔고{sortIndicator("shell_balance")}</th>
-              <th className="text-center px-4 py-3 text-amber-800">상태</th>
+              <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider cursor-pointer select-none" onClick={() => handleSort("name")}>이름{sortIndicator("name")}</th>
+              <th className="text-center px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider cursor-pointer select-none" onClick={() => handleSort("group_number")}>조{sortIndicator("group_number")}</th>
+              <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">Slack ID</th>
+              <th className="text-right px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider cursor-pointer select-none" onClick={() => handleSort("shell_balance")}>잔고{sortIndicator("shell_balance")}</th>
+              <th className="text-center px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">상태</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((member) => (
-              <tr key={member.id} className={`border-t border-amber-100 ${selectedIds.has(member.id) ? "bg-amber-50" : ""}`}>
+              <tr key={member.id} className={`border-t border-[var(--ink-10)] hover:bg-[var(--yellow-dim)] transition-colors ${selectedIds.has(member.id) ? "bg-[var(--yellow-dim)]" : ""}`}>
                 <td className="px-3 py-3">
                   <input
                     type="checkbox"
                     checked={selectedIds.has(member.id)}
                     onChange={() => toggleSelect(member.id)}
-                    className="rounded border-amber-300"
                   />
                 </td>
-                <td className="px-4 py-3 font-medium text-amber-900">
+                <td className="px-4 py-3 font-bold text-[var(--ink)]">
                   {member.name}
                   {member.is_admin && (
-                    <span className="ml-2 text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded">
+                    <span className="ml-2 text-[10px] font-extrabold bg-[var(--yellow)] text-[var(--ink)] px-1.5 py-0.5 uppercase tracking-wider">
                       어드민
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-center text-amber-700">
+                <td className="px-4 py-3 text-center text-[var(--ink-50)]">
                   {member.group_number ? `${member.group_number}조` : "-"}
                 </td>
-                <td className="px-4 py-3 text-amber-700 text-xs font-mono">
+                <td className="px-4 py-3 text-[var(--ink-50)] text-xs font-mono">
                   {member.slack_user_id || "-"}
                 </td>
-                <td className="px-4 py-3 text-right font-bold text-amber-900">
+                <td className="px-4 py-3 text-right font-extrabold text-[var(--ink)] tabular-nums">
                   {member.shell_balance}
                 </td>
                 <td className="px-4 py-3 text-center">
                   <span
-                    className={`text-xs px-2 py-0.5 rounded ${member.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                    className={`text-[10px] font-extrabold px-2 py-0.5 uppercase tracking-wider ${member.is_active ? "bg-[var(--ink)] text-[var(--paper)]" : "bg-[var(--ink-10)] text-[var(--ink-30)]"}`}
                   >
                     {member.is_active ? "활성" : "비활성"}
                   </span>
@@ -438,143 +437,119 @@ export default function MembersPage() {
           </tbody>
         </table>
         {filtered.length === 0 && (
-          <p className="text-center py-8 text-amber-500">멤버가 없습니다.</p>
+          <p className="text-center py-8 text-[var(--ink-30)] text-sm">멤버가 없습니다.</p>
         )}
       </div>
 
       {/* 멤버 추가 모달 */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h2 className="text-lg font-bold text-amber-900 mb-4">
+        <div className="fixed inset-0 bg-[var(--ink)]/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[var(--paper)] p-7 w-full max-w-md mx-4 shadow-2xl">
+            <h2 className="text-lg font-extrabold text-[var(--ink)] mb-5">
               멤버 추가
             </h2>
 
             {addError && (
-              <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded mb-4">
+              <p className="text-sm text-red-500 font-medium bg-red-50 px-3 py-2 mb-4">
                 {addError}
               </p>
             )}
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               이름 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={addForm.name}
-              onChange={(e) =>
-                setAddForm({ ...addForm, name: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
               placeholder="홍길동"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               전화번호 뒷4자리 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               maxLength={4}
               value={addForm.phone_last4}
-              onChange={(e) =>
-                setAddForm({ ...addForm, phone_last4: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setAddForm({ ...addForm, phone_last4: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
               placeholder="1234"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               이메일 (선택)
             </label>
             <input
               type="email"
               value={addForm.email}
-              onChange={(e) =>
-                setAddForm({ ...addForm, email: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
               placeholder="example@email.com"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               Slack User ID (선택)
             </label>
             <input
               type="text"
               value={addForm.slack_user_id}
-              onChange={(e) =>
-                setAddForm({ ...addForm, slack_user_id: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setAddForm({ ...addForm, slack_user_id: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
               placeholder="U0123456789"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               조 (선택)
             </label>
             <select
               value={addForm.group_number}
-              onChange={(e) =>
-                setAddForm({ ...addForm, group_number: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setAddForm({ ...addForm, group_number: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
             >
               <option value="">선택 안 함</option>
               {[1, 2, 3, 4, 5, 6].map((n) => (
-                <option key={n} value={String(n)}>
-                  {n}조
-                </option>
+                <option key={n} value={String(n)}>{n}조</option>
               ))}
             </select>
 
             <div className="flex items-center gap-4 mb-4">
-              <label className="flex items-center gap-2 text-sm text-amber-800 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-[var(--ink-50)] cursor-pointer font-medium">
                 <input
                   type="checkbox"
                   checked={addForm.survey_completed}
-                  onChange={(e) =>
-                    setAddForm({
-                      ...addForm,
-                      survey_completed: e.target.checked,
-                    })
-                  }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  onChange={(e) => setAddForm({ ...addForm, survey_completed: e.target.checked })}
                 />
                 사전 설문 완료
               </label>
-              <label className="flex items-center gap-2 text-sm text-amber-800 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-[var(--ink-50)] cursor-pointer font-medium">
                 <input
                   type="checkbox"
                   checked={addForm.is_admin}
-                  onChange={(e) =>
-                    setAddForm({ ...addForm, is_admin: e.target.checked })
-                  }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  onChange={(e) => setAddForm({ ...addForm, is_admin: e.target.checked })}
                 />
                 어드민
               </label>
             </div>
 
             {addForm.survey_completed && (
-              <p className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded mb-4">
-                🐚 사전 설문 완료 시 가입 보너스 10셸이 자동 지급됩니다.
+              <p className="text-xs text-[var(--ink-50)] bg-[var(--yellow-dim)] px-3 py-2 mb-4 font-medium">
+                사전 설문 완료 시 가입 보너스 10셸이 자동 지급됩니다.
               </p>
             )}
 
             <div className="flex gap-3 justify-end">
               <button
-                onClick={() => {
-                  setShowAddModal(false);
-                  setAddError("");
-                }}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                onClick={() => { setShowAddModal(false); setAddError(""); }}
+                className="px-4 py-2.5 text-sm text-[var(--ink-30)] hover:text-[var(--ink)] font-medium"
               >
                 취소
               </button>
               <button
                 onClick={handleAdd}
                 disabled={loading || !addForm.name || !addForm.phone_last4}
-                className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50"
+                className="px-4 py-2.5 text-sm font-extrabold bg-[var(--ink)] text-[var(--paper)] hover:opacity-90 disabled:opacity-40 transition-opacity"
               >
                 {loading ? "처리 중..." : "등록하기"}
               </button>
@@ -585,103 +560,85 @@ export default function MembersPage() {
 
       {/* 멤버 수정 모달 */}
       {editModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h2 className="text-lg font-bold text-amber-900 mb-4">
-              멤버 수정 — {editModal.name}
+        <div className="fixed inset-0 bg-[var(--ink)]/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[var(--paper)] p-7 w-full max-w-md mx-4 shadow-2xl">
+            <h2 className="text-lg font-extrabold text-[var(--ink)] mb-5">
+              멤버 수정 -- {editModal.name}
             </h2>
 
             {editError && (
-              <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded mb-4">
+              <p className="text-sm text-red-500 font-medium bg-red-50 px-3 py-2 mb-4">
                 {editError}
               </p>
             )}
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               이름 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={editForm.name}
-              onChange={(e) =>
-                setEditForm({ ...editForm, name: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               전화번호 뒷4자리 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               maxLength={4}
               value={editForm.phone_last4}
-              onChange={(e) =>
-                setEditForm({ ...editForm, phone_last4: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setEditForm({ ...editForm, phone_last4: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               이메일
             </label>
             <input
               type="email"
               value={editForm.email}
-              onChange={(e) =>
-                setEditForm({ ...editForm, email: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               Slack User ID
             </label>
             <input
               type="text"
               value={editForm.slack_user_id}
-              onChange={(e) =>
-                setEditForm({ ...editForm, slack_user_id: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setEditForm({ ...editForm, slack_user_id: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">조</label>
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">조</label>
             <select
               value={editForm.group_number}
-              onChange={(e) =>
-                setEditForm({ ...editForm, group_number: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              onChange={(e) => setEditForm({ ...editForm, group_number: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
             >
               <option value="">선택 안 함</option>
               {[1, 2, 3, 4, 5, 6].map((n) => (
-                <option key={n} value={String(n)}>
-                  {n}조
-                </option>
+                <option key={n} value={String(n)}>{n}조</option>
               ))}
             </select>
 
             <div className="flex items-center gap-4 mb-6">
-              <label className="flex items-center gap-2 text-sm text-amber-800 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-[var(--ink-50)] cursor-pointer font-medium">
                 <input
                   type="checkbox"
                   checked={editForm.is_admin}
-                  onChange={(e) =>
-                    setEditForm({ ...editForm, is_admin: e.target.checked })
-                  }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  onChange={(e) => setEditForm({ ...editForm, is_admin: e.target.checked })}
                 />
                 어드민
               </label>
-              <label className="flex items-center gap-2 text-sm text-amber-800 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-[var(--ink-50)] cursor-pointer font-medium">
                 <input
                   type="checkbox"
                   checked={editForm.is_active}
-                  onChange={(e) =>
-                    setEditForm({ ...editForm, is_active: e.target.checked })
-                  }
-                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-400"
+                  onChange={(e) => setEditForm({ ...editForm, is_active: e.target.checked })}
                 />
                 활성
               </label>
@@ -689,18 +646,15 @@ export default function MembersPage() {
 
             <div className="flex gap-3 justify-end">
               <button
-                onClick={() => {
-                  setEditModal(null);
-                  setEditError("");
-                }}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                onClick={() => { setEditModal(null); setEditError(""); }}
+                className="px-4 py-2.5 text-sm text-[var(--ink-30)] hover:text-[var(--ink)] font-medium"
               >
                 취소
               </button>
               <button
                 onClick={handleEdit}
                 disabled={loading || !editForm.name || !editForm.phone_last4}
-                className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50"
+                className="px-4 py-2.5 text-sm font-extrabold bg-[var(--ink)] text-[var(--paper)] hover:opacity-90 disabled:opacity-40 transition-opacity"
               >
                 {loading ? "처리 중..." : "저장하기"}
               </button>
@@ -711,48 +665,48 @@ export default function MembersPage() {
 
       {/* 일괄 셸 조정 모달 */}
       {showBulkModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h2 className="text-lg font-bold text-amber-900 mb-4">
-              셸 일괄 조정 — {selectedIds.size}명 선택됨
+        <div className="fixed inset-0 bg-[var(--ink)]/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[var(--paper)] p-7 w-full max-w-md mx-4 shadow-2xl">
+            <h2 className="text-lg font-extrabold text-[var(--ink)] mb-2">
+              셸 일괄 조정
             </h2>
-            <p className="text-xs text-amber-600 mb-4">
-              {members.filter((m) => selectedIds.has(m.id)).map((m) => m.name).join(", ")}
+            <p className="text-xs text-[var(--ink-30)] mb-5 font-medium">
+              {selectedIds.size}명 선택됨: {members.filter((m) => selectedIds.has(m.id)).map((m) => m.name).join(", ")}
             </p>
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               조정 수량 (양수: 지급 / 음수: 차감)
             </label>
             <input
               type="number"
               value={bulkAmount}
               onChange={(e) => setBulkAmount(e.target.value)}
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-4"
               placeholder="예: 10 또는 -5"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               사유 (필수)
             </label>
             <input
               type="text"
               value={bulkReason}
               onChange={(e) => setBulkReason(e.target.value)}
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-6 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-6"
               placeholder="예: 1주차 활동 보너스"
             />
 
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => { setShowBulkModal(false); setBulkAmount(""); setBulkReason(""); }}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                className="px-4 py-2.5 text-sm text-[var(--ink-30)] hover:text-[var(--ink)] font-medium"
               >
                 취소
               </button>
               <button
                 onClick={handleBulkAdjust}
                 disabled={bulkLoading || !bulkAmount || !bulkReason}
-                className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50"
+                className="px-4 py-2.5 text-sm font-extrabold bg-[var(--yellow)] text-[var(--ink)] hover:opacity-80 disabled:opacity-40 transition-opacity"
               >
                 {bulkLoading ? "처리 중..." : `${selectedIds.size}명 일괄 조정`}
               </button>
@@ -763,48 +717,48 @@ export default function MembersPage() {
 
       {/* 셸 조정 모달 */}
       {adjustModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-            <h2 className="text-lg font-bold text-amber-900 mb-4">
-              🐚 셸 조정 — {adjustModal.name}
+        <div className="fixed inset-0 bg-[var(--ink)]/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[var(--paper)] p-7 w-full max-w-md mx-4 shadow-2xl">
+            <h2 className="text-lg font-extrabold text-[var(--ink)] mb-2">
+              셸 조정 -- {adjustModal.name}
             </h2>
-            <p className="text-sm text-amber-600 mb-4">
+            <p className="text-sm text-[var(--ink-30)] mb-5 font-medium">
               현재 잔고: {adjustModal.shell_balance}개
             </p>
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               조정 수량 (양수: 지급 / 음수: 차감)
             </label>
             <input
               type="number"
               value={adjustAmount}
               onChange={(e) => setAdjustAmount(e.target.value)}
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-4"
               placeholder="예: 10 또는 -5"
             />
 
-            <label className="block text-sm text-amber-800 mb-1">
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">
               사유 (필수)
             </label>
             <input
               type="text"
               value={adjustReason}
               onChange={(e) => setAdjustReason(e.target.value)}
-              className="w-full px-3 py-2 border border-amber-300 rounded mb-6 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-6"
               placeholder="예: 가입 보너스 추가 지급"
             />
 
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setAdjustModal(null)}
-                className="px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
+                className="px-4 py-2.5 text-sm text-[var(--ink-30)] hover:text-[var(--ink)] font-medium"
               >
                 취소
               </button>
               <button
                 onClick={handleAdjust}
                 disabled={loading || !adjustAmount || !adjustReason}
-                className="px-4 py-2 text-sm bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50"
+                className="px-4 py-2.5 text-sm font-extrabold bg-[var(--yellow)] text-[var(--ink)] hover:opacity-80 disabled:opacity-40 transition-opacity"
               >
                 {loading ? "처리 중..." : "조정하기"}
               </button>
