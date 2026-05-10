@@ -107,9 +107,11 @@ export async function sendShellGift(
     { onConflict: "member_id,date" }
   );
 
-  checkAndNotifyRankingChanges().catch(() => {});
-  checkAchievements(senderId).catch(() => {});
-  checkAchievements(receiverId).catch(() => {});
+  await Promise.allSettled([
+    checkAndNotifyRankingChanges().catch((e) => console.error("[ranking-notify] sendShellGift:", e)),
+    checkAchievements(senderId).catch((e) => console.error("[achievements] sender:", e)),
+    checkAchievements(receiverId).catch((e) => console.error("[achievements] receiver:", e)),
+  ]);
   return { success: true, giftCount: todayCount + 1 };
 }
 
@@ -187,8 +189,10 @@ export async function approveShellRequest(requestId: string, adminId: string | n
     .update({ status: "APPROVED", reviewed_by: adminId, reviewed_at: new Date().toISOString() })
     .eq("id", requestId);
 
-  checkAndNotifyRankingChanges().catch(() => {});
-  checkAchievements(req.member_id).catch(() => {});
+  await Promise.allSettled([
+    checkAndNotifyRankingChanges().catch((e) => console.error("[ranking-notify] approveShellRequest:", e)),
+    checkAchievements(req.member_id).catch((e) => console.error("[achievements] approveShellRequest:", e)),
+  ]);
   return { success: true };
 }
 
@@ -230,6 +234,8 @@ export async function adminAdjustShell(
     p_amount: amount,
   });
 
-  checkAndNotifyRankingChanges().catch(() => {});
+  await checkAndNotifyRankingChanges().catch((e) =>
+    console.error("[ranking-notify] adminAdjustShell:", e)
+  );
   return { success: true };
 }
