@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface Member {
   id: string;
@@ -409,7 +410,9 @@ export default function MembersPage() {
                   />
                 </td>
                 <td className="px-4 py-3 font-bold text-[var(--ink)]">
-                  {member.name}
+                  <Link href={`/admin/members/${member.id}`} className="hover:underline">
+                    {member.name}
+                  </Link>
                   {member.is_admin && (
                     <span className="ml-2 text-[10px] font-extrabold bg-[var(--yellow)] text-[var(--ink)] px-1.5 py-0.5 uppercase tracking-wider">
                       어드민
