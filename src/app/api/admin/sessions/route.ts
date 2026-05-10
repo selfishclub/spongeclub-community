@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
         .from("session_attendees")
         .select("id", { count: "exact", head: true })
         .eq("session_id", s.id)
-        .eq("status", "REGISTERED");
+        .in("status", ["REGISTERED", "ATTENDED"]);
       return { ...s, attendee_count: count || 0 };
     })
   );

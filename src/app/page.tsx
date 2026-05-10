@@ -244,6 +244,38 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const [vodRequested, setVodRequested] = useState(false);
+  const [vodLoading, setVodLoading] = useState(false);
+  const [vodError, setVodError] = useState("");
+  const [vodSuccess, setVodSuccess] = useState(false);
+
+  const vodSuggestedCost = session.entry_cost * 2;
+
+  // 본인이 이 세션 VOD 를 이미 신청했는지 체크
+  useEffect(() => {
+    if (!member) { setVodRequested(false); return; }
+    fetch(`/api/sessions/${session.id}/vod-request`)
+      .then((r) => r.json())
+      .then((data) => setVodRequested(!!data.requested))
+      .catch(() => {});
+  }, [member, session.id]);
+
+  const handleVodRequest = async () => {
+    if (!member) { onLoginRequired(); return; }
+    setVodLoading(true); setVodError("");
+    try {
+      const res = await fetch(`/api/sessions/${session.id}/vod-request`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        setVodError(data.error || "신청에 실패했어요.");
+        if (res.status === 409) setVodRequested(true);
+      } else {
+        setVodSuccess(true);
+        setVodRequested(true);
+      }
+    } catch { setVodError("네트워크 오류가 발생했어요."); }
+    finally { setVodLoading(false); }
+  };
 
   const handleRegister = async (memberId: string) => {
     setShowPicker(false); setRegistering(true); setError("");
@@ -279,7 +311,9 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
             ))}
           </div>
           {error && <p className="text-sm text-red-500 font-medium mb-3">{error}</p>}
-          {success ? (
+          {session.status === "COMPLETED" ? (
+            <div className="text-center py-4 bg-[var(--ink-05)]"><p className="text-[var(--ink-50)] font-extrabold">완료된 공유회입니다</p></div>
+          ) : success ? (
             <div className="text-center py-4 bg-[var(--yellow)]"><p className="text-[var(--ink)] font-extrabold">신청 완료!</p></div>
           ) : (
             <button onClick={() => member ? handleRegister(member.id) : setShowPicker(true)} disabled={registering}
@@ -287,6 +321,28 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
               {registering ? "신청 중..." : `${session.entry_cost} 셸로 신청하기`}
             </button>
           )}
+
+          {/* VOD 구매 신청 */}
+          <div className="mt-3 pt-3 border-t border-[var(--ink-10)]">
+            {vodError && <p className="text-xs text-red-500 font-medium mb-2">{vodError}</p>}
+            {vodRequested || vodSuccess ? (
+              <div className="text-center py-3 bg-[var(--ink-05)]">
+                <p className="text-[var(--ink-50)] text-xs font-extrabold">📼 VOD 신청 완료 — 어드민 검토 중</p>
+              </div>
+            ) : (
+              <button
+                onClick={handleVodRequest}
+                disabled={vodLoading}
+                className="w-full py-3 bg-[var(--paper)] border-2 border-[var(--ink)] text-[var(--ink)] font-bold text-sm hover:bg-[var(--ink-05)] disabled:opacity-40 transition-colors"
+              >
+                {vodLoading ? "신청 중..." : `📼 VOD 구매 신청 (예상 ${vodSuggestedCost}🐚)`}
+              </button>
+            )}
+            <p className="mt-2 text-[10px] text-[var(--ink-30)] text-center leading-snug">
+              신청만 무료. 어드민이 영상 권한을 부여할 때 셸이 차감됩니다.
+            </p>
+          </div>
+
           <button onClick={onClose} className="mt-3 w-full text-center text-sm text-[var(--ink-30)] hover:text-[var(--ink)]">닫기</button>
         </div>
       </div>
@@ -424,6 +480,7 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
   const [loading, setLoading] = useState(true);
   const [selectedSession, setSelectedSession] = useState<SessionDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const fetchSessions = useCallback(async () => {
     setLoading(true);
@@ -478,17 +535,29 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
               const daySessions = getSessionsForDay(day);
               const isCurrentMonth = isSameMonth(day, currentMonth);
               const isToday = isSameDay(day, new Date());
+              const hasCompletedSession = daySessions.some((s) => s.status === "COMPLETED");
+              const hasUpcomingSession = !isToday && daySessions.some((s) => s.status === "APPROVED");
+              const dayBoxClass = isToday
+                ? "bg-[var(--yellow)] text-[var(--ink)] w-6 h-6 flex items-center justify-center mx-auto"
+                : hasUpcomingSession
+                ? "border-2 border-[var(--yellow)] text-[var(--ink)] w-6 h-6 flex items-center justify-center mx-auto"
+                : hasCompletedSession
+                ? "bg-[var(--ink-10)] text-[var(--ink-50)] w-6 h-6 flex items-center justify-center mx-auto"
+                : "text-[var(--ink-50)]";
               return (
                 <div key={day.toISOString()} className={`min-h-[60px] p-1.5 border-r-2 border-b-2 border-[var(--ink-10)] ${!isCurrentMonth ? "opacity-20" : ""}`}>
-                  <div className={`text-[11px] text-center mb-1 font-bold ${isToday ? "bg-[var(--yellow)] text-[var(--ink)] w-6 h-6 flex items-center justify-center mx-auto" : "text-[var(--ink-50)]"}`}>
+                  <div className={`text-[11px] text-center mb-1 font-bold ${dayBoxClass}`}>
                     {format(day, "d")}
                   </div>
                   <div className="space-y-0.5">
-                    {daySessions.slice(0, 2).map((s) => (
-                      <button key={s.id} onClick={() => handleSessionClick(s)} className="w-full text-left px-1 py-0.5 hover:bg-[var(--yellow-dim)] transition-colors" title={s.title}>
-                        <span className="text-[9px] font-semibold text-[var(--ink)] truncate block leading-tight">{s.title}</span>
-                      </button>
-                    ))}
+                    {daySessions.slice(0, 2).map((s) => {
+                      const isCompleted = s.status === "COMPLETED";
+                      return (
+                        <button key={s.id} onClick={() => handleSessionClick(s)} className={`w-full text-left px-1 py-0.5 hover:bg-[var(--yellow-dim)] transition-colors ${isCompleted ? "opacity-50" : ""}`} title={s.title}>
+                          <span className={`text-[9px] font-semibold text-[var(--ink)] truncate block leading-tight ${isCompleted ? "line-through" : ""}`}>{s.title}</span>
+                        </button>
+                      );
+                    })}
                     {daySessions.length > 2 && <p className="text-[9px] text-[var(--ink-30)] text-center font-bold">+{daySessions.length - 2}</p>}
                   </div>
                 </div>
@@ -500,21 +569,26 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
             <div className="mt-8">
               <h3 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-4">이번 달 공유회</h3>
               <div className="space-y-1">
-                {sessions.sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime()).map((s) => {
+                {(() => {
+                  const sortedDesc = [...sessions].sort((a, b) => new Date(b.scheduled_at).getTime() - new Date(a.scheduled_at).getTime());
+                  return (showAll ? sortedDesc : sortedDesc.slice(0, 3));
+                })().map((s) => {
                   const now = new Date();
                   const sessionDate = parseISO(s.scheduled_at);
                   const isPast = sessionDate < now;
                   const isFull = s.capacity !== null && s.attendee_count >= s.capacity;
+                  const isCompleted = s.status === "COMPLETED";
 
                   return (
                     <button key={s.id} onClick={() => handleSessionClick(s)}
-                      className={`w-full text-left px-4 py-3.5 border-b border-[var(--ink-10)] hover:bg-[var(--yellow-dim)] transition-colors ${isPast ? "opacity-40" : ""}`}>
+                      className={`w-full text-left px-4 py-3.5 border-b border-[var(--ink-10)] hover:bg-[var(--yellow-dim)] transition-colors ${isPast || isCompleted ? "opacity-40" : ""}`}>
                       <div className="flex gap-3 items-center">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[var(--ink)] text-[var(--paper)] px-1.5 py-0.5">{CATEGORY_LABELS[s.category]}</span>
-                            {!isPast && !isFull && <span className="text-[10px] font-extrabold text-[var(--ink)] bg-[var(--yellow)] px-1.5 py-0.5">모집 중</span>}
-                            {isFull && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">마감</span>}
+                            {isCompleted && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">완료</span>}
+                            {!isCompleted && !isPast && !isFull && <span className="text-[10px] font-extrabold text-[var(--ink)] bg-[var(--yellow)] px-1.5 py-0.5">모집 중</span>}
+                            {!isCompleted && isFull && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">마감</span>}
                           </div>
                           <p className="text-sm font-bold text-[var(--ink)] leading-snug">{s.title}</p>
                           <p className="text-xs text-[var(--ink-30)] mt-0.5">{s.host_name}</p>
@@ -528,6 +602,14 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                   );
                 })}
               </div>
+              {sessions.length > 3 && (
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="mt-3 w-full py-2.5 text-xs font-extrabold text-[var(--ink-50)] hover:text-[var(--ink)] uppercase tracking-widest border border-[var(--ink-10)] hover:bg-[var(--yellow-dim)] transition-colors"
+                >
+                  {showAll ? "접기" : `더보기 (${sessions.length - 3}개)`}
+                </button>
+              )}
             </div>
           )}
         </>

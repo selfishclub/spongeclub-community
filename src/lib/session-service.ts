@@ -60,7 +60,7 @@ export async function getApprovedSessions(year: number, month: number) {
       entry_cost, capacity, status, zoom_link,
       host:members!sessions_host_id_fkey(id, name)
     `)
-    .eq("status", "APPROVED")
+    .in("status", ["APPROVED", "COMPLETED"])
     .gte("scheduled_at", startDate)
     .lte("scheduled_at", endDate)
     .order("scheduled_at", { ascending: true });
@@ -90,14 +90,14 @@ export async function getSessionDetail(sessionId: string) {
     .from("session_attendees")
     .select("id", { count: "exact", head: true })
     .eq("session_id", sessionId)
-    .eq("status", "REGISTERED");
+    .in("status", ["REGISTERED", "ATTENDED"]);
 
   // 참석자 목록
   const { data: attendees } = await supabase
     .from("session_attendees")
     .select("member:members!session_attendees_member_id_fkey(id, name)")
     .eq("session_id", sessionId)
-    .eq("status", "REGISTERED");
+    .in("status", ["REGISTERED", "ATTENDED"]);
 
   return {
     ...session,
@@ -131,7 +131,7 @@ export async function registerForSession(memberId: string, sessionId: string) {
     .select("id")
     .eq("session_id", sessionId)
     .eq("member_id", memberId)
-    .eq("status", "REGISTERED")
+    .in("status", ["REGISTERED", "ATTENDED"])
     .single();
 
   if (existing) return { success: false, error: "ALREADY_REGISTERED" };
@@ -142,7 +142,7 @@ export async function registerForSession(memberId: string, sessionId: string) {
       .from("session_attendees")
       .select("id", { count: "exact", head: true })
       .eq("session_id", sessionId)
-      .eq("status", "REGISTERED");
+      .in("status", ["REGISTERED", "ATTENDED"]);
 
     if ((count || 0) >= session.capacity) {
       return { success: false, error: "FULL" };

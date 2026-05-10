@@ -128,32 +128,45 @@ async function saveSnapshot(type: string, rankings: RankEntry[]) {
   }
 }
 
-// 랭킹 변동 감지 + Slack 알림
+// 랭킹 변동 감지 — Top 3 에 영향이 있는 변동만 추출
+// (Top 3 내부 변동, Top 3 신규 진입, Top 3 이탈)
+const TOP_N = 3;
+
 function detectChanges(oldRanking: RankEntry[], newRanking: RankEntry[]): string[] {
   const changes: string[] = [];
 
   const oldMap = new Map(oldRanking.map((r) => [r.id, r.rank]));
   const newMap = new Map(newRanking.map((r) => [r.id, r.rank]));
+  const nameMap = new Map<string, string>();
+  for (const r of [...oldRanking, ...newRanking]) nameMap.set(r.id, r.name);
 
-  for (const entry of newRanking) {
-    const oldRank = oldMap.get(entry.id);
+  const allIds = new Set<string>([...oldMap.keys(), ...newMap.keys()]);
+
+  for (const id of allIds) {
+    const oldRank = oldMap.get(id);
+    const newRank = newMap.get(id);
+
+    // 순위 변동 없음
+    if (oldRank === newRank) continue;
+
+    const wasInTop = oldRank !== undefined && oldRank <= TOP_N;
+    const isInTop = newRank !== undefined && newRank <= TOP_N;
+
+    // Top 3 와 무관한 변동은 무시 (예: 5→4, 8→7, 11→4 등)
+    if (!wasInTop && !isInTop) continue;
+
+    const name = nameMap.get(id) || "(알 수 없음)";
+
     if (oldRank === undefined) {
-      // 새로 Top 10 진입
-      changes.push(`${entry.name}님이 ${entry.rank}위에 새로 진입!`);
-    } else if (oldRank !== entry.rank) {
-      const diff = oldRank - entry.rank;
-      if (diff > 0) {
-        changes.push(`${entry.name}님이 ${oldRank}위 → ${entry.rank}위로 상승!`);
-      } else {
-        changes.push(`${entry.name}님이 ${oldRank}위 → ${entry.rank}위로 하락`);
-      }
-    }
-  }
-
-  // Top 10에서 밀려난 경우
-  for (const entry of oldRanking) {
-    if (!newMap.has(entry.id)) {
-      changes.push(`${entry.name}님이 Top 10에서 이탈`);
+      // 순위권 밖에서 Top 3 안으로 신규 진입
+      changes.push(`${name}님이 ${newRank}위에 새로 진입!`);
+    } else if (newRank === undefined) {
+      // Top 3 였다가 순위권(Top 10) 밖으로 이탈
+      changes.push(`${name}님이 ${oldRank}위에서 순위권 이탈`);
+    } else if (newRank < oldRank) {
+      changes.push(`${name}님이 ${oldRank}위 → ${newRank}위로 상승!`);
+    } else {
+      changes.push(`${name}님이 ${oldRank}위 → ${newRank}위로 하락`);
     }
   }
 

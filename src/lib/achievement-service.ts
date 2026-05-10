@@ -57,7 +57,7 @@ async function getMemberStats(memberId: string) {
         .from("session_attendees")
         .select("id", { count: "exact", head: true })
         .eq("member_id", memberId)
-        .eq("status", "REGISTERED"),
+        .in("status", ["REGISTERED", "ATTENDED"]),
       // 셸 보낸 횟수 (송신자로서)
       supabase
         .from("shell_transactions")

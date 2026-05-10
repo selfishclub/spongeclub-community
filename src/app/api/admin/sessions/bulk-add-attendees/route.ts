@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       .select("id")
       .eq("session_id", session_id)
       .eq("member_id", member.id)
-      .eq("status", "REGISTERED")
+      .in("status", ["REGISTERED", "ATTENDED"])
       .single();
 
     if (existing) {

@@ -27,12 +27,28 @@ interface Grant {
   members: { id: string; name: string; shell_balance: number } | null;
 }
 
+interface VodRequest {
+  id: string;
+  status: string;
+  created_at: string;
+  session_id: string | null;
+  session_title: string;
+  session_scheduled_at: string | null;
+  session_entry_cost: number;
+  vod_suggested_cost: number;
+  host_name: string;
+  member_id: string | null;
+  member_name: string;
+}
+
 export default function AdminVideosPage() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [grantsModalId, setGrantsModalId] = useState<string | null>(null);
+  const [vodRequests, setVodRequests] = useState<VodRequest[]>([]);
+  const [vodLoading, setVodLoading] = useState(true);
 
   const loadVideos = () => {
     fetch("/api/admin/videos")
@@ -43,7 +59,33 @@ export default function AdminVideosPage() {
       });
   };
 
-  useEffect(loadVideos, []);
+  const loadVodRequests = () => {
+    setVodLoading(true);
+    fetch("/api/admin/vod-requests?status=PENDING")
+      .then((r) => r.json())
+      .then((data) => {
+        setVodRequests(data.requests || []);
+        setVodLoading(false);
+      })
+      .catch(() => setVodLoading(false));
+  };
+
+  useEffect(() => {
+    loadVideos();
+    loadVodRequests();
+  }, []);
+
+  const handleVodAction = async (id: string, action: "resolve" | "reject") => {
+    const verb = action === "resolve" ? "처리 완료로 표시" : "거부";
+    if (!confirm(`이 신청을 ${verb}하시겠어요?`)) return;
+    const res = await fetch("/api/admin/vod-requests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, action }),
+    });
+    if (res.ok) loadVodRequests();
+    else alert("처리 실패");
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm("이 영상을 삭제하시겠어요? 부여된 권한도 모두 사라집니다 (셸 환불 없음)")) return;
@@ -67,6 +109,58 @@ export default function AdminVideosPage() {
       <p className="text-sm text-amber-900 mb-6">
         🎬 유튜브에 <b>일부 공개(Unlisted)</b>로 업로드한 영상 링크를 등록하세요. 어드민이 멤버에게 시청 권한을 부여하면 해당 멤버의 셸이 자동 차감됩니다.
       </p>
+
+      {/* VOD 신청 대기 목록 */}
+      <div className="mb-8">
+        <h2 className="text-lg font-bold text-amber-900 mb-3 flex items-center gap-2">
+          📼 VOD 신청 대기
+          {vodRequests.length > 0 && (
+            <span className="text-xs px-2 py-0.5 bg-red-500 text-white rounded-full">{vodRequests.length}</span>
+          )}
+        </h2>
+        {vodLoading ? (
+          <p className="text-amber-800 text-sm">로딩 중...</p>
+        ) : vodRequests.length === 0 ? (
+          <p className="text-amber-800 text-sm py-4 text-center bg-white border border-amber-200 rounded-lg">신청 대기 중인 VOD 가 없어요</p>
+        ) : (
+          <div className="space-y-2">
+            {vodRequests.map((r) => (
+              <div key={r.id} className="bg-white border border-amber-200 rounded-lg p-4 flex items-center justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-amber-900 truncate">{r.session_title}</h3>
+                    <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-900 rounded">제안가 {r.vod_suggested_cost}🐚</span>
+                  </div>
+                  <div className="flex flex-wrap gap-3 text-xs text-amber-800 mt-1">
+                    <span>👤 신청자: <b>{r.member_name}</b></span>
+                    <span>🎤 진행자: {r.host_name}</span>
+                    {r.session_scheduled_at && (
+                      <span>📅 {new Date(r.session_scheduled_at).toLocaleString("ko-KR")}</span>
+                    )}
+                    <span className="text-amber-600">신청: {new Date(r.created_at).toLocaleString("ko-KR")}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2 flex-shrink-0">
+                  <button
+                    onClick={() => handleVodAction(r.id, "resolve")}
+                    className="px-3 py-1.5 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+                  >
+                    처리 완료
+                  </button>
+                  <button
+                    onClick={() => handleVodAction(r.id, "reject")}
+                    className="px-3 py-1.5 border border-red-300 text-red-600 rounded text-sm hover:bg-red-50"
+                  >
+                    거부
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <h2 className="text-lg font-bold text-amber-900 mb-3">📺 등록된 영상</h2>
 
       {loading ? (
         <p className="text-amber-800">로딩 중...</p>
