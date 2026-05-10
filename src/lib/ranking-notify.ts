@@ -115,12 +115,17 @@ async function getSnapshot(type: string): Promise<RankEntry[] | null> {
 
 async function saveSnapshot(type: string, rankings: RankEntry[]) {
   const supabase = createAdminClient();
-  await supabase
+  const { error } = await supabase
     .from("ranking_snapshots")
     .upsert(
       { type, rankings, updated_at: new Date().toISOString() },
       { onConflict: "type" }
     );
+  if (error) {
+    console.error(`[ranking-notify] saveSnapshot(${type}) 실패:`, error);
+  } else {
+    console.log(`[ranking-notify] saveSnapshot(${type}) OK (${rankings.length}건)`);
+  }
 }
 
 // 랭킹 변동 감지 + Slack 알림
@@ -157,21 +162,25 @@ function detectChanges(oldRanking: RankEntry[], newRanking: RankEntry[]): string
 
 // 메인: 랭킹 변동 체크 후 Slack 알림
 export async function checkAndNotifyRankingChanges() {
+  console.log("[ranking-notify] 시작");
   try {
     const [individualRanking, groupRanking] = await Promise.all([
       computeIndividualRanking(),
       computeGroupRanking(),
     ]);
+    console.log(`[ranking-notify] 계산 완료 — 개인 ${individualRanking.length} / 조 ${groupRanking.length}`);
 
     const [oldIndividual, oldGroup] = await Promise.all([
       getSnapshot("individual"),
       getSnapshot("group"),
     ]);
+    console.log(`[ranking-notify] 이전 스냅샷 로드 — 개인 ${oldIndividual?.length ?? "null"} / 조 ${oldGroup?.length ?? "null"}`);
 
     const messages: string[] = [];
 
     if (oldIndividual) {
       const individualChanges = detectChanges(oldIndividual, individualRanking);
+      console.log(`[ranking-notify] 개인 변동 ${individualChanges.length}건`);
       if (individualChanges.length > 0) {
         messages.push("*🏆 개인 누적 랭킹 변동*\n" + individualChanges.map((c) => `• ${c}`).join("\n"));
       }
@@ -179,6 +188,7 @@ export async function checkAndNotifyRankingChanges() {
 
     if (oldGroup) {
       const groupChanges = detectChanges(oldGroup, groupRanking);
+      console.log(`[ranking-notify] 조 변동 ${groupChanges.length}건`);
       if (groupChanges.length > 0) {
         messages.push("*🏆 조별 누적 랭킹 변동*\n" + groupChanges.map((c) => `• ${c}`).join("\n"));
       }
@@ -192,13 +202,19 @@ export async function checkAndNotifyRankingChanges() {
 
     // 변동이 있으면 Slack 알림
     if (messages.length > 0) {
+      console.log(`[ranking-notify] Slack 발송 시도 → ${RANKING_NOTIFY_CHANNEL}`);
       const slackClient = getSlackClient();
-      await slackClient.chat.postMessage({
+      const result = await slackClient.chat.postMessage({
         channel: RANKING_NOTIFY_CHANNEL,
         text: messages.join("\n\n"),
       });
+      console.log(`[ranking-notify] Slack 발송 결과: ok=${result.ok} ts=${result.ts}`);
+    } else {
+      console.log("[ranking-notify] 변동 없음 — Slack 미발송");
     }
+    console.log("[ranking-notify] 종료");
   } catch (e) {
-    console.error("[랭킹 알림] 오류:", e);
+    console.error("[ranking-notify] 오류:", e);
+    throw e;
   }
 }
