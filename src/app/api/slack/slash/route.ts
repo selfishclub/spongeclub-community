@@ -170,12 +170,13 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    case "/공유":
     case "/스킬공유": {
       const url = extractUrl(text);
       if (!url) {
         return NextResponse.json({
           response_type: "ephemeral",
-          text: "사용법: `/스킬공유 링크`\n예: `/스킬공유 https://blog.com/my-post`",
+          text: `사용법: \`${command} 링크\`\n예: \`${command} https://blog.com/my-post\``,
         });
       }
 
