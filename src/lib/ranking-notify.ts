@@ -101,7 +101,16 @@ async function getSnapshot(type: string): Promise<RankEntry[] | null> {
     .single();
 
   if (!data) return null;
-  return data.rankings as RankEntry[];
+  const raw = data.rankings;
+  // 과거에 JSON.stringify 로 이중 인코딩되어 저장된 데이터 호환 처리
+  if (typeof raw === "string") {
+    try {
+      return JSON.parse(raw) as RankEntry[];
+    } catch {
+      return null;
+    }
+  }
+  return raw as RankEntry[];
 }
 
 async function saveSnapshot(type: string, rankings: RankEntry[]) {
@@ -109,7 +118,7 @@ async function saveSnapshot(type: string, rankings: RankEntry[]) {
   await supabase
     .from("ranking_snapshots")
     .upsert(
-      { type, rankings: JSON.stringify(rankings), updated_at: new Date().toISOString() },
+      { type, rankings, updated_at: new Date().toISOString() },
       { onConflict: "type" }
     );
 }
