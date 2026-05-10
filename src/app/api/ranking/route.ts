@@ -188,33 +188,50 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ type: "earned", ranking });
   }
 
-  // 조별 활동 랭킹: 조 멤버들의 활동량 합산
+  // 조별 활동 랭킹: 1인 평균 기준 (조별 인원수 차이 보정)
   if (type === "group") {
+    // 1) 조별 로스터 인원 (활성·비어드민 멤버 수) 집계
+    const { data: roster, error: rosterError } = await supabase
+      .from("members")
+      .select("group_number")
+      .eq("is_active", true)
+      .eq("is_admin", false)
+      .not("group_number", "is", null);
+
+    if (rosterError) {
+      return NextResponse.json({ error: rosterError.message }, { status: 500 });
+    }
+
+    const rosterCount = new Map<number, number>();
+    for (const r of roster || []) {
+      const n = r.group_number as number;
+      rosterCount.set(n, (rosterCount.get(n) || 0) + 1);
+    }
+
+    // 2) 거래 내역 합산
     const { data, error } = await supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, group_number)");
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, group_number)");
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const groupTotals = new Map<number, { group_number: number; total: number; earned: number; spent: number; member_count: number }>();
-
-    const memberTotals = new Map<string, { group_number: number; total: number; earned: number; spent: number }>();
+    const groupTotals = new Map<number, { group_number: number; total: number; earned: number; spent: number }>();
 
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; group_number: number | null };
       if (!member.is_active || member.is_admin || !member.group_number) continue;
       if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
 
-      const existing = memberTotals.get(row.member_id);
       const absAmount = Math.abs(row.amount);
+      const existing = groupTotals.get(member.group_number);
       if (existing) {
         existing.total += absAmount;
         if (row.amount > 0) existing.earned += row.amount;
         else existing.spent += absAmount;
       } else {
-        memberTotals.set(row.member_id, {
+        groupTotals.set(member.group_number, {
           group_number: member.group_number,
           total: absAmount,
           earned: row.amount > 0 ? row.amount : 0,
@@ -223,20 +240,20 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    for (const { group_number, total, earned, spent } of memberTotals.values()) {
-      const existing = groupTotals.get(group_number);
-      if (existing) {
-        existing.total += total;
-        existing.earned += earned;
-        existing.spent += spent;
-        existing.member_count += 1;
-      } else {
-        groupTotals.set(group_number, { group_number, total, earned, spent, member_count: 1 });
+    // 3) 활동 0 인 조도 노출되도록 로스터 기반으로 합치기
+    for (const [n] of rosterCount) {
+      if (!groupTotals.has(n)) {
+        groupTotals.set(n, { group_number: n, total: 0, earned: 0, spent: 0 });
       }
     }
 
     const ranking = Array.from(groupTotals.values())
-      .sort((a, b) => b.total - a.total)
+      .map((g) => {
+        const member_count = rosterCount.get(g.group_number) || 0;
+        const avg = member_count > 0 ? g.total / member_count : 0;
+        return { ...g, member_count, avg };
+      })
+      .sort((a, b) => b.avg - a.avg)
       .map((g, i) => ({
         rank: i + 1,
         member_id: `group-${g.group_number}`,
@@ -245,6 +262,7 @@ export async function GET(request: NextRequest) {
         earned: g.earned,
         spent: g.spent,
         member_count: g.member_count,
+        avg: Math.round(g.avg * 10) / 10,
       }));
 
     return NextResponse.json({ type: "group", ranking });

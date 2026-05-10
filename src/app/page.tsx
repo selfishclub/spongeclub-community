@@ -29,6 +29,8 @@ interface RankingEntry {
   total: number;
   earned?: number;
   spent?: number;
+  member_count?: number;
+  avg?: number;
 }
 
 interface BadgeTop3Entry {
@@ -751,6 +753,12 @@ export default function HomePage() {
             </button>
           </div>
 
+          {rankTab === "group" && (
+            <p className="text-[11px] text-[var(--ink-30)] mb-3 leading-snug">
+              조별 인원수 차이 보정을 위해 <b>1인 평균(총합 ÷ 조 인원)</b> 기준으로 순위가 매겨져요.
+            </p>
+          )}
+
           {loading ? (
             <div className="text-center py-16"><p className="text-[var(--ink-30)] text-sm">로딩 중...</p></div>
           ) : ranking.length === 0 ? (
@@ -771,15 +779,28 @@ export default function HomePage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-[var(--ink)] truncate">{entry.name}</p>
-                    {(entry.earned !== undefined || entry.spent !== undefined) && (
+                    {rankTab === "group" && entry.member_count !== undefined ? (
+                      <p className="text-[11px] text-[var(--ink-30)] mt-0.5 tabular-nums font-medium">
+                        전체 {entry.total}🐚 / {entry.member_count}명
+                      </p>
+                    ) : (entry.earned !== undefined || entry.spent !== undefined) && (
                       <p className="text-[11px] text-[var(--ink-30)] mt-0.5 tabular-nums font-medium">
                         +{entry.earned ?? 0} / -{entry.spent ?? 0}
                       </p>
                     )}
                   </div>
                   <div className="flex-shrink-0 flex items-baseline gap-0.5">
-                    <span className="text-lg font-extrabold text-[var(--ink)] tabular-nums">{entry.total}</span>
-                    <span className="text-[10px] text-[var(--ink-30)] font-bold">셸</span>
+                    {rankTab === "group" && entry.avg !== undefined ? (
+                      <>
+                        <span className="text-lg font-extrabold text-[var(--ink)] tabular-nums">{entry.avg}</span>
+                        <span className="text-[10px] text-[var(--ink-30)] font-bold">/인</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-lg font-extrabold text-[var(--ink)] tabular-nums">{entry.total}</span>
+                        <span className="text-[10px] text-[var(--ink-30)] font-bold">셸</span>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}

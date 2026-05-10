@@ -44,50 +44,55 @@ async function computeIndividualRanking(): Promise<RankEntry[]> {
     .map((m, i) => ({ rank: i + 1, ...m }));
 }
 
-// 조별 누적 랭킹 계산
+// 조별 누적 랭킹 계산 (1인 평균 기준 — 조별 인원수 차이 보정)
 async function computeGroupRanking(): Promise<RankEntry[]> {
   const supabase = createAdminClient();
+
+  // 조별 로스터 인원
+  const { data: roster } = await supabase
+    .from("members")
+    .select("group_number")
+    .eq("is_active", true)
+    .eq("is_admin", false)
+    .not("group_number", "is", null);
+
+  const rosterCount = new Map<number, number>();
+  for (const r of roster || []) {
+    const n = r.group_number as number;
+    rosterCount.set(n, (rosterCount.get(n) || 0) + 1);
+  }
+
+  // 거래 합산
   const { data } = await supabase
     .from("shell_transactions")
     .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, group_number)");
 
-  const memberTotals = new Map<string, { group_number: number; total: number }>();
-
+  const groupTotals = new Map<number, number>();
   for (const row of data || []) {
     const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; group_number: number | null };
     if (!member.is_active || member.is_admin || !member.group_number) continue;
     if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
-
-    const existing = memberTotals.get(row.member_id);
-    const absAmount = Math.abs(row.amount);
-    if (existing) {
-      existing.total += absAmount;
-    } else {
-      memberTotals.set(row.member_id, {
-        group_number: member.group_number,
-        total: absAmount,
-      });
-    }
+    groupTotals.set(member.group_number, (groupTotals.get(member.group_number) || 0) + Math.abs(row.amount));
   }
 
-  const groupTotals = new Map<number, { group_number: number; total: number }>();
-  for (const { group_number, total } of memberTotals.values()) {
-    const existing = groupTotals.get(group_number);
-    if (existing) {
-      existing.total += total;
-    } else {
-      groupTotals.set(group_number, { group_number, total });
-    }
+  // 활동 0 인 조도 포함되도록 로스터로 보강
+  for (const [n] of rosterCount) {
+    if (!groupTotals.has(n)) groupTotals.set(n, 0);
   }
 
-  return Array.from(groupTotals.values())
-    .sort((a, b) => b.total - a.total)
+  return Array.from(groupTotals.entries())
+    .map(([group_number, total]) => {
+      const count = rosterCount.get(group_number) || 0;
+      const avg = count > 0 ? total / count : 0;
+      return { group_number, total, avg };
+    })
+    .sort((a, b) => b.avg - a.avg)
     .slice(0, 10)
     .map((g, i) => ({
       rank: i + 1,
       id: `group-${g.group_number}`,
       name: `${g.group_number}조`,
-      total: g.total,
+      total: Math.round(g.avg * 10) / 10, // 알림 비교용 — 1인 평균값 저장
     }));
 }
 
