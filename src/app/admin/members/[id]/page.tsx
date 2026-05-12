@@ -43,6 +43,7 @@ interface Hosted {
 
 interface ShellRequest {
   id: string;
+  type?: string;
   url: string;
   status: string;
   created_at: string;
@@ -267,7 +268,12 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
         {data.skill.map((s) => (
           <div key={s.id} className="px-4 py-3 flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                {s.type && (
+                  <span className="text-[10px] font-extrabold bg-[var(--ink)] text-[var(--paper)] px-1.5 py-0.5 uppercase tracking-wider">
+                    {s.type === "SKILL_TRIED" ? "써본" : "써보고싶은"}
+                  </span>
+                )}
                 <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-[var(--ink)] hover:underline truncate block">
                   {s.url}
                 </a>

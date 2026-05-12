@@ -15,12 +15,14 @@ interface ShellRequest {
 
 const TYPE_LABELS: Record<string, string> = {
   SNS_VERIFY: "SNS 인증",
-  SKILL_SHARE: "스킬 공유",
+  SKILL_SHARE: "써보고싶은 스킬",
+  SKILL_TRIED: "써본 스킬",
 };
 
 const TYPE_SHELLS: Record<string, number> = {
   SNS_VERIFY: 2,
   SKILL_SHARE: 1,
+  SKILL_TRIED: 3,
 };
 
 export default function RequestsPage() {

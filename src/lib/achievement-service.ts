@@ -39,12 +39,12 @@ async function getMemberStats(memberId: string) {
         .eq("member_id", memberId)
         .eq("type", "SNS_VERIFY")
         .eq("status", "APPROVED"),
-      // 스킬 공유 승인 횟수
+      // 스킬 공유 승인 횟수 (써본 스킬 + 써보고싶은 스킬 합산)
       supabase
         .from("shell_requests")
         .select("id", { count: "exact", head: true })
         .eq("member_id", memberId)
-        .eq("type", "SKILL_SHARE")
+        .in("type", ["SKILL_SHARE", "SKILL_TRIED"])
         .eq("status", "APPROVED"),
       // 공유회 개최 완료 횟수
       supabase

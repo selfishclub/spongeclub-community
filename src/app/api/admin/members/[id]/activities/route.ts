@@ -60,12 +60,12 @@ export async function GET(
       .eq("type", "SNS_VERIFY")
       .order("created_at", { ascending: false }),
 
-    // 스킬 공유
+    // 스킬 공유 (써본 + 써보고싶은)
     supabase
       .from("shell_requests")
-      .select("id, url, status, created_at, reviewed_at")
+      .select("id, type, url, status, created_at, reviewed_at")
       .eq("member_id", id)
-      .eq("type", "SKILL_SHARE")
+      .in("type", ["SKILL_SHARE", "SKILL_TRIED"])
       .order("created_at", { ascending: false }),
 
     // 셸 보낸 내역 (related_member_id = 본인)

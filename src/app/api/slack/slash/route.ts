@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSlackClient } from "@/lib/slack";
 import {
   getMemberBySlackId,
   getShellBalance,
@@ -170,8 +169,13 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    case "/공유":
-    case "/스킬공유": {
+    case "/써본스킬":
+    case "/써보고싶은스킬": {
+      const isTried = command === "/써본스킬";
+      const type = isTried ? "SKILL_TRIED" : "SKILL_SHARE";
+      const label = isTried ? "써본 스킬" : "써보고싶은 스킬";
+      const reward = isTried ? 3 : 1;
+
       const url = extractUrl(text);
       if (!url) {
         return NextResponse.json({
@@ -180,7 +184,7 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      const result = await submitSkillShare(member.id, url);
+      const result = await submitSkillShare(member.id, url, type);
       if (!result.success) {
         return NextResponse.json({
           response_type: "ephemeral",
@@ -190,7 +194,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         response_type: "in_channel",
-        text: `📚 <@${userId}>님의 스킬 공유 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +1🐚이 지급됩니다.\n👉 웹에서도 가능: https://spongeclub-community.vercel.app/mypage`,
+        text: `📚 <@${userId}>님의 ${label} 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +${reward}🐚이 지급됩니다.`,
       });
     }
 

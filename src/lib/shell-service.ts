@@ -135,15 +135,17 @@ export async function submitSnsVerification(
 }
 
 // 스킬 공유 신청 (대기 상태로 저장)
+// type: "SKILL_SHARE" (써보고싶은 스킬 +1) | "SKILL_TRIED" (써본 스킬 +3)
 export async function submitSkillShare(
   memberId: string,
-  url: string
+  url: string,
+  type: "SKILL_SHARE" | "SKILL_TRIED" = "SKILL_SHARE"
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = createAdminClient();
 
   const { error } = await supabase.from("shell_requests").insert({
     member_id: memberId,
-    type: "SKILL_SHARE",
+    type,
     url,
     status: "PENDING",
   });
@@ -165,8 +167,14 @@ export async function approveShellRequest(requestId: string, adminId: string | n
 
   if (reqError || !req) return { success: false, error: "NOT_FOUND" };
 
-  const amount = req.type === "SNS_VERIFY" ? 2 : 1;
-  const reasonDetail = req.type === "SNS_VERIFY" ? "SNS 인증" : "스킬 공유";
+  const amount =
+    req.type === "SNS_VERIFY" ? 2 : req.type === "SKILL_TRIED" ? 3 : 1;
+  const reasonDetail =
+    req.type === "SNS_VERIFY"
+      ? "SNS 인증"
+      : req.type === "SKILL_TRIED"
+        ? "써본 스킬"
+        : "써보고싶은 스킬";
 
   // 트랜잭션 기록
   await supabase.from("shell_transactions").insert({
