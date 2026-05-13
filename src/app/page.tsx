@@ -251,8 +251,6 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
   const [vodError, setVodError] = useState("");
   const [vodSuccess, setVodSuccess] = useState(false);
 
-  const vodSuggestedCost = session.entry_cost * 2;
-
   // 본인이 이 세션 VOD 를 이미 신청했는지 체크
   useEffect(() => {
     if (!member) { setVodRequested(false); return; }
@@ -320,7 +318,7 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
           ) : (
             <button onClick={() => member ? handleRegister(member.id) : setShowPicker(true)} disabled={registering}
               className="w-full py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
-              {registering ? "신청 중..." : `${session.entry_cost} 셸로 신청하기`}
+              {registering ? "신청 중..." : `${session.entry_cost}셸로 공유회 참여 신청하기`}
             </button>
           )}
 
@@ -337,7 +335,7 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
                 disabled={vodLoading}
                 className="w-full py-3 bg-[var(--paper)] border-2 border-[var(--ink)] text-[var(--ink)] font-bold text-sm hover:bg-[var(--ink-05)] disabled:opacity-40 transition-colors"
               >
-                {vodLoading ? "신청 중..." : `📼 VOD 구매 신청 (예상 ${vodSuggestedCost}🐚)`}
+                {vodLoading ? "신청 중..." : `(참여 불가한 경우) VOD구매 신청하기`}
               </button>
             )}
             <p className="mt-2 text-[10px] text-[var(--ink-30)] text-center leading-snug">
