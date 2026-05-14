@@ -24,23 +24,23 @@ export const metadata: Metadata = {
 export default function MissionsPage() {
   return (
     <div className="min-h-screen bg-[var(--paper)]">
-      {/* ── Header: breadcrumb + 3-tab nav ── */}
+      {/* ── Header: breadcrumb + 3-tab nav (반응형) ── */}
       <header className="sticky top-0 z-40 bg-[var(--paper)] border-b-2 border-[var(--ink)]">
-        <div className="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-4">
-          {/* breadcrumb */}
-          <div className="flex items-center gap-2 text-sm font-extrabold tracking-tight min-w-0">
-            <span className="text-[var(--ink)]">🧽 스폰지클럽</span>
-            <span className="text-[var(--ink-30)]">/</span>
-            <span className="text-[var(--ink)] truncate">주차별 미션</span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 flex items-center justify-between gap-3">
+          {/* breadcrumb: 모바일은 클럽명만, sm+ 부터 풀 breadcrumb */}
+          <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-extrabold tracking-tight min-w-0">
+            <span className="text-[var(--ink)] shrink-0">🧽 스폰지클럽</span>
+            <span className="text-[var(--ink-30)] hidden sm:inline">/</span>
+            <span className="text-[var(--ink)] truncate hidden sm:inline">주차별 미션</span>
           </div>
 
-          {/* nav tabs */}
-          <nav className="flex items-center gap-5 text-xs font-extrabold">
-            <span className="text-[var(--ink)] border-b-2 border-[var(--ink)] pb-0.5">
+          {/* nav tabs: 모바일은 "홈 ↗"만, sm+ 부터 현재 탭 노출, md+ 부터 3탭 풀 */}
+          <nav className="flex items-center gap-3 sm:gap-5 text-[11px] sm:text-xs font-extrabold shrink-0">
+            <span className="text-[var(--ink)] border-b-2 border-[var(--ink)] pb-0.5 hidden sm:inline">
               주차별 미션
             </span>
             <span
-              className="text-[var(--ink-30)] cursor-not-allowed"
+              className="text-[var(--ink-30)] cursor-not-allowed hidden md:inline"
               title="준비 중 — 추후 PR에서 추가"
             >
               스킬 & 인사이트
@@ -49,7 +49,9 @@ export default function MissionsPage() {
               href="/"
               className="text-[var(--ink-50)] hover:text-[var(--ink)] transition-colors inline-flex items-center gap-1"
             >
-              이기적인 스폰지들 <span aria-hidden>↗</span>
+              <span className="sm:hidden">홈</span>
+              <span className="hidden sm:inline">이기적인 스폰지들</span>
+              <span aria-hidden>↗</span>
             </Link>
           </nav>
         </div>
