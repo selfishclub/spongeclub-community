@@ -1,27 +1,36 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import {
+  getAllTeamsProgress,
+  getCurrentWeekFolder,
+} from "@/lib/missions/vault-fetcher";
+import type { TeamProgress, MissionSubmission } from "@/lib/missions/types";
 
 export const metadata: Metadata = {
   title: "주차별 미션 — 스폰지클럽 1기",
   description: "스폰지클럽 1기 멤버 전용 주차별 과제·공지·질문 게시판",
 };
 
-// ─── PR 1: 스켈레톤 ─────────────────────────────────────────────────────────
-// 이 페이지는 라우트 + 화면 골격만 잡습니다.
-// 데이터는 후속 PR에서 연결됩니다:
+// ─── 데이터 연결 진행 현황 ──────────────────────────────────────────────────
+//   PR1 ✅ 스켈레톤 + 홈 카드 + 협업 인프라
+//   PR4 ✅ vault(spongeclub_1) → 5번 진척 매트릭스 자동 반영 (이 PR)
 //   PR2 — Supabase 마이그레이션 (missions_* 신규 테이블)
-//   PR3 — Slack Events 수집 + 운영진 CMS API
-//   PR4 — 4꼭지 UI를 실데이터로 교체
-//   PR5 — Graphify 분류 + 미션 관련도 ≥70 게이팅
+//   PR3 — 운영진 CMS API + /admin/missions
+//   PR5 — Slack Events 수집 (공지·질문 섹션 실데이터)
+//   PR6 — Graphify 분류 + 미션 관련도 ≥70 게이팅
 //
 // 절대 건드리지 않는 영역:
-//   src/app/page.tsx(이 PR에서 배너 1개만 추가) · src/app/{admin,admin-login,mypage,sessions}
+//   src/app/page.tsx · src/app/{admin,admin-login,mypage,sessions}
 //   src/app/api/{achievements,admin,auth,me,ranking,sessions,shell,slack}
 //   src/lib/{achievement,auth,ranking,session,shell,slack}-service.ts (재사용은 OK)
 //   middleware.ts · supabase/schema.sql 기존 테이블
 // ──────────────────────────────────────────────────────────────────────────
 
-export default function MissionsPage() {
+export default async function MissionsPage() {
+  // vault(spongeclub/spongeclub_1)의 현재 주차 폴더에서 6개 조 진척 fetch.
+  // Next.js ISR: 5분 캐시. vault에 push 후 최대 5분 안에 사이트 반영.
+  const teamsProgress = await getAllTeamsProgress(getCurrentWeekFolder());
+
   return (
     <div className="min-h-screen bg-[var(--paper)]">
       {/* ── Header: breadcrumb + 3-tab nav (반응형) ── */}
@@ -128,10 +137,10 @@ export default function MissionsPage() {
           </div>
         </section>
 
-        {/* ── 5. 6개 조 진척 매트릭스 ── */}
+        {/* ── 5. 6개 조 진척 매트릭스 (vault 실데이터) ── */}
         <section>
           <SectionHeading>5 · 6개 조 진척</SectionHeading>
-          <PlaceholderCard label="spongeclub-homepage 진척 데이터 연동 예정 (조 × 멤버 칩)" />
+          <ProgressMatrix teams={teamsProgress} />
         </section>
 
         {/* ── 6. 질문 & 공유 ── */}
@@ -210,5 +219,99 @@ function ScheduleCard({
       </div>
       <div className="text-[var(--ink-50)] mt-1">{sub}</div>
     </div>
+  );
+}
+
+/**
+ * 6개 조 진척 매트릭스 — vault에서 fetch한 실데이터 렌더링.
+ * Server Component이므로 props로 받은 데이터만 그린다.
+ */
+function ProgressMatrix({ teams }: { teams: TeamProgress[] }) {
+  const totalSubmitted = teams.reduce((sum, t) => sum + t.submittedCount, 0);
+  const totalAll = teams.reduce((sum, t) => sum + t.totalCount, 0);
+
+  // vault에서 아무 파일도 못 읽었을 때 (API 오류·rate limit·폴더 미존재)
+  if (totalAll === 0) {
+    return (
+      <div className="border-2 border-dashed border-[var(--ink-10)] px-4 py-6 text-center text-xs text-[var(--ink-50)] font-medium leading-relaxed">
+        vault에서 미션 노트를 가져오지 못했어요.
+        <br />
+        (rate limit·일시 오류일 수 있어요. 5분 뒤 자동 재시도)
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {/* 전체 합계 */}
+      <div className="flex items-center justify-between text-xs font-extrabold text-[var(--ink)]">
+        <span>전체 진척</span>
+        <span>
+          <span className="text-[var(--ink)]">{totalSubmitted}</span>
+          <span className="text-[var(--ink-30)]"> / {totalAll}</span>
+        </span>
+      </div>
+
+      {/* 조별 행 */}
+      <div className="space-y-2">
+        {teams.map((t) => (
+          <TeamRow key={t.team} team={t} />
+        ))}
+      </div>
+
+      {/* 캐시 안내 */}
+      <p className="text-[10px] text-[var(--ink-30)] mt-2 font-medium leading-relaxed">
+        ✓ 제출 · ○ 미제출 — vault의 frontmatter `submitted: true` 기준.
+        <br />
+        멤버가 vault에 push 후 최대 5분 안에 자동 반영.
+      </p>
+    </div>
+  );
+}
+
+function TeamRow({ team }: { team: TeamProgress }) {
+  if (team.totalCount === 0) {
+    return (
+      <div className="border-2 border-[var(--ink-10)] p-3">
+        <div className="flex items-center justify-between mb-1 text-xs font-extrabold">
+          <span className="text-[var(--ink)]">{team.team}</span>
+          <span className="text-[var(--ink-30)]">— · 노트 없음</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-2 border-[var(--ink-10)] p-3">
+      <div className="flex items-center justify-between mb-2 text-xs font-extrabold">
+        <span className="text-[var(--ink)]">{team.team}</span>
+        <span className="text-[var(--ink-50)]">
+          <span className="text-[var(--ink)]">{team.submittedCount}</span>
+          {" / "}
+          {team.totalCount}
+        </span>
+      </div>
+      <div className="flex flex-wrap gap-1">
+        {team.members.map((m) => (
+          <MemberChip key={m.filePath} member={m} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MemberChip({ member }: { member: MissionSubmission }) {
+  return (
+    <span
+      title={member.member}
+      className={`inline-flex items-center gap-1 px-2 py-1 text-[10px] font-extrabold border-2 ${
+        member.submitted
+          ? "border-[var(--ink)] bg-[var(--yellow)] text-[var(--ink)]"
+          : "border-[var(--ink-10)] bg-[var(--paper)] text-[var(--ink-30)]"
+      }`}
+    >
+      <span aria-hidden>{member.submitted ? "✓" : "○"}</span>
+      <span>{member.displayName}</span>
+    </span>
   );
 }
