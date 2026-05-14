@@ -2,6 +2,12 @@ import { createAdminClient } from "./supabase";
 import { checkAndNotifyRankingChanges } from "./ranking-notify";
 import { checkAchievements } from "./achievement-service";
 
+// KST(UTC+9) 기준 오늘 날짜 (YYYY-MM-DD) — 일일 한도 리셋이 한국시간 자정에 일어나도록
+function getKstDateString(): string {
+  const kstMs = Date.now() + 9 * 60 * 60 * 1000;
+  return new Date(kstMs).toISOString().split("T")[0];
+}
+
 // 멤버 조회 (slack_user_id로)
 export async function getMemberBySlackId(slackUserId: string) {
   const supabase = createAdminClient();
@@ -45,7 +51,7 @@ export async function getShellBalance(memberId: string): Promise<number> {
 // 오늘 셸 송신 횟수 조회
 export async function getTodayGiftCount(memberId: string): Promise<number> {
   const supabase = createAdminClient();
-  const today = new Date().toISOString().split("T")[0];
+  const today = getKstDateString();
 
   const { data, error } = await supabase
     .from("daily_limits")
@@ -74,7 +80,7 @@ export async function sendShellGift(
   }
 
   const supabase = createAdminClient();
-  const today = new Date().toISOString().split("T")[0];
+  const today = getKstDateString();
 
   const { error: txError } = await supabase.from("shell_transactions").insert({
     member_id: receiverId,
