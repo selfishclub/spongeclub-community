@@ -8,9 +8,9 @@ import {
   type WeekInfo,
 } from "@/lib/missions/schedule-parser";
 import {
-  getWeekMeta,
-  type Mission,
-} from "@/lib/missions/mission-titles-parser";
+  getWeek,
+  type MissionTitle as Mission,
+} from "@/lib/missions/weeks-repo";
 import type {
   TeamProgress,
   MissionSubmission,
@@ -21,18 +21,16 @@ export const metadata: Metadata = {
   description: "스폰지클럽 1기 멤버 전용 주차별 과제·공지·질문 게시판",
 };
 
-// ─── 데이터 연결 진행 현황 ──────────────────────────────────────────────────
-//   ✅ 1번 타임라인  ← vault 99_meta/주차일정.md
-//   ⏳ 2번 공지      ← Slack #0-공지사항 (별도 PR)
-//   ✅ 3번 이번주 미션 ← vault _missions.md (운영진 `/set-missions` 결과)
-//   ✅ 4번 일정      ← vault 주차일정.md 기반 D-day 계산
-//   ✅ 5번 진척 매트릭스 ← vault frontmatter submitted
-//   ⏳ 6번 질문&공유  ← Slack (별도 PR)
-//
-// 모바일/데스크탑 분리 레이아웃:
-//   - mobile (<md):  1-column 스택 (기존 mobile-first 유지)
-//   - desktop (md+): 12-col 그리드, 한 화면에 많은 정보
-//                    Timeline(12) → Mission(8)+Schedule/Progress(4) → Notice(6)+Question(6)
+// Next.js ISR — 5분 캐시 (Supabase read + 외부 vault fetch 둘 다)
+export const revalidate = 300;
+
+// ─── 데이터 소스 현황 ────────────────────────────────────────────────────────
+//   1번 타임라인        ← vault 99_meta/주차일정.md (OG 날짜만)
+//   2번 공지            ← (TODO) 어드민이 작성 → Supabase
+//   3번 이번주 미션      ← Supabase missions_weeks (어드민 /admin/missions)
+//   4번 일정 (시간들)    ← (TODO) 어드민이 작성 → Supabase
+//   5번 진척 매트릭스    ← vault submit.md frontmatter (멤버 push)
+//   6번 질문 & 공유      ← (TODO) 멤버가 사이트에서 직접 작성 → Supabase
 // ──────────────────────────────────────────────────────────────────────────
 
 export default async function MissionsPage() {
@@ -41,13 +39,14 @@ export default async function MissionsPage() {
   const currentWeek = getCurrentWeek(weeks);
   const currentWeekFolder = currentWeek?.folder ?? "1주차_0510";
 
-  // 2단계: 현재 주차의 미션·다시보기 + 6개 조 진척을 병렬 fetch
-  const [weekMeta, teamsProgress] = await Promise.all([
-    getWeekMeta(currentWeekFolder),
+  // 2단계: 어드민 입력 미션 + 6개 조 진척을 병렬 fetch
+  const [dbWeek, teamsProgress] = await Promise.all([
+    getWeek(currentWeekFolder),
     getAllTeamsProgress(currentWeekFolder),
   ]);
 
-  const { missions, replayUrl } = weekMeta;
+  const missions = dbWeek?.missions ?? [];
+  const replayUrl = dbWeek?.replayUrl ?? null;
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
 
   return (
