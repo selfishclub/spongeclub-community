@@ -1,0 +1,18 @@
+# CODEOWNERS — 자동 리뷰어 지정
+#
+# 이 파일은 GitHub이 PR 열릴 때 해당 경로의 owner에게 리뷰를 자동 요청합니다.
+# 형식: <glob 패턴>  @user1 @user2 ...
+# 새 owner 추가: 자기 핸들을 해당 줄에 추가하면 그 영역 PR에 자동 참여.
+# 참고: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# ─── 주차별 미션 게시판 (데굴데굴 유닛 공동 작업 영역) ──────────────────────
+# 이 영역에 작업하는 분은 본인 핸들을 추가하세요.
+
+src/app/missions/**                       @tomost-dada
+src/app/api/missions/**                   @tomost-dada
+src/lib/missions/**                       @tomost-dada
+supabase/migrations/*missions*            @tomost-dada
+supabase/migrations/*mission*             @tomost-dada
+
+# ─── 협업 인프라 ──────────────────────────────────────────────────────────
+.github/**                                @tomost-dada

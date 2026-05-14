@@ -675,6 +675,27 @@ export default function HomePage() {
 
       <main className="max-w-lg mx-auto px-5 pt-10 pb-20 space-y-14">
 
+        {/* ── 주차별 미션 현황판 진입 카드 ── */}
+        <Link
+          href="/missions"
+          className="block border-2 border-[var(--ink)] bg-[var(--paper)] hover:bg-[var(--yellow-dim)] transition-colors p-5"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] font-extrabold text-[var(--ink-50)] tracking-wider uppercase">
+                스폰지클럽 1기
+              </div>
+              <div className="text-base font-extrabold text-[var(--ink)] mt-1 leading-tight">
+                🎯 주차별 미션 현황판
+              </div>
+              <div className="text-xs text-[var(--ink-50)] mt-1.5 font-medium">
+                공지 · 미션 · 진척 · 질문을 한 화면에서
+              </div>
+            </div>
+            <span aria-hidden className="text-xl font-extrabold text-[var(--ink)]">→</span>
+          </div>
+        </Link>
+
         {/* ── 캘린더 ── */}
         <CalendarSection member={member} onLoginRequired={() => setShowLoginModal(true)} />
 
