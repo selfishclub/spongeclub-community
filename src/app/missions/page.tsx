@@ -1,10 +1,20 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getAllTeamsProgress } from "@/lib/missions/vault-fetcher";
 import {
-  getAllTeamsProgress,
-  getCurrentWeekFolder,
-} from "@/lib/missions/vault-fetcher";
-import type { TeamProgress, MissionSubmission } from "@/lib/missions/types";
+  getAllWeeks,
+  getCurrentWeek,
+  daysUntilDeadline,
+  type WeekInfo,
+} from "@/lib/missions/schedule-parser";
+import {
+  getWeekMeta,
+  type Mission,
+} from "@/lib/missions/mission-titles-parser";
+import type {
+  TeamProgress,
+  MissionSubmission,
+} from "@/lib/missions/types";
 
 export const metadata: Metadata = {
   title: "주차별 미션 — 스폰지클럽 1기",
@@ -12,163 +22,338 @@ export const metadata: Metadata = {
 };
 
 // ─── 데이터 연결 진행 현황 ──────────────────────────────────────────────────
-//   PR1 ✅ 스켈레톤 + 홈 카드 + 협업 인프라
-//   PR4 ✅ vault(spongeclub_1) → 5번 진척 매트릭스 자동 반영 (이 PR)
-//   PR2 — Supabase 마이그레이션 (missions_* 신규 테이블)
-//   PR3 — 운영진 CMS API + /admin/missions
-//   PR5 — Slack Events 수집 (공지·질문 섹션 실데이터)
-//   PR6 — Graphify 분류 + 미션 관련도 ≥70 게이팅
+//   ✅ 1번 타임라인  ← vault 99_meta/주차일정.md
+//   ⏳ 2번 공지      ← Slack #0-공지사항 (별도 PR)
+//   ✅ 3번 이번주 미션 ← vault _missions.md (운영진 `/set-missions` 결과)
+//   ✅ 4번 일정      ← vault 주차일정.md 기반 D-day 계산
+//   ✅ 5번 진척 매트릭스 ← vault frontmatter submitted
+//   ⏳ 6번 질문&공유  ← Slack (별도 PR)
 //
-// 절대 건드리지 않는 영역:
-//   src/app/page.tsx · src/app/{admin,admin-login,mypage,sessions}
-//   src/app/api/{achievements,admin,auth,me,ranking,sessions,shell,slack}
-//   src/lib/{achievement,auth,ranking,session,shell,slack}-service.ts (재사용은 OK)
-//   middleware.ts · supabase/schema.sql 기존 테이블
+// 모바일/데스크탑 분리 레이아웃:
+//   - mobile (<md):  1-column 스택 (기존 mobile-first 유지)
+//   - desktop (md+): 12-col 그리드, 한 화면에 많은 정보
+//                    Timeline(12) → Mission(8)+Schedule/Progress(4) → Notice(6)+Question(6)
 // ──────────────────────────────────────────────────────────────────────────
 
 export default async function MissionsPage() {
-  // vault(spongeclub/spongeclub_1)의 현재 주차 폴더에서 6개 조 진척 fetch.
-  // Next.js ISR: 5분 캐시. vault에 push 후 최대 5분 안에 사이트 반영.
-  const teamsProgress = await getAllTeamsProgress(getCurrentWeekFolder());
+  // 1단계: 주차일정 fetch (vault) + 오늘 날짜 기반 현재 주차 결정
+  const weeks = await getAllWeeks();
+  const currentWeek = getCurrentWeek(weeks);
+  const currentWeekFolder = currentWeek?.folder ?? "1주차_0510";
+
+  // 2단계: 현재 주차의 미션·다시보기 + 6개 조 진척을 병렬 fetch
+  const [weekMeta, teamsProgress] = await Promise.all([
+    getWeekMeta(currentWeekFolder),
+    getAllTeamsProgress(currentWeekFolder),
+  ]);
+
+  const { missions, replayUrl } = weekMeta;
+  const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
-      {/* ── Header: breadcrumb + 3-tab nav (반응형) ── */}
-      <header className="sticky top-0 z-40 bg-[var(--paper)] border-b-2 border-[var(--ink)]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 flex items-center justify-between gap-3">
-          {/* breadcrumb: "🧽 스폰지클럽" 클릭 시 홈으로. 모바일은 클럽명만, sm+ 부터 풀 breadcrumb */}
-          <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-extrabold tracking-tight min-w-0">
-            <Link
-              href="/"
-              className="text-[var(--ink)] shrink-0 hover:opacity-70 transition-opacity"
-            >
-              🧽 스폰지클럽
-            </Link>
-            <span className="text-[var(--ink-30)] hidden sm:inline">/</span>
-            <span className="text-[var(--ink)] truncate hidden sm:inline">주차별 미션</span>
+      <PageHeader />
+
+      <main className="mx-auto px-4 sm:px-5 pt-8 pb-20 max-w-lg md:max-w-6xl">
+        {/* mobile: 단일 컬럼. desktop: 12-col 그리드로 정보 밀도 ↑ */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-6 space-y-6 md:space-y-0">
+          {/* 1 · 7주 타임라인 */}
+          <section className="md:col-span-12">
+            <TimelineSection weeks={weeks} />
+          </section>
+
+          {/* 3 · 이번주 미션 Hero (메인) */}
+          <section className="md:col-span-8">
+            <MissionHero
+              week={currentWeek}
+              missions={missions}
+              dDay={dDay}
+              replayUrl={replayUrl}
+            />
+          </section>
+
+          {/* 4 · 일정 + 5 · 진척 (우측 사이드) */}
+          <div className="md:col-span-4 space-y-6">
+            <ScheduleSection week={currentWeek} dDay={dDay} />
+            <ProgressSection teams={teamsProgress} />
           </div>
 
-          {/* nav tabs: 모바일은 "홈 ↗"만, sm+ 부터 현재 탭 노출, md+ 부터 3탭 풀 */}
-          <nav className="flex items-center gap-3 sm:gap-5 text-[11px] sm:text-xs font-extrabold shrink-0">
-            <span className="text-[var(--ink)] border-b-2 border-[var(--ink)] pb-0.5 hidden sm:inline">
-              주차별 미션
-            </span>
-            <span
-              className="text-[var(--ink-30)] cursor-not-allowed hidden md:inline"
-              title="준비 중 — 추후 PR에서 추가"
-            >
-              스킬 & 인사이트
-            </span>
-            <Link
-              href="/"
-              className="text-[var(--ink-50)] hover:text-[var(--ink)] transition-colors inline-flex items-center gap-1"
-            >
-              <span className="sm:hidden">홈</span>
-              <span className="hidden sm:inline">이기적인 스폰지들</span>
-              <span aria-hidden>↗</span>
-            </Link>
-          </nav>
-        </div>
-      </header>
+          {/* 2 · 공지 */}
+          <section className="md:col-span-6">
+            <NoticeSection />
+          </section>
 
-      <main className="max-w-lg mx-auto px-5 pt-8 pb-20 space-y-10">
-        {/* ── WIP 안내 (PR1에서만 표시) ── */}
-        <div className="border-2 border-[var(--ink)] bg-[var(--yellow-dim)] px-4 py-3 text-xs font-extrabold text-[var(--ink)] leading-relaxed">
-          🚧 스켈레톤 화면입니다. 데이터 연결 작업은 후속 PR에서 진행됩니다.
-          <br />
-          화면 구조와 위치를 먼저 합의하기 위한 PR입니다.
-        </div>
+          {/* 6 · 질문 & 공유 */}
+          <section className="md:col-span-6">
+            <QuestionSection />
+          </section>
 
-        {/* ── 1. 7주 타임라인 ── */}
-        <section>
-          <SectionHeading>1 · 7주 타임라인</SectionHeading>
-          <div className="grid grid-cols-7 gap-1">
-            {Array.from({ length: 7 }, (_, i) => (
-              <div
-                key={i}
-                className={`aspect-square border-2 border-[var(--ink)] flex flex-col items-center justify-center text-xs font-extrabold ${
-                  i === 1
-                    ? "bg-[var(--yellow)] text-[var(--ink)]"
-                    : "bg-[var(--paper)] text-[var(--ink-50)]"
-                }`}
-              >
-                <span>{i === 0 ? "OT" : `${i}W`}</span>
-              </div>
-            ))}
-          </div>
-          <p className="text-[10px] text-[var(--ink-30)] mt-2 font-medium">
-            현재 주차(노란색) — 운영진 입력값으로 표시 예정
-          </p>
-        </section>
-
-        {/* ── 2. 공지 배너 ── */}
-        <section>
-          <SectionHeading>2 · 📢 공지사항</SectionHeading>
-          <PlaceholderCard label="Slack #0-공지사항 자동 수집 (최근 3–5건)" />
-        </section>
-
-        {/* ── 3. 이번주 미션 Hero ── */}
-        <section>
-          <SectionHeading>3 · 이번주 미션</SectionHeading>
-          <div className="border-2 border-[var(--ink)] p-5 space-y-4">
-            <div>
-              <div className="text-xs font-extrabold text-[var(--ink-50)] tracking-wider">
-                1주차 · D-N
-              </div>
-              <div className="text-lg font-extrabold text-[var(--ink)] mt-1 leading-tight">
-                미션 제목 자리 (운영진 CMS 입력)
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <MiniCard icon="🎯" title="학습 목표" />
-              <MiniCard icon="📦" title="결과물" />
-              <MiniCard icon="📚" title="학습 자료" />
-            </div>
-          </div>
-        </section>
-
-        {/* ── 4. 이번주 일정 ── */}
-        <section>
-          <SectionHeading>4 · 이번주 일정</SectionHeading>
-          <div className="grid grid-cols-3 gap-2">
-            <ScheduleCard label="목 · Q&A" sub="시간 미정" />
-            <ScheduleCard label="일 19시 · 제출 마감" sub="D-N" highlight />
-            <ScheduleCard label="일 20시 · 공유" sub="3단" />
-          </div>
-        </section>
-
-        {/* ── 5. 6개 조 진척 매트릭스 (vault 실데이터) ── */}
-        <section>
-          <SectionHeading>5 · 6개 조 진척</SectionHeading>
-          <ProgressMatrix teams={teamsProgress} />
-        </section>
-
-        {/* ── 6. 질문 & 공유 ── */}
-        <section>
-          <SectionHeading>6 · 미션 관련 질문 & 공유</SectionHeading>
-          <PlaceholderCard label="Slack 자동 수집 + Graphify 미션 관련도 ≥70 게이팅 예정" />
-        </section>
-
-        {/* ── 7. 이기적인 스폰지들 CTA ── */}
-        <section>
-          <Link
-            href="/"
-            className="block border-2 border-[var(--ink)] bg-[var(--paper)] px-5 py-4 text-center text-sm font-extrabold text-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors"
-          >
-            🧽 이기적인 스폰지들로 이동 →
-          </Link>
-        </section>
-
-        {/* ── footer hint ── */}
-        <div className="pt-4 text-center text-xs text-[var(--ink-30)] font-medium leading-relaxed">
-          ✏️ 질문·공유는 Slack에 작성하면 자동으로 여기 모입니다 (예정)
+          {/* CTA */}
+          <section className="md:col-span-12">
+            <CtaSection />
+          </section>
         </div>
       </main>
     </div>
   );
 }
 
-// ─── Local subcomponents (이 파일 안에만 존재) ──────────────────────────────
+// ─── Header ─────────────────────────────────────────────────────────────────
+
+function PageHeader() {
+  return (
+    <header className="sticky top-0 z-40 bg-[var(--paper)] border-b-2 border-[var(--ink)]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-extrabold tracking-tight min-w-0">
+          <Link
+            href="/"
+            className="text-[var(--ink)] shrink-0 hover:opacity-70 transition-opacity"
+          >
+            🧽 스폰지클럽
+          </Link>
+          <span className="text-[var(--ink-30)] hidden sm:inline">/</span>
+          <span className="text-[var(--ink)] truncate hidden sm:inline">
+            주차별 미션
+          </span>
+        </div>
+
+        <nav className="flex items-center gap-3 sm:gap-5 text-[11px] sm:text-xs font-extrabold shrink-0">
+          <span className="text-[var(--ink)] border-b-2 border-[var(--ink)] pb-0.5 hidden sm:inline">
+            주차별 미션
+          </span>
+          <span
+            className="text-[var(--ink-30)] cursor-not-allowed hidden md:inline"
+            title="준비 중 — 추후 PR에서 추가"
+          >
+            스킬 & 인사이트
+          </span>
+          <Link
+            href="/"
+            className="text-[var(--ink-50)] hover:text-[var(--ink)] transition-colors inline-flex items-center gap-1"
+          >
+            <span className="sm:hidden">홈</span>
+            <span className="hidden sm:inline">이기적인 스폰지들</span>
+            <span aria-hidden>↗</span>
+          </Link>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+// ─── 1. Timeline ────────────────────────────────────────────────────────────
+
+function TimelineSection({ weeks }: { weeks: WeekInfo[] }) {
+  return (
+    <div>
+      <div className="flex items-end justify-between mb-3">
+        <SectionHeading>1 · 7주 커리큘럼</SectionHeading>
+        <p className="text-[10px] text-[var(--ink-30)] font-medium">
+          현재 주차는 노란색으로 강조됩니다
+        </p>
+      </div>
+      {/* 모바일: 7-col 작은 칸 · 데스크탑: 가로로 펼친 큰 칸 */}
+      <div className="grid grid-cols-7 gap-1 md:gap-2">
+        {weeks.map((w) => (
+          <WeekPill key={w.week} week={w} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function WeekPill({ week }: { week: WeekInfo }) {
+  const isCurrent = week.status === "current";
+  const isPast = week.status === "past";
+
+  const classes = isCurrent
+    ? "border-[var(--ink)] bg-[var(--yellow)] text-[var(--ink)]"
+    : isPast
+      ? "border-[var(--ink-10)] bg-[var(--paper)] text-[var(--ink-30)]"
+      : "border-[var(--ink-10)] bg-[var(--paper)] text-[var(--ink-50)]";
+
+  // "2026-05-10" → "5/10"
+  const shortDate = formatShortDate(week.startDate);
+
+  return (
+    <div
+      className={`border-2 ${classes} aspect-square md:aspect-auto md:py-3 flex flex-col items-center justify-center gap-0.5 md:gap-1`}
+    >
+      <span className="text-xs md:text-sm font-extrabold">
+        {week.shortLabel}
+      </span>
+      <span className="text-[9px] md:text-[10px] font-medium opacity-80 hidden md:block">
+        {shortDate}
+      </span>
+    </div>
+  );
+}
+
+function formatShortDate(iso: string): string {
+  // "2026-05-10" → "5/10"
+  const m = iso.match(/^\d{4}-(\d{2})-(\d{2})/);
+  if (!m) return iso;
+  return `${parseInt(m[1], 10)}/${parseInt(m[2], 10)}`;
+}
+
+// ─── 2. Notices (placeholder, Slack 연동 후 채워짐) ───────────────────────────
+
+function NoticeSection() {
+  return (
+    <div>
+      <SectionHeading>2 · 📢 공지사항</SectionHeading>
+      <PlaceholderCard label="Slack #0-공지사항 자동 수집 (최근 3–5건) — 후속 PR" />
+    </div>
+  );
+}
+
+// ─── 3. Mission Hero ────────────────────────────────────────────────────────
+
+function MissionHero({
+  week,
+  missions,
+  dDay,
+  replayUrl,
+}: {
+  week: WeekInfo | null;
+  missions: Mission[];
+  dDay: number | null;
+  replayUrl: string | null;
+}) {
+  const weekLabel = week?.label ?? "이번주";
+  const dDayLabel = formatDday(dDay);
+
+  return (
+    <div>
+      <SectionHeading>3 · 이번주 미션</SectionHeading>
+      <div className="border-2 border-[var(--ink)] p-5 md:p-6 space-y-4">
+        <div className="flex items-baseline justify-between gap-3 flex-wrap">
+          <div>
+            <div className="text-xs font-extrabold text-[var(--ink-50)] tracking-wider">
+              {weekLabel}
+            </div>
+            <div className="text-lg md:text-xl font-extrabold text-[var(--ink)] mt-1 leading-tight">
+              스폰지클럽 1기 · 미션
+            </div>
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            {dDayLabel && (
+              <span className="text-xs font-extrabold border-2 border-[var(--ink)] bg-[var(--yellow)] px-2.5 py-1">
+                {dDayLabel}
+              </span>
+            )}
+            {replayUrl && (
+              <a
+                href={replayUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-extrabold border-2 border-[var(--ink)] bg-[var(--paper)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors px-2.5 py-1"
+              >
+                <span aria-hidden>📺</span>
+                <span>다시보기</span>
+                <span aria-hidden>↗</span>
+              </a>
+            )}
+          </div>
+        </div>
+
+        {missions.length === 0 ? (
+          <PlaceholderCard
+            label={`${weekLabel} 미션 정보가 아직 없어요 (vault _missions.md 미작성)`}
+          />
+        ) : (
+          <ol className="space-y-2.5">
+            {missions.map((m) => (
+              <li
+                key={m.index}
+                className="flex gap-3 items-start border-2 border-[var(--ink-10)] p-3 md:p-4"
+              >
+                <span className="shrink-0 inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7 border-2 border-[var(--ink)] bg-[var(--paper)] text-[var(--ink)] text-xs md:text-sm font-extrabold">
+                  {m.index}
+                </span>
+                <div className="text-sm md:text-base text-[var(--ink)] font-medium leading-relaxed">
+                  {m.title}
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function formatDday(d: number | null): string | null {
+  if (d === null) return null;
+  if (d > 0) return `D-${d}`;
+  if (d === 0) return "오늘 마감";
+  return `D+${Math.abs(d)} (마감 지남)`;
+}
+
+// ─── 4. Schedule ────────────────────────────────────────────────────────────
+
+function ScheduleSection({
+  week,
+  dDay,
+}: {
+  week: WeekInfo | null;
+  dDay: number | null;
+}) {
+  const submitSub = formatDday(dDay) ?? "—";
+  const endDateShort = week ? formatShortDate(week.endDate) : null;
+
+  return (
+    <div>
+      <SectionHeading>4 · 이번주 일정</SectionHeading>
+      <div className="grid grid-cols-3 gap-2">
+        <ScheduleCard label="목 · Q&A" sub="시간 미정" />
+        <ScheduleCard
+          label="제출 마감"
+          sub={`${submitSub}${endDateShort ? ` (${endDateShort})` : ""}`}
+          highlight
+        />
+        <ScheduleCard label="공유회" sub="일 20시" />
+      </div>
+    </div>
+  );
+}
+
+// ─── 5. Progress Matrix ─────────────────────────────────────────────────────
+
+function ProgressSection({ teams }: { teams: TeamProgress[] }) {
+  return (
+    <div>
+      <SectionHeading>5 · 6개 조 진척</SectionHeading>
+      <ProgressMatrix teams={teams} />
+    </div>
+  );
+}
+
+// ─── 6. Questions (placeholder) ─────────────────────────────────────────────
+
+function QuestionSection() {
+  return (
+    <div>
+      <SectionHeading>6 · 미션 관련 질문 & 공유</SectionHeading>
+      <PlaceholderCard label="Slack 자동 수집 + 미션 관련도 ≥70 게이팅 — 후속 PR" />
+    </div>
+  );
+}
+
+// ─── CTA ────────────────────────────────────────────────────────────────────
+
+function CtaSection() {
+  return (
+    <Link
+      href="/"
+      className="block border-2 border-[var(--ink)] bg-[var(--paper)] px-5 py-4 text-center text-sm font-extrabold text-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors"
+    >
+      🧽 이기적인 스폰지들로 이동 →
+    </Link>
+  );
+}
+
+// ─── Shared subcomponents ───────────────────────────────────────────────────
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
@@ -180,19 +365,8 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 
 function PlaceholderCard({ label }: { label: string }) {
   return (
-    <div className="border-2 border-dashed border-[var(--ink-10)] px-4 py-8 text-center text-xs text-[var(--ink-50)] font-medium">
+    <div className="border-2 border-dashed border-[var(--ink-10)] px-4 py-8 text-center text-xs text-[var(--ink-50)] font-medium leading-relaxed">
       {label}
-    </div>
-  );
-}
-
-function MiniCard({ icon, title }: { icon: string; title: string }) {
-  return (
-    <div className="border-2 border-[var(--ink-10)] p-3 text-xs">
-      <div className="font-extrabold text-[var(--ink)]">
-        {icon} {title}
-      </div>
-      <div className="text-[var(--ink-30)] mt-1">(데이터)</div>
     </div>
   );
 }
@@ -224,13 +398,11 @@ function ScheduleCard({
 
 /**
  * 6개 조 진척 매트릭스 — vault에서 fetch한 실데이터 렌더링.
- * Server Component이므로 props로 받은 데이터만 그린다.
  */
 function ProgressMatrix({ teams }: { teams: TeamProgress[] }) {
   const totalSubmitted = teams.reduce((sum, t) => sum + t.submittedCount, 0);
   const totalAll = teams.reduce((sum, t) => sum + t.totalCount, 0);
 
-  // vault에서 아무 파일도 못 읽었을 때 (API 오류·rate limit·폴더 미존재)
   if (totalAll === 0) {
     return (
       <div className="border-2 border-dashed border-[var(--ink-10)] px-4 py-6 text-center text-xs text-[var(--ink-50)] font-medium leading-relaxed">
@@ -243,7 +415,6 @@ function ProgressMatrix({ teams }: { teams: TeamProgress[] }) {
 
   return (
     <div className="space-y-3">
-      {/* 전체 합계 */}
       <div className="flex items-center justify-between text-xs font-extrabold text-[var(--ink)]">
         <span>전체 진척</span>
         <span>
@@ -252,18 +423,16 @@ function ProgressMatrix({ teams }: { teams: TeamProgress[] }) {
         </span>
       </div>
 
-      {/* 조별 행 */}
       <div className="space-y-2">
         {teams.map((t) => (
           <TeamRow key={t.team} team={t} />
         ))}
       </div>
 
-      {/* 캐시 안내 */}
       <p className="text-[10px] text-[var(--ink-30)] mt-2 font-medium leading-relaxed">
-        ✓ 제출 · ○ 미제출 — vault의 frontmatter `submitted: true` 기준.
+        ✓ 제출 · ○ 미제출 — vault frontmatter `submitted: true` 기준.
         <br />
-        멤버가 vault에 push 후 최대 5분 안에 자동 반영.
+        vault push 후 최대 5분 안에 자동 반영.
       </p>
     </div>
   );

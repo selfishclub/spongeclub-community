@@ -159,8 +159,12 @@ export async function getAllTeamsProgress(
 }
 
 /**
- * 이번 주차의 vault 폴더명을 반환.
- * MVP: 하드코딩. PR5에서 99_meta/주차일정.md 기반 자동 계산으로 교체 예정.
+ * (deprecated) 하드코딩 fallback.
+ *
+ * 새 코드는 `schedule-parser.ts`의 `getAllWeeks()` → `getCurrentWeek()`를
+ * 호출해 vault `99_meta/주차일정.md` 기반으로 오늘 날짜에 맞는 주차를
+ * 동적으로 결정한다. 이 함수는 schedule-parser fetch가 실패했을 때의
+ * 최후 fallback이며, 새 호출자는 사용하지 말 것.
  */
 export function getCurrentWeekFolder(): string {
   return "1주차_0510";
