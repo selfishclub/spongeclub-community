@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { href: "/admin/members", label: "멤버 관리" },
   { href: "/admin/sessions", label: "공유회" },
+  { href: "/admin/missions", label: "미션" },
   { href: "/admin/videos", label: "영상" },
   { href: "/admin/requests", label: "신청 관리" },
   { href: "/admin/suggestions", label: "추천" },
