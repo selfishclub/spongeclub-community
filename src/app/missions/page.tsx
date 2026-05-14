@@ -8,7 +8,7 @@ import {
   type WeekInfo,
 } from "@/lib/missions/schedule-parser";
 import {
-  getWeekMissions,
+  getWeekMeta,
   type Mission,
 } from "@/lib/missions/mission-titles-parser";
 import type {
@@ -41,12 +41,13 @@ export default async function MissionsPage() {
   const currentWeek = getCurrentWeek(weeks);
   const currentWeekFolder = currentWeek?.folder ?? "1주차_0510";
 
-  // 2단계: 현재 주차의 미션 제목 + 6개 조 진척을 병렬 fetch
-  const [missions, teamsProgress] = await Promise.all([
-    getWeekMissions(currentWeekFolder),
+  // 2단계: 현재 주차의 미션·다시보기 + 6개 조 진척을 병렬 fetch
+  const [weekMeta, teamsProgress] = await Promise.all([
+    getWeekMeta(currentWeekFolder),
     getAllTeamsProgress(currentWeekFolder),
   ]);
 
+  const { missions, replayUrl } = weekMeta;
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
 
   return (
@@ -67,6 +68,7 @@ export default async function MissionsPage() {
               week={currentWeek}
               missions={missions}
               dDay={dDay}
+              replayUrl={replayUrl}
             />
           </section>
 
@@ -211,10 +213,12 @@ function MissionHero({
   week,
   missions,
   dDay,
+  replayUrl,
 }: {
   week: WeekInfo | null;
   missions: Mission[];
   dDay: number | null;
+  replayUrl: string | null;
 }) {
   const weekLabel = week?.label ?? "이번주";
   const dDayLabel = formatDday(dDay);
@@ -232,11 +236,25 @@ function MissionHero({
               스폰지클럽 1기 · 미션
             </div>
           </div>
-          {dDayLabel && (
-            <span className="text-xs font-extrabold border-2 border-[var(--ink)] bg-[var(--yellow)] px-2.5 py-1">
-              {dDayLabel}
-            </span>
-          )}
+          <div className="flex items-center gap-2 flex-wrap">
+            {dDayLabel && (
+              <span className="text-xs font-extrabold border-2 border-[var(--ink)] bg-[var(--yellow)] px-2.5 py-1">
+                {dDayLabel}
+              </span>
+            )}
+            {replayUrl && (
+              <a
+                href={replayUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-extrabold border-2 border-[var(--ink)] bg-[var(--paper)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors px-2.5 py-1"
+              >
+                <span aria-hidden>📺</span>
+                <span>다시보기</span>
+                <span aria-hidden>↗</span>
+              </a>
+            )}
+          </div>
         </div>
 
         {missions.length === 0 ? (
