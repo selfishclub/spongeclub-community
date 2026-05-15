@@ -8,6 +8,7 @@
  */
 import type { WeekInfo } from "@/lib/missions/schedule-parser";
 import type { MissionTitle } from "@/lib/missions/weeks-repo";
+import { ProgressBoardButton } from "./ProgressBoardButton";
 
 function dDayLabel(d: number | null): string {
   if (d === null) return "D-…";
@@ -54,20 +55,26 @@ export function MissionHero({
             이번 주에 만들고 나눌 과제입니다.
           </p>
         </div>
-        <div className="px-4 py-3 rounded-xl bg-white border border-[#E7E9EE] min-w-[120px] text-center">
-          <div className="text-[10px] text-[#5B6271] tracking-wider">
-            {isPast ? "마감 완료" : "과제 마감까지"}
+        {/* 과제 현황판 버튼 + D-day 박스 — 버튼이 D-day 박스 왼쪽 */}
+        <div className="flex items-stretch gap-3 flex-wrap">
+          <ProgressBoardButton weekNumber={week?.week ?? 0} />
+          <div className="px-4 py-3 rounded-xl bg-white border border-[#E7E9EE] min-w-[120px] text-center">
+            <div className="text-[10px] text-[#5B6271] tracking-wider">
+              {isPast ? "마감 완료" : "과제 마감까지"}
+            </div>
+            <div
+              className={`text-3xl font-bold leading-none mt-1 ${
+                isPast ? "text-emerald-700" : "text-[#E89E00]"
+              }`}
+            >
+              {isPast ? "✓" : dDayLabel(dDay)}
+            </div>
+            {deadlineText && (
+              <div className="text-[10px] text-[#5B6271] mt-1">
+                {deadlineText}
+              </div>
+            )}
           </div>
-          <div
-            className={`text-3xl font-bold leading-none mt-1 ${
-              isPast ? "text-emerald-700" : "text-[#E89E00]"
-            }`}
-          >
-            {isPast ? "✓" : dDayLabel(dDay)}
-          </div>
-          {deadlineText && (
-            <div className="text-[10px] text-[#5B6271] mt-1">{deadlineText}</div>
-          )}
         </div>
       </div>
 
