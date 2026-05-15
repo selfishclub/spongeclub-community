@@ -1,0 +1,52 @@
+/*
+ * /missions 라우트 전용 헬퍼 클래스.
+ * "데굴데굴" 레퍼런스(web/src/app/globals.css)에서 옮겨온 plain CSS.
+ * globals.css 를 건드리지 않기 위해 이 파일에 격리하고 page.tsx 에서만 import 한다.
+ */
+
+/* 도트 구분자 (·) */
+.m-ddot::before {
+  content: "·";
+  margin: 0 0.35rem;
+  color: #a7adba;
+}
+
+/* 진척 바 — --c(조 색상), --p(퍼센트) CSS 변수로 채움 */
+.m-progress-bar {
+  background: linear-gradient(90deg, var(--c, #ffb800) var(--p), #f4f5f8 var(--p));
+}
+
+.m-team-1 { --c: #ff8a4c; }
+.m-team-2 { --c: #ffb800; }
+.m-team-3 { --c: #7cc4ff; }
+.m-team-4 { --c: #a78bfa; }
+.m-team-5 { --c: #34d399; }
+.m-team-6 { --c: #f472b6; }
+
+/* 멤버 상태 chip */
+.m-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 11px;
+  line-height: 1;
+}
+.m-done { background: #ecfdf5; color: #047857; }
+.m-todo { background: #f4f5f8; color: #5b6271; }
+
+/* 주차 pill 상태 */
+.m-week-pill[data-active="true"] {
+  background: #ffb800;
+  color: white;
+}
+.m-week-pill[data-done="true"] {
+  background: #e7e9ee;
+  color: #5b6271;
+}
+.m-week-pill[data-locked="true"] {
+  color: #a7adba;
+  background: white;
+  border: 1px dashed #e7e9ee;
+}

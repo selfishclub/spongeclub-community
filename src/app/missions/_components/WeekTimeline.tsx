@@ -1,0 +1,68 @@
+/**
+ * 7주 커리큘럼 타임라인 — "데굴데굴" 레퍼런스 WeekTimeline 룩.
+ *
+ * 데굴데굴 원본은 useWeek 컨텍스트로 주차 클릭 전환을 지원하지만,
+ * 타깃은 주차 전환을 이식하지 않는다 → 현재 주차 강조만 하는 정적 표시.
+ * 데이터는 타깃 실데이터(`getAllWeeks()` 결과 WeekInfo[])를 그대로 사용.
+ */
+import type { WeekInfo } from "@/lib/missions/schedule-parser";
+
+/** "2026-05-10" → "5/10" */
+function shortDate(iso: string): string {
+  const m = iso.match(/^\d{4}-(\d{2})-(\d{2})/);
+  if (!m) return iso;
+  return `${parseInt(m[1], 10)}/${parseInt(m[2], 10)}`;
+}
+
+function WeekPill({ week }: { week: WeekInfo }) {
+  const isCurrent = week.status === "current";
+  const isPast = week.status === "past";
+
+  return (
+    <div
+      data-active={isCurrent}
+      data-done={isPast}
+      data-locked={!isCurrent && !isPast}
+      className="m-week-pill shrink-0 px-3 h-9 inline-flex items-center gap-1.5 rounded-lg text-xs font-medium"
+      title={`${week.label}${isCurrent ? " · 현재 주차" : ""}`}
+    >
+      <span>{week.label}</span>
+      <span className="text-[10px] opacity-70">{shortDate(week.startDate)}</span>
+    </div>
+  );
+}
+
+export function WeekTimeline({ weeks }: { weeks: WeekInfo[] }) {
+  const currentIdx = weeks.findIndex((w) => w.status === "current");
+  // 진행 표시: 현재 주차가 몇 번째인지 (1-base). 없으면 마지막 past 개수.
+  const progressCurrent =
+    currentIdx >= 0
+      ? currentIdx + 1
+      : weeks.filter((w) => w.status === "past").length;
+
+  return (
+    <section className="bg-white rounded-2xl border border-[#E7E9EE] px-4 py-3">
+      <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-sm font-bold">{weeks.length}주 커리큘럼</span>
+          <span className="text-[11px] text-[#5B6271]">
+            진행{" "}
+            <span className="font-bold text-[#E89E00]">
+              {progressCurrent}/{weeks.length}
+            </span>
+          </span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div
+            className="flex items-center gap-1.5 overflow-x-auto"
+            aria-label="주차 타임라인"
+          >
+            {weeks.map((w) => (
+              <WeekPill key={w.week} week={w} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
