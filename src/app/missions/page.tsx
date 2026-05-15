@@ -11,7 +11,6 @@ import { Header } from "./_components/Header";
 import { WeekTimeline } from "./_components/WeekTimeline";
 import { MissionHero } from "./_components/MissionHero";
 import { ScheduleStrip } from "./_components/ScheduleStrip";
-import { ProgressModal } from "./_components/ProgressModal";
 import { AnnouncementBanner } from "./_components/AnnouncementBanner";
 import { MissionDiscussion } from "./_components/MissionDiscussion";
 import { CommunityCTA } from "./_components/CommunityCTA";
@@ -51,7 +50,8 @@ export default async function MissionsPage() {
 
   return (
     <>
-      <Header />
+      {/* 과제 현황판 버튼은 헤더 우측 상단으로 — 클릭 시 모달 팝업 */}
+      <Header teams={teamsProgress} weekLabel={weekLabel} />
 
       <main className="max-w-6xl mx-auto px-5 py-6 space-y-6 flex-1 w-full">
         <WeekTimeline weeks={weeks} />
@@ -64,11 +64,6 @@ export default async function MissionsPage() {
         />
 
         <ScheduleStrip week={currentWeek} dDay={dDay} />
-
-        {/* 과제 현황판 — 본문엔 버튼만, 매트릭스는 모달 팝업 */}
-        <section className="flex justify-center">
-          <ProgressModal teams={teamsProgress} weekLabel={weekLabel} />
-        </section>
 
         <AnnouncementBanner />
 

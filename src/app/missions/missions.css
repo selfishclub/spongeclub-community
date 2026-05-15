@@ -36,17 +36,21 @@
 .m-done { background: #ecfdf5; color: #047857; }
 .m-todo { background: #f4f5f8; color: #5b6271; }
 
-/* 주차 pill 상태 */
+/* 주차 pill — 기본(예정 주차도 활성 룩: 솔리드 테두리·짙은 텍스트) */
+.m-week-pill {
+  background: white;
+  color: #2a2e35;
+  border: 1px solid #e7e9ee;
+}
+/* 현재 주차 — 브랜드 옐로우 강조 */
 .m-week-pill[data-active="true"] {
   background: #ffb800;
   color: white;
+  border-color: #ffb800;
 }
+/* 종료된 주차 */
 .m-week-pill[data-done="true"] {
   background: #e7e9ee;
   color: #5b6271;
-}
-.m-week-pill[data-locked="true"] {
-  color: #a7adba;
-  background: white;
-  border: 1px dashed #e7e9ee;
+  border-color: #e7e9ee;
 }

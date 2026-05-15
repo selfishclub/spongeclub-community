@@ -43,9 +43,9 @@ export function ProgressModal({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#0F1115] text-white text-sm font-semibold px-5 h-11 hover:bg-[#2A2E35] transition cursor-pointer"
+        className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#FFB800] text-[#0F1115] text-xs sm:text-sm font-bold px-3 sm:px-4 h-9 shadow-sm hover:bg-[#E89E00] transition cursor-pointer shrink-0"
       >
-        📊 과제 현황판 보기
+        📊 과제 현황판
       </button>
 
       {open && (

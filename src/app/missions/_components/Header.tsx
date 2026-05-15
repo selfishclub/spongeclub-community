@@ -8,8 +8,16 @@
  *   - "이기적인 스폰지들 ↗" → /
  */
 import Link from "next/link";
+import type { TeamProgress } from "@/lib/missions/types";
+import { ProgressModal } from "./ProgressModal";
 
-export function Header() {
+export function Header({
+  teams,
+  weekLabel,
+}: {
+  teams: TeamProgress[];
+  weekLabel: string;
+}) {
   return (
     <header className="bg-white border-b border-[#E7E9EE] sticky top-0 z-30">
       <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between gap-3">
@@ -29,15 +37,16 @@ export function Header() {
           <span className="text-[#0F1115] font-medium">주차별 미션</span>
         </nav>
 
-        {/* Right: 외부 바로가기 */}
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Right: 과제 현황판 버튼 + 외부 바로가기 */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <Link
             href="/"
-            className="text-xs text-[#5B6271] hover:text-[#0F1115] inline-flex items-center gap-1"
+            className="hidden sm:inline-flex text-xs text-[#5B6271] hover:text-[#0F1115] items-center gap-1"
             title="이기적인 스폰지들 커뮤니티"
           >
             🧽 이기적인 스폰지들 <span className="text-[10px]">↗</span>
           </Link>
+          <ProgressModal teams={teams} weekLabel={weekLabel} />
         </div>
       </div>
     </header>

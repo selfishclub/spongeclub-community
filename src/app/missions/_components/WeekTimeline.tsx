@@ -22,7 +22,6 @@ function WeekPill({ week }: { week: WeekInfo }) {
     <div
       data-active={isCurrent}
       data-done={isPast}
-      data-locked={!isCurrent && !isPast}
       className="m-week-pill shrink-0 px-3 h-9 inline-flex items-center gap-1.5 rounded-lg text-xs font-medium"
       title={`${week.label}${isCurrent ? " · 현재 주차" : ""}`}
     >
