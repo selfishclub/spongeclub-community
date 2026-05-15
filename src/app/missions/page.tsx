@@ -7,6 +7,7 @@ import {
   daysUntilDeadline,
 } from "@/lib/missions/schedule-parser";
 import { getWeek } from "@/lib/missions/weeks-repo";
+import type { TeamProgress } from "@/lib/missions/types";
 import { Header } from "./_components/Header";
 import { WeekTimeline } from "./_components/WeekTimeline";
 import { MissionHero } from "./_components/MissionHero";
@@ -14,6 +15,7 @@ import { ScheduleStrip } from "./_components/ScheduleStrip";
 import { AnnouncementBanner } from "./_components/AnnouncementBanner";
 import { MissionDiscussion } from "./_components/MissionDiscussion";
 import { CommunityCTA } from "./_components/CommunityCTA";
+import { ProgressBoardProvider } from "./_components/ProgressBoardProvider";
 
 export const metadata: Metadata = {
   title: "주차별 미션 — 스폰지클럽 1기",
@@ -27,7 +29,7 @@ export const revalidate = 300;
 //   타임라인        ← vault 99_meta/주차일정.md (getAllWeeks)
 //   이번주 미션      ← Supabase missions_weeks (getWeek)
 //   일정            ← WeekInfo 마감일 + 정적값
-//   현황판          ← vault submit.md frontmatter (getAllTeamsProgress)
+//   현황판          ← vault submit.md frontmatter (getAllTeamsProgress, 전 주차)
 //   공지 / 질문      ← (준비 중) Slack 연동 후속 PR
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -36,22 +38,32 @@ export default async function MissionsPage() {
   const weeks = await getAllWeeks();
   const currentWeek = getCurrentWeek(weeks);
   const currentWeekFolder = currentWeek?.folder ?? "1주차_0510";
+  const currentWeekNumber = currentWeek?.week ?? 0;
 
-  // 2단계: 어드민 입력 미션 + 6개 조 진척을 병렬 fetch
-  const [dbWeek, teamsProgress] = await Promise.all([
+  // 2단계: 어드민 입력 미션(현재 주차) + 모든 주차의 6개 조 진척을 병렬 fetch.
+  //        폴더가 없는 미래 주차는 getAllTeamsProgress 가 빈 결과를 반환한다.
+  const [dbWeek, allWeeksProgress] = await Promise.all([
     getWeek(currentWeekFolder),
-    getAllTeamsProgress(currentWeekFolder),
+    Promise.all(weeks.map((w) => getAllTeamsProgress(w.folder))),
   ]);
+
+  // 주차번호 → TeamProgress[] 맵
+  const progressByWeek: Record<number, TeamProgress[]> = {};
+  weeks.forEach((w, i) => {
+    progressByWeek[w.week] = allWeeksProgress[i];
+  });
 
   const missions = dbWeek?.missions ?? [];
   const replayUrl = dbWeek?.replayUrl ?? null;
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
-  const weekLabel = currentWeek?.label ?? "이번주";
 
   return (
-    <>
-      {/* 과제 현황판 버튼은 헤더 우측 상단으로 — 클릭 시 모달 팝업 */}
-      <Header teams={teamsProgress} weekLabel={weekLabel} />
+    <ProgressBoardProvider
+      progressByWeek={progressByWeek}
+      weeks={weeks}
+      currentWeekNumber={currentWeekNumber}
+    >
+      <Header />
 
       <main className="max-w-6xl mx-auto px-5 py-6 space-y-6 flex-1 w-full">
         <WeekTimeline weeks={weeks} />
@@ -75,6 +87,6 @@ export default async function MissionsPage() {
           스폰지클럽 1기 · 주차별 미션
         </footer>
       </main>
-    </>
+    </ProgressBoardProvider>
   );
 }
