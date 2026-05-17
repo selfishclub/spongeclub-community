@@ -111,12 +111,13 @@ export async function getSessionDetail(sessionId: string) {
     .eq("session_id", sessionId)
     .in("status", ["REGISTERED", "ATTENDED"]);
 
-  // 알림 신청자 수 (status='PENDING'일 때 5명 도달 여부 표시용)
+  // 알림 신청자 수 (확정 threshold 표시용) — 기존 REGISTERED + NOTIFY_REQUESTED 합산
+  // (마이그레이션된 세션에 이미 등록된 참석자가 있을 수 있어 둘 다 포함)
   const { count: notifyCount } = await supabase
     .from("session_attendees")
     .select("id", { count: "exact", head: true })
     .eq("session_id", sessionId)
-    .eq("status", "NOTIFY_REQUESTED");
+    .in("status", ["REGISTERED", "ATTENDED", "NOTIFY_REQUESTED"]);
 
   return {
     ...session,
@@ -140,6 +141,17 @@ async function confirmSessionIfReady(sessionId: string) {
 
   if (!session || session.status !== "PENDING") return;
 
+  // 확정 threshold = 기존 REGISTERED + 신규 NOTIFY_REQUESTED 합산
+  // (마이그레이션된 세션의 기존 참석자도 카운트에 포함)
+  const { count: totalCount } = await supabase
+    .from("session_attendees")
+    .select("id", { count: "exact", head: true })
+    .eq("session_id", sessionId)
+    .in("status", ["REGISTERED", "ATTENDED", "NOTIFY_REQUESTED"]);
+
+  if ((totalCount || 0) < CONFIRM_THRESHOLD) return;
+
+  // 셸 차감 대상은 NOTIFY_REQUESTED인 사람들만 (REGISTERED는 이미 지급됨)
   const { data: notifyRows } = await supabase
     .from("session_attendees")
     .select("id, member_id")
@@ -147,7 +159,7 @@ async function confirmSessionIfReady(sessionId: string) {
     .eq("status", "NOTIFY_REQUESTED")
     .order("registered_at", { ascending: true });
 
-  if (!notifyRows || notifyRows.length < CONFIRM_THRESHOLD) return;
+  if (!notifyRows) return;
 
   // 각 신청자 셸 차감 + REGISTERED 전환
   for (const row of notifyRows) {
