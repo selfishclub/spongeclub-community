@@ -345,7 +345,7 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
             ))}
           </div>
           {error && <p className="text-sm text-red-500 font-medium mb-3">{error}</p>}
-          {session.status === "COMPLETED" ? (
+          {(session.status === "COMPLETED" || parseISO(session.scheduled_at) < new Date()) ? (
             <div className="text-center py-4 bg-[var(--ink-05)]"><p className="text-[var(--ink-50)] font-extrabold">완료된 공유회입니다</p></div>
           ) : session.status === "CANCELLED" ? (
             <div className="text-center py-4 bg-[var(--ink-05)]"><p className="text-[var(--ink-50)] font-extrabold">취소된 공유회입니다</p></div>
@@ -649,18 +649,25 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                   const isCompleted = s.status === "COMPLETED";
                   const isCollecting = s.status === "PENDING";
                   const isConfirmed = s.status === "APPROVED";
+                  // 시작 시각이 지난 APPROVED 공유회도 사실상 완료 처리
+                  const displayCompleted = isCompleted || (isPast && isConfirmed);
 
                   return (
                     <button key={s.id} onClick={() => handleSessionClick(s)}
                       className={`w-full text-left px-4 py-3.5 border-b border-[var(--ink-10)] hover:bg-[var(--yellow-dim)] transition-colors ${isPast || isCompleted ? "opacity-40" : ""}`}>
                       <div className="flex gap-3 items-center">
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
                             <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[var(--ink)] text-[var(--paper)] px-1.5 py-0.5">{CATEGORY_LABELS[s.category]}</span>
-                            {isCompleted && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">완료</span>}
-                            {!isCompleted && isCollecting && <span className="text-[10px] font-extrabold text-[var(--ink-50)] bg-[var(--ink-05)] px-1.5 py-0.5">신청 진행 중</span>}
-                            {!isCompleted && isConfirmed && !isFull && <span className="text-[10px] font-extrabold text-[var(--ink)] bg-[var(--yellow)] px-1.5 py-0.5">진행 확정</span>}
-                            {!isCompleted && isConfirmed && isFull && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">마감</span>}
+                            {displayCompleted && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">완료</span>}
+                            {!displayCompleted && isCollecting && <span className="text-[10px] font-extrabold text-[var(--ink-50)] bg-[var(--ink-05)] px-1.5 py-0.5">알림 신청 진행 중</span>}
+                            {!displayCompleted && isConfirmed && !isFull && (
+                              <>
+                                <span className="text-[10px] font-extrabold text-[var(--ink)] bg-[var(--yellow)] px-1.5 py-0.5">🎉 오픈 확정</span>
+                                <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5">지금 신청하세요</span>
+                              </>
+                            )}
+                            {!displayCompleted && isConfirmed && isFull && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">마감</span>}
                           </div>
                           <p className="text-sm font-bold text-[var(--ink)] leading-snug">{s.title}</p>
                           <p className="text-xs text-[var(--ink-30)] mt-0.5">{s.host_name}</p>
