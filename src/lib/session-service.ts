@@ -1,6 +1,20 @@
 import { createAdminClient } from "./supabase";
 import { checkAndNotifyRankingChanges } from "./ranking-notify";
 import { checkAchievements } from "./achievement-service";
+import { getSlackClient } from "./slack";
+
+const SESSION_NOTIFY_CHANNEL = "C0B18TB1N3G";
+
+// 공유회 당일 자정(KST) — 신청 취소 가능 기한
+export function cancelDeadline(scheduledAt: string): Date {
+  const kstMs = new Date(scheduledAt).getTime() + 9 * 60 * 60 * 1000;
+  const dateStr = new Date(kstMs).toISOString().split("T")[0];
+  return new Date(`${dateStr}T00:00:00+09:00`);
+}
+
+export function canStillCancel(scheduledAt: string): boolean {
+  return Date.now() < cancelDeadline(scheduledAt).getTime();
+}
 
 export const CATEGORIES = {
   AI: { label: "AI", bg: "bg-blue-100", text: "text-blue-700", dot: "bg-blue-500" },
@@ -107,8 +121,8 @@ export async function getApprovedSessions(year: number, month: number) {
   }));
 }
 
-// 공유회 상세
-export async function getSessionDetail(sessionId: string) {
+// 공유회 상세 (memberId 전달 시 본인의 신청 상태 포함)
+export async function getSessionDetail(sessionId: string, memberId?: string) {
   const supabase = createAdminClient();
 
   const { data: session, error } = await supabase
@@ -122,6 +136,19 @@ export async function getSessionDetail(sessionId: string) {
     .single();
 
   if (error) return null;
+
+  // 본인 신청 상태
+  let myStatus: string | null = null;
+  if (memberId) {
+    const { data: mine } = await supabase
+      .from("session_attendees")
+      .select("status")
+      .eq("session_id", sessionId)
+      .eq("member_id", memberId)
+      .in("status", ["REGISTERED", "ATTENDED", "NOTIFY_REQUESTED"])
+      .maybeSingle();
+    myStatus = mine?.status ?? null;
+  }
 
   // 참석자 수
   const { count } = await supabase
@@ -150,6 +177,8 @@ export async function getSessionDetail(sessionId: string) {
     attendee_count: count || 0,
     notify_count: notifyCount || 0,
     attendees: (attendees || []).map((a) => (a.member as unknown as { id: string; name: string })),
+    my_status: myStatus,
+    cancel_deadline: cancelDeadline(session.scheduled_at).toISOString(),
   };
 }
 
@@ -221,6 +250,48 @@ async function confirmSessionIfReady(sessionId: string) {
     .eq("id", sessionId);
 
   checkAndNotifyRankingChanges().catch(() => {});
+
+  // 확정 알림 — 참여자 전원 멘션
+  notifyConfirmedToAttendees(sessionId).catch((e) =>
+    console.error("[session-confirm-notify]", e)
+  );
+}
+
+async function notifyConfirmedToAttendees(sessionId: string) {
+  const supabase = createAdminClient();
+
+  const { data: session } = await supabase
+    .from("sessions")
+    .select("title, scheduled_at, entry_cost, host:members!sessions_host_id_fkey(name)")
+    .eq("id", sessionId)
+    .single();
+
+  if (!session) return;
+
+  const { data: attendees } = await supabase
+    .from("session_attendees")
+    .select("member:members!session_attendees_member_id_fkey(slack_user_id, name)")
+    .eq("session_id", sessionId)
+    .in("status", ["REGISTERED", "ATTENDED"]);
+
+  if (!attendees || attendees.length === 0) return;
+
+  const mentions = attendees
+    .map((a) => {
+      const m = a.member as unknown as { slack_user_id: string | null; name: string };
+      return m.slack_user_id ? `<@${m.slack_user_id}>` : m.name;
+    })
+    .join(" ");
+
+  const hostName = (session.host as unknown as { name: string } | null)?.name ?? "";
+  const date = new Date(session.scheduled_at).toLocaleString("ko-KR", {
+    timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit",
+  });
+
+  await getSlackClient().chat.postMessage({
+    channel: SESSION_NOTIFY_CHANNEL,
+    text: `🎉 *${session.title}* 공유회가 확정됐어요!\n${mentions} 님 참여 확정 (${session.entry_cost}🐚 차감)\n🗓 ${date} · 진행자: ${hostName}`,
+  });
 }
 
 // 알림 신청 (셸 차감 없음)
@@ -408,5 +479,59 @@ export async function completeSession(sessionId: string, adminId: string) {
 
   checkAndNotifyRankingChanges().catch(() => {});
   checkAchievements(session.host_id).catch(() => {});
+  return { success: true };
+}
+
+// 본인 신청 취소 — REGISTERED는 셸 환불, NOTIFY_REQUESTED는 단순 취소
+// 공유회 당일 자정(KST) 이전까지만 가능
+export async function cancelOwnRegistration(memberId: string, sessionId: string) {
+  const supabase = createAdminClient();
+
+  const { data: session } = await supabase
+    .from("sessions")
+    .select("id, title, entry_cost, scheduled_at, status")
+    .eq("id", sessionId)
+    .single();
+
+  if (!session) return { success: false, error: "NOT_FOUND" };
+  if (session.status === "CANCELLED" || session.status === "COMPLETED") {
+    return { success: false, error: "NOT_CANCELLABLE" };
+  }
+  if (!canStillCancel(session.scheduled_at)) {
+    return { success: false, error: "DEADLINE_PASSED" };
+  }
+
+  const { data: row } = await supabase
+    .from("session_attendees")
+    .select("id, status, transaction_id")
+    .eq("session_id", sessionId)
+    .eq("member_id", memberId)
+    .in("status", ["REGISTERED", "NOTIFY_REQUESTED"])
+    .maybeSingle();
+
+  if (!row) return { success: false, error: "NOT_REGISTERED" };
+
+  // REGISTERED → 셸 환불
+  if (row.status === "REGISTERED") {
+    await supabase.from("shell_transactions").insert({
+      member_id: memberId,
+      amount: session.entry_cost,
+      reason: "SESSION_REFUND",
+      reason_detail: `공유회 취소 환불: ${session.title}`,
+      related_session_id: sessionId,
+    });
+    await supabase.rpc("increment_shell_balance", {
+      p_member_id: memberId,
+      p_amount: session.entry_cost,
+    });
+  }
+
+  // 상태를 CANCELLED로 변경
+  await supabase
+    .from("session_attendees")
+    .update({ status: "CANCELLED", cancelled_at: new Date().toISOString() })
+    .eq("id", row.id);
+
+  checkAndNotifyRankingChanges().catch(() => {});
   return { success: true };
 }
