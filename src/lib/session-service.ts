@@ -197,7 +197,6 @@ async function confirmSessionIfReady(sessionId: string) {
   if (!session || session.status !== "PENDING") return;
 
   // 확정 threshold = 기존 REGISTERED + 신규 NOTIFY_REQUESTED 합산
-  // (마이그레이션된 세션의 기존 참석자도 카운트에 포함)
   const { count: totalCount } = await supabase
     .from("session_attendees")
     .select("id", { count: "exact", head: true })
@@ -206,7 +205,18 @@ async function confirmSessionIfReady(sessionId: string) {
 
   if ((totalCount || 0) < CONFIRM_THRESHOLD) return;
 
-  // 셸 차감 대상은 NOTIFY_REQUESTED인 사람들만 (REGISTERED는 이미 지급됨)
+  // 원자적 점유 — PENDING → APPROVED 전환에 성공한 단 한 요청만 차감 처리.
+  // 두 사용자가 동시에 알림 신청해 race가 발생해도 중복 차감 방지.
+  const { data: claimed } = await supabase
+    .from("sessions")
+    .update({ status: "APPROVED" })
+    .eq("id", sessionId)
+    .eq("status", "PENDING")
+    .select("id");
+
+  if (!claimed || claimed.length === 0) return; // 다른 요청이 먼저 확정
+
+  // 점유 성공 — NOTIFY_REQUESTED만 차감 (REGISTERED는 이미 지급됨)
   const { data: notifyRows } = await supabase
     .from("session_attendees")
     .select("id, member_id")
@@ -242,12 +252,6 @@ async function confirmSessionIfReady(sessionId: string) {
 
     checkAchievements(row.member_id).catch(() => {});
   }
-
-  // 공유회 확정
-  await supabase
-    .from("sessions")
-    .update({ status: "APPROVED" })
-    .eq("id", sessionId);
 
   checkAndNotifyRankingChanges().catch(() => {});
 
