@@ -36,6 +36,25 @@
 .m-done { background: #ecfdf5; color: #047857; }
 .m-todo { background: #f4f5f8; color: #5b6271; }
 
+/* 클릭 가능한 멤버 chip — 노트 모달 트리거 */
+.m-chip-btn {
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    border-color 0.12s ease,
+    transform 0.08s ease;
+}
+.m-chip-btn:hover {
+  border-color: #a7adba;
+}
+.m-chip-btn:active {
+  transform: scale(0.96);
+}
+.m-chip-btn:focus-visible {
+  outline: 2px solid #ffb800;
+  outline-offset: 1px;
+}
+
 /* 주차 pill — 기본(예정 주차도 활성 룩: 솔리드 테두리·짙은 텍스트) */
 .m-week-pill {
   background: white;
@@ -53,4 +72,133 @@
   background: #e7e9ee;
   color: #5b6271;
   border-color: #e7e9ee;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * 미션 노트 본문 — MemberNoteModal 이 GitHub Markdown API HTML 을 렌더한다.
+ * aaa-homepage(spongeclub_homepage)의 .note-content 스타일을 이식 + 미션
+ * 디자인 토큰(#2A2E35 잉크 / #E7E9EE 보더)에 맞춰 조정.
+ * ─────────────────────────────────────────────────────────────────────────── */
+.note-content {
+  color: #2a2e35;
+  line-height: 1.75;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+/* GitHub Markdown API 가 헤딩에 주입하는 앵커 링크(octicon) 숨김 */
+.note-content .anchor {
+  display: none;
+}
+.note-content h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 1.8rem 0 0.9rem;
+  letter-spacing: -0.01em;
+}
+.note-content h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 1.6rem 0 0.7rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #e7e9ee;
+}
+.note-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 1.3rem 0 0.55rem;
+}
+.note-content h4,
+.note-content h5,
+.note-content h6 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.1rem 0 0.45rem;
+}
+.note-content p {
+  margin: 0.75rem 0;
+}
+.note-content ul,
+.note-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.4rem;
+}
+.note-content ul {
+  list-style: disc;
+}
+.note-content ol {
+  list-style: decimal;
+}
+.note-content li {
+  margin: 0.25rem 0;
+}
+.note-content a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.note-content a:hover {
+  color: #1d4ed8;
+}
+.note-content strong {
+  font-weight: 700;
+}
+.note-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: #f4f5f8;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.88em;
+}
+.note-content pre {
+  background: #0f1115;
+  color: #f4f5f8;
+  padding: 1rem 1.15rem;
+  border-radius: 0.6rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.note-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.note-content blockquote {
+  border-left: 3px solid #e7e9ee;
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 1rem 0;
+  color: #5b6271;
+}
+.note-content hr {
+  border: none;
+  border-top: 1px solid #e7e9ee;
+  margin: 1.8rem 0;
+}
+.note-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+.note-content table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.88rem;
+  display: block;
+  overflow-x: auto;
+}
+.note-content th,
+.note-content td {
+  border: 1px solid #e7e9ee;
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+}
+.note-content th {
+  background: #fafbfd;
+  font-weight: 700;
+}
+.note-content :first-child {
+  margin-top: 0;
 }

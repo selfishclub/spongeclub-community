@@ -16,6 +16,8 @@ import { AnnouncementBanner } from "./_components/AnnouncementBanner";
 import { MissionDiscussion } from "./_components/MissionDiscussion";
 import { CommunityCTA } from "./_components/CommunityCTA";
 import { ProgressBoardProvider } from "./_components/ProgressBoardProvider";
+import { ProgressBoardSection } from "./_components/ProgressBoardSection";
+import { NoteViewProvider } from "./_components/NoteViewProvider";
 
 export const metadata: Metadata = {
   title: "주차별 미션 — 스폰지클럽 1기",
@@ -58,35 +60,46 @@ export default async function MissionsPage() {
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
 
   return (
-    <ProgressBoardProvider
-      progressByWeek={progressByWeek}
-      weeks={weeks}
-      currentWeekNumber={currentWeekNumber}
-    >
-      <Header />
+    <NoteViewProvider>
+      <ProgressBoardProvider
+        progressByWeek={progressByWeek}
+        weeks={weeks}
+        currentWeekNumber={currentWeekNumber}
+      >
+        <Header />
 
-      <main className="max-w-6xl mx-auto px-5 py-6 space-y-6 flex-1 w-full">
-        <WeekTimeline weeks={weeks} />
+        <main className="max-w-6xl mx-auto px-5 py-6 space-y-6 flex-1 w-full">
+          <WeekTimeline weeks={weeks} />
 
-        <MissionHero
-          week={currentWeek}
-          missions={missions}
-          dDay={dDay}
-          replayUrl={replayUrl}
-        />
+          <MissionHero
+            week={currentWeek}
+            missions={missions}
+            dDay={dDay}
+            replayUrl={replayUrl}
+          />
 
-        <ScheduleStrip week={currentWeek} dDay={dDay} />
+          <ScheduleStrip week={currentWeek} dDay={dDay} />
 
-        <AnnouncementBanner />
+          {/* 공지사항 · 미션 질문 — 2열 (모바일은 1열) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+            <AnnouncementBanner />
+            <MissionDiscussion />
+          </div>
 
-        <MissionDiscussion />
+          {/* 과제 현황판 — 인라인 섹션 (멤버 카드 클릭 시 노트 모달) */}
+          <ProgressBoardSection
+            progressByWeek={progressByWeek}
+            weeks={weeks}
+            currentWeekNumber={currentWeekNumber}
+          />
 
-        <CommunityCTA />
+          <CommunityCTA />
 
-        <footer className="text-center text-xs text-[#A7ADBA] pt-6 pb-12">
-          스폰지클럽 1기 · 주차별 미션
-        </footer>
-      </main>
-    </ProgressBoardProvider>
+          <footer className="text-center text-xs text-[#A7ADBA] pt-6 pb-12">
+            스폰지클럽 1기 · 주차별 미션
+          </footer>
+        </main>
+      </ProgressBoardProvider>
+    </NoteViewProvider>
   );
 }

@@ -8,25 +8,12 @@
  *     데굴데굴의 "작성 중" 3단계는 데이터가 없어 표현 불가.
  *   - 역할은 실데이터 role 이 "조장"/"조원" 수준 → 조장만 👑 아이콘.
  *
- * server component 가 데이터를 fetch 해 props 로 넘긴다(별도 client 없음).
+ * 자체는 순수 표현 컴포넌트(props 만 받음) — 인라인 섹션·모달 양쪽에서 재사용.
+ * 멤버 카드는 클릭 시 노트 모달을 여는 client 컴포넌트(MemberChipButton)다.
  */
-import type { TeamProgress, MissionSubmission } from "@/lib/missions/types";
+import type { TeamProgress } from "@/lib/missions/types";
 import { getTeamMeta } from "../_data/teamMeta";
-
-function MemberChip({ member }: { member: MissionSubmission }) {
-  const isLeader = member.role === "조장";
-  return (
-    <span
-      className={`m-chip ${member.submitted ? "m-done" : "m-todo"}`}
-      title={`${member.role ?? "조원"} · ${
-        member.submitted ? "제출" : "미제출"
-      }`}
-    >
-      {isLeader && <span className="font-bold">👑</span>}
-      {member.submitted ? "✓" : "○"} {member.displayName}
-    </span>
-  );
-}
+import { MemberChipButton } from "./MemberChipButton";
 
 function TeamCard({ team }: { team: TeamProgress }) {
   const meta = getTeamMeta(team.team);
@@ -74,7 +61,7 @@ function TeamCard({ team }: { team: TeamProgress }) {
       {team.members.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
           {team.members.map((m) => (
-            <MemberChip key={m.filePath} member={m} />
+            <MemberChipButton key={m.filePath} member={m} />
           ))}
         </div>
       )}
