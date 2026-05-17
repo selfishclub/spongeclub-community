@@ -234,10 +234,10 @@ export default function NewSessionPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-amber-800 mb-1">가격 (5~10 🐚)</label>
+              <label className="block text-sm font-medium text-amber-800 mb-1">가격 (1~10 🐚)</label>
               <input
                 type="range"
-                min={5}
+                min={1}
                 max={10}
                 value={entryCost}
                 onChange={(e) => setEntryCost(parseInt(e.target.value))}

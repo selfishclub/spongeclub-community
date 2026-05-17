@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "필수 항목을 입력해주세요." }, { status: 400 });
   }
 
-  if (entry_cost < 5 || entry_cost > 10) {
-    return NextResponse.json({ error: "가격은 5~10셸이어야 해요." }, { status: 400 });
+  if (entry_cost < 1 || entry_cost > 10) {
+    return NextResponse.json({ error: "가격은 1~10셸이어야 해요." }, { status: 400 });
   }
 
   const result = await createSession(host_id, {
