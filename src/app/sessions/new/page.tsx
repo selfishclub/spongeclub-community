@@ -96,9 +96,9 @@ export default function NewSessionPage() {
       <div className="min-h-screen bg-gradient-to-b from-amber-50 to-yellow-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-lg">
           <p className="text-4xl mb-4">🐚</p>
-          <h2 className="text-xl font-bold text-amber-900 mb-2">신청 완료!</h2>
+          <h2 className="text-xl font-bold text-amber-900 mb-2">캘린더에 게시됐어요!</h2>
           <p className="text-sm text-amber-800 mb-6">
-            어드민 승인 후 캘린더에 공개됩니다.
+            알림 신청자가 5명 이상 모이면 자동으로 확정돼요.
           </p>
           <button
             onClick={() => router.push("/")}

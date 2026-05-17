@@ -67,7 +67,10 @@ interface Session {
 
 interface SessionDetail extends Session {
   host_id: string;
+  notify_count: number;
 }
+
+const NOTIFY_THRESHOLD = 5;
 
 interface Member {
   id: string;
@@ -246,6 +249,8 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"register" | "notify">("register");
+  const [notifyConfirmMemberId, setNotifyConfirmMemberId] = useState<string | null>(null);
   const [vodRequested, setVodRequested] = useState(false);
   const [vodLoading, setVodLoading] = useState(false);
   const [vodError, setVodError] = useState("");
@@ -288,6 +293,35 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
     finally { setRegistering(false); }
   };
 
+  const handleNotify = async (memberId: string) => {
+    setRegistering(true); setError("");
+    try {
+      const res = await fetch(`/api/sessions/${session.id}/notify`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ member_id: memberId }) });
+      const data = await res.json();
+      if (!res.ok) setError(data.error || "알림 신청에 실패했어요.");
+      else { setSuccess(true); onRegistered(); }
+    } catch { setError("네트워크 오류가 발생했어요."); }
+    finally { setRegistering(false); setNotifyConfirmMemberId(null); }
+  };
+
+  // 알림 신청 버튼 클릭 → 로그인 안 됐으면 picker, 됐으면 바로 confirm 모달
+  const startNotifyFlow = () => {
+    if (member) { setNotifyConfirmMemberId(member.id); }
+    else { setPendingAction("notify"); setShowPicker(true); }
+  };
+
+  // 참여 신청 버튼 클릭 → 로그인 안 됐으면 picker, 됐으면 바로 신청
+  const startRegisterFlow = () => {
+    if (member) { handleRegister(member.id); }
+    else { setPendingAction("register"); setShowPicker(true); }
+  };
+
+  const handlePickerSelect = (memberId: string) => {
+    setShowPicker(false);
+    if (pendingAction === "notify") setNotifyConfirmMemberId(memberId);
+    else handleRegister(memberId);
+  };
+
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60 backdrop-blur-sm px-4" onClick={onClose}>
@@ -313,10 +347,23 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
           {error && <p className="text-sm text-red-500 font-medium mb-3">{error}</p>}
           {session.status === "COMPLETED" ? (
             <div className="text-center py-4 bg-[var(--ink-05)]"><p className="text-[var(--ink-50)] font-extrabold">완료된 공유회입니다</p></div>
+          ) : session.status === "CANCELLED" ? (
+            <div className="text-center py-4 bg-[var(--ink-05)]"><p className="text-[var(--ink-50)] font-extrabold">취소된 공유회입니다</p></div>
           ) : success ? (
             <div className="text-center py-4 bg-[var(--yellow)]"><p className="text-[var(--ink)] font-extrabold">신청 완료!</p></div>
+          ) : session.status === "PENDING" ? (
+            <>
+              <div className="mb-3 px-4 py-2.5 bg-[var(--ink-05)] text-center">
+                <p className="text-xs font-extrabold text-[var(--ink-50)] tracking-wider uppercase">알림 신청</p>
+                <p className="text-sm font-bold text-[var(--ink)] mt-0.5">{session.notify_count} / {NOTIFY_THRESHOLD}명</p>
+              </div>
+              <button onClick={startNotifyFlow} disabled={registering}
+                className="w-full py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
+                {registering ? "신청 중..." : "🔔 알림 신청하기"}
+              </button>
+            </>
           ) : (
-            <button onClick={() => member ? handleRegister(member.id) : setShowPicker(true)} disabled={registering}
+            <button onClick={startRegisterFlow} disabled={registering}
               className="w-full py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
               {registering ? "신청 중..." : `${session.entry_cost}셸로 공유회 참여 신청하기`}
             </button>
@@ -346,7 +393,29 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
           <button onClick={onClose} className="mt-3 w-full text-center text-sm text-[var(--ink-30)] hover:text-[var(--ink)]">닫기</button>
         </div>
       </div>
-      {showPicker && <MemberPickerModal title="본인 이름을 선택하세요" onClose={() => setShowPicker(false)} onSelect={(m) => handleRegister(m.id)} />}
+      {showPicker && <MemberPickerModal title="본인 이름을 선택하세요" onClose={() => setShowPicker(false)} onSelect={(m) => handlePickerSelect(m.id)} />}
+      {notifyConfirmMemberId && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[var(--ink)]/70 backdrop-blur-sm px-4" onClick={() => !registering && setNotifyConfirmMemberId(null)}>
+          <div className="bg-[var(--paper)] w-full max-w-sm p-7 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <p className="text-3xl mb-3 text-center">🔔</p>
+            <h3 className="text-base font-extrabold text-[var(--ink)] mb-3 text-center">알림 신청 안내</h3>
+            <p className="text-sm text-[var(--ink-50)] leading-relaxed mb-5">
+              지금은 셸이 차감되지 않아요. <b className="text-[var(--ink)]">알림 신청자가 {NOTIFY_THRESHOLD}명 이상</b> 모이면 공유회가 자동으로 확정되고,
+              그때 자동으로 <b className="text-[var(--ink)]">참여자 목록에 포함되며 {session.entry_cost}셸이 차감</b>됩니다.
+            </p>
+            <div className="flex gap-2">
+              <button onClick={() => setNotifyConfirmMemberId(null)} disabled={registering}
+                className="flex-1 py-3 bg-[var(--paper)] border-2 border-[var(--ink-10)] text-[var(--ink-50)] font-bold text-sm hover:border-[var(--ink)] hover:text-[var(--ink)] disabled:opacity-40">
+                취소
+              </button>
+              <button onClick={() => handleNotify(notifyConfirmMemberId)} disabled={registering}
+                className="flex-1 py-3 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40">
+                {registering ? "신청 중..." : "확인 후 신청"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -536,7 +605,7 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
               const isCurrentMonth = isSameMonth(day, currentMonth);
               const isToday = isSameDay(day, new Date());
               const hasCompletedSession = daySessions.some((s) => s.status === "COMPLETED");
-              const hasUpcomingSession = !isToday && daySessions.some((s) => s.status === "APPROVED");
+              const hasUpcomingSession = !isToday && daySessions.some((s) => s.status === "APPROVED" || s.status === "PENDING");
               const dayBoxClass = isToday
                 ? "bg-[var(--yellow)] text-[var(--ink)] w-6 h-6 flex items-center justify-center mx-auto"
                 : hasUpcomingSession
@@ -578,6 +647,8 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                   const isPast = sessionDate < now;
                   const isFull = s.capacity !== null && s.attendee_count >= s.capacity;
                   const isCompleted = s.status === "COMPLETED";
+                  const isCollecting = s.status === "PENDING";
+                  const isConfirmed = s.status === "APPROVED";
 
                   return (
                     <button key={s.id} onClick={() => handleSessionClick(s)}
@@ -587,8 +658,9 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[var(--ink)] text-[var(--paper)] px-1.5 py-0.5">{CATEGORY_LABELS[s.category]}</span>
                             {isCompleted && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">완료</span>}
-                            {!isCompleted && !isPast && !isFull && <span className="text-[10px] font-extrabold text-[var(--ink)] bg-[var(--yellow)] px-1.5 py-0.5">모집 중</span>}
-                            {!isCompleted && isFull && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">마감</span>}
+                            {!isCompleted && isCollecting && <span className="text-[10px] font-extrabold text-[var(--ink-50)] bg-[var(--ink-05)] px-1.5 py-0.5">신청 진행 중</span>}
+                            {!isCompleted && isConfirmed && !isFull && <span className="text-[10px] font-extrabold text-[var(--ink)] bg-[var(--yellow)] px-1.5 py-0.5">진행 확정</span>}
+                            {!isCompleted && isConfirmed && isFull && <span className="text-[10px] font-extrabold text-[var(--ink-50)] px-1.5 py-0.5 bg-[var(--ink-05)]">마감</span>}
                           </div>
                           <p className="text-sm font-bold text-[var(--ink)] leading-snug">{s.title}</p>
                           <p className="text-xs text-[var(--ink-30)] mt-0.5">{s.host_name}</p>

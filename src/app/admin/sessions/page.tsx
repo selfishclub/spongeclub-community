@@ -38,8 +38,8 @@ const CATEGORIES = [
 ];
 
 const STATUS_CONFIG: Record<string, { label: string; classes: string }> = {
-  PENDING: { label: "대기 중", classes: "bg-[var(--yellow)] text-[var(--ink)]" },
-  APPROVED: { label: "예정", classes: "bg-[var(--ink)] text-[var(--paper)]" },
+  PENDING: { label: "신청 진행 중", classes: "bg-[var(--yellow)] text-[var(--ink)]" },
+  APPROVED: { label: "진행 확정", classes: "bg-[var(--ink)] text-[var(--paper)]" },
   COMPLETED: { label: "완료", classes: "bg-[var(--ink-10)] text-[var(--ink-50)]" },
   REJECTED: { label: "거부", classes: "bg-red-100 text-red-600" },
   CANCELLED: { label: "취소", classes: "bg-[var(--ink-05)] text-[var(--ink-30)]" },
@@ -186,7 +186,7 @@ export default function AdminSessionsPage() {
       </div>
 
       <div className="flex border-2 border-[var(--ink)] mb-6 w-fit">
-        {[["ALL", "전체"], ["PENDING", "대기 중"], ["APPROVED", "예정"], ["COMPLETED", "완료"], ["REJECTED", "거부"], ["CANCELLED", "취소"]].map(([key, label], i) => (
+        {[["ALL", "전체"], ["PENDING", "신청 진행 중"], ["APPROVED", "진행 확정"], ["COMPLETED", "완료"], ["CANCELLED", "취소"]].map(([key, label], i) => (
           <button key={key} onClick={() => setStatusFilter(key)}
             className={`px-4 py-2.5 text-xs font-extrabold transition-colors ${i > 0 ? "border-l-2 border-[var(--ink)]" : ""} ${statusFilter === key ? "bg-[var(--ink)] text-[var(--paper)]" : "bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--ink-05)]"}`}>
             {label}
@@ -243,12 +243,6 @@ export default function AdminSessionsPage() {
                       {(s.status === "APPROVED" || s.status === "PENDING") && (
                         <button onClick={() => { setForceSession(s); setForceSearch(""); setForceError(""); setForceSuccess(""); }} className="px-2 py-1 text-xs font-bold border-2 border-[var(--ink-10)] text-[var(--ink-50)] hover:border-[var(--ink)] hover:text-[var(--ink)] transition-colors">참석자 추가</button>
                       )}
-                      {s.status === "PENDING" && (
-                        <>
-                          <button onClick={() => handleAction(s.id, "approve")} disabled={loading === s.id} className="px-2 py-1 text-xs font-extrabold bg-[var(--ink)] text-[var(--paper)] hover:opacity-90 disabled:opacity-40">승인</button>
-                          <button onClick={() => handleAction(s.id, "reject")} disabled={loading === s.id} className="px-2 py-1 text-xs font-bold text-red-500 border-2 border-red-200 hover:bg-red-50 disabled:opacity-40">거부</button>
-                        </>
-                      )}
                       {s.status === "APPROVED" && (
                         <>
                           <button onClick={() => handleAction(s.id, "complete")} disabled={loading === s.id} className="px-2 py-1 text-xs font-extrabold bg-[var(--yellow)] text-[var(--ink)] hover:opacity-80 disabled:opacity-40">완료</button>
@@ -299,7 +293,7 @@ export default function AdminSessionsPage() {
 
             <label className={labelClass}>상태</label>
             <select value={editForm.status} onChange={(e) => setEditForm({ ...editForm, status: e.target.value })} className={`${inputClass} mb-5`}>
-              <option value="PENDING">대기 중</option><option value="APPROVED">예정</option><option value="COMPLETED">완료</option><option value="REJECTED">거부</option><option value="CANCELLED">취소</option>
+              <option value="PENDING">신청 진행 중</option><option value="APPROVED">진행 확정</option><option value="COMPLETED">완료</option><option value="CANCELLED">취소</option>
             </select>
 
             <div className="flex gap-3 justify-end">
@@ -393,8 +387,8 @@ export default function AdminSessionsPage() {
 
             <label className={labelClass}>등록 상태</label>
             <select value={addForm.status} onChange={(e) => setAddForm({ ...addForm, status: e.target.value })} className={`${inputClass} mb-5`}>
-              <option value="APPROVED">바로 승인 (캘린더에 공개)</option>
-              <option value="PENDING">대기 중 (승인 필요)</option>
+              <option value="PENDING">신청 진행 중 (알림 신청 5명 모집)</option>
+              <option value="APPROVED">진행 확정 (바로 참여 신청 받기)</option>
             </select>
 
             <div className="flex gap-3 justify-end">
