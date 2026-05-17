@@ -46,9 +46,21 @@ export async function createSession(hostId: string, data: CreateSessionData) {
   return { success: true, session };
 }
 
-// 월별 승인된 공유회 목록
+// 시작일 지난 PENDING 공유회를 CANCELLED로 일괄 정리 (5명 미달 자동 취소)
+async function sweepExpiredPendingSessions() {
+  const supabase = createAdminClient();
+  await supabase
+    .from("sessions")
+    .update({ status: "CANCELLED" })
+    .eq("status", "PENDING")
+    .lt("scheduled_at", new Date().toISOString());
+}
+
+// 월별 캘린더에 표시할 공유회 목록 (신청 진행 중 + 확정 + 완료)
 export async function getApprovedSessions(year: number, month: number) {
   const supabase = createAdminClient();
+
+  await sweepExpiredPendingSessions();
 
   const startDate = new Date(year, month - 1, 1).toISOString();
   const endDate = new Date(year, month, 0, 23, 59, 59).toISOString();
@@ -60,7 +72,7 @@ export async function getApprovedSessions(year: number, month: number) {
       entry_cost, capacity, status, zoom_link,
       host:members!sessions_host_id_fkey(id, name)
     `)
-    .in("status", ["APPROVED", "COMPLETED"])
+    .in("status", ["PENDING", "APPROVED", "COMPLETED"])
     .gte("scheduled_at", startDate)
     .lte("scheduled_at", endDate)
     .order("scheduled_at", { ascending: true });
@@ -99,11 +111,115 @@ export async function getSessionDetail(sessionId: string) {
     .eq("session_id", sessionId)
     .in("status", ["REGISTERED", "ATTENDED"]);
 
+  // 알림 신청자 수 (status='PENDING'일 때 5명 도달 여부 표시용)
+  const { count: notifyCount } = await supabase
+    .from("session_attendees")
+    .select("id", { count: "exact", head: true })
+    .eq("session_id", sessionId)
+    .eq("status", "NOTIFY_REQUESTED");
+
   return {
     ...session,
     attendee_count: count || 0,
+    notify_count: notifyCount || 0,
     attendees: (attendees || []).map((a) => (a.member as unknown as { id: string; name: string })),
   };
+}
+
+const CONFIRM_THRESHOLD = 5;
+
+// 5명 도달 시 자동 확정: NOTIFY_REQUESTED 일괄 REGISTERED 전환 + 셸 차감 + status APPROVED
+async function confirmSessionIfReady(sessionId: string) {
+  const supabase = createAdminClient();
+
+  const { data: session } = await supabase
+    .from("sessions")
+    .select("id, title, entry_cost, status")
+    .eq("id", sessionId)
+    .single();
+
+  if (!session || session.status !== "PENDING") return;
+
+  const { data: notifyRows } = await supabase
+    .from("session_attendees")
+    .select("id, member_id")
+    .eq("session_id", sessionId)
+    .eq("status", "NOTIFY_REQUESTED")
+    .order("registered_at", { ascending: true });
+
+  if (!notifyRows || notifyRows.length < CONFIRM_THRESHOLD) return;
+
+  // 각 신청자 셸 차감 + REGISTERED 전환
+  for (const row of notifyRows) {
+    const { data: tx } = await supabase
+      .from("shell_transactions")
+      .insert({
+        member_id: row.member_id,
+        amount: -session.entry_cost,
+        reason: "SESSION_ATTEND",
+        reason_detail: `공유회 참여(자동 확정): ${session.title}`,
+        related_session_id: sessionId,
+      })
+      .select()
+      .single();
+
+    await supabase.rpc("increment_shell_balance", {
+      p_member_id: row.member_id,
+      p_amount: -session.entry_cost,
+    });
+
+    await supabase
+      .from("session_attendees")
+      .update({ status: "REGISTERED", transaction_id: tx?.id })
+      .eq("id", row.id);
+
+    checkAchievements(row.member_id).catch(() => {});
+  }
+
+  // 공유회 확정
+  await supabase
+    .from("sessions")
+    .update({ status: "APPROVED" })
+    .eq("id", sessionId);
+
+  checkAndNotifyRankingChanges().catch(() => {});
+}
+
+// 알림 신청 (셸 차감 없음)
+export async function requestSessionNotify(memberId: string, sessionId: string) {
+  const supabase = createAdminClient();
+
+  const { data: session } = await supabase
+    .from("sessions")
+    .select("id, host_id, status")
+    .eq("id", sessionId)
+    .single();
+
+  if (!session) return { success: false, error: "NOT_FOUND" };
+  if (session.status !== "PENDING") return { success: false, error: "NOT_PENDING" };
+  if (session.host_id === memberId) return { success: false, error: "OWN_SESSION" };
+
+  const { data: existing } = await supabase
+    .from("session_attendees")
+    .select("id, status")
+    .eq("session_id", sessionId)
+    .eq("member_id", memberId)
+    .maybeSingle();
+
+  if (existing) return { success: false, error: "ALREADY_REQUESTED" };
+
+  const { error: insertError } = await supabase
+    .from("session_attendees")
+    .insert({
+      session_id: sessionId,
+      member_id: memberId,
+      status: "NOTIFY_REQUESTED",
+    });
+
+  if (insertError) return { success: false, error: insertError.message };
+
+  await confirmSessionIfReady(sessionId);
+  return { success: true };
 }
 
 // 참여 신청
