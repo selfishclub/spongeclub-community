@@ -56,6 +56,11 @@ async function sweepExpiredPendingSessions() {
     .lt("scheduled_at", new Date().toISOString());
 }
 
+// host 중첩 객체를 host_name으로 평탄화
+function flattenHost<T extends { host?: { name?: string } | null }>(row: T) {
+  return { ...row, host_name: row.host?.name ?? "" };
+}
+
 // 월별 캘린더에 표시할 공유회 목록 (신청 진행 중 + 확정 + 완료)
 export async function getApprovedSessions(year: number, month: number) {
   const supabase = createAdminClient();
@@ -78,7 +83,28 @@ export async function getApprovedSessions(year: number, month: number) {
     .order("scheduled_at", { ascending: true });
 
   if (error) return [];
-  return data || [];
+
+  // 참석자(유료) + 알림 신청자 카운트 매핑
+  const ids = (data || []).map((s) => s.id);
+  const paid: Record<string, number> = {};
+  const notify: Record<string, number> = {};
+  if (ids.length > 0) {
+    const { data: rows } = await supabase
+      .from("session_attendees")
+      .select("session_id, status")
+      .in("session_id", ids)
+      .in("status", ["REGISTERED", "ATTENDED", "NOTIFY_REQUESTED"]);
+    for (const r of rows || []) {
+      if (r.status === "NOTIFY_REQUESTED") notify[r.session_id] = (notify[r.session_id] || 0) + 1;
+      else paid[r.session_id] = (paid[r.session_id] || 0) + 1;
+    }
+  }
+
+  return (data || []).map((s) => ({
+    ...flattenHost(s as unknown as { host?: { name?: string } | null }),
+    attendee_count: paid[s.id] || 0,
+    notify_count: (paid[s.id] || 0) + (notify[s.id] || 0),
+  }));
 }
 
 // 공유회 상세
@@ -120,7 +146,7 @@ export async function getSessionDetail(sessionId: string) {
     .in("status", ["REGISTERED", "ATTENDED", "NOTIFY_REQUESTED"]);
 
   return {
-    ...session,
+    ...flattenHost(session as unknown as { host?: { name?: string } | null }),
     attendee_count: count || 0,
     notify_count: notifyCount || 0,
     attendees: (attendees || []).map((a) => (a.member as unknown as { id: string; name: string })),
