@@ -244,10 +244,10 @@ export default function AdminSessionsPage() {
                         <button onClick={() => { setForceSession(s); setForceSearch(""); setForceError(""); setForceSuccess(""); }} className="px-2 py-1 text-xs font-bold border-2 border-[var(--ink-10)] text-[var(--ink-50)] hover:border-[var(--ink)] hover:text-[var(--ink)] transition-colors">참석자 추가</button>
                       )}
                       {s.status === "APPROVED" && (
-                        <>
-                          <button onClick={() => handleAction(s.id, "complete")} disabled={loading === s.id} className="px-2 py-1 text-xs font-extrabold bg-[var(--yellow)] text-[var(--ink)] hover:opacity-80 disabled:opacity-40">완료</button>
-                          <button onClick={() => { if (confirm("이 공유회를 취소할까요?")) handleAction(s.id, "cancel"); }} disabled={loading === s.id} className="px-2 py-1 text-xs font-bold bg-[var(--ink-05)] text-[var(--ink-30)] hover:bg-[var(--ink-10)] disabled:opacity-40">취소</button>
-                        </>
+                        <button onClick={() => handleAction(s.id, "complete")} disabled={loading === s.id} className="px-2 py-1 text-xs font-extrabold bg-[var(--yellow)] text-[var(--ink)] hover:opacity-80 disabled:opacity-40">완료</button>
+                      )}
+                      {(s.status === "APPROVED" || s.status === "PENDING") && (
+                        <button onClick={() => { if (confirm("이 공유회를 취소할까요?")) handleAction(s.id, "cancel"); }} disabled={loading === s.id} className="px-2 py-1 text-xs font-bold bg-[var(--ink-05)] text-[var(--ink-30)] hover:bg-[var(--ink-10)] disabled:opacity-40">취소</button>
                       )}
                       <button onClick={() => { if (confirm("이 공유회를 삭제할까요? 복구할 수 없습니다.")) handleAction(s.id, "delete"); }} disabled={loading === s.id} className="px-2 py-1 text-xs text-red-400 hover:text-red-600">삭제</button>
                     </div>
