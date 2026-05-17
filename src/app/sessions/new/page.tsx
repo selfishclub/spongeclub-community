@@ -284,8 +284,9 @@ export default function NewSessionPage() {
             {loading ? "신청 중..." : "공유회 신청하기"}
           </button>
 
-          <p className="text-xs text-amber-700 text-center">
-            어드민 승인 후 캘린더에 공개됩니다
+          <p className="text-xs text-amber-700 text-center leading-relaxed">
+            신청 즉시 캘린더에서 알림 신청이 시작돼요.<br />
+            알림 신청자가 5명 이상 모이면 공유회 진행이 확정됩니다.
           </p>
         </div>
       </div>
