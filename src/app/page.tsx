@@ -806,8 +806,6 @@ export default function HomePage() {
           </Link>
           <a
             href="https://sponge-dressup.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
             className="flex-1 py-3.5 border-2 border-l-0 border-[var(--ink)] bg-[var(--paper)] text-[var(--ink)] text-sm font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors text-center"
           >
             🧽 캐릭터 생성하기
