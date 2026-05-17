@@ -68,6 +68,8 @@ interface Session {
 interface SessionDetail extends Session {
   host_id: string;
   notify_count: number;
+  my_status: "REGISTERED" | "ATTENDED" | "NOTIFY_REQUESTED" | null;
+  cancel_deadline: string;
 }
 
 const NOTIFY_THRESHOLD = 5;
@@ -304,6 +306,19 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
     finally { setRegistering(false); setNotifyConfirmMemberId(null); }
   };
 
+  const handleCancel = async () => {
+    if (!member) return;
+    if (!confirm(session.my_status === "REGISTERED" ? `정말 취소할까요? ${session.entry_cost}셸이 환불됩니다.` : "알림 신청을 취소할까요?")) return;
+    setRegistering(true); setError("");
+    try {
+      const res = await fetch(`/api/sessions/${session.id}/cancel`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ member_id: member.id }) });
+      const data = await res.json();
+      if (!res.ok) setError(data.error || "취소에 실패했어요.");
+      else { onRegistered(); onClose(); }
+    } catch { setError("네트워크 오류가 발생했어요."); }
+    finally { setRegistering(false); }
+  };
+
   // 알림 신청 버튼 클릭 → 로그인 안 됐으면 picker, 됐으면 바로 confirm 모달
   const startNotifyFlow = () => {
     if (member) { setNotifyConfirmMemberId(member.id); }
@@ -351,6 +366,29 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
             <div className="text-center py-4 bg-[var(--ink-05)]"><p className="text-[var(--ink-50)] font-extrabold">취소된 공유회입니다</p></div>
           ) : success ? (
             <div className="text-center py-4 bg-[var(--yellow)]"><p className="text-[var(--ink)] font-extrabold">신청 완료!</p></div>
+          ) : session.my_status === "REGISTERED" || session.my_status === "ATTENDED" ? (
+            <>
+              <div className="mb-3 px-4 py-3 bg-[var(--yellow-dim)] text-center">
+                <p className="text-sm font-extrabold text-[var(--ink)]">✅ 참여 확정</p>
+                <p className="text-[11px] text-[var(--ink-50)] mt-1">취소 가능: {format(parseISO(session.cancel_deadline), "M월 d일 (EEE) HH:mm", { locale: ko })} 까지</p>
+              </div>
+              <button onClick={handleCancel} disabled={registering || parseISO(session.cancel_deadline) < new Date()}
+                className="w-full py-3 bg-[var(--paper)] border-2 border-[var(--ink-10)] text-[var(--ink-50)] font-bold text-sm hover:border-[var(--ink)] hover:text-[var(--ink)] disabled:opacity-40">
+                {parseISO(session.cancel_deadline) < new Date() ? "취소 기한이 지났어요" : registering ? "취소 중..." : `신청 취소 (${session.entry_cost}셸 환불)`}
+              </button>
+            </>
+          ) : session.my_status === "NOTIFY_REQUESTED" ? (
+            <>
+              <div className="mb-3 px-4 py-2.5 bg-[var(--ink-05)] text-center">
+                <p className="text-xs font-extrabold text-[var(--ink-50)] tracking-wider uppercase">알림 신청</p>
+                <p className="text-sm font-bold text-[var(--ink)] mt-0.5">{session.notify_count} / {NOTIFY_THRESHOLD}명</p>
+                <p className="text-[11px] text-[var(--ink-30)] mt-1">🔔 알림 신청 완료. 5명 모이면 자동 확정돼요.</p>
+              </div>
+              <button onClick={handleCancel} disabled={registering}
+                className="w-full py-3 bg-[var(--paper)] border-2 border-[var(--ink-10)] text-[var(--ink-50)] font-bold text-sm hover:border-[var(--ink)] hover:text-[var(--ink)] disabled:opacity-40">
+                {registering ? "취소 중..." : "알림 신청 취소"}
+              </button>
+            </>
           ) : session.status === "PENDING" ? (
             <>
               <div className="mb-3 px-4 py-2.5 bg-[var(--ink-05)] text-center">
@@ -565,8 +603,12 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
 
   const handleSessionClick = async (session: Session) => {
     setDetailLoading(true);
-    try { const res = await fetch(`/api/sessions/${session.id}`); const data = await res.json(); setSelectedSession(data.session); }
-    catch { /* */ } finally { setDetailLoading(false); }
+    try {
+      const url = member ? `/api/sessions/${session.id}?member_id=${member.id}` : `/api/sessions/${session.id}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      setSelectedSession(data.session);
+    } catch { /* */ } finally { setDetailLoading(false); }
   };
 
   const monthStart = startOfMonth(currentMonth);

@@ -6,7 +6,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const session = await getSessionDetail(id);
+  const memberId = new URL(request.url).searchParams.get("member_id") || undefined;
+  const session = await getSessionDetail(id, memberId);
 
   if (!session) {
     return NextResponse.json({ error: "공유회를 찾을 수 없어요." }, { status: 404 });
