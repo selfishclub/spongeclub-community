@@ -2,6 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
+import type { GrantPreview, GrantResult } from "@/lib/missions/shell-grant";
 
 interface AdminWeek {
   id: string;
@@ -41,6 +42,12 @@ export default function AdminMissionWeekPage({
   const [replayUrl, setReplayUrl] = useState("");
   const [transcriptUrl, setTranscriptUrl] = useState("");
   const [published, setPublished] = useState(true);
+
+  // 제출자 일괄 셸 지급
+  const [grantPreview, setGrantPreview] = useState<GrantPreview | null>(null);
+  const [grantBusy, setGrantBusy] = useState(false);
+  const [grantResult, setGrantResult] = useState<GrantResult | null>(null);
+  const [grantError, setGrantError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`/api/admin/missions/weeks/${encodeURIComponent(decoded)}`)
@@ -99,6 +106,62 @@ export default function AdminMissionWeekPage({
     }
     setWeek(data.week);
     setSavedAt(new Date());
+  }
+
+  async function fetchGrantPreview(): Promise<GrantPreview | null> {
+    const res = await fetch(
+      `/api/admin/missions/weeks/${encodeURIComponent(decoded)}/grant-shells`,
+    );
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      setGrantError(data.error || `미리보기 실패 (${res.status})`);
+      return null;
+    }
+    return data.preview as GrantPreview;
+  }
+
+  async function loadGrantPreview() {
+    setGrantBusy(true);
+    setGrantError(null);
+    setGrantResult(null);
+    try {
+      const p = await fetchGrantPreview();
+      if (p) setGrantPreview(p);
+    } catch (e) {
+      setGrantError(String(e));
+    }
+    setGrantBusy(false);
+  }
+
+  async function runGrant() {
+    if (!grantPreview) return;
+    if (
+      !confirm(
+        `${grantPreview.grantableCount}명에게 +${grantPreview.shellPerSubmitter}셸을 지급합니다. 진행할까요?`,
+      )
+    ) {
+      return;
+    }
+    setGrantBusy(true);
+    setGrantError(null);
+    try {
+      const res = await fetch(
+        `/api/admin/missions/weeks/${encodeURIComponent(decoded)}/grant-shells`,
+        { method: "POST" },
+      );
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        setGrantError(data.error || `지급 실패 (${res.status})`);
+      } else {
+        setGrantResult(data.result as GrantResult);
+        // 지급 후 미리보기 갱신 (alreadyGranted 반영) — grantResult 는 유지
+        const p = await fetchGrantPreview();
+        if (p) setGrantPreview(p);
+      }
+    } catch (e) {
+      setGrantError(String(e));
+    }
+    setGrantBusy(false);
   }
 
   if (loading) {
@@ -233,6 +296,120 @@ export default function AdminMissionWeekPage({
         <p className="text-xs text-[var(--ink-30)] font-medium ml-8">
           꺼두면 /missions 페이지에서 이 주차 데이터를 안 가져옵니다.
         </p>
+      </section>
+
+      {/* 제출자 일괄 셸 지급 */}
+      <section className="space-y-3 border-2 border-[var(--ink)] p-4">
+        <div>
+          <h2 className="text-sm font-extrabold text-[var(--ink)] uppercase tracking-wider">
+            제출자 일괄 셸 지급
+          </h2>
+          <p className="text-xs text-[var(--ink-50)] font-medium mt-1">
+            이 주차 과제 제출자에게 +1셸씩 지급합니다. 먼저 매칭을 확인하세요.
+            (이미 지급된 멤버는 자동으로 건너뜁니다.)
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={loadGrantPreview}
+          disabled={grantBusy}
+          className="px-4 py-2 border-2 border-[var(--ink)] bg-white text-[var(--ink)] text-xs font-extrabold hover:bg-[var(--yellow-dim)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {grantBusy ? "처리 중..." : "제출자 매칭 미리보기"}
+        </button>
+
+        {grantError && (
+          <p className="text-xs text-red-600 font-extrabold">⚠ {grantError}</p>
+        )}
+
+        {grantPreview && (
+          <div className="space-y-3 border-t-2 border-[var(--ink-10)] pt-3">
+            <p className="text-xs font-extrabold text-[var(--ink)]">
+              제출자 {grantPreview.submitterCount}명 · 매칭{" "}
+              {grantPreview.matched.length}명 · 미매칭{" "}
+              {grantPreview.unmatched.length}명 · 이미 지급{" "}
+              {grantPreview.alreadyGrantedCount}명
+            </p>
+
+            {grantPreview.matched.length > 0 && (
+              <div className="space-y-1">
+                <p className="text-xs font-extrabold text-[var(--ink-50)]">
+                  매칭된 제출자
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {grantPreview.matched.map((m) => (
+                    <span
+                      key={m.memberId}
+                      title={`${m.team} · vault: ${m.vaultMember} → members: ${m.memberName}`}
+                      className={`text-xs px-2 py-0.5 border ${
+                        m.alreadyGranted
+                          ? "border-[var(--ink-10)] text-[var(--ink-30)] line-through"
+                          : "border-[var(--ink)] text-[var(--ink)]"
+                      }`}
+                    >
+                      {m.team} {m.memberName}
+                      {m.alreadyGranted && " ✓"}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {grantPreview.unmatched.length > 0 && (
+              <div className="space-y-1">
+                <p className="text-xs font-extrabold text-red-600">
+                  ⚠ 매칭 안 됨 — 아래 제출자는 멤버 관리에서 수동 지급하세요
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {grantPreview.unmatched.map((u) => (
+                    <span
+                      key={`${u.team}-${u.vaultMember}`}
+                      title={
+                        u.reason === "AMBIGUOUS"
+                          ? "동명이인 의심 — members 에 같은 이름 여럿"
+                          : "members 테이블에서 못 찾음"
+                      }
+                      className="text-xs px-2 py-0.5 border border-red-300 text-red-600"
+                    >
+                      {u.team} {u.vaultMember}
+                      {u.reason === "AMBIGUOUS" ? " (동명이인?)" : ""}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {grantPreview.grantableCount > 0 ? (
+              <button
+                type="button"
+                onClick={runGrant}
+                disabled={grantBusy}
+                className="px-5 py-2.5 border-2 border-[var(--ink)] bg-[var(--yellow)] text-[var(--ink)] text-sm font-extrabold hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {grantBusy
+                  ? "지급 중..."
+                  : `확인 — ${grantPreview.grantableCount}명에게 +${grantPreview.shellPerSubmitter}셸 지급`}
+              </button>
+            ) : (
+              <p className="text-xs text-[var(--ink-50)] font-medium">
+                지급할 대상이 없어요 (매칭된 제출자 전원 이미 지급됨).
+              </p>
+            )}
+          </div>
+        )}
+
+        {grantResult && (
+          <p className="text-xs font-extrabold text-[var(--ink)] border-t-2 border-[var(--ink-10)] pt-3">
+            ✓ {grantResult.granted}명 지급 완료 · {grantResult.skipped}명 건너뜀
+            {grantResult.failed.length > 0 && (
+              <span className="text-red-600">
+                {" · "}
+                {grantResult.failed.length}명 실패
+              </span>
+            )}
+          </p>
+        )}
       </section>
 
       {/* 저장 */}
