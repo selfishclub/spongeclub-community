@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       reason_detail,
       related_member_id,
       created_at,
-      member:members!shell_transactions_member_id_fkey(name),
+      member:members!shell_transactions_member_id_fkey(name, group_number),
       related_member:members!shell_transactions_related_member_id_fkey(name)
     `
     )
@@ -41,18 +41,25 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const transactions = (data || []).map((tx) => ({
-    id: tx.id,
-    member_id: tx.member_id,
-    member_name:
-      (tx.member as unknown as { name: string } | null)?.name ?? "알 수 없음",
-    amount: tx.amount,
-    reason: tx.reason,
-    reason_detail: tx.reason_detail,
-    related_member_name:
-      (tx.related_member as unknown as { name: string } | null)?.name ?? null,
-    created_at: tx.created_at,
-  }));
+  const transactions = (data || []).map((tx) => {
+    const member = tx.member as unknown as {
+      name: string;
+      group_number: number | null;
+    } | null;
+    return {
+      id: tx.id,
+      member_id: tx.member_id,
+      member_name: member?.name ?? "알 수 없음",
+      group_number: member?.group_number ?? null,
+      amount: tx.amount,
+      reason: tx.reason,
+      reason_detail: tx.reason_detail,
+      related_member_name:
+        (tx.related_member as unknown as { name: string } | null)?.name ??
+        null,
+      created_at: tx.created_at,
+    };
+  });
 
   return NextResponse.json({ transactions });
 }
