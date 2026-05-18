@@ -7,21 +7,33 @@
  * 안전장치:
  *  - 매칭은 이름 기반이라 100% 보장 안 됨 → 어드민이 미리보기(buildGrantPreview)로
  *    매칭/미매칭 결과를 확인한 뒤 실행(executeGrant)한다.
- *  - 멱등성: 지급 트랜잭션의 reason_detail 마커로 이미 지급된 멤버는 건너뛴다.
- *    (중복 실행해도 두 번 지급되지 않음)
+ *  - 중복 방지: 지급 트랜잭션의 reason_detail 마커로 이미 지급된 멤버는 건너뛴다.
+ *  - 주차 잠금(스냅샷): 첫 지급이 일어나면 그 주차는 "잠김"(마커 트랜잭션 존재)
+ *    → 재지급 불가. 마감(end_date) 이후에만 지급할 수 있어, 마감 후 늦게
+ *    제출한 사람은 이미 잠긴 주차라 지급되지 않는다.
+ *    (vault git 이력이 지저분해 제출 시각을 신뢰할 수 없으므로, 운영자가
+ *     마감 직후 1회 실행 → 잠금 방식으로 "지각 제외"를 보장한다.)
  *
  * 셸 지급은 shell_transactions insert + increment_shell_balance RPC 로,
  * shell-service 의 동작과 동일하게 처리한다(트랜잭션이 source of truth).
  */
 import { createAdminClient } from "@/lib/supabase";
 import { getAllTeamsProgress } from "./vault-fetcher";
+import { adminGetWeek } from "./weeks-repo";
 
 const SHELL_PER_SUBMITTER = 1;
 const GRANT_REASON = "ADMIN_ADJUSTMENT";
 
-/** 주차별 유일한 지급 마커 — reason_detail 에 저장, 멱등성 판단 기준 */
+/** 주차별 유일한 지급 마커 — reason_detail 에 저장, 멱등성·잠금 판단 기준 */
 function grantMarker(weekFolder: string): string {
   return `과제 제출 보상 · ${weekFolder}`;
+}
+
+/** KST 기준 오늘 (YYYY-MM-DD) */
+function kstToday(): string {
+  return new Date(Date.now() + 9 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
 }
 
 type MemberRow = { id: string; name: string };
@@ -44,6 +56,8 @@ export type UnmatchedSubmitter = {
 
 export type GrantPreview = {
   weekFolder: string;
+  weekLabel: string;
+  endDate: string | null;
   marker: string;
   shellPerSubmitter: number;
   submitterCount: number;
@@ -51,12 +65,15 @@ export type GrantPreview = {
   unmatched: UnmatchedSubmitter[];
   alreadyGrantedCount: number;
   grantableCount: number; // matched 중 아직 지급 안 된 수
+  locked: boolean; // 이미 이 주차 지급 실행됨 → 재지급 불가
+  weekEnded: boolean; // 주차 마감일 지남 → 지급 가능
 };
 
 export type GrantResult = {
   granted: number;
-  skipped: number; // 이미 지급됨
+  skipped: number;
   failed: { memberName: string; error: string }[];
+  blocked?: "LOCKED" | "NOT_ENDED"; // 지급이 차단된 사유
 };
 
 function norm(s: string): string {
@@ -115,17 +132,26 @@ async function getGrantedMemberIds(marker: string): Promise<Set<string>> {
 }
 
 /**
- * 지급 미리보기 — 제출자 ↔ members 매칭 결과.
+ * 지급 미리보기 — 제출자 ↔ members 매칭 + 잠금/마감 상태.
  */
 export async function buildGrantPreview(
   weekFolder: string,
 ): Promise<GrantPreview> {
   const marker = grantMarker(weekFolder);
+  const week = await adminGetWeek(weekFolder);
+  const endDate = week?.endDate ?? null;
+  const weekLabel = week?.label ?? weekFolder;
+  // 마감일 지남 여부 — 마감일 정보 없으면 지급 허용(데이터 이슈로 막지 않음)
+  const weekEnded = endDate ? kstToday() >= endDate : true;
+
   const [submitters, members, grantedIds] = await Promise.all([
     getSubmitters(weekFolder),
     getAllMembers(),
     getGrantedMemberIds(marker),
   ]);
+
+  // 마커 트랜잭션이 하나라도 있으면 이 주차는 이미 지급 실행됨 = 잠김
+  const locked = grantedIds.size > 0;
 
   // members 이름 인덱스 (정규화 키 → 멤버들)
   const index = new Map<string, MemberRow[]>();
@@ -170,6 +196,8 @@ export async function buildGrantPreview(
 
   return {
     weekFolder,
+    weekLabel,
+    endDate,
     marker,
     shellPerSubmitter: SHELL_PER_SUBMITTER,
     submitterCount: submitters.length,
@@ -177,6 +205,8 @@ export async function buildGrantPreview(
     unmatched,
     alreadyGrantedCount,
     grantableCount: matched.length - alreadyGrantedCount,
+    locked,
+    weekEnded,
   };
 }
 
@@ -208,13 +238,22 @@ async function grantOne(
 }
 
 /**
- * 일괄 지급 실행 — 매칭됐고 아직 지급 안 된 멤버에게만 +1셸.
- * 멱등: 이미 지급된 멤버는 건너뛴다.
+ * 일괄 지급 실행.
+ *  - 주차 마감 전이면 거부(NOT_ENDED) — 조기 실행으로 명단이 잘못 고정되는 것 방지.
+ *  - 이미 지급된 주차면 거부(LOCKED) — 마감 후 늦게 제출한 사람은 여기서 걸러진다.
+ *  - 그 외에는 매칭된 제출자 전원에게 +1셸, 그 순간 주차가 잠긴다.
  */
 export async function executeGrant(weekFolder: string): Promise<GrantResult> {
   const preview = await buildGrantPreview(weekFolder);
-  const result: GrantResult = { granted: 0, skipped: 0, failed: [] };
 
+  if (preview.locked) {
+    return { granted: 0, skipped: 0, failed: [], blocked: "LOCKED" };
+  }
+  if (!preview.weekEnded) {
+    return { granted: 0, skipped: 0, failed: [], blocked: "NOT_ENDED" };
+  }
+
+  const result: GrantResult = { granted: 0, skipped: 0, failed: [] };
   for (const m of preview.matched) {
     if (m.alreadyGranted) {
       result.skipped++;
@@ -222,7 +261,11 @@ export async function executeGrant(weekFolder: string): Promise<GrantResult> {
     }
     const r = await grantOne(m.memberId, preview.marker);
     if (r.ok) result.granted++;
-    else result.failed.push({ memberName: m.memberName, error: r.error ?? "unknown" });
+    else
+      result.failed.push({
+        memberName: m.memberName,
+        error: r.error ?? "unknown",
+      });
   }
 
   return result;
