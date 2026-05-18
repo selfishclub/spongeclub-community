@@ -12,6 +12,7 @@ interface AdminWeek {
   endDate: string;
   missions: { index: number; title: string }[];
   replayUrl: string | null;
+  transcriptUrl: string | null;
   published: boolean;
 }
 
@@ -38,6 +39,7 @@ export default function AdminMissionWeekPage({
     3: "",
   });
   const [replayUrl, setReplayUrl] = useState("");
+  const [transcriptUrl, setTranscriptUrl] = useState("");
   const [published, setPublished] = useState(true);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function AdminMissionWeekPage({
         for (const m of w.missions) slots[m.index] = m.title;
         setMissionInputs(slots);
         setReplayUrl(w.replayUrl ?? "");
+        setTranscriptUrl(w.transcriptUrl ?? "");
         setPublished(w.published);
         setLoading(false);
       })
@@ -81,6 +84,7 @@ export default function AdminMissionWeekPage({
         body: JSON.stringify({
           missions,
           replayUrl: replayUrl.trim() || null,
+          transcriptUrl: transcriptUrl.trim() || null,
           published,
         }),
       },
@@ -189,6 +193,27 @@ export default function AdminMissionWeekPage({
         />
         <p className="text-xs text-[var(--ink-30)] font-medium">
           입력 시 미션 hero 옆에 📺 다시보기 버튼이 노출됩니다.
+        </p>
+      </section>
+
+      {/* 속기본 URL */}
+      <section className="space-y-2">
+        <label
+          htmlFor="transcript-url"
+          className="block text-sm font-extrabold text-[var(--ink)] uppercase tracking-wider"
+        >
+          속기본 URL
+        </label>
+        <input
+          id="transcript-url"
+          type="url"
+          value={transcriptUrl}
+          onChange={(e) => setTranscriptUrl(e.target.value)}
+          placeholder="https://..."
+          className="w-full border-2 border-[var(--ink)] px-3 py-2 text-sm focus:outline-none focus:bg-[var(--yellow-dim)]"
+        />
+        <p className="text-xs text-[var(--ink-30)] font-medium">
+          입력 시 미션 hero 옆에 📝 속기본 버튼이 노출됩니다.
         </p>
       </section>
 

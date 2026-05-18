@@ -21,11 +21,13 @@ export function MissionHero({
   missions,
   dDay,
   replayUrl,
+  transcriptUrl,
 }: {
   week: WeekInfo | null;
   missions: MissionTitle[];
   dDay: number | null;
   replayUrl: string | null;
+  transcriptUrl: string | null;
 }) {
   const weekLabel = week?.label ?? "이번주";
   const isPast = week?.status === "past";
@@ -98,15 +100,29 @@ export function MissionHero({
           </div>
         )}
 
-        {replayUrl && (
-          <a
-            href={replayUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#E89E00] hover:text-[#A87400] transition"
-          >
-            📺 이번주 세션 다시보기 <span>↗</span>
-          </a>
+        {(replayUrl || transcriptUrl) && (
+          <div className="mt-3 flex flex-wrap items-center gap-4">
+            {replayUrl && (
+              <a
+                href={replayUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E89E00] hover:text-[#A87400] transition"
+              >
+                📺 이번주 세션 다시보기 <span>↗</span>
+              </a>
+            )}
+            {transcriptUrl && (
+              <a
+                href={transcriptUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E89E00] hover:text-[#A87400] transition"
+              >
+                📝 이번주 세션 속기본 <span>↗</span>
+              </a>
+            )}
+          </div>
         )}
       </div>
     </section>

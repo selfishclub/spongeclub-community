@@ -12,6 +12,7 @@ interface AdminWeek {
   endDate: string;
   missions: { index: number; title: string }[];
   replayUrl: string | null;
+  transcriptUrl: string | null;
   published: boolean;
 }
 
@@ -36,7 +37,7 @@ export default function AdminMissionsPage() {
           미션 관리
         </h1>
         <p className="text-xs text-[var(--ink-50)] font-medium">
-          주차별 미션 제목·다시보기 링크 — /missions 페이지에 노출
+          주차별 미션 제목·다시보기·속기본 링크 — /missions 페이지에 노출
         </p>
       </div>
 
@@ -65,6 +66,9 @@ export default function AdminMissionsPage() {
                 </th>
                 <th className="px-4 py-3 text-left font-extrabold text-xs uppercase tracking-wider">
                   다시보기
+                </th>
+                <th className="px-4 py-3 text-left font-extrabold text-xs uppercase tracking-wider">
+                  속기본
                 </th>
                 <th className="px-4 py-3 text-left font-extrabold text-xs uppercase tracking-wider">
                   공개
@@ -97,6 +101,15 @@ export default function AdminMissionsPage() {
                   </td>
                   <td className="px-4 py-3 text-[var(--ink-50)]">
                     {w.replayUrl ? (
+                      <span className="text-[var(--ink)] font-extrabold">
+                        ✓ 등록됨
+                      </span>
+                    ) : (
+                      <span className="text-[var(--ink-30)]">없음</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-[var(--ink-50)]">
+                    {w.transcriptUrl ? (
                       <span className="text-[var(--ink)] font-extrabold">
                         ✓ 등록됨
                       </span>
