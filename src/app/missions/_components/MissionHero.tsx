@@ -101,15 +101,15 @@ export function MissionHero({
         )}
 
         {(replayUrl || transcriptUrl) && (
-          <div className="mt-3 flex flex-wrap items-center gap-4">
+          <div className="mt-4 flex flex-wrap items-center gap-2.5">
             {replayUrl && (
               <a
                 href={replayUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E89E00] hover:text-[#A87400] transition"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
               >
-                📺 이번주 세션 다시보기 <span>↗</span>
+                📺 이번주 세션 다시보기 <span aria-hidden>↗</span>
               </a>
             )}
             {transcriptUrl && (
@@ -117,9 +117,9 @@ export function MissionHero({
                 href={transcriptUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E89E00] hover:text-[#A87400] transition"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
               >
-                📝 이번주 세션 속기본 <span>↗</span>
+                📝 이번주 속기본 보기 <span aria-hidden>↗</span>
               </a>
             )}
           </div>
