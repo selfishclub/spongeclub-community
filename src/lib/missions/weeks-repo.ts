@@ -24,12 +24,14 @@ export type MissionWeek = {
   endDate: string;
   missions: MissionTitle[];
   replayUrl: string | null;
+  transcriptUrl: string | null;
   published: boolean;
 };
 
 export type MissionWeekUpdate = {
   missions?: MissionTitle[];
   replayUrl?: string | null;
+  transcriptUrl?: string | null;
   published?: boolean;
 };
 
@@ -42,6 +44,7 @@ type DbRow = {
   end_date: string;
   missions: unknown;
   replay_url: string | null;
+  transcript_url: string | null;
   published: boolean;
 };
 
@@ -70,12 +73,13 @@ function rowToWeek(row: DbRow): MissionWeek {
     endDate: row.end_date,
     missions: normalizeMissions(row.missions),
     replayUrl: row.replay_url,
+    transcriptUrl: row.transcript_url,
     published: row.published,
   };
 }
 
 const COLUMNS =
-  "id, week_folder, week_number, label, start_date, end_date, missions, replay_url, published";
+  "id, week_folder, week_number, label, start_date, end_date, missions, replay_url, transcript_url, published";
 
 // ─── READ (anon — public route 용) ──────────────────────────────────────────
 
@@ -156,6 +160,9 @@ export async function adminUpdateWeek(
   }
   if (patch.replayUrl !== undefined) {
     update.replay_url = patch.replayUrl?.trim() || null;
+  }
+  if (patch.transcriptUrl !== undefined) {
+    update.transcript_url = patch.transcriptUrl?.trim() || null;
   }
   if (patch.published !== undefined) {
     update.published = patch.published;

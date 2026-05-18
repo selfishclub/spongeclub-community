@@ -27,7 +27,8 @@ export async function GET(_req: NextRequest, ctx: RouteContext) {
 }
 
 // PATCH /api/admin/missions/weeks/[weekFolder]
-//   body: { missions?: [{index, title}, ...], replayUrl?: string|null, published?: boolean }
+//   body: { missions?: [{index, title}, ...], replayUrl?: string|null,
+//           transcriptUrl?: string|null, published?: boolean }
 export async function PATCH(req: NextRequest, ctx: RouteContext) {
   const { weekFolder } = await ctx.params;
 
@@ -77,6 +78,21 @@ export async function PATCH(req: NextRequest, ctx: RouteContext) {
         );
       }
       patch.replayUrl = trimmed || null;
+    }
+  }
+
+  if (input.transcriptUrl !== undefined) {
+    if (input.transcriptUrl === null) {
+      patch.transcriptUrl = null;
+    } else if (typeof input.transcriptUrl === "string") {
+      const trimmed = input.transcriptUrl.trim();
+      if (trimmed && !/^https?:\/\//i.test(trimmed)) {
+        return NextResponse.json(
+          { error: "transcriptUrl은 http(s)://로 시작해야 합니다" },
+          { status: 400 },
+        );
+      }
+      patch.transcriptUrl = trimmed || null;
     }
   }
 

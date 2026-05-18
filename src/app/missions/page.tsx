@@ -57,6 +57,7 @@ export default async function MissionsPage() {
 
   const missions = dbWeek?.missions ?? [];
   const replayUrl = dbWeek?.replayUrl ?? null;
+  const transcriptUrl = dbWeek?.transcriptUrl ?? null;
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
 
   return (
@@ -76,6 +77,7 @@ export default async function MissionsPage() {
             missions={missions}
             dDay={dDay}
             replayUrl={replayUrl}
+            transcriptUrl={transcriptUrl}
           />
 
           <ScheduleStrip week={currentWeek} dDay={dDay} />
