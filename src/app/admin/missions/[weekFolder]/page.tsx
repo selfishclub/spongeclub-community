@@ -157,10 +157,6 @@ export default function AdminMissionWeekPage({
         setGrantError("이미 지급 완료된 주차입니다 — 재지급할 수 없어요.");
         const p = await fetchGrantPreview();
         if (p) setGrantPreview(p);
-      } else if (result?.blocked === "NOT_ENDED") {
-        setGrantError("주차 마감 전이라 지급할 수 없어요.");
-        const p = await fetchGrantPreview();
-        if (p) setGrantPreview(p);
       } else {
         setGrantResult(result ?? null);
         // 지급 후 미리보기 갱신 (잠금·이미지급 반영) — grantResult 는 유지
@@ -345,15 +341,10 @@ export default function AdminMissionWeekPage({
                 🔒 이 주차는 이미 지급 완료됨 — 재지급 불가. 누락된 사람은
                 멤버 관리에서 수동 지급하세요.
               </p>
-            ) : !grantPreview.weekEnded ? (
-              <p className="text-xs text-red-600 font-medium">
-                ⚠ 아직 마감 전입니다 (마감 {grantPreview.endDate}). 마감 후
-                지급하세요 — 조기 지급하면 명단이 잘못 고정됩니다.
-              </p>
             ) : (
               <p className="text-xs text-[var(--ink-30)] font-medium">
-                마감({grantPreview.endDate}) 후 — 지금 지급하면 이 명단으로
-                고정되고, 이후 늦게 제출하는 사람은 지급되지 않습니다.
+                지금 지급하면 이 명단으로 고정되고, 이후 늦게 제출하는 사람은
+                지급되지 않습니다 (수동 지급으로 처리).
               </p>
             )}
 
@@ -405,15 +396,7 @@ export default function AdminMissionWeekPage({
               </div>
             )}
 
-            {grantPreview.locked ? null : !grantPreview.weekEnded ? (
-              <button
-                type="button"
-                disabled
-                className="px-5 py-2.5 border-2 border-[var(--ink-10)] bg-white text-[var(--ink-30)] text-sm font-extrabold cursor-not-allowed"
-              >
-                주차 마감 후 지급 가능
-              </button>
-            ) : grantPreview.grantableCount > 0 ? (
+            {grantPreview.locked ? null : grantPreview.grantableCount > 0 ? (
               <button
                 type="button"
                 onClick={runGrant}

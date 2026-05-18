@@ -6,6 +6,7 @@ interface Transaction {
   id: string;
   member_id: string;
   member_name: string;
+  group_number: number | null;
   amount: number;
   reason: string;
   reason_detail: string;
@@ -35,6 +36,7 @@ const REASON_LABELS: Record<string, string> = {
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [reasonFilter, setReasonFilter] = useState("");
+  const [groupFilter, setGroupFilter] = useState("");
   const [cancelling, setCancelling] = useState<string | null>(null);
 
   // 멤버 필터
@@ -84,6 +86,11 @@ export default function TransactionsPage() {
     m.name.toLowerCase().includes(memberSearch.toLowerCase())
   );
 
+  // 조 필터는 클라이언트에서 — fetch된 트랜잭션을 조별로 추림
+  const visibleTransactions = groupFilter
+    ? transactions.filter((t) => String(t.group_number ?? "") === groupFilter)
+    : transactions;
+
   return (
     <div>
       <h1 className="text-2xl font-extrabold text-[var(--ink)] mb-6">
@@ -99,6 +106,19 @@ export default function TransactionsPage() {
           <option value="">전체 사유</option>
           {Object.entries(REASON_LABELS).map(([key, label]) => (
             <option key={key} value={key}>{label}</option>
+          ))}
+        </select>
+
+        <select
+          value={groupFilter}
+          onChange={(e) => setGroupFilter(e.target.value)}
+          className="px-4 py-2.5 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm"
+        >
+          <option value="">전체 조</option>
+          {[1, 2, 3, 4, 5, 6].map((g) => (
+            <option key={g} value={String(g)}>
+              {g}조
+            </option>
           ))}
         </select>
 
@@ -154,7 +174,7 @@ export default function TransactionsPage() {
       </div>
 
       <p className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-4">
-        {transactions.length}건
+        {visibleTransactions.length}건
       </p>
 
       <div className="border-2 border-[var(--ink-10)] overflow-hidden">
@@ -163,6 +183,7 @@ export default function TransactionsPage() {
             <tr>
               <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">시간</th>
               <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">멤버</th>
+              <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">조</th>
               <th className="text-right px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">셸</th>
               <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">사유</th>
               <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">상세</th>
@@ -170,13 +191,16 @@ export default function TransactionsPage() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((tx) => (
+            {visibleTransactions.map((tx) => (
               <tr key={tx.id} className="border-t border-[var(--ink-10)] hover:bg-[var(--yellow-dim)] transition-colors">
                 <td className="px-4 py-3 text-[var(--ink-30)] text-xs tabular-nums">
                   {new Date(tx.created_at).toLocaleString("ko-KR")}
                 </td>
                 <td className="px-4 py-3 font-bold text-[var(--ink)]">
                   {tx.member_name}
+                </td>
+                <td className="px-4 py-3 text-[var(--ink-50)] text-xs">
+                  {tx.group_number ? `${tx.group_number}조` : "-"}
                 </td>
                 <td
                   className={`px-4 py-3 text-right font-extrabold tabular-nums ${tx.amount > 0 ? "text-[var(--ink)]" : "text-red-500"}`}
@@ -216,7 +240,7 @@ export default function TransactionsPage() {
             ))}
           </tbody>
         </table>
-        {transactions.length === 0 && (
+        {visibleTransactions.length === 0 && (
           <p className="text-center py-8 text-[var(--ink-30)] text-sm">
             트랜잭션이 없습니다.
           </p>
