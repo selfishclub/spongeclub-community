@@ -1,10 +1,9 @@
 /**
  * /missions 페이지 헤더 — "데굴데굴" 레퍼런스 Header 룩.
  *
- * 데굴데굴 원본은 /teams, /skills 같은 자체 라우트로 링크하지만
- * 타깃 레포엔 그 라우트들이 없다. nav 링크를 타깃 실제 라우트로 맞춘다:
  *   - "🧽 스폰지클럽" → /
  *   - 현재 페이지 라벨 "주차별 미션" (활성, 링크 아님)
+ *   - "스킬 & 인사이트" → /skills
  *   - "이기적인 스폰지들 ↗" → /
  */
 import Link from "next/link";
@@ -27,6 +26,12 @@ export function Header() {
         {/* Center: 메인 nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm">
           <span className="text-[#0F1115] font-medium">주차별 미션</span>
+          <Link
+            href="/skills"
+            className="text-[#5B6271] hover:text-[#0F1115]"
+          >
+            스킬 &amp; 인사이트
+          </Link>
         </nav>
 
         {/* Right: 외부 바로가기 */}
