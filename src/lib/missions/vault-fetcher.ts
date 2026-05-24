@@ -27,6 +27,7 @@ type GhContentItem = {
   name: string;
   path: string;
   type: "file" | "dir" | "symlink" | "submodule";
+  sha: string;
   download_url: string | null;
 };
 
@@ -54,9 +55,21 @@ async function ghFetch(path: string): Promise<GhContentItem[] | null> {
   }
 }
 
-async function fetchText(url: string): Promise<string | null> {
+/**
+ * raw.githubusercontent.com 파일을 가져온다.
+ *
+ * `sha`는 GitHub Contents API 가 listing 단계에서 알려주는 블롭 해시.
+ * 파일 내용이 바뀌면 sha 도 바뀌므로, 이를 쿼리 파라미터로 붙여
+ * URL 자체를 콘텐츠 버전마다 유니크하게 만든다.
+ *
+ * 이게 없으면 `download_url`은 stable(`raw.../main/path`)이라
+ * Next.js fetch 캐시가 같은 키로 stale 콘텐츠를 영구히 들고 있을 수 있다 —
+ * 실제로 vault submitted: true 갱신이 사이트에 반영되지 않는 버그의 원인.
+ */
+async function fetchText(url: string, sha?: string): Promise<string | null> {
   try {
-    const res = await fetch(url, {
+    const versionedUrl = sha ? `${url}?_sha=${sha}` : url;
+    const res = await fetch(versionedUrl, {
       headers: authHeaders(),
       next: { revalidate: REVALIDATE_SECONDS },
     });
@@ -114,7 +127,7 @@ async function parseSubmissionFile(
   fallbackTeam: string,
 ): Promise<MissionSubmission> {
   const content = file.download_url
-    ? await fetchText(file.download_url)
+    ? await fetchText(file.download_url, file.sha)
     : null;
   const fm: Frontmatter = content ? parseFrontmatter(content) : {};
 
