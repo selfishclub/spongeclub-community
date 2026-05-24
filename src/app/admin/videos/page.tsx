@@ -11,6 +11,7 @@ interface Video {
   expires_at: string;
   created_at: string;
   grant_count: number;
+  is_listed: boolean;
 }
 
 interface MemberOption {
@@ -29,16 +30,20 @@ interface Grant {
 
 interface VodRequest {
   id: string;
+  type: "session" | "video";
   status: string;
   created_at: string;
   session_id: string | null;
-  session_title: string;
+  session_title: string | null;
   session_scheduled_at: string | null;
   session_entry_cost: number;
   vod_suggested_cost: number;
   host_name: string;
   member_id: string | null;
   member_name: string;
+  video_id: string | null;
+  video_title: string | null;
+  video_cost: number | null;
 }
 
 export default function AdminVideosPage() {
@@ -87,6 +92,16 @@ export default function AdminVideosPage() {
     else alert("처리 실패");
   };
 
+  const handleToggleListed = async (id: string, currentValue: boolean) => {
+    const res = await fetch(`/api/admin/videos/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ is_listed: !currentValue }),
+    });
+    if (res.ok) loadVideos();
+    else alert("변경 실패");
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm("이 영상을 삭제하시겠어요? 부여된 권한도 모두 사라집니다 (셸 환불 없음)")) return;
     const res = await fetch(`/api/admin/videos/${id}`, { method: "DELETE" });
@@ -128,12 +143,18 @@ export default function AdminVideosPage() {
               <div key={r.id} className="bg-white border border-amber-200 rounded-lg p-4 flex items-center justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-amber-900 truncate">{r.session_title}</h3>
-                    <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-900 rounded">제안가 {r.vod_suggested_cost}🐚</span>
+                    <h3 className="font-semibold text-amber-900 truncate">
+                      {r.type === "video" ? r.video_title : r.session_title}
+                    </h3>
+                    {r.type === "video" ? (
+                      <span className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded">영상 구매 {r.video_cost}🐚</span>
+                    ) : (
+                      <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-900 rounded">제안가 {r.vod_suggested_cost}🐚</span>
+                    )}
                   </div>
                   <div className="flex flex-wrap gap-3 text-xs text-amber-800 mt-1">
                     <span>👤 신청자: <b>{r.member_name}</b></span>
-                    <span>🎤 진행자: {r.host_name}</span>
+                    {r.type === "session" && <span>🎤 진행자: {r.host_name}</span>}
                     {r.session_scheduled_at && (
                       <span>📅 {new Date(r.session_scheduled_at).toLocaleString("ko-KR")}</span>
                     )}
@@ -181,6 +202,9 @@ export default function AdminVideosPage() {
                     {expired && (
                       <span className="text-xs px-2 py-0.5 bg-red-100 text-red-700 rounded">만료</span>
                     )}
+                    {v.is_listed && (
+                      <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded">판매 노출 중</span>
+                    )}
                   </div>
                   <p className="text-xs text-amber-800 truncate">{v.youtube_url}</p>
                   <div className="flex gap-3 text-xs text-amber-900 mt-1">
@@ -189,7 +213,16 @@ export default function AdminVideosPage() {
                     <span>👥 {v.grant_count}명 권한</span>
                   </div>
                 </div>
-                <div className="flex gap-2 flex-shrink-0">
+                <div className="flex gap-2 flex-shrink-0 items-center">
+                  <label className="flex items-center gap-1.5 cursor-pointer" title="메인 페이지에 판매용으로 노출">
+                    <input
+                      type="checkbox"
+                      checked={v.is_listed}
+                      onChange={() => handleToggleListed(v.id, v.is_listed)}
+                      className="w-4 h-4 accent-green-600"
+                    />
+                    <span className="text-xs text-amber-800">판매 노출</span>
+                  </label>
                   <button
                     onClick={() => setGrantsModalId(v.id)}
                     className="px-3 py-1.5 bg-cyan-600 text-white rounded text-sm hover:bg-cyan-700"

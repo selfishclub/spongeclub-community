@@ -253,37 +253,6 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
   const [showPicker, setShowPicker] = useState(false);
   const [pendingAction, setPendingAction] = useState<"register" | "notify">("register");
   const [notifyConfirmMemberId, setNotifyConfirmMemberId] = useState<string | null>(null);
-  const [vodRequested, setVodRequested] = useState(false);
-  const [vodLoading, setVodLoading] = useState(false);
-  const [vodError, setVodError] = useState("");
-  const [vodSuccess, setVodSuccess] = useState(false);
-
-  // 본인이 이 세션 VOD 를 이미 신청했는지 체크
-  useEffect(() => {
-    if (!member) { setVodRequested(false); return; }
-    fetch(`/api/sessions/${session.id}/vod-request`)
-      .then((r) => r.json())
-      .then((data) => setVodRequested(!!data.requested))
-      .catch(() => {});
-  }, [member, session.id]);
-
-  const handleVodRequest = async () => {
-    if (!member) { onLoginRequired(); return; }
-    setVodLoading(true); setVodError("");
-    try {
-      const res = await fetch(`/api/sessions/${session.id}/vod-request`, { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) {
-        setVodError(data.error || "신청에 실패했어요.");
-        if (res.status === 409) setVodRequested(true);
-      } else {
-        setVodSuccess(true);
-        setVodRequested(true);
-      }
-    } catch { setVodError("네트워크 오류가 발생했어요."); }
-    finally { setVodLoading(false); }
-  };
-
   const handleRegister = async (memberId: string) => {
     setShowPicker(false); setRegistering(true); setError("");
     try {
@@ -407,27 +376,6 @@ function SessionDetailModal({ session, member, onClose, onLoginRequired, onRegis
             </button>
           )}
 
-          {/* VOD 구매 신청 */}
-          <div className="mt-3 pt-3 border-t border-[var(--ink-10)]">
-            {vodError && <p className="text-xs text-red-500 font-medium mb-2">{vodError}</p>}
-            {vodRequested || vodSuccess ? (
-              <div className="text-center py-3 bg-[var(--ink-05)]">
-                <p className="text-[var(--ink-50)] text-xs font-extrabold">📼 VOD 신청 완료 — 어드민 검토 중</p>
-              </div>
-            ) : (
-              <button
-                onClick={handleVodRequest}
-                disabled={vodLoading}
-                className="w-full py-3 bg-[var(--paper)] border-2 border-[var(--ink)] text-[var(--ink)] font-bold text-sm hover:bg-[var(--ink-05)] disabled:opacity-40 transition-colors"
-              >
-                {vodLoading ? "신청 중..." : `(참여 불가한 경우) VOD구매 신청하기`}
-              </button>
-            )}
-            <p className="mt-2 text-[10px] text-[var(--ink-30)] text-center leading-snug">
-              신청만 무료. 어드민이 영상 권한을 부여할 때 셸이 차감됩니다.
-            </p>
-          </div>
-
           <button onClick={onClose} className="mt-3 w-full text-center text-sm text-[var(--ink-30)] hover:text-[var(--ink)]">닫기</button>
         </div>
       </div>
@@ -522,6 +470,121 @@ function SuggestModal({ onClose }: { onClose: () => void }) {
         )}
       </div>
     </div>
+  );
+}
+
+// ─── VOD Section ────────────────────────────────────────────────────────────
+
+interface ListedVideo {
+  id: string;
+  title: string;
+  description: string | null;
+  cost: number;
+  thumbnail_url: string | null;
+}
+
+function VodSection({ member, onLoginRequired }: { member: Member | null; onLoginRequired: () => void }) {
+  const [videos, setVideos] = useState<ListedVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [requestedMap, setRequestedMap] = useState<Record<string, string | null>>({});
+  const [requesting, setRequesting] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/videos/listed")
+      .then((r) => r.json())
+      .then((data) => { setVideos(data.videos || []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  // 로그인 유저의 각 영상 신청 상태 확인
+  useEffect(() => {
+    if (!member || videos.length === 0) return;
+    videos.forEach((v) => {
+      fetch(`/api/videos/${v.id}/purchase-request`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.requested) {
+            setRequestedMap((prev) => ({ ...prev, [v.id]: data.status || "PENDING" }));
+          }
+        })
+        .catch(() => {});
+    });
+  }, [member, videos]);
+
+  const handlePurchase = async (videoId: string) => {
+    if (!member) { onLoginRequired(); return; }
+    setRequesting(videoId);
+    try {
+      const res = await fetch(`/api/videos/${videoId}/purchase-request`, { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        setRequestedMap((prev) => ({ ...prev, [videoId]: "PENDING" }));
+      } else if (res.status === 409) {
+        setRequestedMap((prev) => ({ ...prev, [videoId]: "PENDING" }));
+      } else {
+        alert(data.error || "신청에 실패했어요.");
+      }
+    } catch { alert("네트워크 오류가 발생했어요."); }
+    finally { setRequesting(null); }
+  };
+
+  if (loading || videos.length === 0) return null;
+
+  return (
+    <section>
+      <div className="mb-5">
+        <h2 className="text-xl font-extrabold text-[var(--ink)] tracking-tight">VOD 구매 가능한 지난 공유회</h2>
+        <p className="text-xs text-[var(--ink-30)] mt-1 font-medium">놓친 공유회를 셸로 구매하세요</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        {videos.map((v) => {
+          const isRequested = !!requestedMap[v.id];
+          const status = requestedMap[v.id];
+          return (
+            <div key={v.id} className="border-2 border-[var(--ink-10)] overflow-hidden hover:border-[var(--ink-30)] transition-colors">
+              {v.thumbnail_url ? (
+                <div className="relative aspect-video bg-[var(--ink-05)]">
+                  <img
+                    src={v.thumbnail_url}
+                    alt={v.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-1.5 right-1.5 px-1.5 py-0.5 bg-[var(--ink)]/80 text-[var(--paper)] text-[10px] font-extrabold">
+                    {v.cost} 셸
+                  </div>
+                </div>
+              ) : (
+                <div className="aspect-video bg-[var(--ink-05)] flex items-center justify-center">
+                  <span className="text-2xl">🎬</span>
+                </div>
+              )}
+              <div className="p-3">
+                <h3 className="text-sm font-bold text-[var(--ink)] leading-snug line-clamp-2 mb-2">{v.title}</h3>
+                {v.description && (
+                  <p className="text-[11px] text-[var(--ink-30)] leading-snug line-clamp-1 mb-2">{v.description}</p>
+                )}
+                {isRequested ? (
+                  <div className="py-2 text-center bg-[var(--ink-05)]">
+                    <p className="text-[11px] font-extrabold text-[var(--ink-50)]">
+                      {status === "RESOLVED" ? "✅ 구매 완료" : "📼 구매 신청 완료"}
+                    </p>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase(v.id)}
+                    disabled={requesting === v.id}
+                    className="w-full py-2 bg-[var(--ink)] text-[var(--paper)] text-xs font-extrabold hover:opacity-90 disabled:opacity-40 transition-opacity"
+                  >
+                    {requesting === v.id ? "신청 중..." : `${v.cost}셸 구매하기`}
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -826,6 +889,9 @@ export default function HomePage() {
             공유회 직접 열기
           </Link>
         </div>
+
+        {/* ── VOD 구매 가능 섹션 ── */}
+        <VodSection member={member} onLoginRequired={() => setShowLoginModal(true)} />
 
         {/* ── 배지 랭킹 ── */}
         {(badgeTop3.length > 0 || badgeFeed.length > 0) && (

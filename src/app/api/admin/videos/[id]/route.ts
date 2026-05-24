@@ -60,12 +60,13 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const body = await request.json();
-  const { title, youtube_url, description, cost, expires_at } = body;
+  const { title, youtube_url, description, cost, expires_at, is_listed } = body;
 
   const updateData: Record<string, unknown> = {};
   if (title !== undefined) updateData.title = title;
   if (description !== undefined) updateData.description = description;
   if (expires_at !== undefined) updateData.expires_at = expires_at;
+  if (is_listed !== undefined) updateData.is_listed = !!is_listed;
   if (youtube_url !== undefined) {
     const ytId = extractYouTubeId(youtube_url);
     if (!ytId) {

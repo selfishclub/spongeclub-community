@@ -184,6 +184,42 @@ export async function getSessionDetail(sessionId: string, memberId?: string) {
 
 const CONFIRM_THRESHOLD = 5;
 
+// 알림 신청 시 슬랙 채널에 현황 알림
+async function notifyNewNotifyRequest(memberId: string, sessionId: string) {
+  const supabase = createAdminClient();
+
+  const { data: session } = await supabase
+    .from("sessions")
+    .select("title, host:members!sessions_host_id_fkey(name)")
+    .eq("id", sessionId)
+    .single();
+
+  if (!session) return;
+
+  const { data: member } = await supabase
+    .from("members")
+    .select("name")
+    .eq("id", memberId)
+    .single();
+
+  const { count } = await supabase
+    .from("session_attendees")
+    .select("id", { count: "exact", head: true })
+    .eq("session_id", sessionId)
+    .in("status", ["REGISTERED", "ATTENDED", "NOTIFY_REQUESTED"]);
+
+  const current = count || 0;
+  const hostName = (session.host as unknown as { name: string } | null)?.name ?? "";
+  const remaining = CONFIRM_THRESHOLD - current;
+
+  await getSlackClient().chat.postMessage({
+    channel: SESSION_NOTIFY_CHANNEL,
+    text: remaining > 0
+      ? `🔔 *${member?.name ?? "멤버"}*님이 *${session.title}* (진행자: ${hostName}) 알림 신청! 현재 ${current}/${CONFIRM_THRESHOLD}명 — *${remaining}명 더 모이면 확정*돼요!`
+      : `🔔 *${member?.name ?? "멤버"}*님이 *${session.title}* (진행자: ${hostName}) 알림 신청! 현재 ${current}/${CONFIRM_THRESHOLD}명`,
+  });
+}
+
 // 5명 도달 시 자동 확정: NOTIFY_REQUESTED 일괄 REGISTERED 전환 + 셸 차감 + status APPROVED
 async function confirmSessionIfReady(sessionId: string) {
   const supabase = createAdminClient();
@@ -330,6 +366,11 @@ export async function requestSessionNotify(memberId: string, sessionId: string) 
     });
 
   if (insertError) return { success: false, error: insertError.message };
+
+  // 알림 신청 슬랙 알림
+  notifyNewNotifyRequest(memberId, sessionId).catch((e) =>
+    console.error("[notify-request-slack]", e)
+  );
 
   await confirmSessionIfReady(sessionId);
   return { success: true };
