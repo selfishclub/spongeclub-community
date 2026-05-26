@@ -13,6 +13,17 @@ import { useState } from "react";
 import type { TeamProgress } from "@/lib/missions/types";
 import type { WeekInfo } from "@/lib/missions/schedule-parser";
 import { TeamProgressMatrix } from "./TeamProgressMatrix";
+import { SpongeVillageProgress, type Team as VillageTeam } from "./BikiniBottom";
+
+function toVillageTeams(teams: TeamProgress[]): VillageTeam[] {
+  return teams.map((t) => ({
+    name: t.team,
+    weeklyAchievementRate:
+      t.totalCount > 0 ? (t.submittedCount / t.totalCount) * 100 : 0,
+    submittedCount: t.submittedCount,
+    totalAssignments: t.totalCount,
+  }));
+}
 
 export function ProgressBoardSection({
   progressByWeek,
@@ -55,6 +66,12 @@ export function ProgressBoardSection({
           );
         })}
       </div>
+
+      {teams.length > 0 && (
+        <div className="mb-4">
+          <SpongeVillageProgress teams={toVillageTeams(teams)} />
+        </div>
+      )}
 
       <TeamProgressMatrix teams={teams} weekLabel={weekLabel} />
     </section>
