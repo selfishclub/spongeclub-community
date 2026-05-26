@@ -20,6 +20,29 @@
   --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-brand: var(--yellow);
+
+  /* 데굴데굴 web 호환 — Ink palette (announcements/discussions/missions 섹션에서 사용) */
+  --color-ink-50: #F4F5F8;
+  --color-ink-100: #E7E9EE;
+  --color-ink-300: #A7ADBA;
+  --color-ink-500: #5B6271;
+  --color-ink-700: #2A2E35;
+  --color-ink-900: #0F1115;
+
+  /* 데굴데굴 web 호환 — Sponge yellow palette */
+  --color-sponge-50: #FFF9E5;
+  --color-sponge-100: #FFF1BF;
+  --color-sponge-300: #FFD84D;
+  --color-sponge-500: #FFB800;
+  --color-sponge-600: #E89E00;
+  --color-sponge-700: #A87400;
+}
+
+/* 데굴데굴 web 호환 — DiscussionBoard 메타 구분 dot */
+.ddot::before {
+  content: '·';
+  margin: 0 .35rem;
+  color: #A7ADBA;
 }
 
 body {
