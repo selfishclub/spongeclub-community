@@ -18,6 +18,7 @@ export type Team = {
   totalAssignments?: number;
   progress?: number;
   href?: string;
+  onClick?: () => void;
 };
 
 export type SpongeVillageProgressProps = {
@@ -125,6 +126,7 @@ export function SpongeVillageProgress({
       accent: TEAM_ACCENTS[idx % TEAM_ACCENTS.length],
       filter: TEAM_FILTERS[idx % TEAM_FILTERS.length],
       href: team?.href,
+      onClick: team?.onClick,
       label: team?.name ?? emptyLabel,
       pct,
       progress,
@@ -154,12 +156,6 @@ export function SpongeVillageProgress({
             <VisualSlot key={item.slotIndex} {...item} />
           ))}
         </div>
-
-        <div className="bb-status-grid">
-          {items.map((item) => (
-            <StatusCard key={item.slotIndex} {...item} />
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -169,6 +165,7 @@ type SlotState = {
   accent: string;
   filter: { hue: string; brightness: string };
   href?: string;
+  onClick?: () => void;
   label: string;
   pct: number;
   progress: number;
@@ -180,11 +177,30 @@ type SlotState = {
   total: number;
 };
 
+type WrapperKind = "a" | "button" | "div";
+
 function getWrapperProps(item: SlotState) {
   const label = `${item.label} 주차별 과제 달성율 ${item.pct}%, ${item.stageName} 단계`;
-  return item.href
-    ? { href: item.href, role: "link", "aria-label": `${label}로 이동` }
-    : { role: "group", tabIndex: 0, "aria-label": label };
+  if (item.href) {
+    return {
+      kind: "a" as WrapperKind,
+      props: { href: item.href, role: "link", "aria-label": `${label}로 이동` },
+    };
+  }
+  if (item.onClick) {
+    return {
+      kind: "button" as WrapperKind,
+      props: {
+        type: "button" as const,
+        onClick: item.onClick,
+        "aria-label": `${label} — 멤버 보기`,
+      },
+    };
+  }
+  return {
+    kind: "div" as WrapperKind,
+    props: { role: "group", tabIndex: 0, "aria-label": label },
+  };
 }
 
 function getSlotVars(item: SlotState): React.CSSProperties {
@@ -200,41 +216,18 @@ function getSlotVars(item: SlotState): React.CSSProperties {
 }
 
 function VisualSlot(item: SlotState) {
-  const Wrapper: React.ElementType = item.href ? "a" : "div";
+  const { kind, props } = getWrapperProps(item);
+  const Wrapper: React.ElementType = kind;
 
   return (
     <Wrapper
       className={`bb-visual-slot bb-stage-${item.stage}`}
       style={getSlotVars(item)}
-      {...getWrapperProps(item)}
+      {...props}
     >
       <span className="bb-house-stage" aria-hidden="true" />
       <span className="bb-stage-ring" aria-hidden="true" />
-    </Wrapper>
-  );
-}
-
-function StatusCard(item: SlotState) {
-  const Wrapper: React.ElementType = item.href ? "a" : "div";
-  const status = item.stage >= FINAL_STAGE ? "완성" : `${item.pct}%`;
-
-  return (
-    <Wrapper
-      className={`bb-status-card bb-stage-${item.stage}`}
-      style={getSlotVars(item)}
-      {...getWrapperProps(item)}
-    >
-      <div className="bb-status-top">
-        <span className="bb-team">{item.label}</span>
-        <span className="bb-stage">{status}</span>
-      </div>
-      <div className="bb-track" aria-hidden="true">
-        <span />
-      </div>
-      <div className="bb-status-bottom">
-        <span>{item.stageName}</span>
-        <strong>{item.pct}%</strong>
-      </div>
+      <span className="bb-team-label">{item.label}</span>
     </Wrapper>
   );
 }
@@ -278,7 +271,7 @@ function SpongeVillageStyles() {
 
       .bb-visual-grid {
         position: absolute;
-        inset: 1.5% 4.2% 20%;
+        inset: 1.5% 4.2% 6%;
         z-index: 1;
         display: grid;
         grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -294,6 +287,33 @@ function SpongeVillageStyles() {
         cursor: pointer;
         outline: none;
         isolation: isolate;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        font: inherit;
+      }
+
+      button.bb-visual-slot {
+        appearance: none;
+      }
+
+      .bb-team-label {
+        position: absolute;
+        left: 50%;
+        bottom: 4px;
+        transform: translateX(-50%);
+        z-index: 2;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .92);
+        border: 1px solid rgba(255, 255, 255, .8);
+        color: #173940;
+        font-size: 12px;
+        font-weight: 850;
+        line-height: 1;
+        box-shadow: 0 4px 12px rgba(22, 83, 93, .14);
+        pointer-events: none;
+        white-space: nowrap;
       }
 
       .bb-house-stage {
@@ -329,118 +349,13 @@ function SpongeVillageStyles() {
         opacity: 1;
       }
 
-      .bb-status-grid {
-        position: absolute;
-        left: 4.6%;
-        right: 4.6%;
-        bottom: 7.4%;
-        z-index: 3;
-        display: grid;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .bb-status-card {
-        min-width: 0;
-        display: block;
-        padding: 10px 12px 9px;
-        border: 1px solid rgba(255,255,255,.72);
-        border-radius: 14px;
-        background: rgba(255,255,255,.9);
-        color: #173940;
-        text-decoration: none;
-        box-shadow: 0 10px 24px rgba(26, 82, 91, .1);
-        transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
-      }
-
-      .bb-status-card:hover,
-      .bb-status-card:focus-visible {
-        transform: translateY(-3px);
-        background: #fff;
-        box-shadow: 0 14px 28px rgba(26, 82, 91, .14);
-        outline: none;
-      }
-
-      .bb-status-top,
-      .bb-status-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-      }
-
-      .bb-team {
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 13px;
-        font-weight: 850;
-        line-height: 1;
-      }
-
-      .bb-stage {
-        flex: 0 0 auto;
-        border-radius: 999px;
-        padding: 4px 8px;
-        background: var(--bb-accent);
-        color: #fff;
-        font-size: 10px;
-        font-weight: 850;
-        line-height: 1;
-        box-shadow: 0 4px 10px rgba(22, 83, 93, .14);
-      }
-
-      .bb-track {
-        position: relative;
-        height: 7px;
-        margin: 8px 0 7px;
-        overflow: hidden;
-        border-radius: 999px;
-        background: rgba(35, 94, 104, .14);
-      }
-
-      .bb-track span {
-        position: absolute;
-        inset: 0 auto 0 0;
-        width: var(--bb-progress);
-        border-radius: inherit;
-        background: linear-gradient(90deg, var(--bb-accent), #ffe47c);
-        box-shadow: 0 0 10px color-mix(in srgb, var(--bb-accent), transparent 35%);
-        transition: width .25s ease;
-      }
-
-      .bb-status-bottom {
-        color: rgba(23, 57, 64, .72);
-        font-size: 11px;
-        font-weight: 750;
-        line-height: 1;
-      }
-
-      .bb-status-bottom strong {
-        color: #173940;
-        font-size: 12px;
-        font-variant-numeric: tabular-nums;
-      }
-
-      .bb-stage-4 .bb-stage::after {
-        content: "";
-        display: inline-block;
-        width: 4px;
-        height: 4px;
-        margin-left: 4px;
-        border-radius: 999px;
-        background: #fff;
-        vertical-align: 2px;
-      }
-
       @media (max-width: 720px) {
         .bb-scene {
           border-radius: 14px;
         }
 
         .bb-visual-grid {
-          inset: 2% 3% 32%;
+          inset: 2% 3% 8%;
         }
 
         .bb-house-stage {
@@ -452,19 +367,14 @@ function SpongeVillageStyles() {
           border-radius: 12px;
         }
 
-        .bb-status-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 8px;
-          left: 4%;
-          right: 4%;
-          bottom: 5.5%;
+        .bb-team-label {
+          font-size: 10px;
+          padding: 2px 7px;
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .bb-stage-ring,
-        .bb-status-card,
-        .bb-track span {
+        .bb-stage-ring {
           transition: none !important;
         }
       }

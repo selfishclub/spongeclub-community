@@ -14,14 +14,19 @@ import type { TeamProgress } from "@/lib/missions/types";
 import type { WeekInfo } from "@/lib/missions/schedule-parser";
 import { TeamProgressMatrix } from "./TeamProgressMatrix";
 import { SpongeVillageProgress, type Team as VillageTeam } from "./BikiniBottom";
+import { TeamMembersModal } from "./TeamMembersModal";
 
-function toVillageTeams(teams: TeamProgress[]): VillageTeam[] {
+function toVillageTeams(
+  teams: TeamProgress[],
+  onTeamClick: (team: TeamProgress) => void,
+): VillageTeam[] {
   return teams.map((t) => ({
     name: t.team,
     weeklyAchievementRate:
       t.totalCount > 0 ? (t.submittedCount / t.totalCount) * 100 : 0,
     submittedCount: t.submittedCount,
     totalAssignments: t.totalCount,
+    onClick: () => onTeamClick(t),
   }));
 }
 
@@ -35,6 +40,7 @@ export function ProgressBoardSection({
   currentWeekNumber: number;
 }) {
   const [selectedWeek, setSelectedWeek] = useState(currentWeekNumber);
+  const [openTeam, setOpenTeam] = useState<TeamProgress | null>(null);
 
   const weekInfo = weeks.find((w) => w.week === selectedWeek);
   const weekLabel = weekInfo?.label ?? `${selectedWeek}주차`;
@@ -69,11 +75,21 @@ export function ProgressBoardSection({
 
       {teams.length > 0 && (
         <div className="mb-4">
-          <SpongeVillageProgress teams={toVillageTeams(teams)} />
+          <SpongeVillageProgress
+            teams={toVillageTeams(teams, setOpenTeam)}
+          />
         </div>
       )}
 
       <TeamProgressMatrix teams={teams} weekLabel={weekLabel} />
+
+      {openTeam && (
+        <TeamMembersModal
+          team={openTeam}
+          weekLabel={weekLabel}
+          onClose={() => setOpenTeam(null)}
+        />
+      )}
     </section>
   );
 }
