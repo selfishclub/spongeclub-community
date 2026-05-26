@@ -60,7 +60,7 @@ export function MissionHero({
             )}
           </div>
           <h1 className="mt-1 text-2xl md:text-3xl font-bold leading-tight">
-            스폰지클럽 1기 · 이번주 미션
+            스폰지클럽 1기 · 이번주에 제출해야 하는 미션
           </h1>
           <p className="mt-2 text-[#5B6271] text-sm leading-relaxed">
             이번 주에 만들고 나눌 과제입니다.
