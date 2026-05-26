@@ -151,6 +151,13 @@ export function SpongeVillageProgress({
           } as React.CSSProperties
         }
       >
+        <div className="bb-caustics" aria-hidden="true" />
+        <div className="bb-bubbles" aria-hidden="true">
+          {Array.from({ length: 14 }, (_, i) => (
+            <span key={i} className={`bb-bubble bb-bubble-${i}`} />
+          ))}
+        </div>
+
         <div className="bb-visual-grid">
           {items.map((item) => (
             <VisualSlot key={item.slotIndex} {...item} />
@@ -349,6 +356,73 @@ function SpongeVillageStyles() {
         opacity: 1;
       }
 
+      .bb-caustics {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 22% 28%, rgba(255, 255, 255, .35), transparent 14%),
+          radial-gradient(circle at 68% 18%, rgba(255, 255, 255, .28), transparent 12%),
+          radial-gradient(circle at 84% 36%, rgba(255, 255, 255, .22), transparent 16%),
+          radial-gradient(circle at 12% 44%, rgba(255, 255, 255, .18), transparent 18%);
+        mix-blend-mode: screen;
+        filter: blur(4px);
+        animation: bb-caustics-drift 18s ease-in-out infinite alternate;
+      }
+
+      @keyframes bb-caustics-drift {
+        0%   { transform: translate3d(0, 0, 0) scale(1); opacity: .85; }
+        50%  { transform: translate3d(2%, -1%, 0) scale(1.04); opacity: 1; }
+        100% { transform: translate3d(-2%, 1%, 0) scale(1.02); opacity: .9; }
+      }
+
+      .bb-bubbles {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .bb-bubble {
+        position: absolute;
+        bottom: -8%;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 30% 30%,
+            rgba(255, 255, 255, .9),
+            rgba(255, 255, 255, .35) 45%,
+            rgba(255, 255, 255, 0) 70%);
+        box-shadow: 0 0 6px rgba(255, 255, 255, .35);
+        opacity: 0;
+        animation-name: bb-bubble-rise;
+        animation-timing-function: ease-in;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes bb-bubble-rise {
+        0%   { transform: translate3d(0, 0, 0) scale(.6); opacity: 0; }
+        12%  { opacity: .9; }
+        70%  { opacity: .7; }
+        100% { transform: translate3d(var(--bb-drift, 12px), -110vh, 0) scale(1); opacity: 0; }
+      }
+
+      .bb-bubble-0  { left: 6%;  width: 10px; height: 10px; animation-duration: 11s; animation-delay: -1s;  --bb-drift: 18px; }
+      .bb-bubble-1  { left: 14%; width: 7px;  height: 7px;  animation-duration: 9s;  animation-delay: -4s;  --bb-drift: -10px; }
+      .bb-bubble-2  { left: 21%; width: 14px; height: 14px; animation-duration: 13s; animation-delay: -8s;  --bb-drift: 22px; }
+      .bb-bubble-3  { left: 30%; width: 6px;  height: 6px;  animation-duration: 8s;  animation-delay: -2s;  --bb-drift: -14px; }
+      .bb-bubble-4  { left: 38%; width: 12px; height: 12px; animation-duration: 12s; animation-delay: -6s;  --bb-drift: 8px; }
+      .bb-bubble-5  { left: 47%; width: 9px;  height: 9px;  animation-duration: 10s; animation-delay: 0s;   --bb-drift: -18px; }
+      .bb-bubble-6  { left: 55%; width: 16px; height: 16px; animation-duration: 14s; animation-delay: -3s;  --bb-drift: 12px; }
+      .bb-bubble-7  { left: 62%; width: 8px;  height: 8px;  animation-duration: 9s;  animation-delay: -7s;  --bb-drift: -8px; }
+      .bb-bubble-8  { left: 70%; width: 11px; height: 11px; animation-duration: 12s; animation-delay: -10s; --bb-drift: 20px; }
+      .bb-bubble-9  { left: 77%; width: 6px;  height: 6px;  animation-duration: 8s;  animation-delay: -5s;  --bb-drift: -16px; }
+      .bb-bubble-10 { left: 84%; width: 13px; height: 13px; animation-duration: 13s; animation-delay: -2s;  --bb-drift: 10px; }
+      .bb-bubble-11 { left: 91%; width: 7px;  height: 7px;  animation-duration: 10s; animation-delay: -9s;  --bb-drift: -12px; }
+      .bb-bubble-12 { left: 18%; width: 5px;  height: 5px;  animation-duration: 7s;  animation-delay: -3s;  --bb-drift: 14px; }
+      .bb-bubble-13 { left: 66%; width: 5px;  height: 5px;  animation-duration: 7s;  animation-delay: -6s;  --bb-drift: -14px; }
+
       @media (max-width: 720px) {
         .bb-scene {
           border-radius: 14px;
@@ -376,6 +450,13 @@ function SpongeVillageStyles() {
       @media (prefers-reduced-motion: reduce) {
         .bb-stage-ring {
           transition: none !important;
+        }
+        .bb-caustics,
+        .bb-bubble {
+          animation: none !important;
+        }
+        .bb-bubbles {
+          display: none;
         }
       }
     `}</style>
