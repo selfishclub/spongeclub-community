@@ -45,8 +45,29 @@ export function ProgressBoardSection({
   const weekLabel = weekInfo?.label ?? `${selectedWeek}주차`;
   const teams = progressByWeek[selectedWeek] ?? [];
 
+  const isCurrentWeek = selectedWeek === currentWeekNumber;
+  const isPastWeek = selectedWeek < currentWeekNumber;
+  const headingSuffix = isPastWeek
+    ? "에 제출했어야 한 과제"
+    : "에 제출해야 하는 과제";
+
   return (
     <section className="rounded-2xl bg-[#FAFBFD] border border-[#E7E9EE] p-4 sm:p-5">
+      {/* 섹션 헤더 — 선택 주차에 맞춰 동적 */}
+      <header className="mb-3">
+        <h2 className="font-bold text-lg sm:text-xl text-[#2A2E35] tracking-tight">
+          📋 {selectedWeek}주차{headingSuffix}
+          {isCurrentWeek && (
+            <span className="ml-2 text-[11px] font-bold text-white bg-[#FFB800] rounded-full px-2 py-0.5 align-middle">
+              이번주
+            </span>
+          )}
+        </h2>
+        <p className="text-xs text-[#5B6271] mt-1">
+          아래에서 다른 주차를 선택해 그 주차의 과제 현황판을 볼 수 있어요.
+        </p>
+      </header>
+
       {/* 주차 전환 pill */}
       <div
         className="flex items-center gap-1.5 overflow-x-auto mb-4"
