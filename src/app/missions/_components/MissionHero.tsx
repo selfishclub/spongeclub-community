@@ -16,6 +16,16 @@ function dDayLabel(d: number | null): string {
   return `D+${Math.abs(d)}`;
 }
 
+/**
+ * 다시보기/속기본 링크는 *지난 주차* 세션 콘텐츠 기준으로 라벨링.
+ * 이번주 세션은 진행 중이라 아직 자료가 없을 수 있으므로,
+ * "N-1주차 세션" 으로 명시해 멤버 혼동을 줄인다.
+ */
+function prevSessionLabel(weekNum: number | null | undefined): string {
+  if (weekNum == null || weekNum < 1) return "지난";
+  return `${weekNum - 1}주차`;
+}
+
 export function MissionHero({
   week,
   missions,
@@ -109,7 +119,7 @@ export function MissionHero({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
               >
-                📺 이번주 세션 다시보기 <span aria-hidden>↗</span>
+                📺 {prevSessionLabel(week?.week)} 세션 다시보기 <span aria-hidden>↗</span>
               </a>
             )}
             {transcriptUrl && (
@@ -119,7 +129,7 @@ export function MissionHero({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
               >
-                📝 이번주 속기본 보기 <span aria-hidden>↗</span>
+                📝 {prevSessionLabel(week?.week)} 속기본 보기 <span aria-hidden>↗</span>
               </a>
             )}
           </div>
