@@ -12,7 +12,6 @@
 import { useState } from "react";
 import type { TeamProgress } from "@/lib/missions/types";
 import type { WeekInfo } from "@/lib/missions/schedule-parser";
-import { TeamProgressMatrix } from "./TeamProgressMatrix";
 import { SpongeVillageProgress, type Team as VillageTeam } from "./BikiniBottom";
 import { TeamMembersModal } from "./TeamMembersModal";
 
@@ -73,15 +72,23 @@ export function ProgressBoardSection({
         })}
       </div>
 
-      {teams.length > 0 && (
-        <div className="mb-4">
-          <SpongeVillageProgress
-            teams={toVillageTeams(teams, setOpenTeam)}
-          />
-        </div>
+      {teams.length > 0 ? (
+        <SpongeVillageProgress
+          teams={toVillageTeams(teams, setOpenTeam)}
+        />
+      ) : (
+        <p className="text-center text-xs text-[#A7ADBA] py-10 leading-relaxed">
+          vault에서 미션 노트를 가져오지 못했어요.
+          <br />
+          rate limit·일시 오류일 수 있어요. 5분 뒤 자동 재시도됩니다.
+        </p>
       )}
 
-      <TeamProgressMatrix teams={teams} weekLabel={weekLabel} />
+      <p className="mt-3 text-[11px] text-[#A7ADBA] text-center leading-relaxed">
+        집을 클릭하면 그 조의 멤버 목록이 열려요.
+        <br />
+        달성률 20%·40%·55%·70% 임계값마다 집이 한 단계 진화합니다.
+      </p>
 
       {openTeam && (
         <TeamMembersModal

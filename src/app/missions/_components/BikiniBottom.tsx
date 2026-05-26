@@ -152,9 +152,27 @@ export function SpongeVillageProgress({
         }
       >
         <div className="bb-caustics" aria-hidden="true" />
+
+        <div className="bb-plants" aria-hidden="true">
+          <span className="bb-seaweed bb-seaweed-1" />
+          <span className="bb-seaweed bb-seaweed-2" />
+          <span className="bb-seaweed bb-seaweed-3" />
+          <span className="bb-seaweed bb-seaweed-4" />
+          <span className="bb-seaweed bb-seaweed-5" />
+          <span className="bb-anemone bb-anemone-1">
+            <span /><span /><span /><span /><span /><span />
+          </span>
+          <span className="bb-anemone bb-anemone-2">
+            <span /><span /><span /><span /><span /><span />
+          </span>
+        </div>
+
         <div className="bb-bubbles" aria-hidden="true">
           {Array.from({ length: 14 }, (_, i) => (
             <span key={i} className={`bb-bubble bb-bubble-${i}`} />
+          ))}
+          {Array.from({ length: 3 }, (_, i) => (
+            <span key={`big-${i}`} className={`bb-bubble bb-bubble-big bb-bubble-big-${i}`} />
           ))}
         </div>
 
@@ -423,6 +441,124 @@ function SpongeVillageStyles() {
       .bb-bubble-12 { left: 18%; width: 5px;  height: 5px;  animation-duration: 7s;  animation-delay: -3s;  --bb-drift: 14px; }
       .bb-bubble-13 { left: 66%; width: 5px;  height: 5px;  animation-duration: 7s;  animation-delay: -6s;  --bb-drift: -14px; }
 
+      .bb-bubble-big {
+        animation-name: bb-bubble-rise-big;
+        animation-timing-function: ease-in-out;
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, .35));
+      }
+
+      @keyframes bb-bubble-rise-big {
+        0%   { transform: translate3d(0, 0, 0) scale(.4); opacity: 0; }
+        6%   { opacity: 0; }
+        14%  { opacity: .85; }
+        90%  { opacity: .6; }
+        100% { transform: translate3d(var(--bb-drift, 24px), -110vh, 0) scale(1.1); opacity: 0; }
+      }
+
+      .bb-bubble-big-0 { left: 26%; width: 26px; height: 26px; animation-duration: 22s; animation-delay: -3s;  --bb-drift: 28px; }
+      .bb-bubble-big-1 { left: 58%; width: 32px; height: 32px; animation-duration: 28s; animation-delay: -16s; --bb-drift: -22px; }
+      .bb-bubble-big-2 { left: 81%; width: 22px; height: 22px; animation-duration: 26s; animation-delay: -10s; --bb-drift: 18px; }
+
+      .bb-plants {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .bb-seaweed {
+        position: absolute;
+        bottom: 0;
+        transform-origin: bottom center;
+        background: linear-gradient(
+          to top,
+          rgba(40, 110, 70, .82) 0%,
+          rgba(64, 140, 90, .78) 35%,
+          rgba(110, 180, 120, .65) 75%,
+          rgba(160, 220, 160, .35) 100%
+        );
+        border-radius: 60% 60% 30% 30% / 80% 80% 12% 12%;
+        filter: blur(.4px);
+        animation-name: bb-sway;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        animation-direction: alternate;
+      }
+
+      @keyframes bb-sway {
+        0%   { transform: rotate(-7deg) skewX(-3deg); }
+        100% { transform: rotate(7deg) skewX(3deg); }
+      }
+
+      .bb-seaweed-1 { left: 4%;  bottom: 4%; width: 14px; height: 26%; animation-duration: 5.4s; animation-delay: -.6s; }
+      .bb-seaweed-2 { left: 31%; bottom: 4%; width: 10px; height: 19%; animation-duration: 4.8s; animation-delay: -1.6s; }
+      .bb-seaweed-3 { left: 51%; bottom: 4%; width: 12px; height: 22%; animation-duration: 6.2s; animation-delay: -.3s; }
+      .bb-seaweed-4 { left: 73%; bottom: 4%; width: 11px; height: 20%; animation-duration: 5.1s; animation-delay: -2.4s; }
+      .bb-seaweed-5 { left: 94%; bottom: 4%; width: 13px; height: 27%; animation-duration: 6.4s; animation-delay: -1.1s; }
+
+      .bb-anemone {
+        position: absolute;
+        bottom: 3%;
+        width: 38px;
+        height: 26px;
+        transform-origin: bottom center;
+        animation: bb-anemone-sway 4.6s ease-in-out infinite alternate;
+      }
+
+      .bb-anemone::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 38%;
+        border-radius: 50% 50% 30% 30% / 100% 100% 30% 30%;
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(235, 110, 145, .9),
+          rgba(195, 80, 130, .85)
+        );
+        filter: blur(.4px);
+      }
+
+      .bb-anemone > span {
+        position: absolute;
+        bottom: 25%;
+        width: 4px;
+        height: 70%;
+        border-radius: 999px;
+        background: linear-gradient(
+          to top,
+          rgba(235, 110, 145, .88),
+          rgba(255, 180, 200, .35)
+        );
+        transform-origin: bottom center;
+        animation: bb-tentacle 2.4s ease-in-out infinite alternate;
+      }
+
+      .bb-anemone > span:nth-child(1) { left: 8%;  height: 60%; animation-delay: -.1s; }
+      .bb-anemone > span:nth-child(2) { left: 25%; height: 78%; animation-delay: -.5s; }
+      .bb-anemone > span:nth-child(3) { left: 42%; height: 90%; animation-delay: -.2s; }
+      .bb-anemone > span:nth-child(4) { left: 58%; height: 88%; animation-delay: -.6s; }
+      .bb-anemone > span:nth-child(5) { left: 75%; height: 72%; animation-delay: -.3s; }
+      .bb-anemone > span:nth-child(6) { left: 88%; height: 58%; animation-delay: -.8s; }
+
+      @keyframes bb-anemone-sway {
+        0%   { transform: rotate(-4deg); }
+        100% { transform: rotate(4deg); }
+      }
+
+      @keyframes bb-tentacle {
+        0%   { transform: rotate(-12deg) scaleY(1); }
+        50%  { transform: rotate(0deg) scaleY(1.04); }
+        100% { transform: rotate(12deg) scaleY(.98); }
+      }
+
+      .bb-anemone-1 { left: 18%; }
+      .bb-anemone-2 { left: 62%; }
+
       @media (max-width: 720px) {
         .bb-scene {
           border-radius: 14px;
@@ -452,7 +588,10 @@ function SpongeVillageStyles() {
           transition: none !important;
         }
         .bb-caustics,
-        .bb-bubble {
+        .bb-bubble,
+        .bb-seaweed,
+        .bb-anemone,
+        .bb-anemone > span {
           animation: none !important;
         }
         .bb-bubbles {
