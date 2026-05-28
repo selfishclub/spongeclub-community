@@ -35,25 +35,7 @@ export function MissionHero({
 
   return (
     <section className="rounded-2xl bg-gradient-to-br from-[#FFF1BF] via-[#FFF9E5] to-white border border-[#FFF1BF] p-6">
-      <div className="flex items-start gap-4 flex-wrap">
-        {/* 과제 마감 D-day 박스 — 왼쪽 배치 */}
-        <div className="px-4 py-3 rounded-xl bg-white border border-[#E7E9EE] min-w-[120px] text-center">
-          <div className="text-[10px] text-[#5B6271] tracking-wider">
-            {isPast ? "마감 완료" : "과제 마감까지"}
-          </div>
-          <div
-            className={`text-3xl font-bold leading-none mt-1 ${
-              isPast ? "text-emerald-700" : "text-[#E89E00]"
-            }`}
-          >
-            {isPast ? "✓" : dDayLabel(dDay)}
-          </div>
-          {deadlineText && (
-            <div className="text-[10px] text-[#5B6271] mt-1">
-              {deadlineText}
-            </div>
-          )}
-        </div>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase">
             <span className="text-[#5B6271]">{weekLabel}</span>
@@ -73,6 +55,48 @@ export function MissionHero({
           <p className="mt-2 text-[#5B6271] text-sm leading-relaxed">
             이번 주에 만들고 나눌 과제입니다.
           </p>
+        </div>
+
+        {/* 우측 액션 클러스터 — 지난 세션/속기본 + D-day 박스를 같은 라인에 */}
+        <div className="flex items-center gap-2.5 flex-wrap justify-end">
+          {replayUrl && (
+            <a
+              href={replayUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
+            >
+              📺 지난 세션 다시보기 <span aria-hidden>↗</span>
+            </a>
+          )}
+          {transcriptUrl && (
+            <a
+              href={transcriptUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
+            >
+              📝 지난 주차 속기본 바로가기 <span aria-hidden>↗</span>
+            </a>
+          )}
+          {/* 과제 마감 D-day 박스 — 기존 우측 자리 */}
+          <div className="px-4 py-3 rounded-xl bg-white border border-[#E7E9EE] min-w-[120px] text-center">
+            <div className="text-[10px] text-[#5B6271] tracking-wider">
+              {isPast ? "마감 완료" : "과제 마감까지"}
+            </div>
+            <div
+              className={`text-3xl font-bold leading-none mt-1 ${
+                isPast ? "text-emerald-700" : "text-[#E89E00]"
+              }`}
+            >
+              {isPast ? "✓" : dDayLabel(dDay)}
+            </div>
+            {deadlineText && (
+              <div className="text-[10px] text-[#5B6271] mt-1">
+                {deadlineText}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -97,31 +121,6 @@ export function MissionHero({
                 </li>
               ))}
             </ol>
-          </div>
-        )}
-
-        {(replayUrl || transcriptUrl) && (
-          <div className="mt-4 flex flex-wrap items-center gap-2.5">
-            {replayUrl && (
-              <a
-                href={replayUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
-              >
-                📺 지난 세션 다시보기 <span aria-hidden>↗</span>
-              </a>
-            )}
-            {transcriptUrl && (
-              <a
-                href={transcriptUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
-              >
-                📝 지난 주차 속기본 바로가기 <span aria-hidden>↗</span>
-              </a>
-            )}
           </div>
         )}
       </div>
