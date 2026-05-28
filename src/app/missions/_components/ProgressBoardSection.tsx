@@ -46,17 +46,12 @@ export function ProgressBoardSection({
   const teams = progressByWeek[selectedWeek] ?? [];
 
   const isCurrentWeek = selectedWeek === currentWeekNumber;
-  const isPastWeek = selectedWeek < currentWeekNumber;
-  const headingSuffix = isPastWeek
-    ? "에 제출했어야 한 과제"
-    : "에 제출해야 하는 과제";
 
   return (
     <section className="rounded-2xl bg-[#FAFBFD] border border-[#E7E9EE] p-4 sm:p-5">
-      {/* 섹션 헤더 — 선택 주차에 맞춰 동적 */}
       <header className="mb-3">
         <h2 className="font-bold text-lg sm:text-xl text-[#2A2E35] tracking-tight">
-          📋 {selectedWeek}주차{headingSuffix}
+          🏘️ 스폰지 빌리지 현황
           {isCurrentWeek && (
             <span className="ml-2 text-[11px] font-bold text-white bg-[#FFB800] rounded-full px-2 py-0.5 align-middle">
               이번주
