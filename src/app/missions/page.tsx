@@ -63,6 +63,8 @@ export default async function MissionsPage() {
   // 어드민(Supabase) 우선, 비면 vault _missions.md 폴백
   const adminMissions = dbWeek?.missions ?? [];
   const missions = adminMissions.length > 0 ? adminMissions : vaultMissions;
+  const heroTitle = dbWeek?.heroTitle ?? null;
+  const heroSubtitle = dbWeek?.heroSubtitle ?? null;
   const replayUrl = dbWeek?.replayUrl ?? null;
   const transcriptUrl = dbWeek?.transcriptUrl ?? null;
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
@@ -81,6 +83,8 @@ export default async function MissionsPage() {
 
           <MissionHero
             week={currentWeek}
+            heroTitle={heroTitle}
+            heroSubtitle={heroSubtitle}
             missions={missions}
             dDay={dDay}
             replayUrl={replayUrl}

@@ -22,6 +22,8 @@ export type MissionWeek = {
   label: string;
   startDate: string; // ISO yyyy-mm-dd
   endDate: string;
+  heroTitle: string | null;
+  heroSubtitle: string | null;
   missions: MissionTitle[];
   replayUrl: string | null;
   transcriptUrl: string | null;
@@ -29,6 +31,8 @@ export type MissionWeek = {
 };
 
 export type MissionWeekUpdate = {
+  heroTitle?: string | null;
+  heroSubtitle?: string | null;
   missions?: MissionTitle[];
   replayUrl?: string | null;
   transcriptUrl?: string | null;
@@ -42,6 +46,8 @@ type DbRow = {
   label: string;
   start_date: string;
   end_date: string;
+  hero_title: string | null;
+  hero_subtitle: string | null;
   missions: unknown;
   replay_url: string | null;
   transcript_url: string | null;
@@ -71,6 +77,8 @@ function rowToWeek(row: DbRow): MissionWeek {
     label: row.label,
     startDate: row.start_date,
     endDate: row.end_date,
+    heroTitle: row.hero_title,
+    heroSubtitle: row.hero_subtitle,
     missions: normalizeMissions(row.missions),
     replayUrl: row.replay_url,
     transcriptUrl: row.transcript_url,
@@ -79,7 +87,7 @@ function rowToWeek(row: DbRow): MissionWeek {
 }
 
 const COLUMNS =
-  "id, week_folder, week_number, label, start_date, end_date, missions, replay_url, transcript_url, published";
+  "id, week_folder, week_number, label, start_date, end_date, hero_title, hero_subtitle, missions, replay_url, transcript_url, published";
 
 // ─── READ (anon — public route 용) ──────────────────────────────────────────
 
@@ -152,6 +160,12 @@ export async function adminUpdateWeek(
   const sb = createAdminClient();
 
   const update: Record<string, unknown> = {};
+  if (patch.heroTitle !== undefined) {
+    update.hero_title = patch.heroTitle?.trim() || null;
+  }
+  if (patch.heroSubtitle !== undefined) {
+    update.hero_subtitle = patch.heroSubtitle?.trim() || null;
+  }
   if (patch.missions !== undefined) {
     // 정상 형식만 저장
     update.missions = patch.missions

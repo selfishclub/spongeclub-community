@@ -11,6 +11,8 @@ interface AdminWeek {
   label: string;
   startDate: string;
   endDate: string;
+  heroTitle: string | null;
+  heroSubtitle: string | null;
   missions: { index: number; title: string }[];
   replayUrl: string | null;
   transcriptUrl: string | null;
@@ -34,6 +36,8 @@ export default function AdminMissionWeekPage({
   const [savedAt, setSavedAt] = useState<Date | null>(null);
 
   // Form state
+  const [heroTitle, setHeroTitle] = useState("");
+  const [heroSubtitle, setHeroSubtitle] = useState("");
   const [missionInputs, setMissionInputs] = useState<Record<number, string>>({
     1: "",
     2: "",
@@ -60,6 +64,8 @@ export default function AdminMissionWeekPage({
         }
         const w: AdminWeek = data.week;
         setWeek(w);
+        setHeroTitle(w.heroTitle ?? "");
+        setHeroSubtitle(w.heroSubtitle ?? "");
         const slots: Record<number, string> = { 1: "", 2: "", 3: "" };
         for (const m of w.missions) slots[m.index] = m.title;
         setMissionInputs(slots);
@@ -89,6 +95,8 @@ export default function AdminMissionWeekPage({
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          heroTitle: heroTitle.trim() || null,
+          heroSubtitle: heroSubtitle.trim() || null,
           missions,
           replayUrl: replayUrl.trim() || null,
           transcriptUrl: transcriptUrl.trim() || null,
@@ -212,6 +220,48 @@ export default function AdminMissionWeekPage({
           {week.startDate} ~ {week.endDate} · {week.weekFolder}
         </p>
       </div>
+
+      {/* Hero 타이틀 / 서브 카피 */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-extrabold text-[var(--ink)] uppercase tracking-wider">
+          Hero 타이틀
+        </h2>
+        <div className="space-y-1">
+          <label
+            htmlFor="hero-title"
+            className="block text-xs font-extrabold text-[var(--ink-50)]"
+          >
+            큰 제목 (서술형)
+          </label>
+          <input
+            id="hero-title"
+            type="text"
+            value={heroTitle}
+            onChange={(e) => setHeroTitle(e.target.value)}
+            placeholder="예: 나의 고객과 why 정의하기"
+            className="w-full border-2 border-[var(--ink)] px-3 py-2 text-sm focus:outline-none focus:bg-[var(--yellow-dim)]"
+          />
+        </div>
+        <div className="space-y-1">
+          <label
+            htmlFor="hero-subtitle"
+            className="block text-xs font-extrabold text-[var(--ink-50)]"
+          >
+            서브 카피
+          </label>
+          <input
+            id="hero-subtitle"
+            type="text"
+            value={heroSubtitle}
+            onChange={(e) => setHeroSubtitle(e.target.value)}
+            placeholder="예: 이번 주에 만들고 나눌 과제입니다."
+            className="w-full border-2 border-[var(--ink)] px-3 py-2 text-sm focus:outline-none focus:bg-[var(--yellow-dim)]"
+          />
+        </div>
+        <p className="text-xs text-[var(--ink-30)] font-medium">
+          빈 칸이면 기본 문구로 노출됩니다.
+        </p>
+      </section>
 
       {/* 미션 입력 */}
       <section className="space-y-3">

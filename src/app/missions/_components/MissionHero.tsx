@@ -18,12 +18,16 @@ function dDayLabel(d: number | null): string {
 
 export function MissionHero({
   week,
+  heroTitle,
+  heroSubtitle,
   missions,
   dDay,
   replayUrl,
   transcriptUrl,
 }: {
   week: WeekInfo | null;
+  heroTitle: string | null;
+  heroSubtitle: string | null;
   missions: MissionTitle[];
   dDay: number | null;
   replayUrl: string | null;
@@ -32,6 +36,10 @@ export function MissionHero({
   const weekLabel = week?.label ?? "이번주";
   const isPast = week?.status === "past";
   const deadlineText = week ? `${week.endDate} 마감` : "";
+  const displayTitle =
+    heroTitle?.trim() || "스폰지클럽 1기 · 이번주에 제출해야 하는 미션";
+  const displaySubtitle =
+    heroSubtitle?.trim() || "이번 주에 만들고 나눌 과제입니다.";
 
   return (
     <section className="rounded-2xl bg-gradient-to-br from-[#FFF1BF] via-[#FFF9E5] to-white border border-[#FFF1BF] p-6">
@@ -50,10 +58,10 @@ export function MissionHero({
             )}
           </div>
           <h1 className="mt-1 text-2xl md:text-3xl font-bold leading-tight">
-            스폰지클럽 1기 · 이번주에 제출해야 하는 미션
+            {displayTitle}
           </h1>
           <p className="mt-2 text-[#5B6271] text-sm leading-relaxed">
-            이번 주에 만들고 나눌 과제입니다.
+            {displaySubtitle}
           </p>
         </div>
 

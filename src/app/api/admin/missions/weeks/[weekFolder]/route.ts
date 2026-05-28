@@ -27,7 +27,8 @@ export async function GET(_req: NextRequest, ctx: RouteContext) {
 }
 
 // PATCH /api/admin/missions/weeks/[weekFolder]
-//   body: { missions?: [{index, title}, ...], replayUrl?: string|null,
+//   body: { heroTitle?: string|null, heroSubtitle?: string|null,
+//           missions?: [{index, title}, ...], replayUrl?: string|null,
 //           transcriptUrl?: string|null, published?: boolean }
 export async function PATCH(req: NextRequest, ctx: RouteContext) {
   const { weekFolder } = await ctx.params;
@@ -45,6 +46,22 @@ export async function PATCH(req: NextRequest, ctx: RouteContext) {
 
   const input = body as Record<string, unknown>;
   const patch: MissionWeekUpdate = {};
+
+  if (input.heroTitle !== undefined) {
+    if (input.heroTitle === null) {
+      patch.heroTitle = null;
+    } else if (typeof input.heroTitle === "string") {
+      patch.heroTitle = input.heroTitle.trim() || null;
+    }
+  }
+
+  if (input.heroSubtitle !== undefined) {
+    if (input.heroSubtitle === null) {
+      patch.heroSubtitle = null;
+    } else if (typeof input.heroSubtitle === "string") {
+      patch.heroSubtitle = input.heroSubtitle.trim() || null;
+    }
+  }
 
   if (input.missions !== undefined) {
     if (!Array.isArray(input.missions)) {
