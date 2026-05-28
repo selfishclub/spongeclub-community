@@ -18,6 +18,7 @@ import { MissionDiscussion } from "./_components/MissionDiscussion";
 import { CommunityCTA } from "./_components/CommunityCTA";
 import { ProgressBoardProvider } from "./_components/ProgressBoardProvider";
 import { ProgressBoardSection } from "./_components/ProgressBoardSection";
+import { ReferencesSection } from "./_components/ReferencesSection";
 import { NoteViewProvider } from "./_components/NoteViewProvider";
 
 export const metadata: Metadata = {
@@ -65,6 +66,7 @@ export default async function MissionsPage() {
   const missions = adminMissions.length > 0 ? adminMissions : vaultMissions;
   const heroTitle = dbWeek?.heroTitle ?? null;
   const heroSubtitle = dbWeek?.heroSubtitle ?? null;
+  const references = dbWeek?.references ?? [];
   const replayUrl = dbWeek?.replayUrl ?? null;
   const transcriptUrl = dbWeek?.transcriptUrl ?? null;
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
@@ -90,6 +92,8 @@ export default async function MissionsPage() {
             replayUrl={replayUrl}
             transcriptUrl={transcriptUrl}
           />
+
+          <ReferencesSection references={references} />
 
           {/* 스폰지 빌리지 현황 — 인라인 섹션 (멤버 카드 클릭 시 노트 모달) */}
           <ProgressBoardSection

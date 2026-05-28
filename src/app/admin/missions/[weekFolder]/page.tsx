@@ -4,6 +4,13 @@ import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import type { GrantPreview, GrantResult } from "@/lib/missions/shell-grant";
 
+interface AdminReference {
+  index: number;
+  title: string;
+  url: string;
+  note: string | null;
+}
+
 interface AdminWeek {
   id: string;
   weekFolder: string;
@@ -14,12 +21,20 @@ interface AdminWeek {
   heroTitle: string | null;
   heroSubtitle: string | null;
   missions: { index: number; title: string }[];
+  references: AdminReference[];
   replayUrl: string | null;
   transcriptUrl: string | null;
   published: boolean;
 }
 
 const MISSION_SLOTS = [1, 2, 3];
+const REFERENCE_SLOTS = [1, 2, 3, 4, 5];
+
+type ReferenceInput = { title: string; url: string; note: string };
+const emptyReferenceInputs = (): Record<number, ReferenceInput> =>
+  Object.fromEntries(
+    REFERENCE_SLOTS.map((i) => [i, { title: "", url: "", note: "" }]),
+  );
 
 export default function AdminMissionWeekPage({
   params,
@@ -43,6 +58,8 @@ export default function AdminMissionWeekPage({
     2: "",
     3: "",
   });
+  const [referenceInputs, setReferenceInputs] =
+    useState<Record<number, ReferenceInput>>(emptyReferenceInputs);
   const [replayUrl, setReplayUrl] = useState("");
   const [transcriptUrl, setTranscriptUrl] = useState("");
   const [published, setPublished] = useState(true);
@@ -69,6 +86,17 @@ export default function AdminMissionWeekPage({
         const slots: Record<number, string> = { 1: "", 2: "", 3: "" };
         for (const m of w.missions) slots[m.index] = m.title;
         setMissionInputs(slots);
+        const refSlots = emptyReferenceInputs();
+        for (const r of w.references || []) {
+          if (REFERENCE_SLOTS.includes(r.index)) {
+            refSlots[r.index] = {
+              title: r.title,
+              url: r.url,
+              note: r.note ?? "",
+            };
+          }
+        }
+        setReferenceInputs(refSlots);
         setReplayUrl(w.replayUrl ?? "");
         setTranscriptUrl(w.transcriptUrl ?? "");
         setPublished(w.published);
@@ -89,6 +117,16 @@ export default function AdminMissionWeekPage({
       title: (missionInputs[idx] || "").trim(),
     })).filter((m) => m.title.length > 0);
 
+    const references = REFERENCE_SLOTS.map((idx) => {
+      const r = referenceInputs[idx];
+      return {
+        index: idx,
+        title: r.title.trim(),
+        url: r.url.trim(),
+        note: r.note.trim() || null,
+      };
+    }).filter((r) => r.title.length > 0 && r.url.length > 0);
+
     const res = await fetch(
       `/api/admin/missions/weeks/${encodeURIComponent(decoded)}`,
       {
@@ -98,6 +136,7 @@ export default function AdminMissionWeekPage({
           heroTitle: heroTitle.trim() || null,
           heroSubtitle: heroSubtitle.trim() || null,
           missions,
+          references,
           replayUrl: replayUrl.trim() || null,
           transcriptUrl: transcriptUrl.trim() || null,
           published,
@@ -291,6 +330,65 @@ export default function AdminMissionWeekPage({
         <p className="text-xs text-[var(--ink-30)] font-medium">
           입력된 미션만 사이트 3번 섹션에 노출됩니다.
         </p>
+      </section>
+
+      {/* 참고자료 */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-extrabold text-[var(--ink)] uppercase tracking-wider">
+          참고자료
+        </h2>
+        <p className="text-xs text-[var(--ink-30)] font-medium">
+          제목 + URL 둘 다 입력된 항목만 사이트 hero 아래 카드로 노출됩니다.
+        </p>
+        {REFERENCE_SLOTS.map((idx) => {
+          const r = referenceInputs[idx];
+          return (
+            <div
+              key={idx}
+              className="space-y-1 border-2 border-[var(--ink-10)] p-3"
+            >
+              <span className="text-xs font-extrabold text-[var(--ink-50)]">
+                #{idx}
+              </span>
+              <input
+                type="text"
+                value={r.title}
+                onChange={(e) =>
+                  setReferenceInputs({
+                    ...referenceInputs,
+                    [idx]: { ...r, title: e.target.value },
+                  })
+                }
+                placeholder="제목"
+                className="w-full border-2 border-[var(--ink)] px-3 py-2 text-sm focus:outline-none focus:bg-[var(--yellow-dim)]"
+              />
+              <input
+                type="url"
+                value={r.url}
+                onChange={(e) =>
+                  setReferenceInputs({
+                    ...referenceInputs,
+                    [idx]: { ...r, url: e.target.value },
+                  })
+                }
+                placeholder="https://..."
+                className="w-full border-2 border-[var(--ink)] px-3 py-2 text-sm focus:outline-none focus:bg-[var(--yellow-dim)]"
+              />
+              <input
+                type="text"
+                value={r.note}
+                onChange={(e) =>
+                  setReferenceInputs({
+                    ...referenceInputs,
+                    [idx]: { ...r, note: e.target.value },
+                  })
+                }
+                placeholder="보조 설명 (선택)"
+                className="w-full border-2 border-[var(--ink-30)] px-3 py-2 text-xs focus:outline-none focus:bg-[var(--yellow-dim)]"
+              />
+            </div>
+          );
+        })}
       </section>
 
       {/* 다시보기 URL */}
