@@ -16,16 +16,6 @@ function dDayLabel(d: number | null): string {
   return `D+${Math.abs(d)}`;
 }
 
-/**
- * 다시보기/속기본 링크는 *지난 주차* 세션 콘텐츠 기준으로 라벨링.
- * 이번주 세션은 진행 중이라 아직 자료가 없을 수 있으므로,
- * "N-1주차 세션" 으로 명시해 멤버 혼동을 줄인다.
- */
-function prevSessionLabel(weekNum: number | null | undefined): string {
-  if (weekNum == null || weekNum < 1) return "지난";
-  return `${weekNum - 1}주차`;
-}
-
 export function MissionHero({
   week,
   missions,
@@ -45,7 +35,25 @@ export function MissionHero({
 
   return (
     <section className="rounded-2xl bg-gradient-to-br from-[#FFF1BF] via-[#FFF9E5] to-white border border-[#FFF1BF] p-6">
-      <div className="flex items-start justify-between gap-4 flex-wrap">
+      <div className="flex items-start gap-4 flex-wrap">
+        {/* 과제 마감 D-day 박스 — 왼쪽 배치 */}
+        <div className="px-4 py-3 rounded-xl bg-white border border-[#E7E9EE] min-w-[120px] text-center">
+          <div className="text-[10px] text-[#5B6271] tracking-wider">
+            {isPast ? "마감 완료" : "과제 마감까지"}
+          </div>
+          <div
+            className={`text-3xl font-bold leading-none mt-1 ${
+              isPast ? "text-emerald-700" : "text-[#E89E00]"
+            }`}
+          >
+            {isPast ? "✓" : dDayLabel(dDay)}
+          </div>
+          {deadlineText && (
+            <div className="text-[10px] text-[#5B6271] mt-1">
+              {deadlineText}
+            </div>
+          )}
+        </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase">
             <span className="text-[#5B6271]">{weekLabel}</span>
@@ -65,24 +73,6 @@ export function MissionHero({
           <p className="mt-2 text-[#5B6271] text-sm leading-relaxed">
             이번 주에 만들고 나눌 과제입니다.
           </p>
-        </div>
-        {/* 과제 마감 D-day 박스 */}
-        <div className="px-4 py-3 rounded-xl bg-white border border-[#E7E9EE] min-w-[120px] text-center">
-          <div className="text-[10px] text-[#5B6271] tracking-wider">
-            {isPast ? "마감 완료" : "과제 마감까지"}
-          </div>
-          <div
-            className={`text-3xl font-bold leading-none mt-1 ${
-              isPast ? "text-emerald-700" : "text-[#E89E00]"
-            }`}
-          >
-            {isPast ? "✓" : dDayLabel(dDay)}
-          </div>
-          {deadlineText && (
-            <div className="text-[10px] text-[#5B6271] mt-1">
-              {deadlineText}
-            </div>
-          )}
         </div>
       </div>
 
@@ -119,7 +109,7 @@ export function MissionHero({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
               >
-                📺 {prevSessionLabel(week?.week)} 세션 다시보기 <span aria-hidden>↗</span>
+                📺 지난 세션 다시보기 <span aria-hidden>↗</span>
               </a>
             )}
             {transcriptUrl && (
@@ -129,7 +119,7 @@ export function MissionHero({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
               >
-                📝 {prevSessionLabel(week?.week)} 속기본 보기 <span aria-hidden>↗</span>
+                📝 지난 주차 속기본 바로가기 <span aria-hidden>↗</span>
               </a>
             )}
           </div>
