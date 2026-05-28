@@ -38,14 +38,22 @@ export function ProgressBoardSection({
   weeks: WeekInfo[];
   currentWeekNumber: number;
 }) {
-  const [selectedWeek, setSelectedWeek] = useState(currentWeekNumber);
+  // 제출 타겟 주차 — 캘린더 주차 N 진행 중에는 N+1 폴더로 제출하는 것이
+  // 스폰지클럽 운영 컨벤션. 다음 주차가 없으면(마지막 주차) N 그대로 사용.
+  const submissionWeekNumber = weeks.some(
+    (w) => w.week === currentWeekNumber + 1,
+  )
+    ? currentWeekNumber + 1
+    : currentWeekNumber;
+
+  const [selectedWeek, setSelectedWeek] = useState(submissionWeekNumber);
   const [openTeam, setOpenTeam] = useState<TeamProgress | null>(null);
 
   const weekInfo = weeks.find((w) => w.week === selectedWeek);
   const weekLabel = weekInfo?.label ?? `${selectedWeek}주차`;
   const teams = progressByWeek[selectedWeek] ?? [];
 
-  const isCurrentWeek = selectedWeek === currentWeekNumber;
+  const isCurrentWeek = selectedWeek === submissionWeekNumber;
 
   return (
     <section className="rounded-2xl bg-[#FAFBFD] border border-[#E7E9EE] p-4 sm:p-5">
