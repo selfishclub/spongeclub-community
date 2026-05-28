@@ -80,6 +80,13 @@ export default async function MissionsPage() {
             transcriptUrl={transcriptUrl}
           />
 
+          {/* 스폰지 빌리지 현황 — 인라인 섹션 (멤버 카드 클릭 시 노트 모달) */}
+          <ProgressBoardSection
+            progressByWeek={progressByWeek}
+            weeks={weeks}
+            currentWeekNumber={currentWeekNumber}
+          />
+
           <ScheduleStrip week={currentWeek} dDay={dDay} />
 
           {/* 공지사항 · 미션 질문 — 2열 (모바일은 1열) */}
@@ -87,13 +94,6 @@ export default async function MissionsPage() {
             <AnnouncementBanner />
             <MissionDiscussion />
           </div>
-
-          {/* 과제 현황판 — 인라인 섹션 (멤버 카드 클릭 시 노트 모달) */}
-          <ProgressBoardSection
-            progressByWeek={progressByWeek}
-            weeks={weeks}
-            currentWeekNumber={currentWeekNumber}
-          />
 
           <CommunityCTA />
 
