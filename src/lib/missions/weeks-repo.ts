@@ -15,6 +15,13 @@ export type MissionTitle = {
   title: string;
 };
 
+export type MissionReference = {
+  index: number;
+  title: string;
+  url: string;
+  note: string | null;
+};
+
 export type MissionWeek = {
   id: string;
   weekFolder: string;
@@ -25,6 +32,7 @@ export type MissionWeek = {
   heroTitle: string | null;
   heroSubtitle: string | null;
   missions: MissionTitle[];
+  references: MissionReference[];
   replayUrl: string | null;
   transcriptUrl: string | null;
   published: boolean;
@@ -34,6 +42,7 @@ export type MissionWeekUpdate = {
   heroTitle?: string | null;
   heroSubtitle?: string | null;
   missions?: MissionTitle[];
+  references?: MissionReference[];
   replayUrl?: string | null;
   transcriptUrl?: string | null;
   published?: boolean;
@@ -49,6 +58,7 @@ type DbRow = {
   hero_title: string | null;
   hero_subtitle: string | null;
   missions: unknown;
+  reference_links: unknown;
   replay_url: string | null;
   transcript_url: string | null;
   published: boolean;
@@ -69,6 +79,28 @@ function normalizeMissions(raw: unknown): MissionTitle[] {
     .sort((a, b) => a.index - b.index);
 }
 
+function normalizeReferences(raw: unknown): MissionReference[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((r) => {
+      if (!r || typeof r !== "object") return null;
+      const obj = r as {
+        index?: unknown;
+        title?: unknown;
+        url?: unknown;
+        note?: unknown;
+      };
+      const idx = typeof obj.index === "number" ? obj.index : NaN;
+      const title = typeof obj.title === "string" ? obj.title.trim() : "";
+      const url = typeof obj.url === "string" ? obj.url.trim() : "";
+      const noteRaw = typeof obj.note === "string" ? obj.note.trim() : "";
+      if (!Number.isFinite(idx) || !title || !url) return null;
+      return { index: idx, title, url, note: noteRaw || null };
+    })
+    .filter((r): r is MissionReference => r !== null)
+    .sort((a, b) => a.index - b.index);
+}
+
 function rowToWeek(row: DbRow): MissionWeek {
   return {
     id: row.id,
@@ -80,6 +112,7 @@ function rowToWeek(row: DbRow): MissionWeek {
     heroTitle: row.hero_title,
     heroSubtitle: row.hero_subtitle,
     missions: normalizeMissions(row.missions),
+    references: normalizeReferences(row.reference_links),
     replayUrl: row.replay_url,
     transcriptUrl: row.transcript_url,
     published: row.published,
@@ -87,7 +120,7 @@ function rowToWeek(row: DbRow): MissionWeek {
 }
 
 const COLUMNS =
-  "id, week_folder, week_number, label, start_date, end_date, hero_title, hero_subtitle, missions, replay_url, transcript_url, published";
+  "id, week_folder, week_number, label, start_date, end_date, hero_title, hero_subtitle, missions, reference_links, replay_url, transcript_url, published";
 
 // ─── READ (anon — public route 용) ──────────────────────────────────────────
 
@@ -171,6 +204,23 @@ export async function adminUpdateWeek(
     update.missions = patch.missions
       .filter((m) => m && typeof m.title === "string" && m.title.trim())
       .map((m) => ({ index: m.index, title: m.title.trim() }));
+  }
+  if (patch.references !== undefined) {
+    update.reference_links = patch.references
+      .filter(
+        (r) =>
+          r &&
+          typeof r.title === "string" &&
+          r.title.trim() &&
+          typeof r.url === "string" &&
+          r.url.trim(),
+      )
+      .map((r) => ({
+        index: r.index,
+        title: r.title.trim(),
+        url: r.url.trim(),
+        note: r.note?.trim() || null,
+      }));
   }
   if (patch.replayUrl !== undefined) {
     update.replay_url = patch.replayUrl?.trim() || null;

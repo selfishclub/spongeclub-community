@@ -4,6 +4,7 @@ import {
   adminUpdateWeek,
   type MissionWeekUpdate,
   type MissionTitle,
+  type MissionReference,
 } from "@/lib/missions/weeks-repo";
 
 type RouteContext = {
@@ -81,6 +82,34 @@ export async function PATCH(req: NextRequest, ctx: RouteContext) {
       cleaned.push({ index: idx, title: title.trim() });
     }
     patch.missions = cleaned;
+  }
+
+  if (input.references !== undefined) {
+    if (!Array.isArray(input.references)) {
+      return NextResponse.json(
+        { error: "references는 배열이어야 합니다" },
+        { status: 400 },
+      );
+    }
+    const cleaned: MissionReference[] = [];
+    for (const item of input.references) {
+      if (!item || typeof item !== "object") continue;
+      const obj = item as Record<string, unknown>;
+      const idx =
+        typeof obj.index === "number" ? obj.index : Number(obj.index);
+      const title = typeof obj.title === "string" ? obj.title.trim() : "";
+      const url = typeof obj.url === "string" ? obj.url.trim() : "";
+      const note = typeof obj.note === "string" ? obj.note.trim() : "";
+      if (!Number.isFinite(idx) || !title || !url) continue;
+      if (!/^https?:\/\//i.test(url)) {
+        return NextResponse.json(
+          { error: "references[].url은 http(s)://로 시작해야 합니다" },
+          { status: 400 },
+        );
+      }
+      cleaned.push({ index: idx, title, url, note: note || null });
+    }
+    patch.references = cleaned;
   }
 
   if (input.replayUrl !== undefined) {
