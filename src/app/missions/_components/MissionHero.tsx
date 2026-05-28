@@ -57,27 +57,31 @@ export function MissionHero({
           </p>
         </div>
 
-        {/* 우측 액션 클러스터 — 지난 세션/속기본 + D-day 박스를 같은 라인에 */}
+        {/* 우측 액션 클러스터 — 다시보기/속기본 2행 스택 + D-day 박스를 같은 라인에 */}
         <div className="flex items-center gap-2.5 flex-wrap justify-end">
-          {replayUrl && (
-            <a
-              href={replayUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
-            >
-              📺 지난 세션 다시보기 <span aria-hidden>↗</span>
-            </a>
-          )}
-          {transcriptUrl && (
-            <a
-              href={transcriptUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
-            >
-              📝 지난 주차 속기본 바로가기 <span aria-hidden>↗</span>
-            </a>
+          {(replayUrl || transcriptUrl) && (
+            <div className="flex flex-col gap-2 items-stretch">
+              {replayUrl && (
+                <a
+                  href={replayUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
+                >
+                  📺 지난 세션 다시보기 <span aria-hidden>↗</span>
+                </a>
+              )}
+              {transcriptUrl && (
+                <a
+                  href={transcriptUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-[#E7E9EE] px-4 py-2.5 text-sm font-bold text-[#A87400] shadow-sm hover:bg-[#FFF9E5] hover:border-[#FFE08A] transition"
+                >
+                  📝 속기본 다시보기 <span aria-hidden>↗</span>
+                </a>
+              )}
+            </div>
           )}
           {/* 과제 마감 D-day 박스 — 기존 우측 자리 */}
           <div className="px-4 py-3 rounded-xl bg-white border border-[#E7E9EE] min-w-[120px] text-center">
