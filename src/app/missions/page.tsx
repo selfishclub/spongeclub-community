@@ -30,9 +30,8 @@ export const revalidate = 300;
 
 // ─── 데이터 소스 현황 ────────────────────────────────────────────────────────
 //   타임라인        ← vault 99_meta/주차일정.md (getAllWeeks)
-//   이번주 미션      ← vault 02_mission/{folder}/_missions.md (getMissionsFromVault)
-//                     · 운영진이 vault 에 작성한 그 주 미션을 그대로 노출
-//                     · vault fetch 가 비면 Supabase missions_weeks 로 폴백
+//   이번주 미션      ← Supabase missions_weeks (어드민 입력) 우선,
+//                     비면 vault 02_mission/{folder}/_missions.md 폴백
 //   다시보기 / 속기본 ← Supabase missions_weeks (replay_url / transcript_url)
 //   일정            ← WeekInfo 마감일 + 정적값
 //   현황판          ← vault submit.md frontmatter (getAllTeamsProgress, 전 주차)
@@ -61,9 +60,9 @@ export default async function MissionsPage() {
     progressByWeek[w.week] = allWeeksProgress[i];
   });
 
-  // vault 우선, 비면 Supabase 폴백
-  const missions =
-    vaultMissions.length > 0 ? vaultMissions : (dbWeek?.missions ?? []);
+  // 어드민(Supabase) 우선, 비면 vault _missions.md 폴백
+  const adminMissions = dbWeek?.missions ?? [];
+  const missions = adminMissions.length > 0 ? adminMissions : vaultMissions;
   const replayUrl = dbWeek?.replayUrl ?? null;
   const transcriptUrl = dbWeek?.transcriptUrl ?? null;
   const dDay = currentWeek ? daysUntilDeadline(currentWeek) : null;
