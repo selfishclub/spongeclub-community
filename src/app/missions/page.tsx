@@ -55,15 +55,10 @@ export default async function MissionsPage() {
     Promise.all(weeks.map((w) => getAllTeamsProgress(w.folder))),
   ]);
 
-  // 주차번호 → TeamProgress[] 맵.
-  //
-  // 스폰지클럽 컨벤션: N주차 캘린더에 작업한 결과물은 (N+1)주차 폴더로 제출됨.
-  // 멤버가 "3주차 빌리지"에서 보고 싶은 건 *3주차에 진행 중인 작업의 제출 진척*
-  // 인데, 이는 디스크상 4주차_0531 폴더에 들어있다. 그래서 pill 라벨 N 의
-  // 데이터를 한 칸 뒤 폴더에서 가져와 매핑한다.
+  // 주차번호 → TeamProgress[] 맵 (pill 라벨과 폴더 1:1 매핑).
   const progressByWeek: Record<number, TeamProgress[]> = {};
   weeks.forEach((w, i) => {
-    progressByWeek[w.week] = allWeeksProgress[i + 1] ?? [];
+    progressByWeek[w.week] = allWeeksProgress[i];
   });
 
   // 어드민(Supabase) 우선, 비면 vault _missions.md 폴백
