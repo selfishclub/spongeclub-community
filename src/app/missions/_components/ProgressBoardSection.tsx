@@ -38,22 +38,15 @@ export function ProgressBoardSection({
   weeks: WeekInfo[];
   currentWeekNumber: number;
 }) {
-  // 제출 타겟 주차 — 캘린더 주차 N 진행 중에는 N+1 폴더로 제출하는 것이
-  // 스폰지클럽 운영 컨벤션. 다음 주차가 없으면(마지막 주차) N 그대로 사용.
-  const submissionWeekNumber = weeks.some(
-    (w) => w.week === currentWeekNumber + 1,
-  )
-    ? currentWeekNumber + 1
-    : currentWeekNumber;
-
-  const [selectedWeek, setSelectedWeek] = useState(submissionWeekNumber);
+  // pill 라벨 == 캘린더 주차. 데이터 매핑은 page.tsx 에서 (N+1) 폴더로 offset 됨.
+  const [selectedWeek, setSelectedWeek] = useState(currentWeekNumber);
   const [openTeam, setOpenTeam] = useState<TeamProgress | null>(null);
 
   const weekInfo = weeks.find((w) => w.week === selectedWeek);
   const weekLabel = weekInfo?.label ?? `${selectedWeek}주차`;
   const teams = progressByWeek[selectedWeek] ?? [];
 
-  const isCurrentWeek = selectedWeek === submissionWeekNumber;
+  const isCurrentWeek = selectedWeek === currentWeekNumber;
 
   return (
     <section className="rounded-2xl bg-[#FAFBFD] border border-[#E7E9EE] p-4 sm:p-5">
