@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { slackEmoji } from "@/lib/slack-emoji";
 import { fallbackAnnouncements } from "@/data/announcements";
 import { discussions as fallbackDiscussions } from "@/data/discussions";
 import type {
@@ -134,7 +135,7 @@ function repliesArray(value: unknown): Discussion["replies"] {
     .filter((item): item is JsonRecord => item !== null)
     .map((item) => ({
       author: typeof item.author === "string" ? item.author : "익명",
-      text: typeof item.text === "string" ? item.text : "",
+      text: typeof item.text === "string" ? slackEmoji(item.text) : "",
       timeAgo: typeof item.timeAgo === "string" ? item.timeAgo : "",
     }))
     .filter((item) => item.text.trim().length > 0);
@@ -144,8 +145,8 @@ function toAnnouncement(row: AnnouncementRow): Announcement {
   return {
     id: row.id,
     label: labelOrDefault(row.label),
-    title: row.title ?? undefined,
-    text: row.text,
+    title: row.title ? slackEmoji(row.title) : undefined,
+    text: slackEmoji(row.text),
     timeAgo: row.pinned ? "고정" : row.time_ago || timeAgoFromIso(row.updated_at),
     updatedAt: row.updated_at,
     href: row.href ?? undefined,
@@ -158,8 +159,8 @@ function toDiscussion(row: QuestionRow): Discussion {
     id: row.id,
     status: statusOrDefault(row.status),
     type: typeOrDefault(row.type),
-    title: row.title,
-    text: row.text ?? undefined,
+    title: slackEmoji(row.title),
+    text: row.text ? slackEmoji(row.text) : undefined,
     author: row.author || "익명",
     team: row.team ?? 0,
     topicTags: stringArray(row.topic_tags),
