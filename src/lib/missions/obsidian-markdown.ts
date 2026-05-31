@@ -50,16 +50,26 @@ function stripCallouts(md: string): string {
   );
 }
 
-/** `![[file]]` 이미지 임베드 → 표준 마크다운 이미지 */
+/**
+ * `![[file]]` 이미지 임베드 → 표준 마크다운 이미지.
+ *
+ * 옵시디언 wikilink 는 다음 두 형태 모두 흔함:
+ *   1. `![[Pasted image 20260524180251.png]]`           ← bare filename
+ *   2. `![[attachments/Pasted image 20260524180251.png]]` ← 노트 폴더 기준 상대 경로
+ * imageIndex 는 basename → repo 상대경로로 빌드돼 있어서 (2)번 형태는
+ * full-string lookup 으로 못 찾음 → 이미지가 사라짐. fallback 으로
+ * basename 으로 한 번 더 lookup 한다.
+ */
 function rewriteWikilinkImages(
   md: string,
   imageIndex: Map<string, string>,
 ): string {
   return md.replace(/!\[\[([^\]|]+?)(?:\|[^\]]*)?\]\]/g, (_m, raw) => {
-    const filename = String(raw).trim();
-    if (!IMAGE_EXT.test(filename)) return "";
-    const rel = imageIndex.get(filename);
-    return rel ? `![${filename}](${rawGithubUrl(rel)})` : "";
+    const target = String(raw).trim();
+    if (!IMAGE_EXT.test(target)) return "";
+    const basename = target.split("/").pop() ?? target;
+    const rel = imageIndex.get(target) ?? imageIndex.get(basename);
+    return rel ? `![${basename}](${rawGithubUrl(rel)})` : "";
   });
 }
 
