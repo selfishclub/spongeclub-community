@@ -81,7 +81,10 @@ export async function getRenderedNote(
     };
   }
 
-  const transformed = await transformObsidianMarkdown(raw);
+  // 노트 디렉토리를 넘겨 본문 내 상대경로 이미지(`![](attachments/..)`)를
+  // vault raw URL 로 정확히 해석한다.
+  const noteDir = filePath.split("/").slice(0, -1).join("/");
+  const transformed = await transformObsidianMarkdown(raw, noteDir);
   const html = await renderMarkdownToHtml(transformed);
 
   return { html, title, githubUrl };
