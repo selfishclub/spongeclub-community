@@ -66,15 +66,27 @@ export async function getAllWeeks(today: Date = new Date()): Promise<WeekInfo[]>
   const todayISO = toISODate(today);
   const all = [OT_WEEK_BASE, ...parsed];
 
-  return all.map((w) => ({
+  // 1차: 날짜 범위 기반 status 부여
+  const withStatus = all.map((w) => ({
     ...w,
     status:
       todayISO < w.startDate
-        ? "upcoming"
+        ? ("upcoming" as WeekStatus)
         : todayISO > w.endDate
-          ? "past"
-          : "current",
+          ? ("past" as WeekStatus)
+          : ("current" as WeekStatus),
   }));
+
+  // 2차: 인접 주차의 종료일·시작일이 같은 날인 경우(예: 3주차 5/24-5/31 +
+  //      4주차 5/31-6/6) 양쪽 모두 current 가 되는 충돌을 정리.
+  //      먼저 등장하는 주차만 current 로 두고, 이후 항목은 upcoming 으로 강등.
+  let foundCurrent = false;
+  return withStatus.map((w) => {
+    if (w.status !== "current") return w;
+    if (foundCurrent) return { ...w, status: "upcoming" as WeekStatus };
+    foundCurrent = true;
+    return w;
+  });
 }
 
 /**
