@@ -95,11 +95,11 @@ export async function getTeamProgress(
     return { team, submittedCount: 0, totalCount: 0, members: [] };
   }
 
-  // *_submit.md 파일만 미션 노트로 인정
+  // *_submit.md 파일만 미션 노트로 인정 (대소문자 무시 — 일부 멤버 노트는 _Submit.md)
   const submitFiles = items.filter(
     (f) =>
       f.type === "file" &&
-      f.name.endsWith("_submit.md") &&
+      f.name.toLowerCase().endsWith("_submit.md") &&
       f.download_url !== null,
   );
 
@@ -151,9 +151,9 @@ async function parseSubmissionFile(
 function extractMemberFromFilename(fileName: string): string {
   // 1) 확장자 제거
   const noExt = fileName.replace(/\.md$/i, "");
-  // 2) "_N주차_submit" 또는 "_NN_OT_submit" 등 뒷부분 제거
+  // 2) "_N주차_submit" 또는 "_NN_OT_submit" 등 뒷부분 제거 (대소문자 무시)
   const cleaned = noExt.replace(
-    /_\d+(주차|주|N)?_submit$|_\d{2}_OT_submit$/,
+    /_\d+(주차|주|N)?_submit$|_\d{2}_OT_submit$/i,
     "",
   );
   // 3) "조N_" 접두사 제거
