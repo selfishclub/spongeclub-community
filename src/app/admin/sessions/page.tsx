@@ -18,6 +18,13 @@ interface Session {
   host: { id: string; name: string } | null;
 }
 
+interface Attendee {
+  id: string;
+  status: string;
+  registered_at: string;
+  member: { id: string; name: string } | null;
+}
+
 interface MemberOption {
   id: string;
   name: string;
@@ -65,6 +72,11 @@ export default function AdminSessionsPage() {
   const [forceLoading, setForceLoading] = useState(false);
   const [forceError, setForceError] = useState("");
   const [forceSuccess, setForceSuccess] = useState("");
+
+  // 신청자 목록 모달
+  const [attendeeSession, setAttendeeSession] = useState<Session | null>(null);
+  const [attendees, setAttendees] = useState<Attendee[]>([]);
+  const [attendeesLoading, setAttendeesLoading] = useState(false);
 
   // 수동 등록 모달
   const [showAddModal, setShowAddModal] = useState(false);
@@ -133,6 +145,19 @@ export default function AdminSessionsPage() {
     setLoading(id);
     await fetch("/api/admin/sessions", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, action }) });
     setLoading(null); fetchSessions();
+  };
+
+  const openAttendees = async (s: Session) => {
+    setAttendeeSession(s);
+    setAttendeesLoading(true);
+    try {
+      const res = await fetch(`/api/admin/sessions/attendees?session_id=${s.id}`);
+      const data = await res.json();
+      setAttendees(data.attendees || []);
+    } catch {
+      setAttendees([]);
+    }
+    setAttendeesLoading(false);
   };
 
   const filteredMembers = members.filter((m) => m.name.toLowerCase().includes(hostSearch.toLowerCase()));
@@ -231,8 +256,13 @@ export default function AdminSessionsPage() {
                     {new Date(s.scheduled_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}
                   </td>
                   <td className="px-4 py-3 text-right font-extrabold text-[var(--ink)] tabular-nums">{s.entry_cost} 셸</td>
-                  <td className="px-4 py-3 text-center text-[var(--ink-50)] tabular-nums">
-                    {s.attendee_count}{s.capacity ? `/${s.capacity}` : ""}
+                  <td className="px-4 py-3 text-center tabular-nums">
+                    <button
+                      onClick={() => openAttendees(s)}
+                      className="text-[var(--ink-50)] hover:text-[var(--ink)] hover:underline underline-offset-2 font-bold transition-colors"
+                    >
+                      {s.attendee_count}{s.capacity ? `/${s.capacity}` : ""}
+                    </button>
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`text-[10px] font-extrabold px-2 py-0.5 uppercase tracking-wider ${st.classes}`}>{st.label}</span>
@@ -332,6 +362,44 @@ export default function AdminSessionsPage() {
 
             <div className="flex justify-end mt-4">
               <button onClick={() => setForceSession(null)} className="px-4 py-2.5 text-sm text-[var(--ink-30)] hover:text-[var(--ink)] font-medium">닫기</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 신청자 목록 모달 */}
+      {attendeeSession && (
+        <div className="fixed inset-0 bg-[var(--ink)]/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[var(--paper)] p-7 w-full max-w-sm mx-4 shadow-2xl">
+            <h2 className="text-lg font-extrabold text-[var(--ink)] mb-1">신청자 목록</h2>
+            <p className="text-sm text-[var(--ink-30)] mb-4 font-medium">{attendeeSession.title}</p>
+
+            {attendeesLoading ? (
+              <p className="text-sm text-[var(--ink-30)] py-4 text-center">불러오는 중...</p>
+            ) : attendees.length === 0 ? (
+              <p className="text-sm text-[var(--ink-30)] py-4 text-center">신청자가 없습니다.</p>
+            ) : (
+              <>
+                <div className="flex flex-wrap gap-1.5 px-1">
+                  {attendees.filter((a) => a.status !== "CANCELLED").map((a) => (
+                    <span key={a.id} className="text-sm font-bold text-[var(--ink)]">@{a.member?.name ?? "-"}</span>
+                  ))}
+                </div>
+                {attendees.some((a) => a.status === "CANCELLED") && (
+                  <div className="mt-3 pt-3 border-t border-[var(--ink-10)]">
+                    <p className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-1.5">취소</p>
+                    <div className="flex flex-wrap gap-1.5 px-1">
+                      {attendees.filter((a) => a.status === "CANCELLED").map((a) => (
+                        <span key={a.id} className="text-sm text-[var(--ink-30)] line-through">@{a.member?.name ?? "-"}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            <div className="flex justify-end mt-4">
+              <button onClick={() => setAttendeeSession(null)} className="px-4 py-2.5 text-sm text-[var(--ink-30)] hover:text-[var(--ink)] font-medium">닫기</button>
             </div>
           </div>
         </div>
