@@ -177,14 +177,14 @@ export async function POST(request: NextRequest) {
       const reward = isTried ? 3 : 1;
 
       const url = extractUrl(text);
-      if (!url) {
+      if (!url && !text.trim()) {
         return NextResponse.json({
           response_type: "ephemeral",
-          text: `사용법: \`${command} 링크\`\n예: \`${command} https://blog.com/my-post\``,
+          text: `사용법: \`${command} 링크 또는 내용\`\n예: \`${command} https://blog.com/my-post\` 또는 \`${command} ChatGPT로 블로그 글 작성\``,
         });
       }
 
-      const result = await submitSkillShare(member.id, url, type);
+      const result = await submitSkillShare(member.id, url || text.trim(), type);
       if (!result.success) {
         return NextResponse.json({
           response_type: "ephemeral",
@@ -192,9 +192,10 @@ export async function POST(request: NextRequest) {
         });
       }
 
+      const linkLine = url ? `\n🔗 ${url}` : (text ? `\n💬 ${text}` : "");
       return NextResponse.json({
         response_type: "in_channel",
-        text: `📚 <@${userId}>님의 ${label} 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +${reward}🐚이 지급됩니다.`,
+        text: `📚 <@${userId}>님의 ${label} 신청이 접수되었어요!${linkLine}\n어드민 승인 후 +${reward}🐚이 지급됩니다.`,
       });
     }
 
