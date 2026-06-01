@@ -56,8 +56,7 @@ export async function GET(request: NextRequest) {
     .from("shell_transactions")
     .select("id, amount, reason, reason_detail, created_at")
     .eq("member_id", session.memberId)
-    .order("created_at", { ascending: false })
-    .limit(100);
+    .order("created_at", { ascending: false });
 
   if (type === "earned") {
     query = query.gt("amount", 0);
