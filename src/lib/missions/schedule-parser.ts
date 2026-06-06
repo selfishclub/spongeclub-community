@@ -110,9 +110,12 @@ export function daysUntilDeadline(
   week: WeekInfo,
   today: Date = new Date(),
 ): number {
-  const end = new Date(`${week.endDate}T23:59:59+09:00`); // KST 자정 직전
-  const diffMs = end.getTime() - today.getTime();
-  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  // KST 캘린더 날짜 기준 일수 차 — 주차 status 판정(toISODate)과 동일 기준.
+  // 과거 방식(마감일 23:59:59 + Math.ceil)은 마감 *당일*에도 1을 돌려줘
+  // "D-1"로 하루 밀려 표시됐다. 날짜 단위로 빼서 당일을 정확히 0으로 만든다.
+  const end = new Date(`${week.endDate}T00:00:00+09:00`);
+  const todayKst = new Date(`${toISODate(today)}T00:00:00+09:00`);
+  return Math.round((end.getTime() - todayKst.getTime()) / (1000 * 60 * 60 * 24));
 }
 
 /**
