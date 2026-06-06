@@ -94,6 +94,32 @@ export default async function MissionsPage() {
     };
   });
 
+  // 기본 표시 주차 — 현재 주차에 자체 콘텐츠(미션/공지/다시보기/참고자료)가
+  // 있으면 현재 주차, 없으면 콘텐츠가 있는 가장 최근 과거 주차를 보여준다.
+  // (현재 주차가 아직 미발행이라 비어 있을 때 빈 '곧 공개' 대신 실제 내용을 노출.
+  //  현재 주차를 채워 발행하면 자동으로 현재 주차로 되돌아간다.)
+  const hasOwnContent = (w: (typeof weeks)[number], i: number): boolean => {
+    const db = dbByFolder.get(w.folder);
+    const missions =
+      db?.missions && db.missions.length > 0
+        ? db.missions
+        : vaultMissionsByWeek[i];
+    return (
+      missions.length > 0 ||
+      !!db?.heroTitle ||
+      !!db?.replayUrl ||
+      !!db?.transcriptUrl ||
+      (db?.references?.length ?? 0) > 0
+    );
+  };
+  let defaultWeek = currentWeekNumber;
+  if (!weeks.some((w, i) => w.week === currentWeekNumber && hasOwnContent(w, i))) {
+    const prior = weeks
+      .filter((w, i) => w.week <= currentWeekNumber && hasOwnContent(w, i))
+      .sort((a, b) => b.week - a.week)[0];
+    if (prior) defaultWeek = prior.week;
+  }
+
   const currentDDay = views[currentWeekNumber]?.dDay ?? null;
 
   return (
@@ -105,7 +131,8 @@ export default async function MissionsPage() {
         <MissionWeekView
           weeks={weeks}
           views={views}
-          initialWeek={currentWeekNumber}
+          currentWeekNumber={currentWeekNumber}
+          defaultWeek={defaultWeek}
         />
 
         {/* 스폰지 빌리지 현황 — 자체 주차 선택 pill 보유 (인라인 섹션) */}
