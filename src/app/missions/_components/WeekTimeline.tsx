@@ -3,13 +3,12 @@
 /**
  * 7주 커리큘럼 타임라인 — "데굴데굴" 레퍼런스 WeekTimeline 룩.
  *
- * 각 주차 pill 은 클릭 가능한 <button> 으로, 클릭 시 그 주차의 과제 현황판
- * 모달이 열린다(ProgressBoardProvider context 의 openModal).
- * pill 의 시각 스타일(m-week-pill, data-active/data-done)은 그대로 유지.
+ * 각 주차 pill 은 클릭 가능한 <button> 으로, 클릭 시 그 주차를 "선택"한다
+ * (MissionWeekView 가 그 주차의 미션·다시보기·속기본·참고자료로 아래 Hero 를
+ * 바꿔 렌더). 선택된 주차는 ring 으로 강조하고, 현재 주차는 data-active 로 표시.
  * 데이터는 타깃 실데이터(`getAllWeeks()` 결과 WeekInfo[])를 그대로 사용.
  */
 import type { WeekInfo } from "@/lib/missions/schedule-parser";
-import { useProgressBoard } from "./ProgressBoardProvider";
 
 /** "2026-05-10" → "5/10" */
 function shortDate(iso: string): string {
@@ -18,19 +17,31 @@ function shortDate(iso: string): string {
   return `${parseInt(m[1], 10)}/${parseInt(m[2], 10)}`;
 }
 
-function WeekPill({ week }: { week: WeekInfo }) {
+function WeekPill({
+  week,
+  selected,
+  onSelect,
+}: {
+  week: WeekInfo;
+  selected: boolean;
+  onSelect: (weekNumber: number) => void;
+}) {
   const isCurrent = week.status === "current";
   const isPast = week.status === "past";
-  const { openModal } = useProgressBoard();
 
   return (
     <button
       type="button"
-      onClick={() => openModal(week.week)}
+      onClick={() => onSelect(week.week)}
+      aria-pressed={selected}
       data-active={isCurrent}
       data-done={isPast}
-      className="m-week-pill shrink-0 px-3 h-9 inline-flex items-center gap-1.5 rounded-lg text-xs font-medium cursor-pointer hover:opacity-80 transition"
-      title={`${week.label} 제출 현황 보기${isCurrent ? " · 현재 주차" : ""}`}
+      className={`m-week-pill shrink-0 px-3 h-9 inline-flex items-center gap-1.5 rounded-lg text-xs font-medium cursor-pointer transition ${
+        selected
+          ? "ring-2 ring-[#E89E00] ring-offset-1"
+          : "hover:opacity-80"
+      }`}
+      title={`${week.label} 미션·다시보기 보기${isCurrent ? " · 현재 주차" : ""}`}
     >
       <span>{week.label}</span>
       <span className="text-[10px] opacity-70">{shortDate(week.startDate)}</span>
@@ -38,7 +49,15 @@ function WeekPill({ week }: { week: WeekInfo }) {
   );
 }
 
-export function WeekTimeline({ weeks }: { weeks: WeekInfo[] }) {
+export function WeekTimeline({
+  weeks,
+  selectedWeek,
+  onSelectWeek,
+}: {
+  weeks: WeekInfo[];
+  selectedWeek: number;
+  onSelectWeek: (weekNumber: number) => void;
+}) {
   const currentIdx = weeks.findIndex((w) => w.status === "current");
   // 진행 표시: 현재 주차가 몇 번째인지 (1-base). 없으면 마지막 past 개수.
   const progressCurrent =
@@ -64,7 +83,12 @@ export function WeekTimeline({ weeks }: { weeks: WeekInfo[] }) {
             aria-label="주차 타임라인"
           >
             {weeks.map((w) => (
-              <WeekPill key={w.week} week={w} />
+              <WeekPill
+                key={w.week}
+                week={w}
+                selected={w.week === selectedWeek}
+                onSelect={onSelectWeek}
+              />
             ))}
           </div>
         </div>
