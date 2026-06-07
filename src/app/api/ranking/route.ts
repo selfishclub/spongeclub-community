@@ -197,12 +197,11 @@ export async function GET(request: NextRequest) {
 
   // 조별 활동 랭킹: 1인 평균 기준 (조별 인원수 차이 보정)
   if (type === "group") {
-    // 1) 조별 로스터 인원 (활성·비어드민 멤버 수) 집계
+    // 1) 조별 로스터 인원 (활성 멤버, 어드민 제외하되 조에 속한 어드민은 포함)
     const { data: roster, error: rosterError } = await supabase
       .from("members")
       .select("group_number")
       .eq("is_active", true)
-      .eq("is_admin", false)
       .not("group_number", "is", null);
 
     if (rosterError) {
@@ -226,7 +225,7 @@ export async function GET(request: NextRequest) {
 
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; group_number: number | null };
-      if (!member.is_active || member.is_admin || !member.group_number) continue;
+      if (!member.is_active || !member.group_number) continue;
 
       const absAmount = Math.abs(row.amount);
       const existing = groupTotals.get(member.group_number);
