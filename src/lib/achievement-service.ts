@@ -24,13 +24,18 @@ const SLACK_MESSAGES: Record<string, string> = {
   "shell-send-5": "넉넉한 마음의 소유자 💛",
   "shell-receive-5": "다들 인정하는 스폰지 🌟",
   "all-rounder": "모든 활동을 섭렵한 진정한 스폰지 🧽",
+  "first-crewchat": "첫 크루챗을 완료했어요 ☕",
+  "vod-big-hand": "VOD를 5개나 구매한 큰 손 🎬",
+  "sns-influencer": "SNS 인증 10회 달성! 📣",
+  "session-regular": "공유회 단골손님 등극 🪑",
+  "shell-superstar": "셸 30회 이상 받은 인기스타 ⭐",
 };
 
 // 멤버의 활동 통계 집계
 async function getMemberStats(memberId: string) {
   const supabase = createAdminClient();
 
-  const [snsResult, skillResult, hostResult, attendResult, sentResult, receivedResult] =
+  const [snsResult, skillResult, hostResult, attendResult, sentResult, receivedResult, crewchatResult, vodResult] =
     await Promise.all([
       // SNS 인증 승인 횟수
       supabase
@@ -70,6 +75,17 @@ async function getMemberStats(memberId: string) {
         .select("id", { count: "exact", head: true })
         .eq("member_id", memberId)
         .eq("reason", "MEMBER_GIFT"),
+      // 크루챗 완료 횟수
+      supabase
+        .from("coffee_chats")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "completed")
+        .or(`member_id.eq.${memberId},partner_id.eq.${memberId}`),
+      // VOD 구매 횟수
+      supabase
+        .from("video_grants")
+        .select("id", { count: "exact", head: true })
+        .eq("member_id", memberId),
     ]);
 
   return {
@@ -79,6 +95,8 @@ async function getMemberStats(memberId: string) {
     SESSION_ATTEND_COUNT: attendResult.count || 0,
     SHELL_SENT_COUNT: sentResult.count || 0,
     SHELL_RECEIVED_COUNT: receivedResult.count || 0,
+    CREWCHAT_COUNT: crewchatResult.count || 0,
+    VOD_PURCHASE_COUNT: vodResult.count || 0,
   };
 }
 
