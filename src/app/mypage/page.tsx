@@ -95,6 +95,15 @@ export default function MyPage() {
   const [badges, setBadges] = useState<Badge[]>([]);
   const [txExpanded, setTxExpanded] = useState(false);
 
+  // 크루 프로필
+  const [crewProfile, setCrewProfile] = useState<{ job_title: string; field: string; want_to_meet: string; sns_instagram: string; sns_blog: string; sns_linkedin: string; sns_threads: string; sns_portfolio: string } | null>(null);
+  const [crewForm, setCrewForm] = useState({ job_title: "", field: "", want_to_meet: "", sns_instagram: "", sns_blog: "", sns_linkedin: "", sns_threads: "", sns_portfolio: "" });
+  const [crewEditing, setCrewEditing] = useState(false);
+  const [crewSaving, setCrewSaving] = useState(false);
+  const [crewMsg, setCrewMsg] = useState("");
+  const [crewLoading, setCrewLoading] = useState(true);
+
+
   // 영상
   const [myVideos, setMyVideos] = useState<MyVideo[]>([]);
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
@@ -126,6 +135,22 @@ export default function MyPage() {
     setTxExpanded(false);
     fetch(`/api/auth/my-transactions?type=${txTab}`).then((r) => r.json()).then((data) => { setTransactions(data.transactions || []); setTxLoading(false); });
   }, [member, txTab]);
+
+  // 크루 프로필
+  useEffect(() => {
+    if (!member) return;
+    fetch("/api/crewchat/my-profile")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.profile) {
+          setCrewProfile(data.profile);
+          setCrewForm(data.profile);
+        }
+        setCrewLoading(false);
+      })
+      .catch(() => setCrewLoading(false));
+  }, [member]);
+
 
   // 내 영상
   useEffect(() => {
@@ -179,6 +204,28 @@ export default function MyPage() {
     } catch { setSnsMsg("네트워크 오류가 발생했어요."); }
     setSnsLoading(false);
   };
+
+  const handleCrewSave = async () => {
+    if (!crewForm.job_title.trim()) { setCrewMsg("직무는 필수에요."); return; }
+    setCrewSaving(true); setCrewMsg("");
+    try {
+      const res = await fetch("/api/crewchat/my-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(crewForm),
+      });
+      if (res.ok) {
+        setCrewProfile({ ...crewForm });
+        setCrewEditing(false);
+        setCrewMsg("크루 카드가 저장됐어요!");
+      } else {
+        const data = await res.json();
+        setCrewMsg(data.error || "저장에 실패했어요.");
+      }
+    } catch { setCrewMsg("네트워크 오류가 발생했어요."); }
+    setCrewSaving(false);
+  };
+
 
   const handleSkillSubmit = async () => {
     if (!skillUrl.trim()) return;
@@ -250,6 +297,116 @@ export default function MyPage() {
           </section>
         )}
 
+        {/* 크루챗 프로필 카드 */}
+        {!crewLoading && (
+          <section className="border-2 border-[var(--ink)] p-5">
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="text-sm font-extrabold text-[var(--ink)]">💬 크루챗 프로필</h3>
+              {crewProfile && !crewEditing && (
+                <button onClick={() => setCrewEditing(true)} className="text-xs font-bold text-[var(--ink-30)] hover:text-[var(--ink)] transition-colors">수정</button>
+              )}
+            </div>
+            <p className="text-xs text-[var(--ink-30)] mb-4 font-medium">
+              {crewProfile && !crewEditing ? "크루챗 페이지에 내 카드가 표시돼요" : "작성하면 크루챗 페이지에 나만의 카드가 완성돼요"}
+            </p>
+
+            {crewProfile && !crewEditing ? (
+              <div className="space-y-3 bg-[var(--ink-05)] p-4">
+                <div>
+                  <p className="text-[10px] font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-0.5">직무</p>
+                  <p className="text-sm text-[var(--ink)] font-medium">{crewProfile.job_title}</p>
+                </div>
+                {crewProfile.field && (
+                  <div>
+                    <p className="text-[10px] font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-0.5">분야</p>
+                    <p className="text-sm text-[var(--ink)] font-medium">{crewProfile.field}</p>
+                  </div>
+                )}
+                {crewProfile.want_to_meet && (
+                  <div>
+                    <p className="text-[10px] font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-0.5">이런 크루와 얘기하고 싶어요</p>
+                    <p className="text-sm text-[var(--ink)] font-medium">{crewProfile.want_to_meet}</p>
+                  </div>
+                )}
+                {(crewProfile.sns_instagram || crewProfile.sns_blog || crewProfile.sns_linkedin || crewProfile.sns_threads || crewProfile.sns_portfolio) && (
+                  <div>
+                    <p className="text-[10px] font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-1.5">SNS</p>
+                    <div className="flex flex-wrap gap-2">
+                      {crewProfile.sns_instagram && <span className="text-xs font-medium text-[var(--ink-50)] bg-[var(--paper)] px-2 py-1 border border-[var(--ink-10)]">Instagram: {crewProfile.sns_instagram}</span>}
+                      {crewProfile.sns_blog && <span className="text-xs font-medium text-[var(--ink-50)] bg-[var(--paper)] px-2 py-1 border border-[var(--ink-10)]">Blog: {crewProfile.sns_blog}</span>}
+                      {crewProfile.sns_linkedin && <span className="text-xs font-medium text-[var(--ink-50)] bg-[var(--paper)] px-2 py-1 border border-[var(--ink-10)]">LinkedIn: {crewProfile.sns_linkedin}</span>}
+                      {crewProfile.sns_threads && <span className="text-xs font-medium text-[var(--ink-50)] bg-[var(--paper)] px-2 py-1 border border-[var(--ink-10)]">Threads: {crewProfile.sns_threads}</span>}
+                      {crewProfile.sns_portfolio && <span className="text-xs font-medium text-[var(--ink-50)] bg-[var(--paper)] px-2 py-1 border border-[var(--ink-10)]">Portfolio: {crewProfile.sns_portfolio}</span>}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">직무 *</label>
+                  <input type="text" value={crewForm.job_title} onChange={(e) => setCrewForm({ ...crewForm, job_title: e.target.value })}
+                    placeholder="예: 마케터, 개발자, 디자이너" maxLength={30} className={inputClass} />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">분야</label>
+                  <input type="text" value={crewForm.field} onChange={(e) => setCrewForm({ ...crewForm, field: e.target.value })}
+                    placeholder="예: 이커머스, 에듀테크, 헬스케어" maxLength={30} className={inputClass} />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">어떤 사람과 얘기하고 싶나요?</label>
+                  <textarea value={crewForm.want_to_meet} onChange={(e) => setCrewForm({ ...crewForm, want_to_meet: e.target.value })}
+                    placeholder="예: AI를 마케팅에 활용하는 사람, 사이드 프로젝트 같이 할 사람" maxLength={100} className={`${inputClass} resize-none h-16`} />
+                </div>
+                <div className="border-t border-[var(--ink-10)] pt-3 mt-1">
+                  <p className="text-xs font-bold text-[var(--ink-30)] mb-3 uppercase tracking-wider">SNS (선택)</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[var(--ink-30)] w-20 flex-shrink-0 font-medium">Instagram</span>
+                      <input type="text" value={crewForm.sns_instagram} onChange={(e) => setCrewForm({ ...crewForm, sns_instagram: e.target.value })}
+                        placeholder="@username" className={inputClass} />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[var(--ink-30)] w-20 flex-shrink-0 font-medium">블로그</span>
+                      <input type="text" value={crewForm.sns_blog} onChange={(e) => setCrewForm({ ...crewForm, sns_blog: e.target.value })}
+                        placeholder="https://blog.example.com" className={inputClass} />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[var(--ink-30)] w-20 flex-shrink-0 font-medium">LinkedIn</span>
+                      <input type="text" value={crewForm.sns_linkedin} onChange={(e) => setCrewForm({ ...crewForm, sns_linkedin: e.target.value })}
+                        placeholder="username 또는 URL" className={inputClass} />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[var(--ink-30)] w-20 flex-shrink-0 font-medium">Threads</span>
+                      <input type="text" value={crewForm.sns_threads} onChange={(e) => setCrewForm({ ...crewForm, sns_threads: e.target.value })}
+                        placeholder="@username" className={inputClass} />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[var(--ink-30)] w-20 flex-shrink-0 font-medium">Portfolio</span>
+                      <input type="text" value={crewForm.sns_portfolio} onChange={(e) => setCrewForm({ ...crewForm, sns_portfolio: e.target.value })}
+                        placeholder="https://portfolio.example.com" className={inputClass} />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  {crewEditing && (
+                    <button onClick={() => { setCrewEditing(false); setCrewForm(crewProfile!); setCrewMsg(""); }}
+                      className="flex-1 py-3 border-2 border-[var(--ink-10)] text-[var(--ink-50)] font-bold text-sm hover:border-[var(--ink)] hover:text-[var(--ink)] transition-colors">
+                      취소
+                    </button>
+                  )}
+                  <button onClick={handleCrewSave} disabled={crewSaving}
+                    className="flex-1 py-3 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
+                    {crewSaving ? "저장 중..." : crewEditing ? "수정하기" : "카드 만들기"}
+                  </button>
+                </div>
+              </div>
+            )}
+            {crewMsg && <p className={`text-sm mt-3 text-center font-medium ${crewMsg.includes("저장") ? "text-[var(--ink)]" : "text-red-500"}`}>{crewMsg}</p>}
+          </section>
+        )}
+
+
         {/* 요약 카드 */}
         <section className="grid grid-cols-2 gap-3">
           <div className="bg-[var(--ink-05)] p-5 text-center">
@@ -262,35 +419,12 @@ export default function MyPage() {
           </div>
         </section>
 
-        {/* 셸 보내기 */}
+        {/* 셸 보내기 — 숨김 (Slack에서만 사용)
         <section className="border-2 border-[var(--ink-10)] p-5">
           <h3 className="text-sm font-extrabold text-[var(--ink)] mb-1">셸 보내기</h3>
           <p className="text-xs text-[var(--ink-30)] mb-4 font-medium">하루 1회, 다른 멤버에게 셸을 보낼 수 있어요.</p>
-          <div className="relative mb-3" ref={dropdownRef}>
-            <input type="text" placeholder="멤버 이름 검색"
-              value={shellReceiver ? shellReceiver.name : shellSearch}
-              onChange={(e) => { setShellSearch(e.target.value); setShellReceiver(null); setShowMemberDropdown(true); }}
-              onFocus={() => setShowMemberDropdown(true)}
-              className={inputClass} />
-            {showMemberDropdown && shellSearch && !shellReceiver && (
-              <div className="absolute z-10 mt-1 w-full bg-[var(--paper)] border-2 border-[var(--ink-10)] shadow-lg max-h-40 overflow-y-auto">
-                {filteredMembers.length === 0 ? <p className="px-4 py-3 text-xs text-[var(--ink-30)]">결과 없음</p>
-                  : filteredMembers.map((m) => (
-                    <button key={m.id} onClick={() => { setShellReceiver(m); setShellSearch(m.name); setShowMemberDropdown(false); }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-[var(--ink)] hover:bg-[var(--yellow-dim)] transition-colors border-b border-[var(--ink-05)] last:border-0 font-medium">
-                      {m.name}
-                    </button>
-                  ))}
-              </div>
-            )}
-          </div>
-          <input type="text" placeholder="이유 (선택)" value={shellReason} onChange={(e) => setShellReason(e.target.value)} className={`${inputClass} mb-3`} />
-          <button onClick={handleSendShell} disabled={!shellReceiver || shellSending}
-            className="w-full py-3 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
-            {shellSending ? "보내는 중..." : "보내기"}
-          </button>
-          {shellMsg && <p className={`text-sm mt-3 text-center font-medium ${shellMsg.includes("보냈") ? "text-[var(--ink)]" : "text-red-500"}`}>{shellMsg}</p>}
         </section>
+        */}
 
         {/* 시청 가능한 영상 */}
         {myVideos.length > 0 && (

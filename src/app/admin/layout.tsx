@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: "/admin/videos", label: "영상" },
   { href: "/admin/requests", label: "신청 관리" },
   { href: "/admin/suggestions", label: "추천" },
+  { href: "/admin/crewchat", label: "크루챗" },
   { href: "/admin/transactions", label: "트랜잭션 로그" },
 ];
 

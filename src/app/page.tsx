@@ -859,20 +859,28 @@ export default function HomePage() {
 
       <main className="max-w-lg mx-auto px-5 pt-10 pb-20 space-y-14">
 
-        {/* ── 메뉴 (과제현황판 / 캐릭터 생성) ── */}
-        <nav className="flex gap-0">
+        {/* ── 메뉴 (과제현황판 / 캐릭터 생성 / 크루챗) ── */}
+        <nav className="space-y-0">
+          <div className="flex gap-0">
+            <Link
+              href="/missions"
+              className="flex-1 py-3.5 border-2 border-[var(--ink)] bg-[var(--yellow)] text-[var(--ink)] text-sm font-extrabold hover:opacity-80 transition-opacity text-center"
+            >
+              🎯 과제현황판 보기
+            </Link>
+            <a
+              href="https://sponge-dressup.vercel.app/"
+              className="flex-1 py-3.5 border-2 border-l-0 border-[var(--ink)] bg-[var(--paper)] text-[var(--ink)] text-sm font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors text-center"
+            >
+              🧽 캐릭터 생성하기
+            </a>
+          </div>
           <Link
-            href="/missions"
-            className="flex-1 py-3.5 border-2 border-[var(--ink)] bg-[var(--yellow)] text-[var(--ink)] text-sm font-extrabold hover:opacity-80 transition-opacity text-center"
+            href="/crewchat"
+            className="block w-full py-3.5 border-2 border-t-0 border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)] text-sm font-extrabold hover:opacity-90 transition-opacity text-center"
           >
-            🎯 과제현황판 보기
+            💬 스폰지 크루챗
           </Link>
-          <a
-            href="https://sponge-dressup.vercel.app/"
-            className="flex-1 py-3.5 border-2 border-l-0 border-[var(--ink)] bg-[var(--paper)] text-[var(--ink)] text-sm font-extrabold hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors text-center"
-          >
-            🧽 캐릭터 생성하기
-          </a>
         </nav>
 
         {/* ── 캘린더 ── */}
