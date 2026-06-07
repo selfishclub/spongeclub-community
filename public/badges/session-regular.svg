@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <!-- bg -->
+  <circle cx="40" cy="40" r="38" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2.5"/>
+  <!-- chair seat -->
+  <rect x="24" y="36" width="32" height="6" rx="2" fill="#3B82F6" stroke="#2563EB" stroke-width="1.5"/>
+  <!-- chair back -->
+  <rect x="26" y="22" width="28" height="16" rx="3" fill="#60A5FA" stroke="#2563EB" stroke-width="1.5"/>
+  <!-- chair legs -->
+  <line x1="28" y1="42" x2="24" y2="58" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="52" y1="42" x2="56" y2="58" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- cushion pattern -->
+  <circle cx="36" cy="30" r="1.5" fill="#93C5FD" opacity="0.6"/>
+  <circle cx="44" cy="30" r="1.5" fill="#93C5FD" opacity="0.6"/>
+  <!-- reserved sign -->
+  <circle cx="58" cy="22" r="8" fill="#FBBF24" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="58" y="25" text-anchor="middle" font-size="8" font-weight="bold" fill="#78350F">7+</text>
+</svg>
