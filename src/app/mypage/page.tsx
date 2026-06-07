@@ -244,9 +244,8 @@ export default function MyPage() {
   if (loading) return <div className="min-h-screen bg-[var(--paper)] flex items-center justify-center"><p className="text-[var(--ink-30)] text-sm">로딩 중...</p></div>;
   if (!member) return null;
 
-  const isCancelled = (t: Transaction) => t.reason_detail?.startsWith("[취소됨]") || t.reason_detail?.startsWith("[취소]");
-  const totalEarned = transactions.filter((t) => t.amount > 0 && !isCancelled(t)).reduce((s, t) => s + t.amount, 0);
-  const totalSpent = transactions.filter((t) => t.amount < 0 && !isCancelled(t)).reduce((s, t) => s + Math.abs(t.amount), 0);
+  const totalEarned = transactions.filter((t) => t.amount > 0).reduce((s, t) => s + t.amount, 0);
+  const totalSpent = transactions.filter((t) => t.amount < 0).reduce((s, t) => s + Math.abs(t.amount), 0);
 
   const inputClass = "w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium transition-colors";
 

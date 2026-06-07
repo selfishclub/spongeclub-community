@@ -226,6 +226,7 @@ export default function CrewChatPage() {
   const [detailCard, setDetailCard] = useState<CrewCard | null>(null);
   const [requestingId, setRequestingId] = useState<string | null>(null);
   const [completingId, setCompletingId] = useState<string | null>(null);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [requestModalTarget, setRequestModalTarget] = useState<CrewCard | null>(null);
   const [requestMessage, setRequestMessage] = useState("");
   // partner_id → { pending: boolean, completedCount: number }
@@ -305,6 +306,27 @@ export default function CrewChatPage() {
       // 실패 시 무시
     } finally {
       setCompletingId(null);
+    }
+  };
+
+  const handleCancel = async (partnerId: string) => {
+    setCancellingId(partnerId);
+    try {
+      const res = await fetch("/api/crewchat/cancel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ partner_id: partnerId }),
+      });
+      if (res.ok) {
+        setChatStatuses((prev) => ({
+          ...prev,
+          [partnerId]: { pending: false, completedCount: prev[partnerId]?.completedCount || 0 },
+        }));
+      }
+    } catch {
+      // 실패 시 무시
+    } finally {
+      setCancellingId(null);
     }
   };
 
@@ -457,18 +479,27 @@ export default function CrewChatPage() {
                           return (
                             <div className="border-t-2 border-[var(--ink-10)] px-4 py-2 flex-shrink-0">
                               {isPending ? (
-                                /* 2단계: 신청 완료 + 크루챗 했어요 버튼 */
+                                /* 2단계: 신청 완료 + 두 개 버튼 */
                                 <div className="space-y-1.5">
                                   <p className="text-xs font-extrabold text-center text-[var(--ink-30)]">
                                     신청 완료 ☕
                                   </p>
-                                  <button
-                                    onClick={() => handleComplete(card.id)}
-                                    disabled={completingId === card.id}
-                                    className="w-full py-2 bg-[var(--ink)] text-[var(--paper)] text-xs font-extrabold hover:opacity-90 disabled:opacity-40 transition-opacity"
-                                  >
-                                    {completingId === card.id ? "처리 중..." : "크루챗 했어요!"}
-                                  </button>
+                                  <div className="flex gap-1.5">
+                                    <button
+                                      onClick={() => handleCancel(card.id)}
+                                      disabled={cancellingId === card.id}
+                                      className="flex-1 py-2 bg-[var(--ink-05)] text-[var(--ink-50)] text-xs font-extrabold hover:bg-[var(--ink-10)] disabled:opacity-40 transition-colors"
+                                    >
+                                      {cancellingId === card.id ? "취소 중..." : "다음에 하기로"}
+                                    </button>
+                                    <button
+                                      onClick={() => handleComplete(card.id)}
+                                      disabled={completingId === card.id}
+                                      className="flex-1 py-2 bg-[var(--ink)] text-[var(--paper)] text-xs font-extrabold hover:opacity-90 disabled:opacity-40 transition-opacity"
+                                    >
+                                      {completingId === card.id ? "처리 중..." : "크루챗 했어요!"}
+                                    </button>
+                                  </div>
                                 </div>
                               ) : count > 0 ? (
                                 /* 3단계: 완료 표시 + 다시 신청하기 */
