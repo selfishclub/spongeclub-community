@@ -9,7 +9,6 @@ export async function GET() {
     .from("members")
     .select("id, name, profile_image, group_number")
     .eq("is_active", true)
-    .eq("is_admin", false)
     .order("name");
 
   if (error) {
