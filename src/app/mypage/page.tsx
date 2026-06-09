@@ -252,30 +252,103 @@ export default function MyPage() {
   return (
     <div className="min-h-screen bg-[var(--paper)]">
       {/* Header */}
-      <div className="bg-[var(--ink)]">
-        <div className="max-w-lg mx-auto px-5 py-6">
-          <div className="flex items-center justify-between mb-5">
-            <button onClick={() => router.push("/")} className="text-sm text-[var(--paper)]/60 hover:text-[var(--paper)] transition-colors font-medium">
+      <div className="bg-[var(--yellow)]">
+        <div className="max-w-6xl mx-auto px-5 md:px-6 py-8 md:py-12">
+          <div className="flex items-center justify-between mb-6">
+            <button onClick={() => router.push("/")} className="text-sm text-[var(--ink-50)] hover:text-[var(--ink)] transition-colors font-medium">
               &larr; 홈
             </button>
-            <button onClick={handleLogout} className="text-sm text-[var(--paper)]/60 hover:text-[var(--paper)] transition-colors font-medium">
+            <button onClick={handleLogout} className="text-sm text-[var(--ink-50)] hover:text-[var(--ink)] transition-colors font-medium">
               로그아웃
             </button>
           </div>
-          <div className="text-center">
-            <p className="text-sm text-[var(--paper)]/60 mb-2 font-medium">{member.name}</p>
-            <p className="text-5xl font-extrabold text-[var(--paper)] tracking-tight">{member.shell_balance}</p>
-            <p className="text-xs text-[var(--paper)]/40 mt-1 font-medium uppercase tracking-wider">현재 잔고 (셸)</p>
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-lg md:text-xl font-extrabold text-[var(--ink)]">{member.name}</p>
+              <p className="text-xs text-[var(--ink-50)] mt-1 font-medium">마이페이지</p>
+            </div>
+            <div className="text-right">
+              <p className="text-4xl md:text-5xl font-extrabold text-[var(--ink)] tracking-tight">{member.shell_balance}</p>
+              <p className="text-xs text-[var(--ink-50)] mt-1 font-medium uppercase tracking-wider">현재 잔고 (셸)</p>
+            </div>
+          </div>
+          {/* 요약 카드 */}
+          <div className="grid grid-cols-2 gap-3 mt-6">
+            <div className="bg-[var(--paper)] p-4 text-center">
+              <p className="text-xs text-[var(--ink-30)] mb-1 font-bold uppercase tracking-wider">총 적립</p>
+              <p className="text-2xl font-extrabold text-[var(--ink)]">+{totalEarned}</p>
+            </div>
+            <div className="bg-[var(--paper)] p-4 text-center">
+              <p className="text-xs text-[var(--ink-30)] mb-1 font-bold uppercase tracking-wider">총 지출</p>
+              <p className="text-2xl font-extrabold text-[var(--ink)]">-{totalSpent}</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <main className="max-w-lg mx-auto px-5 py-8 space-y-8">
+      <main className="max-w-6xl mx-auto px-5 md:px-6 py-10 md:py-14">
+
+        {/* 스폰지의 응원 */}
+        <div className="flex items-start gap-3 mb-10">
+          <div className="flex-shrink-0 w-10 h-10 bg-[var(--yellow)] rounded-full flex items-center justify-center text-lg mt-1">🧽</div>
+          <div className="relative bg-[var(--ink-05)] px-5 py-4 flex-1">
+            <div className="absolute left-[-8px] top-4 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-[var(--ink-05)]" />
+            <p className="text-xs font-extrabold text-[var(--ink-30)] mb-1">스폰지의 응원</p>
+            <p className="text-sm text-[var(--ink)] leading-relaxed">
+            {(() => {
+              const attendCount = transactions.filter((t) => t.reason === "SESSION_ATTEND").length;
+              const giftCount = transactions.filter((t) => t.reason === "MEMBER_GIFT" && t.amount > 0).length;
+              const snsCount = transactions.filter((t) => t.reason === "SNS_VERIFY").length;
+
+              const msgs: string[] = [];
+
+              // 공유회 참여 기반
+              if (attendCount >= 5) {
+                msgs.push(`${member.name}님은 공유회 ${attendCount}번 참여 — 누군가의 정리된 지식에 귀 기울이는 것, 그 자체가 성장이에요.`);
+                msgs.push(`공유회 ${attendCount}번, 매번 자리를 지켜준 ${member.name}님 덕분에 공유하는 사람도 힘을 얻어요.`);
+              } else if (attendCount > 0) {
+                msgs.push(`공유회 ${attendCount}번 참여! 다른 사람의 이야기를 듣는 것도 나를 위한 공유예요.`);
+                msgs.push(`${member.name}님의 참여 하나하나가, 공유하는 사람에게 큰 응원이 돼요.`);
+              }
+
+              // 배지 기반
+              if (badges.length >= 5) {
+                msgs.push(`배지 ${badges.length}개! ${member.name}님이 걸어온 길의 증거예요. 이기적으로 공유한 만큼 돌아온 거예요.`);
+              } else if (badges.length > 0) {
+                msgs.push(`배지 ${badges.length}개 — 하나씩 모이는 게 보이죠? 나를 위해 공유할수록 더 빨리 모여요.`);
+              }
+
+              // 응원 받음
+              if (giftCount >= 3) {
+                msgs.push(`${giftCount}번이나 응원을 받았어요. ${member.name}님의 공유가 누군가에게 닿고 있다는 뜻이에요.`);
+              } else if (giftCount > 0) {
+                msgs.push(`누군가 ${member.name}님에게 셸을 보냈어요. 작은 인정이 모여 큰 동력이 돼요.`);
+              }
+
+              // SNS 기반
+              if (snsCount >= 3) {
+                msgs.push(`SNS 인증 ${snsCount}건 — 밖으로 꺼낸 순간, 정리는 이미 시작된 거예요.`);
+              }
+
+              // 기본 메시지
+              msgs.push(`${member.name}님, 남에게 공유하기 위해 한 번 더 정리하는 그 과정이 진짜 성장이에요.`);
+              msgs.push(`공유는 남을 위한 게 아니라, 나를 위한 거예요. ${member.name}님의 이기적인 공유를 응원해요.`);
+              msgs.push(`${member.name}님이 여기 있다는 것 자체가, 성장하겠다는 의지의 증거예요.`);
+
+              return msgs[Math.floor(Math.random() * msgs.length)];
+            })()}
+          </p>
+          </div>
+        </div>
+
+        <div className="md:grid md:grid-cols-2 md:gap-12">
+        {/* 왼쪽 컬럼 */}
+        <div className="space-y-8">
 
         {/* 배지 섹션 */}
         {badges.length > 0 && (
           <section>
-            <h3 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-4">획득한 배지</h3>
+            <h3 className="text-lg font-extrabold text-[var(--ink)] mb-4">획득한 배지</h3>
             <div className="flex flex-wrap gap-4">
               {badges.map((badge) => (
                 <div key={badge.slug} className="flex flex-col items-center w-[72px] group relative">
@@ -406,17 +479,6 @@ export default function MyPage() {
         )}
 
 
-        {/* 요약 카드 */}
-        <section className="grid grid-cols-2 gap-3">
-          <div className="bg-[var(--ink-05)] p-5 text-center">
-            <p className="text-xs text-[var(--ink-30)] mb-1 font-bold uppercase tracking-wider">총 적립</p>
-            <p className="text-2xl font-extrabold text-[var(--ink)]">+{totalEarned}</p>
-          </div>
-          <div className="bg-[var(--ink-05)] p-5 text-center">
-            <p className="text-xs text-[var(--ink-30)] mb-1 font-bold uppercase tracking-wider">총 지출</p>
-            <p className="text-2xl font-extrabold text-[var(--ink)]">-{totalSpent}</p>
-          </div>
-        </section>
 
         {/* 셸 보내기 — 숨김 (Slack에서만 사용)
         <section className="border-2 border-[var(--ink-10)] p-5">
@@ -428,14 +490,14 @@ export default function MyPage() {
         {/* 시청 가능한 영상 */}
         {myVideos.length > 0 && (
           <section className="border-2 border-[var(--ink-10)] p-5">
-            <h3 className="text-sm font-extrabold text-[var(--ink)] mb-3">내 영상</h3>
-            <div className="space-y-3">
+            <h3 className="text-lg font-extrabold text-[var(--ink)] mb-3">내 영상</h3>
+            <div className="grid grid-cols-2 gap-3">
               {myVideos.map((v) => {
                 const expiresAt = new Date(v.expires_at);
                 const daysLeft = Math.ceil((expiresAt.getTime() - nowMs) / (1000 * 60 * 60 * 24));
                 const isPlaying = playingVideoId === v.id;
                 return (
-                  <div key={v.id} className="border-2 border-[var(--ink-10)] overflow-hidden">
+                  <div key={v.id} className={`border-2 border-[var(--ink-10)] overflow-hidden ${isPlaying ? "col-span-2" : ""}`}>
                     {isPlaying && v.embed_url ? (
                       <div className="aspect-video bg-[var(--ink)]">
                         <iframe
@@ -449,25 +511,22 @@ export default function MyPage() {
                     ) : (
                       <button
                         onClick={() => setPlayingVideoId(v.id)}
-                        className="block w-full relative aspect-video bg-[var(--ink-05)] group"
+                        className="block w-full relative aspect-[16/9] bg-[var(--ink-05)] group"
                       >
                         {v.thumbnail_url && (
                           /* eslint-disable-next-line @next/next/no-img-element */
                           <img src={v.thumbnail_url} alt={v.title} className="w-full h-full object-cover" />
                         )}
                         <div className="absolute inset-0 bg-[var(--ink)]/30 group-hover:bg-[var(--ink)]/40 flex items-center justify-center transition-colors">
-                          <div className="w-14 h-14 bg-[var(--paper)]/90 flex items-center justify-center">
-                            <span className="text-[var(--ink)] text-2xl ml-1">▶</span>
+                          <div className="w-10 h-10 bg-[var(--paper)]/90 flex items-center justify-center">
+                            <span className="text-[var(--ink)] text-lg ml-0.5">▶</span>
                           </div>
                         </div>
                       </button>
                     )}
-                    <div className="p-3">
-                      <p className="text-sm font-bold text-[var(--ink)]">{v.title}</p>
-                      {v.description && (
-                        <p className="text-xs text-[var(--ink-50)] mt-1 line-clamp-2">{v.description}</p>
-                      )}
-                      <p className="text-xs text-[var(--ink-50)] mt-1 font-medium">
+                    <div className="p-2.5">
+                      <p className="text-xs font-bold text-[var(--ink)] line-clamp-1">{v.title}</p>
+                      <p className="text-[11px] text-[var(--ink-50)] mt-0.5 font-medium">
                         {daysLeft > 0 ? `${daysLeft}일 남음` : "오늘 만료"}
                       </p>
                     </div>
@@ -477,6 +536,10 @@ export default function MyPage() {
             </div>
           </section>
         )}
+
+        </div>
+        {/* 오른쪽 컬럼 */}
+        <div className="space-y-8 mt-8 md:mt-0">
 
         {/* SNS 인증 — 숨김 (Slack 제출 유도, 기능은 유지) */}
         {false && (
@@ -513,7 +576,7 @@ export default function MyPage() {
         {/* 참여 공유회 */}
         {sessionAttendTx.length > 0 && (
           <section>
-            <h3 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-4">참여 공유회</h3>
+            <h3 className="text-lg font-extrabold text-[var(--ink)] mb-4">참여 공유회</h3>
             <div className="border-t-2 border-[var(--ink-10)]">
               {sessionAttendTx.map((tx) => (
                 <div key={tx.id} className="flex items-center justify-between px-4 py-3 border-b border-[var(--ink-10)]">
@@ -574,6 +637,9 @@ export default function MyPage() {
           className="w-full px-4 py-3 border-2 border-[var(--ink-10)] text-sm text-[var(--ink-50)] font-bold hover:bg-[var(--ink-05)] transition-colors">
           PIN 변경하기
         </button>
+
+        </div>
+        </div>
       </main>
 
       {/* PIN 모달 */}
