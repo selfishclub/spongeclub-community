@@ -11,6 +11,7 @@ interface Member {
   slack_user_id: string | null;
   shell_balance: number;
   group_number: number | null;
+  cohort: number | null;
   is_admin: boolean;
   is_active: boolean;
   created_at: string;
@@ -22,6 +23,7 @@ export default function MembersPage() {
   const [groupFilter, setGroupFilter] = useState("");
   const [activeFilter, setActiveFilter] = useState("");
   const [slackFilter, setSlackFilter] = useState("");
+  const [cohortFilter, setCohortFilter] = useState("");
   const [sortKey, setSortKey] = useState<"name" | "group_number" | "shell_balance" | "created_at">("created_at");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [adjustModal, setAdjustModal] = useState<Member | null>(null);
@@ -92,6 +94,7 @@ export default function MembersPage() {
     email: "",
     slack_user_id: "",
     group_number: "" as string,
+    cohort: "2" as string,
     survey_completed: false,
     is_admin: false,
   });
@@ -105,6 +108,7 @@ export default function MembersPage() {
     email: "",
     slack_user_id: "",
     group_number: "" as string,
+    cohort: "" as string,
     is_admin: false,
     is_active: true,
   });
@@ -146,7 +150,9 @@ export default function MembersPage() {
       const matchSlack =
         !slackFilter ||
         (slackFilter === "linked" ? !!m.slack_user_id : !m.slack_user_id);
-      return matchSearch && matchGroup && matchActive && matchSlack;
+      const matchCohort =
+        !cohortFilter || String(m.cohort ?? 1) === cohortFilter;
+      return matchSearch && matchGroup && matchActive && matchSlack && matchCohort;
     })
     .sort((a, b) => {
       const dir = sortDir === "asc" ? 1 : -1;
@@ -196,6 +202,7 @@ export default function MembersPage() {
       body: JSON.stringify({
         ...addForm,
         group_number: addForm.group_number ? parseInt(addForm.group_number) : null,
+        cohort: addForm.cohort ? parseInt(addForm.cohort) : 2,
       }),
     });
 
@@ -214,6 +221,7 @@ export default function MembersPage() {
       email: "",
       slack_user_id: "",
       group_number: "",
+      cohort: "2",
       survey_completed: false,
       is_admin: false,
     });
@@ -229,6 +237,7 @@ export default function MembersPage() {
       email: member.email || "",
       slack_user_id: member.slack_user_id || "",
       group_number: member.group_number ? String(member.group_number) : "",
+      cohort: member.cohort != null ? String(member.cohort) : "1",
       is_admin: member.is_admin,
       is_active: member.is_active,
     });
@@ -256,6 +265,7 @@ export default function MembersPage() {
         id: editModal.id,
         ...editForm,
         group_number: editForm.group_number ? parseInt(editForm.group_number) : null,
+        cohort: editForm.cohort ? parseInt(editForm.cohort) : 1,
       }),
     });
 
@@ -319,6 +329,16 @@ export default function MembersPage() {
           <option value="">Slack 전체</option>
           <option value="linked">연결됨</option>
           <option value="unlinked">미연결</option>
+        </select>
+        <select
+          value={cohortFilter}
+          onChange={(e) => setCohortFilter(e.target.value)}
+          className="px-3 py-2.5 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm"
+        >
+          <option value="">전체 기수</option>
+          <option value="0">운영진</option>
+          <option value="1">1기</option>
+          <option value="2">2기</option>
         </select>
       </div>
 
@@ -393,6 +413,7 @@ export default function MembersPage() {
                 />
               </th>
               <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider cursor-pointer select-none" onClick={() => handleSort("name")}>이름{sortIndicator("name")}</th>
+              <th className="text-center px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">기수</th>
               <th className="text-center px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider cursor-pointer select-none" onClick={() => handleSort("group_number")}>조{sortIndicator("group_number")}</th>
               <th className="text-left px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider">Slack ID</th>
               <th className="text-right px-4 py-3 text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-wider cursor-pointer select-none" onClick={() => handleSort("shell_balance")}>잔고{sortIndicator("shell_balance")}</th>
@@ -417,6 +438,13 @@ export default function MembersPage() {
                     <span className="ml-2 text-[10px] font-extrabold bg-[var(--yellow)] text-[var(--ink)] px-1.5 py-0.5 uppercase tracking-wider">
                       어드민
                     </span>
+                  )}
+                </td>
+                <td className="px-4 py-3 text-center">
+                  {member.cohort === 0 ? (
+                    <span className="text-[10px] font-extrabold bg-[var(--ink)] text-[var(--paper)] px-1.5 py-0.5">운영</span>
+                  ) : (
+                    <span className="text-[var(--ink-50)]">{member.cohort ?? 1}기</span>
                   )}
                 </td>
                 <td className="px-4 py-3 text-center text-[var(--ink-50)]">
@@ -615,6 +643,17 @@ export default function MembersPage() {
               onChange={(e) => setEditForm({ ...editForm, slack_user_id: e.target.value })}
               className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
             />
+
+            <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">기수</label>
+            <select
+              value={editForm.cohort}
+              onChange={(e) => setEditForm({ ...editForm, cohort: e.target.value })}
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium mb-3"
+            >
+              <option value="0">운영진</option>
+              <option value="1">1기</option>
+              <option value="2">2기</option>
+            </select>
 
             <label className="block text-xs font-extrabold text-[var(--ink-30)] mb-1.5 uppercase tracking-widest">조</label>
             <select

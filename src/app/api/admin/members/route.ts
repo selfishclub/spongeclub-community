@@ -19,7 +19,7 @@ export async function GET() {
 // 멤버 수동 등록
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name, phone_last4, email, slack_user_id, survey_completed, is_admin, group_number } = body;
+  const { name, phone_last4, email, slack_user_id, survey_completed, is_admin, group_number, cohort } = body;
 
   if (!name || !phone_last4) {
     return NextResponse.json(
@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
       email: email || null,
       slack_user_id: slack_user_id || null,
       group_number: group_number ?? null,
+      cohort: cohort ?? 2,
       survey_completed: survey_completed || false,
       shell_balance: survey_completed ? 10 : 0,
       is_admin: is_admin || false,
@@ -88,7 +89,7 @@ export async function POST(request: NextRequest) {
 // 멤버 정보 수정
 export async function PATCH(request: NextRequest) {
   const body = await request.json();
-  const { id, name, phone_last4, email, slack_user_id, is_admin, is_active, group_number, pin, pin_changed } = body;
+  const { id, name, phone_last4, email, slack_user_id, is_admin, is_active, group_number, cohort, pin, pin_changed } = body;
 
   if (!id) {
     return NextResponse.json(
@@ -129,6 +130,7 @@ export async function PATCH(request: NextRequest) {
   if (email !== undefined) updateData.email = email || null;
   if (slack_user_id !== undefined) updateData.slack_user_id = slack_user_id || null;
   if (group_number !== undefined) updateData.group_number = group_number;
+  if (cohort !== undefined) updateData.cohort = cohort;
   if (is_admin !== undefined) updateData.is_admin = is_admin;
   if (is_active !== undefined) updateData.is_active = is_active;
   if (pin !== undefined) updateData.pin = pin;
