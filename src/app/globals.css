@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #0A0A0A;
+  --ink: #222222;
   --paper: #FFFFFF;
   --yellow: #E9ED12;
   --yellow-dim: rgba(233, 237, 18, 0.15);
@@ -64,4 +64,9 @@ textarea::placeholder {
 .text-xs {
   font-size: 0.78rem; /* 12.5px */
   line-height: 1.1rem;
+}
+
+/* 모바일 하단 safe area (노치 대응) */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

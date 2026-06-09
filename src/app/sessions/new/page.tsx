@@ -91,18 +91,22 @@ export default function NewSessionPage() {
     setSuccess(true);
   };
 
+  const inputClass =
+    "w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-medium transition-colors";
+
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-yellow-50 flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-lg">
-          <p className="text-4xl mb-4">🐚</p>
-          <h2 className="text-xl font-bold text-amber-900 mb-2">캘린더에 게시됐어요!</h2>
-          <p className="text-sm text-amber-800 mb-6">
-            알림 신청자가 5명 이상 모이면 자동으로 확정돼요.
+      <div className="min-h-screen bg-[var(--paper)] flex items-center justify-center px-4">
+        <div className="max-w-sm w-full text-center">
+          <div className="bg-[var(--yellow)] inline-block px-5 py-3 mb-5">
+            <span className="text-lg font-extrabold text-[var(--ink)]">캘린더에 게시됐어요!</span>
+          </div>
+          <p className="text-sm text-[var(--ink-50)] mb-8 leading-relaxed">
+            알림 신청자가 5명 이상 모이면<br />자동으로 확정돼요.
           </p>
           <button
             onClick={() => router.push("/")}
-            className="px-6 py-2.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 text-sm font-medium"
+            className="w-full py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 transition-opacity"
           >
             홈으로 돌아가기
           </button>
@@ -112,31 +116,24 @@ export default function NewSessionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-yellow-50">
-      <div className="max-w-lg mx-auto px-4 py-8">
-        <button
-          onClick={() => router.push("/")}
-          className="text-sm text-amber-700 mb-4 hover:text-amber-900"
-        >
-          &larr; 돌아가기
-        </button>
-
-        <h1 className="text-xl font-bold text-amber-900 mb-6">
-          🐚 공유회 열기
+    <div className="min-h-screen bg-[var(--paper)]">
+      <div className="max-w-lg mx-auto px-5 py-10">
+        <h1 className="text-2xl font-extrabold text-[var(--ink)] mb-8 tracking-tight">
+          공유회 열기
         </h1>
 
-        <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
+        <div className="space-y-6">
           {/* 진행자 선택 */}
           <div className="relative">
-            <label className="block text-sm font-medium text-amber-800 mb-1">
+            <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">
               진행자 <span className="text-red-500">*</span>
             </label>
             {selectedHost ? (
-              <div className="flex items-center justify-between px-3 py-2.5 border border-amber-200 rounded-lg">
-                <span className="text-sm text-amber-900 font-medium">{selectedHost.name}</span>
+              <div className="flex items-center justify-between px-4 py-3 bg-[var(--ink-05)]">
+                <span className="text-sm text-[var(--ink)] font-bold">{selectedHost.name}</span>
                 <button
                   onClick={() => { setSelectedHost(null); setHostSearch(""); }}
-                  className="text-xs text-amber-700 hover:text-amber-900"
+                  className="text-xs font-bold text-[var(--ink-30)] hover:text-[var(--ink)] transition-colors"
                 >
                   변경
                 </button>
@@ -148,19 +145,22 @@ export default function NewSessionPage() {
                   value={hostSearch}
                   onChange={(e) => { setHostSearch(e.target.value); setShowHostList(true); }}
                   onFocus={() => setShowHostList(true)}
+                  onBlur={() => setTimeout(() => setShowHostList(false), 150)}
                   placeholder="이름을 입력하세요..."
-                  className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm"
+                  autoComplete="off"
+                  className={inputClass}
                 />
                 {showHostList && hostSearch && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-amber-200 rounded-lg shadow-lg max-h-40 overflow-y-auto">
+                  <div className="absolute z-10 w-full mt-1 bg-[var(--paper)] border-2 border-[var(--ink-10)] shadow-lg max-h-48 overflow-y-auto">
                     {filteredMembers.length === 0 ? (
-                      <p className="text-xs text-amber-700 px-3 py-2">검색 결과 없음</p>
+                      <p className="text-xs text-[var(--ink-30)] px-4 py-2.5 font-medium">검색 결과 없음</p>
                     ) : (
                       filteredMembers.map((m) => (
                         <button
                           key={m.id}
+                          onMouseDown={(e) => e.preventDefault()}
                           onClick={() => { setSelectedHost(m); setShowHostList(false); setHostSearch(""); }}
-                          className="w-full text-left px-3 py-2 text-sm hover:bg-amber-50 text-amber-900"
+                          className="w-full text-left px-4 py-2.5 text-sm text-[var(--ink)] font-medium hover:bg-[var(--yellow-dim)] transition-colors border-b border-[var(--ink-05)] last:border-0"
                         >
                           {m.name}
                         </button>
@@ -173,7 +173,7 @@ export default function NewSessionPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-amber-800 mb-1">
+            <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">
               제목 <span className="text-red-500">*</span>
             </label>
             <input
@@ -181,110 +181,127 @@ export default function NewSessionPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="예: UX 리서치 입문"
-              className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-amber-800 mb-1">설명</label>
+            <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">설명</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="공유회에 대해 간단히 설명해주세요"
-              rows={3}
-              className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm resize-none"
+              rows={4}
+              className={`${inputClass} resize-none`}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-amber-800 mb-1">카테고리</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm"
-            >
+            <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">카테고리</label>
+            <div className="flex border-2 border-[var(--ink)]">
               {CATEGORIES.map((c) => (
-                <option key={c.value} value={c.value}>{c.label}</option>
+                <button
+                  key={c.value}
+                  onClick={() => setCategory(c.value)}
+                  className={`flex-1 py-2.5 text-xs font-extrabold transition-colors ${
+                    category === c.value
+                      ? "bg-[var(--ink)] text-[var(--paper)]"
+                      : "bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--ink-05)]"
+                  } ${c.value !== "AI" ? "border-l-2 border-[var(--ink)]" : ""}`}
+                >
+                  {c.label}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-amber-800 mb-1">
+              <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">
                 날짜 <span className="text-red-500">*</span>
               </label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm"
+                className={inputClass}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-amber-800 mb-1">시간</label>
+              <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">시간</label>
               <input
                 type="time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-amber-800 mb-1">가격 (1~10 🐚)</label>
-              <input
-                type="range"
-                min={1}
-                max={10}
-                value={entryCost}
-                onChange={(e) => setEntryCost(parseInt(e.target.value))}
-                className="w-full accent-amber-500"
-              />
-              <p className="text-center text-sm font-bold text-amber-900 mt-1">{entryCost} 🐚</p>
+              <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">
+                가격 (1~10 🐚)
+              </label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="range"
+                  min={1}
+                  max={10}
+                  value={entryCost}
+                  onChange={(e) => setEntryCost(parseInt(e.target.value))}
+                  className="flex-1 accent-[var(--ink)]"
+                />
+                <span className="text-sm font-extrabold text-[var(--ink)] tabular-nums w-10 text-center">
+                  {entryCost} 🐚
+                </span>
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-amber-800 mb-1">정원 (선택)</label>
+              <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">정원 (선택)</label>
               <input
                 type="number"
                 value={capacity}
                 onChange={(e) => setCapacity(e.target.value)}
                 placeholder="무제한"
                 min={1}
-                className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-amber-800 mb-1">길이 (분)</label>
-            <select
-              value={duration}
-              onChange={(e) => setDuration(parseInt(e.target.value))}
-              className="w-full px-3 py-2.5 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm"
-            >
-              <option value={30}>30분</option>
-              <option value={60}>60분</option>
-              <option value={90}>90분</option>
-              <option value={120}>120분</option>
-            </select>
+            <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">길이</label>
+            <div className="flex border-2 border-[var(--ink)]">
+              {[30, 60, 90, 120].map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setDuration(d)}
+                  className={`flex-1 py-2.5 text-xs font-extrabold transition-colors ${
+                    duration === d
+                      ? "bg-[var(--ink)] text-[var(--paper)]"
+                      : "bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--ink-05)]"
+                  } ${d !== 30 ? "border-l-2 border-[var(--ink)]" : ""}`}
+                >
+                  {d}분
+                </button>
+              ))}
+            </div>
           </div>
 
           {error && (
-            <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
+            <p className="text-sm text-red-500 font-medium bg-red-50 px-4 py-3">{error}</p>
           )}
 
           <button
             onClick={handleSubmit}
             disabled={loading || !selectedHost || !title || !date}
-            className="w-full py-3 bg-amber-500 text-white font-medium rounded-lg hover:bg-amber-600 disabled:opacity-50 transition-colors"
+            className="w-full py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity"
           >
             {loading ? "신청 중..." : "공유회 신청하기"}
           </button>
 
-          <p className="text-xs text-amber-700 text-center leading-relaxed">
+          <p className="text-xs text-[var(--ink-30)] text-center leading-relaxed font-medium">
             신청 즉시 캘린더에서 알림 신청이 시작돼요.<br />
             알림 신청자가 5명 이상 모이면 공유회 진행이 확정됩니다.
           </p>

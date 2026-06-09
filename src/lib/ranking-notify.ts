@@ -53,7 +53,6 @@ async function computeGroupRanking(): Promise<RankEntry[]> {
     .from("members")
     .select("group_number")
     .eq("is_active", true)
-    .eq("is_admin", false)
     .not("group_number", "is", null);
 
   const rosterCount = new Map<number, number>();
@@ -70,7 +69,7 @@ async function computeGroupRanking(): Promise<RankEntry[]> {
   const groupTotals = new Map<number, number>();
   for (const row of data || []) {
     const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; group_number: number | null };
-    if (!member.is_active || member.is_admin || !member.group_number) continue;
+    if (!member.is_active || !member.group_number) continue;
     if (row.reason_detail?.startsWith("[취소됨]") || row.reason_detail?.startsWith("[취소]")) continue;
     groupTotals.set(member.group_number, (groupTotals.get(member.group_number) || 0) + Math.abs(row.amount));
   }
