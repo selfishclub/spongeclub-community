@@ -23,7 +23,7 @@ export async function GET() {
   // 오늘 트랜잭션
   const { data: todayTx } = await supabase
     .from("shell_transactions")
-    .select("amount, reason, reason_detail, member_id, members!shell_transactions_member_id_fkey(name, profile_image)")
+    .select("amount, reason, reason_detail, member_id, created_at, members!shell_transactions_member_id_fkey(name, profile_image)")
     .gte("created_at", todayStartUTC.toISOString())
     .order("created_at", { ascending: false });
 
@@ -86,15 +86,16 @@ export async function GET() {
     const name = member.name;
     const img = member.profile_image;
 
+    const ts = row.created_at;
     switch (row.reason) {
       case "SNS_VERIFY":
-        individual.push({ name, profile_image: img, message: "SNS 인증을 올렸어요" });
+        individual.push({ name, profile_image: img, message: "SNS 인증을 올렸어요", created_at: ts });
         break;
       case "SESSION_ATTEND":
-        individual.push({ name, profile_image: img, message: "공유회에 참여 신청했어요" });
+        individual.push({ name, profile_image: img, message: "공유회에 참여 신청했어요", created_at: ts });
         break;
       case "SESSION_HOST":
-        individual.push({ name, profile_image: img, message: "공유회를 열었어요" });
+        individual.push({ name, profile_image: img, message: "공유회를 열었어요", created_at: ts });
         break;
     }
   }

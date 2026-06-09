@@ -612,24 +612,27 @@ interface LiveItem {
   profile_image: string | null;
   message: string;
   badge_icon?: string;
+  timestamp?: string;
 }
 
-function LiveTicker({ badgeFeed, activityFeed }: { badgeFeed: BadgeFeedEntry[]; activityFeed: { name: string; profile_image: string | null; message: string }[] }) {
+function LiveTicker({ badgeFeed, activityFeed }: { badgeFeed: BadgeFeedEntry[]; activityFeed: { name: string; profile_image: string | null; message: string; created_at?: string }[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
   // 배지 피드 + 개인 활동 피드 합치기
   const items: LiveItem[] = [
+    ...activityFeed.map((e) => ({
+      name: e.name,
+      profile_image: e.profile_image,
+      message: e.message,
+      timestamp: e.created_at,
+    })),
     ...badgeFeed.map((e) => ({
       name: e.name,
       profile_image: e.profile_image,
       message: `${e.badge_name} 배지 획득!`,
       badge_icon: e.badge_icon,
-    })),
-    ...activityFeed.map((e) => ({
-      name: e.name,
-      profile_image: e.profile_image,
-      message: e.message,
+      timestamp: e.earned_at,
     })),
   ];
 
@@ -646,34 +649,40 @@ function LiveTicker({ badgeFeed, activityFeed }: { badgeFeed: BadgeFeedEntry[]; 
   if (!entry) return null;
 
   return (
-    <div className="border-2 border-[var(--ink-10)] overflow-hidden">
-      <div className="flex items-center gap-2 px-4 py-2 bg-[var(--yellow)]">
-        <div className="w-1.5 h-1.5 rounded-full bg-[var(--ink)] animate-pulse" />
-        <span className="text-[10px] font-extrabold text-[var(--ink)] tracking-widest">스폰지크루 활동 알림</span>
-        <div className="flex gap-1 ml-auto">
-          {items.slice(0, 5).map((_, i) => (
-            <div key={i} className={`w-1.5 h-1.5 rounded-full transition-colors ${i === currentIndex % 5 ? "bg-[var(--ink)]" : "bg-[var(--ink-30)]"}`} />
-          ))}
-        </div>
+    <div>
+      <div className="mb-5">
+        <h2 className="text-xl font-extrabold text-[var(--ink)] tracking-tight">스폰지크루 활동 알림</h2>
+        <p className="text-xs text-[var(--ink-30)] mt-1 font-medium">크루들의 실시간 활동을 확인하세요</p>
       </div>
-      <div className={`flex items-center gap-3 px-4 py-3 bg-[var(--paper)] transition-all duration-400 ${isAnimating ? "opacity-0 -translate-y-2" : "opacity-100 translate-y-0"}`}>
-        <div className="flex-shrink-0 relative">
-          {entry.profile_image ? (
-            <img src={entry.profile_image} alt={entry.name} className="w-9 h-9 rounded-full object-cover ring-2 ring-[var(--ink-10)]" />
-          ) : (
-            <div className="w-9 h-9 rounded-full bg-[var(--ink-05)] flex items-center justify-center text-sm font-extrabold text-[var(--ink-50)]">{entry.name.charAt(0)}</div>
-          )}
-          {entry.badge_icon && (
-            <Image src={entry.badge_icon} alt="" width={18} height={18}
-              className="w-4.5 h-4.5 absolute -bottom-0.5 -right-0.5 bg-[var(--paper)] rounded-full border border-[var(--ink-10)] p-0.5" />
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm">
-            <span className="font-extrabold text-[var(--ink)]">{entry.name}</span>
-            <span className="text-[var(--ink-30)]"> — </span>
-            <span className="font-bold text-[var(--ink)]">{entry.message}</span>
-          </p>
+      <div className="bg-[var(--yellow)] border-2 border-[var(--ink-10)] overflow-hidden">
+        <div className={`flex items-center gap-3 px-5 py-4 transition-all duration-400 ${isAnimating ? "opacity-0 -translate-y-2" : "opacity-100 translate-y-0"}`}>
+          <div className="flex-shrink-0 relative">
+            {entry.profile_image ? (
+              <img src={entry.profile_image} alt={entry.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-[var(--ink-10)]" />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-[var(--ink-05)] flex items-center justify-center text-sm font-extrabold text-[var(--ink-50)]">{entry.name.charAt(0)}</div>
+            )}
+            {entry.badge_icon && (
+              <Image src={entry.badge_icon} alt="" width={18} height={18}
+                className="w-4.5 h-4.5 absolute -bottom-0.5 -right-0.5 bg-[var(--paper)] rounded-full border border-[var(--ink-10)] p-0.5" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm">
+              <span className="font-extrabold text-[var(--ink)]">{entry.name}</span>
+              <span className="text-[var(--ink-30)]"> — </span>
+              <span className="font-bold text-[var(--ink)]">{entry.message}</span>
+            </p>
+            {entry.timestamp && (
+              <p className="text-[11px] text-[var(--ink-30)] mt-0.5">
+                {formatDistanceToNow(parseISO(entry.timestamp), { addSuffix: true, locale: ko })}
+              </p>
+            )}
+          </div>
+          <div className="flex-shrink-0 flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-[10px] font-bold text-[var(--ink-30)]">LIVE</span>
+          </div>
         </div>
       </div>
     </div>
@@ -761,7 +770,11 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                     ? "bg-[var(--ink-10)] text-[var(--ink-50)] w-6 h-6 flex items-center justify-center mx-auto"
                     : "text-[var(--ink-50)]";
                   return (
-                    <div key={day.toISOString()} className={`min-h-[60px] p-1.5 border-r-2 border-b-2 border-[var(--ink-10)] ${!isCurrentMonth ? "opacity-20" : ""}`}>
+                    <div
+                      key={day.toISOString()}
+                      onClick={() => daySessions.length > 0 && handleSessionClick(daySessions[0])}
+                      className={`min-h-[60px] p-1.5 border-r-2 border-b-2 border-[var(--ink-10)] ${!isCurrentMonth ? "opacity-20" : ""} ${daySessions.length > 0 ? "cursor-pointer hover:bg-[var(--yellow-dim)] transition-colors" : ""}`}
+                    >
                       <div className={`text-[11px] text-center mb-1 font-bold ${dayBoxClass}`}>
                         {format(day, "d")}
                       </div>
@@ -769,9 +782,9 @@ function CalendarSection({ member, onLoginRequired }: { member: Member | null; o
                         {daySessions.slice(0, 2).map((s) => {
                           const isCompleted = s.status === "COMPLETED";
                           return (
-                            <button key={s.id} onClick={() => handleSessionClick(s)} className={`w-full text-left px-1 py-0.5 hover:bg-[var(--yellow-dim)] transition-colors ${isCompleted ? "opacity-50" : ""}`} title={s.title}>
+                            <div key={s.id} onClick={(e) => { e.stopPropagation(); handleSessionClick(s); }} className={`w-full text-left px-1 py-0.5 ${isCompleted ? "opacity-50" : ""}`} title={s.title}>
                               <span className={`text-[9px] font-semibold text-[var(--ink)] truncate block leading-tight ${isCompleted ? "line-through" : ""}`}>{s.title}</span>
-                            </button>
+                            </div>
                           );
                         })}
                         {daySessions.length > 2 && <p className="text-[9px] text-[var(--ink-30)] text-center font-bold">+{daySessions.length - 2}</p>}
@@ -865,6 +878,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [member, setMember] = useState<Member | null>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginRedirect, setLoginRedirect] = useState<string | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
   const [rankTab, setRankTab] = useState<"ranking" | "group">("ranking");
   const [badgeTop3, setBadgeTop3] = useState<BadgeTop3Entry[]>([]);
@@ -896,9 +910,14 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [teamMessages.length]);
 
+  const openLogin = (redirect?: string) => {
+    setLoginRedirect(redirect || null);
+    setShowLoginModal(true);
+  };
+
   // Navbar의 로그인 버튼 이벤트 수신
   useEffect(() => {
-    const handler = () => setShowLoginModal(true);
+    const handler = () => openLogin();
     window.addEventListener("open-login", handler);
     return () => window.removeEventListener("open-login", handler);
   }, []);
@@ -940,7 +959,7 @@ export default function HomePage() {
                   <span className="text-sm font-extrabold text-[var(--ink)]">과제현황판</span>
                 </Link>
               ) : (
-                <button onClick={() => setShowLoginModal(true)}
+                <button onClick={() => openLogin("/missions")}
                   className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] hover:border-[var(--ink-30)] transition-colors">
                   <span>🎯</span>
                   <span className="text-sm font-extrabold text-[var(--ink)]">과제현황판</span>
@@ -958,13 +977,13 @@ export default function HomePage() {
                   <span className="text-sm font-extrabold text-[var(--ink)]">캐릭터 만들기</span>
                 </a>
               ) : (
-                <button onClick={() => setShowLoginModal(true)}
+                <button onClick={() => openLogin("https://sponge-dressup.vercel.app/")}
                   className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] hover:border-[var(--ink-30)] transition-colors">
                   <span>🧽</span>
                   <span className="text-sm font-extrabold text-[var(--ink)]">캐릭터 만들기</span>
                 </button>
               )}
-              <button onClick={() => member ? setShowSuggestModal(true) : setShowLoginModal(true)}
+              <button onClick={() => member ? setShowSuggestModal(true) : openLogin()}
                 className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] hover:border-[var(--ink-30)] transition-colors">
                 <span>📣</span>
                 <span className="text-sm font-extrabold text-[var(--ink)]">공유자 추천</span>
@@ -981,7 +1000,7 @@ export default function HomePage() {
         {/* ── 캘린더 + 이번 달 공유회 ── */}
         <section className="border-b border-[var(--ink-10)]">
           <div className="max-w-6xl mx-auto px-5 md:px-6 py-10 md:py-14">
-            <CalendarSection member={member} onLoginRequired={() => setShowLoginModal(true)} />
+            <CalendarSection member={member} onLoginRequired={() => openLogin()} />
           </div>
         </section>
 
@@ -1005,14 +1024,14 @@ export default function HomePage() {
                     <h2 className="text-xl font-extrabold text-[var(--ink)] tracking-tight">배지 랭킹</h2>
                     <p className="text-xs text-[var(--ink-30)] mt-1 font-medium">활동으로 바다 친구들을 모아보세요</p>
                   </div>
-                  <div className="bg-[var(--paper)] border-2 border-[var(--ink-10)]">
+                  <div className="bg-[var(--paper)] border-2 border-[var(--ink-10)] flex flex-col">
                     {badgeTop3.map((entry, i) => (
-                      <div key={entry.member_id} className={`flex items-center gap-4 px-5 py-4 hover:bg-[var(--yellow-dim)] transition-colors ${i < badgeTop3.length - 1 ? "border-b border-[var(--ink-10)]" : ""}`}>
+                      <div key={entry.member_id} className={`flex items-center gap-4 px-5 py-5 flex-1 hover:bg-[var(--yellow-dim)] transition-colors ${i < badgeTop3.length - 1 ? "border-b border-[var(--ink-10)]" : ""}`}>
                         <div className="flex-shrink-0 relative">
                           {entry.profile_image ? (
-                            <img src={entry.profile_image} alt={entry.name} className="w-11 h-11 rounded-full object-cover" />
+                            <img src={entry.profile_image} alt={entry.name} className="w-12 h-12 rounded-full object-cover" />
                           ) : (
-                            <div className="w-11 h-11 rounded-full bg-[var(--ink-05)] flex items-center justify-center text-sm font-extrabold text-[var(--ink-50)]">{entry.name.charAt(0)}</div>
+                            <div className="w-12 h-12 rounded-full bg-[var(--ink-05)] flex items-center justify-center text-sm font-extrabold text-[var(--ink-50)]">{entry.name.charAt(0)}</div>
                           )}
                           <span className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-[var(--yellow)] text-[10px] font-extrabold text-[var(--ink)]">
                             {entry.rank}
@@ -1020,10 +1039,10 @@ export default function HomePage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-bold text-[var(--ink)] text-sm">{entry.name}</p>
-                          <div className="flex gap-1.5 mt-1.5 flex-wrap items-center">
+                          <div className="flex gap-1.5 mt-2 flex-wrap items-center">
                             {entry.badges.map((b) => (
                               <div key={b.slug} className="flex items-center gap-1 border border-[var(--ink-10)] bg-[var(--paper)] pl-0.5 pr-2 py-0.5">
-                                <Image src={b.icon} alt={b.name} width={16} height={16} className="w-4 h-4" />
+                                <Image src={b.icon} alt={b.name} width={18} height={18} className="w-4.5 h-4.5" />
                                 <span className="text-[10px] text-[var(--ink-50)] font-semibold">{b.name}</span>
                               </div>
                             ))}
@@ -1067,7 +1086,7 @@ export default function HomePage() {
                 ) : (
                   <div className="bg-[var(--paper)] border-2 border-[var(--ink-10)]">
                     {ranking.map((entry, i) => (
-                      <div key={entry.member_id} className={`flex items-center gap-4 px-5 py-3.5 hover:bg-[var(--yellow-dim)] transition-colors ${i < ranking.length - 1 ? "border-b border-[var(--ink-10)]" : ""}`}>
+                      <div key={entry.member_id} className={`flex items-center gap-4 px-5 py-4.5 hover:bg-[var(--yellow-dim)] transition-colors ${i < ranking.length - 1 ? "border-b border-[var(--ink-10)]" : ""}`}>
                         <div className="flex-shrink-0 relative">
                           {entry.profile_image ? (
                             <img src={entry.profile_image} alt={entry.name} className="w-10 h-10 rounded-full object-cover" />
@@ -1115,7 +1134,7 @@ export default function HomePage() {
         {/* ── VOD ── */}
         <section>
           <div className="max-w-6xl mx-auto px-5 md:px-6 py-10 md:py-14">
-            <VodSection member={member} onLoginRequired={() => setShowLoginModal(true)} />
+            <VodSection member={member} onLoginRequired={() => openLogin()} />
           </div>
         </section>
       </main>
@@ -1127,7 +1146,7 @@ export default function HomePage() {
       </footer>
 
       {showLoginModal && (
-        <LoginModal onClose={() => setShowLoginModal(false)} onSuccess={(m) => { setMember(m); setShowLoginModal(false); window.location.href = "/mypage"; }} />
+        <LoginModal onClose={() => { setShowLoginModal(false); setLoginRedirect(null); }} onSuccess={(m) => { setMember(m); setShowLoginModal(false); window.location.href = loginRedirect || "/mypage"; setLoginRedirect(null); }} />
       )}
 
       {showSuggestModal && (
