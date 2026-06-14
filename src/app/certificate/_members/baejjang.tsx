@@ -26,7 +26,7 @@ export default function BaejjangCertificate() {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 5,
     snsVerified: 5,
-    shellsSent: 25,
+    shellsSent: 26,
     shellsReceived: 20,
     badges: 6,
     skillShared: 0,

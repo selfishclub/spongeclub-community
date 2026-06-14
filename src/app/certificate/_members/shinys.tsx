@@ -23,7 +23,7 @@ export default function ShinYSCertificate() {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 6,
     snsVerified: 5,
-    shellsSent: 26,
+    shellsSent: 27,
     shellsReceived: 18,
   };
 

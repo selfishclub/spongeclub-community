@@ -23,8 +23,8 @@ export default function JiniCertificate() {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 11,
     snsVerified: 8,
-    shellsSent: 30,
-    shellsReceived: 18,
+    shellsSent: 25,
+    shellsReceived: 20,
   };
 
   const attendance = [

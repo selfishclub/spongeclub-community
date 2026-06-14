@@ -23,8 +23,8 @@ export default function LindiCertificate() {
     attendance: { present: 5, total: 7 },
     sessionsAttended: 3,
     snsVerified: 1,
-    shellsSent: 5,
-    shellsReceived: 8,
+    shellsSent: 7,
+    shellsReceived: 6,
   };
 
   const attendance = [

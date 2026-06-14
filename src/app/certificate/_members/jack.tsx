@@ -13,7 +13,7 @@ export default function JackCertificate() {
       "\"원하는 결과가 있는데 중간에 오류 발생시 이 시간을 줄이고 싶다\"고 했어요. 1주차에 인스타 캐러셀 자동 생성 스킬을 만들고, 2주차엔 콘텐츠 OS 웹 프로토타입을, 3주차엔 리뷰 코칭 도구까지 확장했어요. 스킬 7회 나눔 — 1조에서 가장 많이 스킬을 공유한 사람이에요.",
   };
 
-  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 7, snsVerified: 2, shellsSent: 20, shellsReceived: 13 };
+  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 7, snsVerified: 2, shellsSent: 20, shellsReceived: 15 };
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

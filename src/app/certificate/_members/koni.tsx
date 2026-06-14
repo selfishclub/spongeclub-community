@@ -24,7 +24,7 @@ export default function KoniCertificate() {
     sessionsAttended: 5,
     snsVerified: 6,
     shellsSent: 20,
-    shellsReceived: 14,
+    shellsReceived: 15,
   };
 
   const attendance = [

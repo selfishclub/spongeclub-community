@@ -23,7 +23,7 @@ export default function VickyCertificate() {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 3,
     snsVerified: 12,
-    shellsSent: 12,
+    shellsSent: 13,
     shellsReceived: 4,
   };
 

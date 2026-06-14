@@ -23,8 +23,8 @@ export default function RinCertificate() {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 4,
     snsVerified: 14,
-    shellsSent: 7,
-    shellsReceived: 6,
+    shellsSent: 25,
+    shellsReceived: 20,
   };
 
   const attendance = [

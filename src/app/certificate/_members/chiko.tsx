@@ -24,7 +24,7 @@ export default function ChikoCertificate() {
     sessionsAttended: 4,
     snsVerified: 5,
     shellsSent: 16,
-    shellsReceived: 28,
+    shellsReceived: 29,
   };
 
   const attendance = [

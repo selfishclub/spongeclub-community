@@ -24,7 +24,7 @@ export default function KinoCertificate() {
     sessionsAttended: 9,
     snsVerified: 5,
     shellsSent: 16,
-    shellsReceived: 40,
+    shellsReceived: 41,
   };
 
   const attendance = [

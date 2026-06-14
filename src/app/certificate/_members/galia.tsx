@@ -13,7 +13,7 @@ export default function GaliaCertificate() {
       "\"끝까지 완주한 사람\"으로 기억되고 싶다고 했어요. 공유회 5번 참여, SNS 7회, 셸 24개 보내기, 스킬 공유 2회. 6주간 한 번도 빠지지 않고 출석하며 실제로 완주했어요.",
   };
 
-  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 5, snsVerified: 7, shellsSent: 24, shellsReceived: 19 };
+  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 5, snsVerified: 7, shellsSent: 25, shellsReceived: 19 };
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
