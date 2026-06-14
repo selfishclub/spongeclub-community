@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "스폰지클럽 — 이기적인 스폰지들",
   description: "이기적 공유 커뮤니티의 활동 기반 포인트 시스템",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
