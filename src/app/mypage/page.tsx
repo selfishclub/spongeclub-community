@@ -39,6 +39,7 @@ interface MyVideo {
   title: string;
   description: string | null;
   expires_at: string;
+  expired: boolean;
   embed_url: string | null;
   thumbnail_url: string | null;
 }
@@ -495,9 +496,9 @@ export default function MyPage() {
               {myVideos.map((v) => {
                 const expiresAt = new Date(v.expires_at);
                 const daysLeft = Math.ceil((expiresAt.getTime() - nowMs) / (1000 * 60 * 60 * 24));
-                const isPlaying = playingVideoId === v.id;
+                const isPlaying = !v.expired && playingVideoId === v.id;
                 return (
-                  <div key={v.id} className={`border-2 border-[var(--ink-10)] overflow-hidden ${isPlaying ? "col-span-2" : ""}`}>
+                  <div key={v.id} className={`border-2 border-[var(--ink-10)] overflow-hidden ${isPlaying ? "col-span-2" : ""} ${v.expired ? "opacity-50" : ""}`}>
                     {isPlaying && v.embed_url ? (
                       <div className="aspect-video bg-[var(--ink)]">
                         <iframe
@@ -510,24 +511,31 @@ export default function MyPage() {
                       </div>
                     ) : (
                       <button
-                        onClick={() => setPlayingVideoId(v.id)}
-                        className="block w-full relative aspect-[16/9] bg-[var(--ink-05)] group"
+                        onClick={() => !v.expired && setPlayingVideoId(v.id)}
+                        className={`block w-full relative aspect-[16/9] bg-[var(--ink-05)] group ${v.expired ? "cursor-not-allowed" : ""}`}
+                        disabled={v.expired}
                       >
                         {v.thumbnail_url && (
                           /* eslint-disable-next-line @next/next/no-img-element */
-                          <img src={v.thumbnail_url} alt={v.title} className="w-full h-full object-cover" />
+                          <img src={v.thumbnail_url} alt={v.title} className={`w-full h-full object-cover ${v.expired ? "grayscale" : ""}`} />
                         )}
-                        <div className="absolute inset-0 bg-[var(--ink)]/30 group-hover:bg-[var(--ink)]/40 flex items-center justify-center transition-colors">
-                          <div className="w-10 h-10 bg-[var(--paper)]/90 flex items-center justify-center">
-                            <span className="text-[var(--ink)] text-lg ml-0.5">▶</span>
+                        {v.expired ? (
+                          <div className="absolute inset-0 bg-[var(--ink)]/50 flex items-center justify-center">
+                            <span className="text-[var(--paper)] text-xs font-bold px-2 py-1 bg-[var(--ink)]/70">시청 기간 만료</span>
                           </div>
-                        </div>
+                        ) : (
+                          <div className="absolute inset-0 bg-[var(--ink)]/30 group-hover:bg-[var(--ink)]/40 flex items-center justify-center transition-colors">
+                            <div className="w-10 h-10 bg-[var(--paper)]/90 flex items-center justify-center">
+                              <span className="text-[var(--ink)] text-lg ml-0.5">▶</span>
+                            </div>
+                          </div>
+                        )}
                       </button>
                     )}
                     <div className="p-2.5">
                       <p className="text-xs font-bold text-[var(--ink)] line-clamp-1">{v.title}</p>
-                      <p className="text-[11px] text-[var(--ink-50)] mt-0.5 font-medium">
-                        {daysLeft > 0 ? `${daysLeft}일 남음` : "오늘 만료"}
+                      <p className={`text-[11px] mt-0.5 font-medium ${v.expired ? "text-red-400" : "text-[var(--ink-50)]"}`}>
+                        {v.expired ? "시청 기간 만료" : daysLeft > 0 ? `${daysLeft}일 남음` : "오늘 만료"}
                       </p>
                     </div>
                   </div>

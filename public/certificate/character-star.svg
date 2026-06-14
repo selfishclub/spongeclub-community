@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- bg circle -->
+  <circle cx="60" cy="60" r="58" fill="#FFFBEB" stroke="#FCD34D" stroke-width="2"/>
+
+  <!-- sparkle stars -->
+  <g transform="translate(20,24)" opacity="0.8">
+    <polygon points="0,-4 1.2,-1.2 4,0 1.2,1.2 0,4 -1.2,1.2 -4,0 -1.2,-1.2" fill="#FBBF24"/>
+  </g>
+  <g transform="translate(100,28)" opacity="0.7">
+    <polygon points="0,-3 0.9,-0.9 3,0 0.9,0.9 0,3 -0.9,0.9 -3,0 -0.9,-0.9" fill="#FBBF24"/>
+  </g>
+  <g transform="translate(16,68)" opacity="0.6">
+    <polygon points="0,-2.5 0.8,-0.8 2.5,0 0.8,0.8 0,2.5 -0.8,0.8 -2.5,0 -0.8,-0.8" fill="#FCD34D"/>
+  </g>
+  <g transform="translate(104,72)" opacity="0.5">
+    <polygon points="0,-2 0.6,-0.6 2,0 0.6,0.6 0,2 -0.6,0.6 -2,0 -0.6,-0.6" fill="#FCD34D"/>
+  </g>
+  <g transform="translate(30,84)" opacity="0.5">
+    <polygon points="0,-2 0.6,-0.6 2,0 0.6,0.6 0,2 -0.6,0.6 -2,0 -0.6,-0.6" fill="#FBBF24"/>
+  </g>
+  <g transform="translate(90,84)" opacity="0.5">
+    <polygon points="0,-2.5 0.8,-0.8 2.5,0 0.8,0.8 0,2.5 -0.8,0.8 -2.5,0 -0.8,-0.8" fill="#FBBF24"/>
+  </g>
+
+  <!-- sponge body -->
+  <rect x="36" y="42" width="48" height="40" rx="8" fill="#FDE68A" stroke="#F59E0B" stroke-width="2"/>
+
+  <!-- holes -->
+  <circle cx="48" cy="56" r="3" fill="#FBBF24"/>
+  <circle cx="64" cy="62" r="3.5" fill="#FBBF24"/>
+  <circle cx="52" cy="72" r="2.5" fill="#FBBF24"/>
+  <circle cx="70" cy="52" r="2" fill="#FBBF24"/>
+
+  <!-- face - big happy eyes -->
+  <circle cx="50" cy="58" r="4" fill="white"/>
+  <circle cx="68" cy="58" r="4" fill="white"/>
+  <circle cx="51.5" cy="57" r="2.2" fill="#1E293B"/>
+  <circle cx="69.5" cy="57" r="2.2" fill="#1E293B"/>
+  <circle cx="52.5" cy="56" r="1" fill="white"/>
+  <circle cx="70.5" cy="56" r="1" fill="white"/>
+
+  <!-- big excited smile with teeth -->
+  <path d="M48 64c4 7 14 7 18 0" stroke="#1E293B" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M50 64c3 5 10 5 14 0" fill="#EF4444" opacity="0.3"/>
+
+  <!-- blush (extra rosy) -->
+  <circle cx="42" cy="64" r="4" fill="#FECACA" opacity="0.6"/>
+  <circle cx="76" cy="64" r="4" fill="#FECACA" opacity="0.6"/>
+
+  <!-- star on head -->
+  <g transform="translate(60,26)">
+    <polygon points="0,-10 3,-3 10,-3 4,2 6,9 0,5 -6,9 -4,2 -10,-3 -3,-3" fill="#FBBF24" stroke="#F59E0B" stroke-width="1.5"/>
+  </g>
+
+  <!-- star earrings/accessories -->
+  <g transform="translate(34,52)" opacity="0.9">
+    <polygon points="0,-4 1.2,-1.2 4,0 1.2,1.2 0,4 -1.2,1.2 -4,0 -1.2,-1.2" fill="#FB923C"/>
+  </g>
+  <g transform="translate(86,52)" opacity="0.9">
+    <polygon points="0,-4 1.2,-1.2 4,0 1.2,1.2 0,4 -1.2,1.2 -4,0 -1.2,-1.2" fill="#FB923C"/>
+  </g>
+
+  <!-- arms up celebrating -->
+  <path d="M36 54c-6-4-10-10-10-16" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="25" cy="37" r="3" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+  <path d="M84 54c6-4 10-10 10-16" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="95" cy="37" r="3" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+
+  <!-- legs -->
+  <rect x="46" y="82" width="8" height="10" rx="4" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+  <rect x="64" y="82" width="8" height="10" rx="4" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+
+  <!-- energy lines -->
+  <path d="M22 42l-6-2" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M20 48l-7 0" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M98 42l6-2" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M100 48l7 0" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

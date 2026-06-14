@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- bg circle -->
+  <circle cx="60" cy="60" r="58" fill="#FDF2F8" stroke="#F9A8D4" stroke-width="2"/>
+
+  <!-- heart sparkles -->
+  <path d="M20 26c1-2 4-2 4 0c0-2 3-2 4 0c0 2-4 5-4 5s-4-3-4-5z" fill="#FB7185" opacity="0.6"/>
+  <path d="M94 30c0.7-1.4 2.8-1.4 2.8 0c0-1.4 2.1-1.4 2.8 0c0 1.4-2.8 3.5-2.8 3.5s-2.8-2.1-2.8-3.5z" fill="#FB7185" opacity="0.5"/>
+  <path d="M100 72c0.5-1 2-1 2 0c0-1 1.5-1 2 0c0 1-2 2.5-2 2.5s-2-1.5-2-2.5z" fill="#F9A8D4" opacity="0.5"/>
+  <path d="M14 70c0.5-1 2-1 2 0c0-1 1.5-1 2 0c0 1-2 2.5-2 2.5s-2-1.5-2-2.5z" fill="#F9A8D4" opacity="0.5"/>
+
+  <!-- sponge body -->
+  <rect x="36" y="42" width="48" height="40" rx="8" fill="#FDE68A" stroke="#F59E0B" stroke-width="2"/>
+
+  <!-- holes -->
+  <circle cx="48" cy="56" r="3" fill="#FBBF24"/>
+  <circle cx="64" cy="62" r="3.5" fill="#FBBF24"/>
+  <circle cx="52" cy="72" r="2.5" fill="#FBBF24"/>
+  <circle cx="70" cy="52" r="2" fill="#FBBF24"/>
+
+  <!-- face -->
+  <circle cx="50" cy="58" r="3.5" fill="white"/>
+  <circle cx="68" cy="58" r="3.5" fill="white"/>
+  <circle cx="51.5" cy="57" r="2" fill="#1E293B"/>
+  <circle cx="69.5" cy="57" r="2" fill="#1E293B"/>
+  <circle cx="52.3" cy="56.2" r="0.8" fill="white"/>
+  <circle cx="70.3" cy="56.2" r="0.8" fill="white"/>
+
+  <!-- warm smile -->
+  <path d="M50 64c3 4 10 4 13 0" stroke="#1E293B" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+  <!-- blush (stronger pink) -->
+  <circle cx="43" cy="63" r="4" fill="#FECDD3" opacity="0.6"/>
+  <circle cx="75" cy="63" r="4" fill="#FECDD3" opacity="0.6"/>
+
+  <!-- left arm reaching out -->
+  <path d="M36 55c-6 0-12 2-16 5" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="19" cy="61" r="3.5" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+
+  <!-- right arm reaching out -->
+  <path d="M84 55c6 0 12 2 16 5" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="101" cy="61" r="3.5" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+
+  <!-- heart above head -->
+  <g transform="translate(53,24)">
+    <path d="M0 4c0-4 3-5 5-3c0 0 1 1 2 2c1-1 2-2 2-2c2-2 5-1 5 3c0 4-7 9-7 9s-7-5-7-9z" fill="#FB7185" stroke="#E11D48" stroke-width="1"/>
+  </g>
+
+  <!-- legs -->
+  <rect x="46" y="82" width="8" height="10" rx="4" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+  <rect x="64" y="82" width="8" height="10" rx="4" fill="#FDE68A" stroke="#F59E0B" stroke-width="1.5"/>
+
+  <!-- ribbon bow on top -->
+  <g transform="translate(60,40)">
+    <ellipse cx="-5" cy="0" rx="5" ry="3" fill="#F9A8D4" stroke="#EC4899" stroke-width="1"/>
+    <ellipse cx="5" cy="0" rx="5" ry="3" fill="#F9A8D4" stroke="#EC4899" stroke-width="1"/>
+    <circle cx="0" cy="0" r="2" fill="#EC4899"/>
+  </g>
+</svg>

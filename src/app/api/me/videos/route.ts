@@ -38,16 +38,18 @@ export async function GET() {
   };
 
   const videos = ((data || []) as unknown as GrantRow[])
-    .filter((g) => g.videos && g.videos.expires_at > nowIso)
+    .filter((g) => g.videos)
     .map((g) => {
       const v = g.videos!;
       const ytId = extractYouTubeId(v.youtube_url);
+      const expired = v.expires_at <= nowIso;
       return {
         id: v.id,
         title: v.title,
         description: v.description,
         expires_at: v.expires_at,
         granted_at: g.granted_at,
+        expired,
         embed_url: ytId ? youtubeEmbedUrl(ytId) : null,
         thumbnail_url: ytId ? youtubeThumbnailUrl(ytId) : null,
       };
