@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import membersData from "./members-data.json";
 
@@ -91,8 +92,24 @@ const READY: Set<string> = new Set([
   "히얌",
 ]);
 
+const RANK_EMOJI: Record<number, string> = { 1: "🥇", 2: "🥈", 3: "🥉" };
+
 export default function CertificateIndexPage() {
   const members = membersData as Member[];
+  const [rankMap, setRankMap] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    fetch("/api/ranking?type=ranking")
+      .then((r) => r.json())
+      .then((data) => {
+        const map: Record<string, number> = {};
+        for (const r of (data.ranking || []).slice(0, 3)) {
+          map[r.name] = r.rank;
+        }
+        setRankMap(map);
+      })
+      .catch(() => {});
+  }, []);
 
   const totalReady = members.filter((m) => READY.has(m.slug)).length;
   const total = members.length;
@@ -107,14 +124,8 @@ export default function CertificateIndexPage() {
             스폰지클럽 1기 수료증
           </h1>
           <p className="text-sm text-[var(--ink-50)]">
-            진행 상황: <span className="font-extrabold text-[var(--ink)]">{totalReady}</span> / {total}명 완료
+            {total}명의 활동 기록
           </p>
-          <div className="w-64 h-2 bg-[var(--ink-10)] mx-auto mt-3">
-            <div
-              className="h-full bg-[var(--yellow)] transition-all"
-              style={{ width: `${(totalReady / total) * 100}%` }}
-            />
-          </div>
         </div>
 
         {/* Groups */}
@@ -141,12 +152,16 @@ export default function CertificateIndexPage() {
                       <Link
                         key={m.slug}
                         href={`/certificate/${m.slug}`}
-                        className={`block p-3 border-2 transition-colors ${
+                        className={`relative block p-3 border-2 transition-colors ${
                           isReady
                             ? "border-[var(--yellow)] bg-[var(--yellow)]/10 hover:bg-[var(--yellow)]/20"
                             : "border-[var(--ink-10)] bg-[var(--ink-05)] hover:bg-[var(--ink-10)] opacity-50"
                         }`}
                       >
+                        <div className="absolute top-1 right-1 flex gap-0.5">
+                          {m.attendanceCount >= 6 && <span className="text-lg" title="개근상">💐</span>}
+                          {rankMap[m.name] && <span className="text-lg">{RANK_EMOJI[rankMap[m.name]]}</span>}
+                        </div>
                         <p className="text-sm font-extrabold text-[var(--ink)] truncate">
                           {m.name}
                         </p>
@@ -155,14 +170,9 @@ export default function CertificateIndexPage() {
                             출석 {m.attendanceCount}/7
                           </span>
                           {m.hasDiploma && (
-                            <span className="text-[10px] font-bold text-[var(--yellow)]">
+                            <span className="text-[9px] font-extrabold text-red-500 border-2 border-red-500 rounded-full px-1.5 py-0.5 rotate-[-8deg] inline-block opacity-80 ml-auto">
                               수료
                             </span>
-                          )}
-                          {isReady ? (
-                            <span className="text-[10px] font-bold text-green-500 ml-auto">✓</span>
-                          ) : (
-                            <span className="text-[10px] text-[var(--ink-20)] ml-auto">—</span>
                           )}
                         </div>
                       </Link>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function NinaCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function NinaCertificate() {
   };
 
   const character = {
-    type: "gap을 찾아 채우는 사람",
+    type: "gap을 찾아 채우는 크루",
     image: "/certificate/character-recorder.svg",
     description:
       "\"별도 세팅 없이 여러 프로젝트를 분산해서 사용하다보니 과거 데이터를 참고하기 어렵다\"고 했어요. 1주차에 CS 도구 Glance를 설계 — AI 챗봇이 못 푼 문의가 사람에게 넘어올 때 \"아무 맥락 없이 화난 고객을 마주치는 장면\"을 개선했어요. 셸 30개 보내기 — 3조에서 가장 많은 셸을 보낸 사람이에요.",
@@ -70,7 +71,7 @@ export default function NinaCertificate() {
     after: "Glance의 5단계 파이프라인으로 흩어진 데이터를 구조화하는 법을 배웠어요. 셸 30개를 보내며 3조에서 가장 적극적으로 연결한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -86,7 +87,7 @@ export default function NinaCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="Nina(이예지)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -101,6 +102,11 @@ export default function NinaCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

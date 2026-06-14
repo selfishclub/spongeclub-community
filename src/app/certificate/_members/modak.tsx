@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function ModakCertificate() {
   const member = { name: "모닥", realName: "김은영", team: "1조", jobTitle: "시스템 기획자, 콘텐츠 에디터", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "데이터로 만드는 사람",
+    type: "데이터로 만드는 크루",
     image: "/certificate/character-builder.svg",
     description:
       "\"보안 및 저작권 허용 범위 지키기\"와 \"활용 아이디어 부족\"이 막힌 점이었어요. 그런데 2주차에 콘텐츠 제작 OS 3계층 아키텍처를 만들어 MVP로 뽑혔어요. 5주차엔 AI 글 감별기 SaaS를 출시하며 \"말투는 기능이다\"라는 발견까지 했어요. 아이디어가 부족한 게 아니라, 데이터 구조가 잡히면 아이디어가 따라오는 사람이었어요.",
@@ -63,14 +64,19 @@ export default function ModakCertificate() {
     after: "2주차에 콘텐츠 제작 OS로 MVP에 뽑혔고, 5주차엔 AI 글 감별기 SaaS를 출시했어요. 아이디어가 부족했던 게 아니라, 데이터 구조를 잡는 법을 몰랐던 것이었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
       <section className="bg-[var(--ink)]"><div className="max-w-3xl mx-auto px-6 py-16 md:py-24 text-center"><p className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--paper)]/40 mb-8">SPONGE CLUB — 1기 활동 기록</p><h1 className="text-5xl md:text-6xl font-extrabold text-[var(--paper)] tracking-tight mb-3">{member.name}</h1><p className="text-base text-[var(--paper)]/60 font-medium">{member.realName} · {member.team} · {member.jobTitle}</p><p className="text-xs text-[var(--paper)]/30 mt-6 font-medium">{member.period}</p></div></section>
 
       {hasDiploma && (
-        <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]"><div className="max-w-2xl mx-auto px-6 py-12 md:py-16"><div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center"><div className="border border-dashed border-[#FCD34D] p-6 md:p-10"><div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div><p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p><h2 className="text-3xl md:text-4xl font-extrabold text-[var(--ink)] tracking-wider mb-6">수 료 증</h2><div className="mb-4"><p className="text-2xl md:text-3xl font-extrabold text-[var(--ink)] mb-1">{member.name}</p><p className="text-sm text-[#78716C]">{member.realName}</p></div><div className="w-48 h-px bg-[#F59E0B] mx-auto mb-4" /><p className="text-sm text-[#78716C] mb-6">위 사람은 스폰지클럽 1기 과정을 성실히 수료하였음을 증명합니다.</p><p className="text-xs text-[#A8A29E] mb-2">2026년 5월 3일 — 2026년 6월 14일</p><p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p><div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" /><p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p></div></div></div></section>
+        <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]"><div className="max-w-2xl mx-auto px-6 py-12 md:py-16"><div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="모닥(김은영)" /><div className="border border-dashed border-[#FCD34D] p-6 md:p-10"><div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div><p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p><h2 className="text-3xl md:text-4xl font-extrabold text-[var(--ink)] tracking-wider mb-6">수 료 증</h2><div className="mb-4"><p className="text-2xl md:text-3xl font-extrabold text-[var(--ink)] mb-1">{member.name}</p><p className="text-sm text-[#78716C]">{member.realName}</p></div><div className="w-48 h-px bg-[#F59E0B] mx-auto mb-4" /><p className="text-sm text-[#78716C] mb-6">위 사람은 스폰지클럽 1기 과정을 성실히 수료하였음을 증명합니다.</p><p className="text-xs text-[#A8A29E] mb-2">2026년 5월 3일 — 2026년 6월 14일</p><p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p><div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" /><p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div></div></div></div></section>
       )}
 
       <section className="bg-[var(--yellow)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16 text-center"><div className="flex justify-center mb-4"><Image src={character.image} alt={character.type} width={100} height={100} className="w-24 h-24 md:w-28 md:h-28" /></div><p className="text-xs font-extrabold text-[var(--ink-50)] uppercase tracking-widest mb-2">나의 스폰지 유형</p><h2 className="text-2xl md:text-3xl font-extrabold text-[var(--ink)] tracking-tight mb-4">{character.type}</h2><p className="text-sm text-[var(--ink-80)] leading-[1.9] max-w-lg mx-auto break-keep">{character.description}</p></div></section>

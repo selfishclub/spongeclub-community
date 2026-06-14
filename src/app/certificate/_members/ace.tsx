@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function AceCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function AceCertificate() {
   };
 
   const character = {
-    type: "강의를 시스템으로 바꾸는 사람",
+    type: "강의를 시스템으로 바꾸는 크루",
     image: "/certificate/character-builder.svg",
     description:
       "오프라인에서 강의 자료를 PPT 대신 HTML 사이트로 제작하는 방식으로 전환했다고 밝혔어요. 책 집필 중이며, AI를 사용하지 않는 오프라인 글쓰기 합평 모임도 추진 중. \"막히는 지점을 좀더 쉽게 설명하고 끝까지 완주하는 사람\"으로 기억되고 싶다고 했어요.",
@@ -46,7 +47,7 @@ export default function AceCertificate() {
     after: "오프라인에서 HTML 기반 강의 자료 전환과 책 집필 과정을 공유했어요. 오프라인 글쓰기 합평 모임까지 추진하며, AI를 쓸 곳과 쓰지 않을 곳의 경계를 직접 그어가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -62,7 +63,7 @@ export default function AceCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="에이스(최학곤)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

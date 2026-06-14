@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function DuksuCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function DuksuCertificate() {
   };
 
   const character = {
-    type: "남 주려고 정리한 사람",
+    type: "남 주려고 정리한 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
       "오프라인에서 브랜드 키트 스타터 OS를 제작 중이라 밝히며, \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의했어요. 2기 참여 의사도 내비친 사람이에요.",
@@ -53,7 +54,7 @@ export default function DuksuCertificate() {
     after: "오프라인에서 \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의했어요. 브랜드 키트 스타터 OS를 만들며, 공유를 위해 먼저 이해하고 언어화하는 경험을 했어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -69,7 +70,7 @@ export default function DuksuCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="덕수(김효정)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -84,6 +85,11 @@ export default function DuksuCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

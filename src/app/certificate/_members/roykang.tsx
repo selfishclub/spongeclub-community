@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function RoykangCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function RoykangCertificate() {
   };
 
   const character = {
-    type: "가감없이 풀어주는 사람",
+    type: "가감없이 풀어주는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
       "이기적 공유회를 열어 투자 관련 꿀팁을 가감없이 풀었어요. 크루들이 VOD까지 구매해서 다시 볼 만큼 가치 있는 공유를 한 사람이에요.",
@@ -69,7 +70,7 @@ export default function RoykangCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="로이캉" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

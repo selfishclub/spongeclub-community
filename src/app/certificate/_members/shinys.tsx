@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function ShinYSCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function ShinYSCertificate() {
   };
 
   const character = {
-    type: "연결하고 응원하는 사람",
+    type: "연결하고 응원하는 크루",
     image: "/certificate/character-connector.svg",
     description:
       "셸 26개 보내기, 18개 받기. 스킬 공유 3회 달성. \"함께 프로젝트 해보고 싶은 사람\"으로 기억되고 싶다고 했는데, 실제로 3조에서 가장 적극적으로 셸을 보내고 연결한 사람 중 하나.",
@@ -56,7 +57,7 @@ export default function ShinYSCertificate() {
     after: "스킬 공유 3회 달성, 셸 26개 보내기. 함께 프로젝트 해보고 싶은 사람이 되겠다는 목표 그대로, 3조에서 가장 적극적으로 연결한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -72,7 +73,7 @@ export default function ShinYSCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="신연수" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -87,6 +88,11 @@ export default function ShinYSCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

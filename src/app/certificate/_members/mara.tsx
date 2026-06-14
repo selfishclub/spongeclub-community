@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function MaraCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function MaraCertificate() {
   };
 
   const character = {
-    type: "4개 국어로 세계를 연결하는 사람",
+    type: "4개 국어로 세계를 연결하는 크루",
     image: "/certificate/character-connector.svg",
     description:
       "오프라인 모임에서 영어·한국어·스페인어·프랑스어 4개국어 능력과 모의투자 대회 1등 경력을 공유했어요. 1주차에 실시간 뉴스 댓글 감정 분석으로 시장 고점을 판별하는 기능을 만들었고, 30년 재무 로드맵 프로그램을 커뮤니티에 공유해 많은 피드백을 받았어요. 방향을 찾는 중이지만, 이미 다양한 방향에서 결과물을 만들어내고 있는 사람이에요.",
@@ -70,7 +71,7 @@ export default function MaraCertificate() {
       "오프라인에서 30년 재무 로드맵 프로그램을 공유해 큰 피드백을 받았어요. 4개국어 능력을 활용한 해외 주식 정보 제공 OS까지 아이디어가 확장되었어요. 버그를 고치는 데 그치지 않고, 자신만의 강점을 시스템으로 만드는 방향을 찾아가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -86,7 +87,7 @@ export default function MaraCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="마라" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -101,6 +102,11 @@ export default function MaraCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

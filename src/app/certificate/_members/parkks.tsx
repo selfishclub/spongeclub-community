@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function ParkKSCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function ParkKSCertificate() {
   };
 
   const character = {
-    type: "집다움을 만드는 사람",
+    type: "집다움을 만드는 크루",
     image: "/certificate/character-builder.svg",
     description:
       "오프라인 모임에서 '에이미'로 불리며, 기업 대상 프로젝트에서 개인 레지던스 서비스로 피보팅 중이라고 밝혔어요. '집다움' OS를 제작하고 캐러셀 콘텐츠와 봇도 함께 만들었어요. 이기적 공유의 핵심을 '남을 위해 공부하는 것'으로 정의한 사람이에요.",
@@ -54,7 +55,7 @@ export default function ParkKSCertificate() {
       "오프라인에서 '집다움' OS와 캐러셀·봇을 만든 과정을 공유했어요. 프롬프트를 잘 쓰는 것보다, 자신의 도메인 지식을 시스템에 담는 것이 더 중요하다는 걸 발견한 시간.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -70,7 +71,7 @@ export default function ParkKSCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="박경선" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

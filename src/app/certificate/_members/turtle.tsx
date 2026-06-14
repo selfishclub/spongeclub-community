@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function TurtleCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function TurtleCertificate() {
   };
 
   const character = {
-    type: "12명 시절보다 더 많은 일을 하는 사람",
+    type: "12명 시절보다 더 많은 일을 하는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
       "오프라인에서 \"LG에서 20년 근무 후 1인 사업을 시작했고, AI 덕분에 직원 12명 시절보다 더 많은 업무를 처리하고 있다\"고 밝혔어요. 네이버 쇼핑 인사이트로 쌀 데이터를 분석해 누룽지 업체로부터 비즈니스 계획서를 제안받는 성과를 냈어요. 공유회 7번 참여, 셸 17개 보내기.",
@@ -56,7 +57,7 @@ export default function TurtleCertificate() {
     after: "오프라인에서 \"AI로 쌀 데이터를 분석해 누룽지 업체 담당자들보다 쌀에 대해 더 깊이 파악하고 있다는 평가를 받았다\"고 밝혔어요. 데이터를 DB화하는 고민이, 실제 비즈니스 제안으로 이어졌어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -72,7 +73,7 @@ export default function TurtleCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="거북이(나병우)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -87,6 +88,11 @@ export default function TurtleCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

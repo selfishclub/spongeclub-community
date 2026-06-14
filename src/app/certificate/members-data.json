@@ -161,15 +161,15 @@
     "slug": "솔-임솔",
     "shellBalance": 0,
     "attendance": [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
       null
     ],
-    "attendanceCount": 0,
+    "attendanceCount": 5,
     "sessionsAttended": 2,
     "snsVerified": 0,
     "shellsSent": 2,
@@ -178,7 +178,7 @@
     "skillTried": 0,
     "vodGrant": 0,
     "survey": {},
-    "hasDiploma": false
+    "hasDiploma": true
   },
   {
     "id": "ee2ba8d4-c5f5-4113-9c0c-de286cbf5227",
@@ -311,15 +311,15 @@
     "slug": "체스터-이상윤",
     "shellBalance": 0,
     "attendance": [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
       null
     ],
-    "attendanceCount": 0,
+    "attendanceCount": 1,
     "sessionsAttended": 1,
     "snsVerified": 0,
     "shellsSent": 0,
@@ -342,15 +342,15 @@
     "slug": "라엘",
     "shellBalance": 0,
     "attendance": [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       null
     ],
-    "attendanceCount": 0,
+    "attendanceCount": 6,
     "sessionsAttended": 4,
     "snsVerified": 5,
     "shellsSent": 5,
@@ -364,7 +364,7 @@
       "remember": "핵심을 찌르는 사람",
       "focus": "회사 내에서 모두가 활용할  수 있을만한, 연봉 협상 시 도움이 될 만한 무언가와 부업을 시작하려고 하고 있어 부업 시에 리소스를 덜 수 있는,"
     },
-    "hasDiploma": false
+    "hasDiploma": true
   },
   {
     "id": "a94f4785-5993-4902-86ad-7c3a57532339",
@@ -528,15 +528,15 @@
     "slug": "이오-오국봉",
     "shellBalance": 0,
     "attendance": [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
       null
     ],
-    "attendanceCount": 0,
+    "attendanceCount": 1,
     "sessionsAttended": 0,
     "snsVerified": 0,
     "shellsSent": 0,
@@ -1351,7 +1351,7 @@
     "skillTried": 0,
     "vodGrant": 0,
     "survey": {},
-    "hasDiploma": false
+    "hasDiploma": true
   },
   {
     "id": "d97143c6-f4e5-4c5c-98a9-2d3f5c18f25a",
@@ -1475,7 +1475,7 @@
       "remember": "AI를 활용한 투자전문가",
       "focus": "주식투자를 위한 워크플로우 자동화"
     },
-    "hasDiploma": false
+    "hasDiploma": true
   },
   {
     "id": "6df96608-6207-4c43-91f9-7e40b5a74187",
@@ -1732,15 +1732,15 @@
     "slug": "hook2-이창환",
     "shellBalance": 0,
     "attendance": [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       null
     ],
-    "attendanceCount": 0,
+    "attendanceCount": 6,
     "sessionsAttended": 7,
     "snsVerified": 10,
     "shellsSent": 22,
@@ -1754,7 +1754,7 @@
       "remember": "함께 일해보고 싶은 사람! 믿고 맡기면 어떻게든 해올 사람",
       "focus": "콘텐츠 OS, 전시 참가 체크리스트 대시보드, 사이드 프로젝트, 상권 분석, 모바일 청첩장 제작 등 여러 가지들 중 고민 중!"
     },
-    "hasDiploma": false
+    "hasDiploma": true
   },
   {
     "id": "256e11a9-b00f-4f41-9353-db8275e0fd76",

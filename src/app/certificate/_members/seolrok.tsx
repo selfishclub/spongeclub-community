@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function SeolrokCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function SeolrokCertificate() {
   };
 
   const character = {
-    type: "가장 많이 탐험한 사람",
+    type: "가장 많이 탐험한 크루",
     image: "/certificate/character-explorer.svg",
     description:
       "공유회 13번 참여, SNS 인증 15회 — 전체 멤버 중 최다. 셸 23개 보내기. \"어디서부터 시작해야 할지 모르겠다\"고 했지만, 실제로는 누구보다 많이 듣고, 많이 기록하고, 많이 나눈 사람이에요.",
@@ -57,7 +58,7 @@ export default function SeolrokCertificate() {
     after: "공유회 13번, SNS 15회, 셸 23개 보내기. 어디서부터 시작할지 몰랐다는 사람이, 실제로는 누구보다 많이 탐험한 사람이었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -73,7 +74,7 @@ export default function SeolrokCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="설록(권효선)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -88,6 +89,11 @@ export default function SeolrokCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -19,7 +19,7 @@ export default function HikariCertificate() {
 
   const badges: { name: string; icon: string }[] = [];
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

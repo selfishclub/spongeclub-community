@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function JejeCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function JejeCertificate() {
   };
 
   const character = {
-    type: "1인용을 공용으로 바꾼 사람",
+    type: "1인용을 공용으로 바꾼 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
       "\"디테일한 수정 부분이 매번 어렵다\"고 했어요. 1주차에 Career FIT OS — K-뷰티 직무 기준 공고 분석 도구를 만들고, 2주차엔 1인용에서 공용으로 전환. \"1인용 → 공용은 방향 전환이 아니라 예정된 다음 단계\"라는 발견.",
@@ -67,7 +68,7 @@ export default function JejeCertificate() {
       "Career FIT OS를 1인용에서 공용으로 전환하며, 디테일한 수정이 아니라 구조적 전환을 경험했어요. SNS 인플루언서 배지까지 획득.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -83,7 +84,7 @@ export default function JejeCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="제제(최지예)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -98,6 +99,11 @@ export default function JejeCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

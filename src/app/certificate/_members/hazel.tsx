@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function HazelCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function HazelCertificate() {
   };
 
   const character = {
-    type: "어떻게든 해내는 사람",
+    type: "어떻게든 해내는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
       "\"어떻게든 해내는 사람\"으로 기억되고 싶다고 했어요. 셸 16개 보내기. 6주간 꾸준히 출석하며 자리를 지켰어요.",
@@ -53,7 +54,7 @@ export default function HazelCertificate() {
     after: "6주간 한 번도 빠지지 않고 출석하고, 셸 16개를 보냈어요. 어떻게든 해내겠다는 말 그대로, 반차까지 각오하며 자리를 지킨 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -69,7 +70,7 @@ export default function HazelCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="헤이즐(성윤재)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -84,6 +85,11 @@ export default function HazelCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

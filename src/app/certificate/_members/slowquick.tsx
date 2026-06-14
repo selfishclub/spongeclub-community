@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function SlowquickCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function SlowquickCertificate() {
   };
 
   const character = {
-    type: "정본으로 돌파한 사람",
+    type: "정본으로 돌파한 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
       "오프라인에서 \"경력 단절 기간이 길었고, 과부하로 3~4주 학습이 정체됐다\"고 솔직하게 밝혔어요. 개발자 남편에게 배운 '정본' 방법론으로 돌파구를 만들고, 화요일 자체 공유회를 열었어요. 1주차에 블로그 플랫폼을, 2주차엔 Sullivan 사고 파트너 시스템을 텔레그램 봇으로 연결하며, \"봇 만들기와 시스템 연결은 완전히 다른 단계\"라는 핵심 학습을 했어요.",
@@ -78,7 +79,7 @@ export default function SlowquickCertificate() {
       "오프라인에서 밝힌 '정본' 방법론으로 학습 정체를 돌파하고, 화요일 자체 공유회까지 열었어요. 이기적 올라운더 배지 — SNS, 스킬 공유, 공유회 개최, 공유회 참여를 모두 달성한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -94,7 +95,7 @@ export default function SlowquickCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="슬로우퀵(박은아)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -109,6 +110,11 @@ export default function SlowquickCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function PpuccaCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function PpuccaCertificate() {
   };
 
   const character = {
-    type: "조용히 흡수하는 사람",
+    type: "조용히 흡수하는 크루",
     image: "/certificate/character-sprout.svg",
     description:
       "\"아무것도 모르던 애가 뭘 만들어내긴 했네,,\"라고 기억되고 싶다고 했어요. 과제 제출은 적었지만 셸 16개를 받으며 크루들에게 존재감을 남겼어요.",
@@ -54,7 +55,7 @@ export default function PpuccaCertificate() {
     after: "3조 안에서 질문하고, 셸을 주고받으며, 아무것도 모르던 상태에서 첫 걸음을 뗐다.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -70,7 +71,7 @@ export default function PpuccaCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="ppucca(이세희)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

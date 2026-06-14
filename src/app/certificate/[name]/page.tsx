@@ -166,6 +166,7 @@ export default function CertificatePage() {
   const params = useParams();
   const name = decodeURIComponent(params.name as string);
   const [rank, setRank] = useState<number | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const memberName = SLUG_TO_NAME[name];
 
@@ -178,6 +179,15 @@ export default function CertificatePage() {
         if (found) setRank(found.rank);
       })
       .catch(() => {});
+
+    if (memberName) {
+      fetch(`/api/members/profile?name=${encodeURIComponent(memberName)}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data?.profile_image) setProfileImage(data.profile_image);
+        })
+        .catch(() => {});
+    }
   }, [memberName]);
 
   const Component = CERTIFICATES[name];
@@ -199,16 +209,18 @@ export default function CertificatePage() {
 
   return (
     <div className="relative">
-      {rank && rank <= 3 && (
-        <div className="sticky top-0 z-50">
-          <div className={`bg-gradient-to-r ${RANK_COLORS[rank - 1]} text-white text-center py-3 px-4 shadow-md`}>
-            <p className="text-sm font-extrabold">
-              {RANK_LABELS[rank - 1]} 누적 활동 랭킹 {rank}위
-            </p>
+      {/* Profile image overlay on hero section */}
+      {profileImage && (
+        <div className="absolute left-1/2 -translate-x-1/2 z-40" style={{ top: "2rem" }}>
+          <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-[var(--paper)] shadow-lg overflow-hidden bg-[var(--ink-10)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={profileImage} alt="" className="w-full h-full object-cover" />
           </div>
         </div>
       )}
-      <Component />
+      <div className={profileImage ? "pt-14 md:pt-16" : ""}>
+        <Component />
+      </div>
     </div>
   );
 }

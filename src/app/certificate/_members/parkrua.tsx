@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function ParkRuaCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function ParkRuaCertificate() {
   };
 
   const character = {
-    type: "나로 시작하는 사람",
+    type: "나로 시작하는 크루",
     image: "/certificate/character-sprout.svg",
     description:
       "오프라인에서 닉네임을 '나로'로 바꿨다고 밝혔어요. 15년간 연인을 뒷바라지하다 사별 후 자신을 돌아보기 시작했다는 배경을 나누며, 크루들에게 깊은 인상을 남겼어요. '시오릴일일' 브랜드를 론칭하고, 디자인에 마케팅·기획 역량을 더하기 위해 참여했어요.",
@@ -53,7 +54,7 @@ export default function ParkRuaCertificate() {
     after: "오프라인에서 개인적 배경을 솔직하게 나누며 \"지금은 결과가 아닌 과정\"이라는 격려를 받았어요. 나로 시작하는 브랜드를 만들어가는 중.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -69,7 +70,7 @@ export default function ParkRuaCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="박루아" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

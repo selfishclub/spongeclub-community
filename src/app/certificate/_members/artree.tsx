@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function ArtreeCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function ArtreeCertificate() {
   };
 
   const character = {
-    type: "경계에서 균형을 찾는 사람",
+    type: "경계에서 균형을 찾는 크루",
     image: "/certificate/character-recorder.svg",
     description:
       "오프라인에서 \"15명 규모 법인을 운영하며 하고 싶은 프로젝트와 경영 관리 사이의 균형이 키워드\"라고 밝혔어요. AI 자동화로 경영 관리 부담을 줄여 원하는 프로젝트에 집중하고 싶다고. 암묵지를 형식지로 전환하는 경험이 유익했다고 말한 사람이에요.",
@@ -51,7 +52,7 @@ export default function ArtreeCertificate() {
     after: "오프라인에서 \"암묵지를 형식지로 전환하는 경험이 유익했다\"고 말했어요. 경영 관리와 프로젝트 사이의 균형을 AI로 풀어가는 방향을 잡았어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -67,7 +68,7 @@ export default function ArtreeCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="artree" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

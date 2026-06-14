@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function NamuCertificate() {
   const member = { name: "나무", realName: "김남욱", team: "1조", jobTitle: "미디어커머스 마케팅 총괄", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "감각으로 시작하는 사람",
+    type: "감각으로 시작하는 크루",
     image: "/certificate/character-sprout.svg",
     description:
       "\"결과물의 품질 판단\"이 어렵다고 했던 사람이에요. OT에서 \"왜 옵시디언을 쓰는지 자세히는 모르지만 감각적으로 이해가 가고 있다\"고 썼다. 완벽히 이해하기 전에 먼저 감각으로 부딪히는 사람이에요. 과제 제출은 OT 한 번이었지만, 크루 4명에게 셸을 보내며 커뮤니티 안에서 조용히 존재감을 남겼어요.",
@@ -52,7 +53,7 @@ export default function NamuCertificate() {
     after: "과제 제출은 OT 한 번이었지만, 공유회에 참여하고 크루들과 인사를 나누며 커뮤니티 안에서 연결을 만들었어요. 릴스에서 떠올려줬다는 크루의 메시지는, 온라인 밖에서도 존재감을 남기고 있었다는 증거.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -68,7 +69,7 @@ export default function NamuCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="나무(김남욱)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

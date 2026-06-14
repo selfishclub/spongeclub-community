@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function JiniCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function JiniCertificate() {
   };
 
   const character = {
-    type: "스킬을 가장 많이 나눈 사람",
+    type: "스킬을 가장 많이 나눈 크루",
     image: "/certificate/character-speaker.svg",
     description:
       "스킬 공유 8회 — 전체 멤버 중 최다. 공유회 11번 참여, 셸 30개 보내기. \"이제 어떤 AI도 충분히 누구보다 잘 활용할 수 있는 선두자\"로 기억되고 싶다고 했는데, 숫자가 그 방향을 증명하고 있어요.",
@@ -58,7 +59,7 @@ export default function JiniCertificate() {
     after: "스킬 8회 공유, 공유회 11번 참여, 셸 30개 보내기. 딸깍 한 번이 어려웠던 사람이, 가장 많이 나누고 가장 많이 탐험한 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -74,7 +75,7 @@ export default function JiniCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="지니(민은진)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -89,6 +90,11 @@ export default function JiniCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

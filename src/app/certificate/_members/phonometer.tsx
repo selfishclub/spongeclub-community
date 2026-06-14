@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function PhonometerCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function PhonometerCertificate() {
   };
 
   const character = {
-    type: "소리를 시스템으로 만든 사람",
+    type: "소리를 시스템으로 만든 크루",
     image: "/certificate/character-builder.svg",
     description:
       "\"바이브코딩이 불편한데 거의 완전 자동화가 가능한지\"가 막힌 점이었어요. 1주차에 SyncAlive(사운드 전문가 매칭 플랫폼) OS 청사진을, 2주차엔 캐러셀 생성기 MVP를 Vite+React로 구현. \"컨텍스트 스위칭\"이 본질적 통점이라는 발견.",
@@ -74,7 +75,7 @@ export default function PhonometerCertificate() {
       "PRD 13개 섹션을 작성하면 Claude Code가 자동 구현하는 워크플로우를 만들었어요. 완전 자동화가 아니라, 기획과 구현의 역할 분리가 답이라는 걸 발견.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -90,7 +91,7 @@ export default function PhonometerCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="포노미터(김미라)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -105,6 +106,11 @@ export default function PhonometerCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

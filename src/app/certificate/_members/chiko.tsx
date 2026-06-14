@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import RankBadge from "./_RankBadge";
 
 export default function ChikoCertificate() {
   const member = {
@@ -12,7 +13,7 @@ export default function ChikoCertificate() {
   };
 
   const character = {
-    type: "7개의 에이전트를 완성한 사람",
+    type: "7개의 에이전트를 완성한 크루",
     image: "/certificate/character-star.svg",
     description:
       "오프라인에서 솔리반을 참고해 7개의 에이전트를 완성했다고 밝혔어요. 링크드인·블로그·인스타 3개 채널 콘텐츠가 자동으로 생성되는 시스템을 구축. 센세 페르소나 기반 브랜드 전략과 피그마 방식 수정 패널까지. 셸 28개를 받으며 크루들에게 강한 인상을 남겼어요.",
@@ -56,7 +57,7 @@ export default function ChikoCertificate() {
     after: "오프라인에서 7개 에이전트 완성을 공유했어요. 채팅 수준에서 머물던 사람이, 3개 채널 자동 콘텐츠 생성 시스템을 구축한 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 4;
+  const hasDiploma = stats.attendance.present >= 2;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
@@ -72,7 +73,7 @@ export default function ChikoCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center">
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="치코(김나영)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
@@ -87,6 +88,11 @@ export default function ChikoCertificate() {
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
                 <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <div className="mt-4 inline-block rotate-[-12deg]">
+                  <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
+                    <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
