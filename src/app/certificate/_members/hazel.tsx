@@ -15,7 +15,7 @@ export default function HazelCertificate() {
     type: "어떻게든 해내는 사람",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"어떻게든 해내는 사람\"으로 기억되고 싶다고 했어요. 셸 16개 보내기. 6주간 꾸준히 출석하며 자리를 지켰다.",
+      "\"어떻게든 해내는 사람\"으로 기억되고 싶다고 했어요. 셸 16개 보내기. 6주간 꾸준히 출석하며 자리를 지켰어요.",
   };
 
   const stats = {

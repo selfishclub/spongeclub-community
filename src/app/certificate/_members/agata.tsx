@@ -9,7 +9,7 @@ export default function AgataCertificate() {
     type: "호흡으로 시스템을 만든 사람",
     image: "/certificate/character-builder.svg",
     description:
-      "\"퀄리티 항상성\"이 막힌 점이었어요. 그런데 3주차에 \"호흡의 하루\" — 하루 3번 자동 체크인 + 텔레그램 봇 + 옵시디언 기록 시스템을 만들어 MVP로 뽑혔다. 공유회 10번 참여, 스킬 도전 8회. 1조에서 가장 적극적으로 배우고 시도한 사람이에요.",
+      "\"퀄리티 항상성\"이 막힌 점이었어요. 그런데 3주차에 \"호흡의 하루\" — 하루 3번 자동 체크인 + 텔레그램 봇 + 옵시디언 기록 시스템을 만들어 MVP로 뽑혔어요. 공유회 10번 참여, 스킬 도전 8회. 1조에서 가장 적극적으로 배우고 시도한 사람이에요.",
   };
 
   const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 10, snsVerified: 2, shellsSent: 25, shellsReceived: 25 };
@@ -62,7 +62,7 @@ export default function AgataCertificate() {
 
   const beforeAfter = {
     before: "퀄리티 항상성, 클로드 맥스임에도 사용량 한도 제한 이슈",
-    after: "8개 부품과 3개 하네스로 구성된 자동화 시스템을 만들어 MVP에 뽑혔다. 퀄리티 항상성을 고민하던 사람이, 단순한 부품이 가장 안 깨진다는 원리를 발견하고 bash+curl부터 시작하는 사람이 되었어요.",
+    after: "8개 부품과 3개 하네스로 구성된 자동화 시스템을 만들어 MVP에 뽑혔어요. 퀄리티를 고민하던 사람이, 작고 단순한 것부터 쌓아올리는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 3;

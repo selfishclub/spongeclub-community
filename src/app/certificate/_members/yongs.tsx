@@ -15,7 +15,7 @@ export default function YongsCertificate() {
     type: "오뚜기",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 \"약 18년 커리어 동안 50~80개 포지션을 경험하며 도전과 실패를 반복해왔다\"고 밝혔다. 한국어 감성 단어를 비주얼·음악·시 구절과 연동하는 글로벌 한국어 문화 앱 '글' 프로젝트를 준비 중. 8월 법인 설립 목표.",
+      "오프라인에서 \"약 18년 커리어 동안 50~80개 포지션을 경험하며 도전과 실패를 반복해왔다\"고 밝혔어요. 한국어 감성 단어를 비주얼·음악·시 구절과 연동하는 글로벌 한국어 문화 앱 '글' 프로젝트를 준비 중. 8월 법인 설립 목표.",
   };
 
   const stats = {
@@ -49,7 +49,7 @@ export default function YongsCertificate() {
 
   const beforeAfter = {
     before: "어디서부터 시작해야할지 모르겠음.",
-    after: "오프라인에서 20년 커리어의 도전과 실패를 솔직하게 나누며 크루들에게 위로를 줬다. K-컬처 한국어 문화 앱 '글' 프로젝트의 방향을 잡고 8월 법인 설립을 향해 나아가고 있어요.",
+    after: "오프라인에서 20년 커리어의 도전과 실패를 솔직하게 나누며 크루들에게 위로를 줬어요. K-컬처 한국어 문화 앱 '글' 프로젝트의 방향을 잡고 8월 법인 설립을 향해 나아가고 있어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 3;

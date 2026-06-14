@@ -15,7 +15,7 @@ export default function ParksimCertificate() {
     type: "전체 멤버 중 가장 활발한 사람",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "셸 35개 보내기, 29개 받기. SNS 인증 22회. 공유회 7번 참여. VOD 7개 구매. 스킬 공유 1회. 이 모든 숫자가 전체 멤버 최상위권. \"단순 채팅으로 끝나는 부분\"이 막힌 점이었다고 했는데, 채팅을 넘어 시스템을 만들고 나누는 사람이 되었어요.",
+      "셸 35개 보내기, 29개 받기. SNS 인증 22회. 공유회 7번 참여했어요. VOD 7개 구매. 스킬 공유 1회. 이 모든 숫자가 전체 멤버 최상위권. \"단순 채팅으로 끝나는 부분\"이 막힌 점이었다고 했는데, 채팅을 넘어 시스템을 만들고 나누는 사람이 되었어요.",
   };
 
   const stats = {

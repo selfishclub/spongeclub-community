@@ -9,7 +9,7 @@ export default function MintCertificate() {
     type: "냅다 하는 사람",
     image: "/certificate/character-star.svg",
     description:
-      "\"프롬프트를 최적화하는 방법을 모르겠다\"고 했지만, 1주차에 다이어트 OS를 만들고 \"냅다 하면 초심자도 할 수 있다!\"고 외쳤다. 공유회 8번 참여, SNS 인증 8회, 셸 25개 보내기. 숫자가 말해주는 적극성. 본업과 전혀 다른 영역에서 AI를 가장 열정적으로 탐험한 사람이에요.",
+      "\"프롬프트를 최적화하는 방법을 모르겠다\"고 했지만, 1주차에 다이어트 OS를 만들고 \"냅다 하면 초심자도 할 수 있다!\"고 외쳤어요. 공유회 8번 참여, SNS 인증 8회, 셸 25개 보내기. 숫자가 말해주는 적극성. 본업과 전혀 다른 영역에서 AI를 가장 열정적으로 탐험한 사람이에요.",
   };
 
   const stats = { attendance: { present: 5, total: 7 }, sessionsAttended: 8, snsVerified: 8, shellsSent: 25, shellsReceived: 23 };

@@ -9,7 +9,7 @@ export default function ModakCertificate() {
     type: "데이터로 만드는 사람",
     image: "/certificate/character-builder.svg",
     description:
-      "\"보안 및 저작권 허용 범위 지키기\"와 \"활용 아이디어 부족\"이 막힌 점이었어요. 그런데 2주차에 콘텐츠 제작 OS 3계층 아키텍처를 만들어 MVP로 뽑혔다. 5주차엔 AI 글 감별기 SaaS를 출시하며 \"말투는 기능이다\"라는 발견까지 했어요. 아이디어가 부족한 게 아니라, 데이터 구조가 잡히면 아이디어가 따라오는 사람이었어요.",
+      "\"보안 및 저작권 허용 범위 지키기\"와 \"활용 아이디어 부족\"이 막힌 점이었어요. 그런데 2주차에 콘텐츠 제작 OS 3계층 아키텍처를 만들어 MVP로 뽑혔어요. 5주차엔 AI 글 감별기 SaaS를 출시하며 \"말투는 기능이다\"라는 발견까지 했어요. 아이디어가 부족한 게 아니라, 데이터 구조가 잡히면 아이디어가 따라오는 사람이었어요.",
   };
 
   const stats = { attendance: { present: 5, total: 7 }, sessionsAttended: 4, snsVerified: 2, shellsSent: 12, shellsReceived: 10 };

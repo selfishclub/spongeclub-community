@@ -15,7 +15,7 @@ export default function BomiCertificate() {
     type: "영감을 주는 사람",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"공유에 적극적이고, 영감을 주는 사람\"으로 기억되고 싶다고 했어요. 6주간 꾸준히 출석하며 자리를 지켰다.",
+      "\"공유에 적극적이고, 영감을 주는 사람\"으로 기억되고 싶다고 했어요. 6주간 꾸준히 출석하며 자리를 지켰어요.",
   };
 
   const stats = {
@@ -50,7 +50,7 @@ export default function BomiCertificate() {
 
   const beforeAfter = {
     before: "원하는 퀄리티에 도달하는 과정과 방법이 어려움.",
-    after: "6주간 한 번도 빠지지 않고 출석하며 꾸준히 자리를 지켰다. API 연결까지 시도하며 조용히 성장한 사람이에요.",
+    after: "6주간 한 번도 빠지지 않고 출석하며 꾸준히 자리를 지켰어요. API 연결까지 시도하며 조용히 성장한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 3;

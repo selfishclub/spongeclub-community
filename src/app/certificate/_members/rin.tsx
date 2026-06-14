@@ -52,7 +52,7 @@ export default function RinCertificate() {
 
   const beforeAfter = {
     before: "원하는 결과가 나올때까지 어떻게 프롬프트를 다듬어야하는지 모르겠다.",
-    after: "SNS 인증 14회, 공유회 4번 참여. 새로운 거 냅다 들이대겠다는 말 그대로, 꾸준히 기록을 남겼어요.",
+    after: "SNS 인증 14회, 공유회 4번 참여했어요. 새로운 거 냅다 들이대겠다는 말 그대로, 꾸준히 기록을 남겼어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 3;

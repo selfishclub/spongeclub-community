@@ -57,7 +57,7 @@ export default function PinoCertificate() {
   const beforeAfter = {
     before: "어디서부터 시작하는 게 맞는지 결정하는 게 쉽지 않음.",
     after:
-      "OS 인터뷰에서 \"첫 부품 1개\"로 시작점을 좁혔다. 6주간 한 번도 빠지지 않고 출석하며 꾸준히 자리를 지켰다.",
+      "OS 인터뷰에서 \"첫 부품 1개\"로 시작점을 좁혔어요. 6주간 한 번도 빠지지 않고 출석하며 꾸준히 자리를 지켰어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 3;

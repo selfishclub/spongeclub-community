@@ -15,7 +15,7 @@ export default function SunnyCertificate() {
     type: "필요한 도구를 정확히 고르는 사람",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"필요한 도구를 정확히 골라 제대로 쓰는 사람\"으로 기억되고 싶다고 했어요. 공유회 6번 참여, SNS 인증 6회. 균형 잡힌 참여로 자리를 지켰다.",
+      "\"필요한 도구를 정확히 골라 제대로 쓰는 사람\"으로 기억되고 싶다고 했어요. 공유회 6번 참여, SNS 인증 6회. 균형 잡힌 참여로 자리를 지켰어요.",
   };
 
   const stats = {
@@ -50,7 +50,7 @@ export default function SunnyCertificate() {
 
   const beforeAfter = {
     before: "원하는 수준의 결과물을 얻기 위해 요청 내용을 구체적으로 정리하는 과정이 가장 어려움.",
-    after: "공유회 6번, SNS 6회 — 균형 잡힌 참여로 꾸준히 자리를 지켰다. 오웬이 \"OS가 인상 깊었다\"고 말할 만큼 결과물도 만들었어요.",
+    after: "공유회 6번, SNS 6회 — 균형 잡힌 참여로 꾸준히 자리를 지켰어요. 오웬이 \"OS가 인상 깊었다\"고 말할 만큼 결과물도 만들었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 3;

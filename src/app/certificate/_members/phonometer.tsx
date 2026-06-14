@@ -58,7 +58,7 @@ export default function PhonometerCertificate() {
       title: "SyncAlive 캐러셀 생성기 MVP",
       summary:
         "Vite + React로 PRD 13개 섹션 → 자동 구현. 입력 폼에서 카드 8장 실시간 미리보기, PNG ZIP 일괄 다운로드까지.",
-      insight: "표면 통점 \"클로드 디자인과 분리\"가 아니라, \"컨텍스트 스위칭\"이 본질적 통점이었다.",
+      insight: "표면 통점 \"클로드 디자인과 분리\"가 아니라, \"컨텍스트 스위칭\"이 본질적 통점이었어요.",
     },
   ];
 

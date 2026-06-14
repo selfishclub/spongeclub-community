@@ -15,7 +15,7 @@ export default function LindiCertificate() {
     type: "끝까지 남은 사람",
     image: "/certificate/character-steady.svg",
     description:
-      "\"끝까지 남은 사람 (많은 발전이 있었던 사람)\"으로 기억되고 싶다고 했어요. 5주간 출석하며 자리를 지켰다.",
+      "\"끝까지 남은 사람 (많은 발전이 있었던 사람)\"으로 기억되고 싶다고 했어요. 5주간 출석하며 자리를 지켰어요.",
   };
 
   const stats = {
