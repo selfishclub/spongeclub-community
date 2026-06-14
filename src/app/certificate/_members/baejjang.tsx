@@ -23,7 +23,7 @@ export default function BaejjangCertificate() {
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 5,
     snsVerified: 5,
     shellsSent: 25,
@@ -39,7 +39,7 @@ export default function BaejjangCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

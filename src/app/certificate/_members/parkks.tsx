@@ -20,7 +20,7 @@ export default function ParkKSCertificate() {
   };
 
   const stats = {
-    attendance: { present: 4, total: 7 },
+    attendance: { present: 5, total: 7 },
     sessionsAttended: 5,
     snsVerified: 1,
     shellsSent: 8,
@@ -34,7 +34,7 @@ export default function ParkKSCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

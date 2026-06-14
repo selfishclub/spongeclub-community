@@ -16,7 +16,7 @@ export default function BomiCertificate() {
     type: "영감을 주는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"공유에 적극적이고, 영감을 주는 사람\"으로 기억되고 싶다고 했어요. 6주간 꾸준히 출석하며 자리를 지켰어요.",
+      "1주차에 cycle-os -- 여성 호르몬 주기에 따라 화장품·일정·운동·음식·감정을 추천하는 자기관리 스킬을 만들었어요. 회사 자료 접근 불가로 work-helper에서 피벗한 결과물이에요. 6주간 꾸준히 출석하며 자리를 지킨 사람이에요.",
   };
 
   const stats = {
@@ -34,7 +34,7 @@ export default function BomiCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: false },
   ];
 
   const badges = [
@@ -49,9 +49,17 @@ export default function BomiCertificate() {
     { sender: "헤이즐", message: "과제 추가로 공유하느라 바쁘셨겠어요 화이팅입니다!" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "cycle-os — 호르몬 주기 기반 자기관리 스킬",
+      summary: "여성 호르몬 주기에 따라 화장품·일정·운동·음식·감정 관리를 추천하는 스킬을 만들었어요. 회사 자료 접근 불가로 work-helper에서 피벗한 결과물이에요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "원하는 퀄리티에 도달하는 과정과 방법이 어려움.",
-    after: "6주간 한 번도 빠지지 않고 출석하며 꾸준히 자리를 지켰어요. API 연결까지 시도하며 조용히 성장한 사람이에요.",
+    after: "cycle-os 호르몬 주기 관리 스킬을 만들고 API 연결까지 시도했어요. 원하는 퀄리티에 도달하는 법을 몰랐던 사람이, 직접 피벗하며 자기만의 답을 찾아간 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -148,6 +156,8 @@ export default function BomiCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

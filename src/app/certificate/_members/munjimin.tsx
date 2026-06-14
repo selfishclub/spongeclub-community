@@ -16,7 +16,7 @@ export default function MunjiminCertificate() {
     type: "막힌 지점을 먼저 꺼내는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"완벽한 결과물을 낸 사람보다, 막힌 지점과 배운 점을 먼저 꺼낸 사람으로 기억되고 싶다\"고 했어요. 부조장으로서 4조를 이끌며 셸 16개 보내고 16개 받기. SNS 인증 10회, 공유회 9번 참여, 스킬 공유 2회.",
+      "1주차에 저녁 마감 OS를 설계하며 매일 반복되는 결정 피로와 맥락 반복 문제를 구조적으로 풀었어요. \"도구가 늘어날수록 정리 비용도 같이 늘어난다\"는 발견. 부조장으로서 4조를 이끌며 막힌 지점을 먼저 꺼내는 사람이에요.",
   };
 
   const stats = {
@@ -34,7 +34,7 @@ export default function MunjiminCertificate() {
     { week: "3주차", date: "5/24", present: false },
     { week: "4주차", date: "5/31", present: false },
     { week: "5주차", date: "6/7", present: false },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: false },
   ];
 
   const badges = [
@@ -54,9 +54,18 @@ export default function MunjiminCertificate() {
     { sender: "달빛그린", message: "부조장님 항상 열심히 하는 모습 멋져요~!" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "저녁 마감 OS — evening-close 스킬 설계",
+      summary: "매일 반복되는 결정 피로와 맥락 반복 문제를 해결하는 OS를 설계했어요. AI에게 배경부터 다시 설명하는 비용을 없애는 구조를 만들었어요.",
+      insight: "도구가 늘어날수록 정리 비용도 같이 늘어나요 — 유지보수 폭발을 막는 게 핵심이에요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "AI를 쓰면서 좋은 답변이 나와도 시간이 지나면 맥락이 쉽게 흩어진다.",
-    after: "부조장으로서 4조를 이끌며 공지·안내에 항상 앞장섰어요. 막힌 지점을 먼저 꺼내겠다는 말 그대로, 솔직한 나눔으로 조를 움직인 사람이에요.",
+    after: "저녁 마감 OS로 맥락 반복 비용을 구조적으로 해결하고, 부조장으로서 4조를 이끌었어요. 맥락이 흩어지는 문제를 시스템으로 잡는 법을 배운 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -148,6 +157,8 @@ export default function MunjiminCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

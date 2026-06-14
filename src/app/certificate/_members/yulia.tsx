@@ -16,11 +16,11 @@ export default function YuliaCertificate() {
     type: "가르치며 배우는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 \"소모임에서 기초 개념을 설명하다 보니 내가 설명한 것이 정확한가를 재확인하게 됐다\"고 말했어요. 헤르메스 에이전트·API 기초 주제로 이기적 공유회를 예정. 셸 30개를 받으며 3조에서 가장 많은 응원을 받은 사람 중 하나.",
+      "5주차에 Agentic OS를 설계하며 Interview에서 Verify까지 7단계 SDD 워크플로우를 정리했어요. \"AI에게 알아서 해달라고 맡기는 게 아니라, 실패하기 어렵게 길을 깔아주는 것\"이 핵심이라는 발견. 소모임에서 기초 개념을 가르치며 자신도 재확인하는 사람이에요.",
   };
 
   const stats = {
-    attendance: { present: 5, total: 7 },
+    attendance: { present: 6, total: 7 },
     sessionsAttended: 6,
     snsVerified: 2,
     shellsSent: 23,
@@ -34,7 +34,7 @@ export default function YuliaCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: false },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -54,9 +54,18 @@ export default function YuliaCertificate() {
     { sender: "지니", message: "오늘 부산에서의 회동 너무 즐거웠어요 몸건강 언능 회복해보자구요" },
   ];
 
+  const timeline = [
+    {
+      week: "5주차", date: "6/7",
+      title: "Agentic OS — SDD 기반 워크플로우 설계",
+      summary: "agent가 알아서 일하길 기대했지만, 핵심은 agent 성능이 아니라 목적과 범위를 구체화하는 것이었어요. Interview → Clarify → Spec → Plan → Tasks → Execute → Verify 흐름을 정리했어요.",
+      insight: "AI에게 알아서 해달라고 맡기는 방법이 아니라, AI가 실패하기 어렵게 길을 깔아주는 방법이 핵심이에요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "결과물의 품질 판단이 어려움.",
-    after: "오프라인에서 \"가르치면서 내가 정확한지 재확인하게 됐다\"고 말했어요. 이기적 공유회를 예정하며, 품질 판단의 답을 나눔 속에서 찾아가고 있어요.",
+    after: "Agentic OS의 SDD 워크플로우를 설계하고, 이기적 공유회를 열며 가르치는 과정에서 품질 판단의 기준을 직접 세워가고 있어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -153,6 +162,8 @@ export default function YuliaCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

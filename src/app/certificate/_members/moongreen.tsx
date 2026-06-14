@@ -34,7 +34,7 @@ export default function MoongreenCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: false },
   ];
 
   const badges = [
@@ -52,9 +52,28 @@ export default function MoongreenCertificate() {
     { sender: "다다", message: "아프지마세영 ㅠㅠㅠㅠ" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "두뇌창고 PRD + 맛집 카드 스킬",
+      summary: "흩어진 메모를 AI가 자동 분류하는 앱 '두뇌창고' 기획서를 완성했어요. 맛집 사진만 던지면 인스타 카드를 자동 생성하는 스킬도 만들었어요.",
+      insight: "분류 결정 비용이 높으면 뇌가 분류를 포기해요 — 결정을 없애는 게 해결책이에요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "JY Creator DB — 캡처 인사이트 추출 웹앱",
+      summary: "캡처 이미지를 올리면 Claude가 핵심을 뽑고 공통 테마를 연결하는 웹앱을 만들었어요. 문제는 수집이 아니라 꺼내 쓰는 것이었어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "텔레그램 봇 + GitHub 자동 저장 시스템",
+      summary: "텔레그램으로 캡처를 보내면 AI가 분석하고 GitHub에 자동 저장하는 시스템을 만들었어요. AI 모델을 4번 전환하며 비용 최적화를 경험했어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "내 머리 속에 것을 어떻게 구현할 수 있는지, 원하는 결과물로 구체적으로 수정하는 것이 어려움.",
-    after: "오프라인에서 \"꼴찌라도 같이 배에 올라탔다\"고 말했지만, SNS 인증 21회로 전체 멤버 중 가장 많은 기록을 남겼어요. 새벽까지 작업해서 연동을 성공시킨 날도 있었어요.",
+    after: "\"두뇌창고\" 기획서를 완성하고, JY Creator DB 웹앱, 텔레그램 봇+GitHub 자동 저장 시스템까지 만들었어요. 구현이 어려웠던 사람이, 새벽까지 작업해서 연동을 성공시키는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -151,6 +170,8 @@ export default function MoongreenCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

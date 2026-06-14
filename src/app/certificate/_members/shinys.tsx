@@ -16,11 +16,11 @@ export default function ShinYSCertificate() {
     type: "연결하고 응원하는 크루",
     image: "/certificate/character-connector.svg",
     description:
-      "셸 26개 보내기, 18개 받기. 스킬 공유 3회 달성. \"함께 프로젝트 해보고 싶은 사람\"으로 기억되고 싶다고 했는데, 실제로 3조에서 가장 적극적으로 셸을 보내고 연결한 사람 중 하나.",
+      "육아휴직 중인 PM이 1주차에 장보기 도우미, 제품 구매 판단기, 이유식 식단 생성기 세 가지 스킬을 한 세션에 완성했어요. \"결제가 아니라 결정이 진짜 비용\"이라는 발견으로 육아 OS를 만든 사람이에요. 셸 26개를 보내며 3조에서 가장 적극적으로 연결한 사람 중 하나.",
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 6,
     snsVerified: 5,
     shellsSent: 26,
@@ -34,7 +34,7 @@ export default function ShinYSCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -52,9 +52,18 @@ export default function ShinYSCertificate() {
     { sender: "지니", message: "연수님~ 오늘 오프라인모임 조금있다 봬요오-" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "육아 OS — 뚝딱뚝딱 스킬 3종 완성",
+      summary: "육아휴직 중인 PM이 결정 비용을 줄이기 위한 OS를 만들었어요. 장보기 도우미, 제품 구매 판단기, 이유식 식단 생성기까지 세 가지 스킬을 한 세션에 완성했어요.",
+      insight: "결제가 아니라 결정이 진짜 비용이에요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "질문 시 어디까지 신뢰할 수 있을지 판단이 어려움. 답변에서 사용자를 우쭈쭈 해주는 것이 아닌지.",
-    after: "스킬 공유 3회 달성, 셸 26개 보내기. 함께 프로젝트 해보고 싶은 사람이 되겠다는 목표 그대로, 3조에서 가장 적극적으로 연결한 사람이에요.",
+    after: "육아 OS로 장보기·구매 판단·이유식 스킬 3종을 한 세션에 완성했어요. AI 답변을 신뢰하기 어려웠던 사람이, 자기 도메인에서 직접 검증하며 스킬을 만드는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -151,6 +160,8 @@ export default function ShinYSCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

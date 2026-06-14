@@ -20,7 +20,7 @@ export default function AmyCertificate() {
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 4,
     snsVerified: 5,
     shellsSent: 10,
@@ -34,7 +34,7 @@ export default function AmyCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

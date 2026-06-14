@@ -20,7 +20,7 @@ export default function ParkRuaCertificate() {
   };
 
   const stats = {
-    attendance: { present: 4, total: 7 },
+    attendance: { present: 5, total: 7 },
     sessionsAttended: 4,
     snsVerified: 0,
     shellsSent: 13,
@@ -34,7 +34,7 @@ export default function ParkRuaCertificate() {
     { week: "3주차", date: "5/24", present: false },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: false },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

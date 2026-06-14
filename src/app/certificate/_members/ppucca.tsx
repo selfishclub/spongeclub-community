@@ -20,7 +20,7 @@ export default function PpuccaCertificate() {
   };
 
   const stats = {
-    attendance: { present: 3, total: 7 },
+    attendance: { present: 4, total: 7 },
     sessionsAttended: 0,
     snsVerified: 1,
     shellsSent: 8,
@@ -34,7 +34,7 @@ export default function PpuccaCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: false },
     { week: "5주차", date: "6/7", present: false },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

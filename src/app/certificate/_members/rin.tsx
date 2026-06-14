@@ -16,11 +16,11 @@ export default function RinCertificate() {
     type: "새로운 거 냅다 들이대는 크루",
     image: "/certificate/character-star.svg",
     description:
-      "\"새로운 거 냅다 들이대는 사람\"으로 기억되고 싶다고 했어요. SNS 인증 14회로 꾸준히 기록을 남겼어요.",
+      "1주차에 캐릭터 그림 변환 로컬 웹앱을 만들어 그림 노동 6시간을 단축했어요. Gemini 2.5 Flash로 4모드 토글, AI 배경 제거, 모션 블러 패널까지 구현. SNS 인증 14회로 꾸준히 기록을 남긴 사람이에요.",
   };
 
   const stats = {
-    attendance: { present: 5, total: 7 },
+    attendance: { present: 6, total: 7 },
     sessionsAttended: 4,
     snsVerified: 14,
     shellsSent: 7,
@@ -34,7 +34,7 @@ export default function RinCertificate() {
     { week: "3주차", date: "5/24", present: false },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -51,9 +51,18 @@ export default function RinCertificate() {
     { sender: "다다", message: "오늘의 과제 공유도 기대되어서 셸 보내봅니다!" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "캐릭터 그림 변환 로컬 웹앱",
+      summary: "그림 노동 6시간을 단축하기 위한 웹앱을 만들었어요. Gemini 2.5 Flash로 4모드 토글, AI 배경 제거, 모션 블러 패널까지 구현했어요. API 키 보안 사고를 즉시 처리하는 법도 배웠어요.",
+      insight: "API 키가 있다고 바로 사용 가능한 건 아니에요 — 모델별 과금 정책 확인이 중요해요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "원하는 결과가 나올때까지 어떻게 프롬프트를 다듬어야하는지 모르겠다.",
-    after: "SNS 인증 14회, 공유회 4번 참여했어요. 새로운 거 냅다 들이대겠다는 말 그대로, 꾸준히 기록을 남겼어요.",
+    after: "캐릭터 그림 변환 웹앱을 만들어 6시간 노동을 단축했어요. 프롬프트를 다듬는 법을 몰랐던 사람이, 직접 웹앱을 만들어 문제를 해결하는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -150,6 +159,8 @@ export default function RinCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

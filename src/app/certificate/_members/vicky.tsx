@@ -16,11 +16,11 @@ export default function VickyCertificate() {
     type: "꾸준히 기록하는 크루",
     image: "/certificate/character-steady.svg",
     description:
-      "\"열심히 참여하는 사람\"으로 기억되고 싶다고 했어요. SNS 인증 12회, 셸 12개 보내기. 일본 이커머스 운영대행이라는 독특한 도메인에서 AI를 활용하며 꾸준히 기록을 남겼어요.",
+      "1주차에 Qoo10 키워드 트래커 OS를 설계하며 \"결과를 보고 확인·선택·결정만 하고 나머지는 시스템이 하는 구조\"를 만들었어요. 일본 이커머스 운영대행이라는 독특한 도메인에서 SNS 12회 기록을 남기며 꾸준히 참여한 사람이에요.",
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 3,
     snsVerified: 12,
     shellsSent: 12,
@@ -34,7 +34,7 @@ export default function VickyCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -49,9 +49,17 @@ export default function VickyCertificate() {
     { sender: "거북이", message: "어제 앱 리뷰 너무 감사해요~ 큰 도움 되었습니다~^^" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "Qoo10 키워드 트래커 OS 설계",
+      summary: "이커머스 셀러로서 키워드 추적 자동화를 위한 OS 청사진과 첫 부품 PRD를 완성했어요. 결과를 보고 확인·선택·결정만 하고 나머지는 시스템이 하는 구조를 설계했어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "결과물이 안 좋을 때, 사실과 다를 때 어려움.",
-    after: "SNS 인증 12회, 셸 12개 보내기. 열심히 참여하겠다는 말 그대로, 6주간 꾸준히 기록하고 나눈 사람이에요.",
+    after: "Qoo10 키워드 트래커 OS를 설계하며, 결과물이 안 좋을 때 어떻게 할지 몰랐던 사람이 시스템으로 판단을 자동화하는 방법을 찾았어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -148,6 +156,8 @@ export default function VickyCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

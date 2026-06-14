@@ -16,11 +16,11 @@ export default function IanCertificate() {
     type: "혼자서 뭔가 하고 있는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"흡수가 빠르고 실천이 빠른 사람\"으로 기억되고 싶다고 했어요. 오웬이 \"혼자서 뭔가 엄청 열심히 하고 있을 것 같은 이안\"이라고 셸 메시지를 보냈어요. 6주간 꾸준히 출석.",
+      "1주차에 script2storyboard -- 대본을 넣으면 컷 단위로 분해하고 이미지 프롬프트까지 생성하는 스킬을 만들었어요. 5주차엔 SSCUT에서 Weft로 재설계하며 GUI를 버리고 AI가 직접 구동하는 CLI 도구로 전환했어요. 조용히 혼자서 만들어가는 사람이에요.",
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 3,
     snsVerified: 2,
     shellsSent: 6,
@@ -34,7 +34,7 @@ export default function IanCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -51,9 +51,22 @@ export default function IanCertificate() {
     { sender: "박상임", message: "영상 만드는거 너무 멋져요~ 이번주도 화이팅입니다!!" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "script2storyboard — 영상 스토리보드 자동화",
+      summary: "대본을 넣으면 컷 단위로 분해하고 이미지 프롬프트까지 생성하는 스킬을 만들었어요. 영상 도메인의 OS를 설계하고 첫 부품을 v0.1.1까지 다듬었어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "SSCUT에서 Weft로 — 영상 편집 도구 재설계",
+      summary: "자체 렌더링을 포기하고 CapCut 프로젝트 파일까지만 만드는 CLI 도구로 재설계했어요. GUI를 버리고 AI가 직접 구동하는 도구로 바꾼 게 핵심 전환이었어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "여러 단계를 엮거나 작업물 품질판단을 수동으로 하고있는데 이걸 자동화하는 것이 어려움.",
-    after: "6주간 꾸준히 출석하며 영상 제작과 스킬 공유까지. 오웬이 \"혼자서 엄청 열심히 하고 있을 것 같다\"고 말한 그대로, 조용히 만들어가는 사람이에요.",
+    after: "script2storyboard에서 Weft까지, 영상 편집 자동화 도구를 두 번 재설계하며 여러 단계를 엮는 자동화의 답을 직접 찾아간 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -150,6 +163,8 @@ export default function IanCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

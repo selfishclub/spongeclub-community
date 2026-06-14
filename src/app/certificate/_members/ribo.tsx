@@ -16,11 +16,11 @@ export default function RiboCertificate() {
     type: "용기를 주는 크루",
     image: "/certificate/character-connector.svg",
     description:
-      "\"다른사람 작업물에 공감, 칭찬, 응원을 하면서 용기를 줄 수 있는 사람\"으로 기억되고 싶다고 했어요. 셸 30개를 받으며 실제로 그렇게 기억되고 있어요. 공유회 10번 참여, SNS 인증 12회, 셸 20개 보내기.",
+      "1주차에 멀티채널 발행 OS와 텔레그램 봇 MVP를 만들고, 3주차엔 \"스크랩어데이\" -- 다꾸하듯 우표형 사진 일기 웹앱을 구현했어요. 5주차엔 스티커 17개, 이메일 로그인까지 붙이며 Post-MVP로 발전시켰어요. 셸 31개를 받으며 용기를 주는 사람으로 기억되고 있어요.",
   };
 
   const stats = {
-    attendance: { present: 5, total: 7 },
+    attendance: { present: 6, total: 7 },
     sessionsAttended: 10,
     snsVerified: 12,
     shellsSent: 20,
@@ -34,7 +34,7 @@ export default function RiboCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: false },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -53,9 +53,28 @@ export default function RiboCertificate() {
     { sender: "4조 지니", message: "ppt 듣고 공유회열때까지 ㅋ" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "멀티채널 발행 OS + 텔레그램 봇 MVP",
+      summary: "멀티채널 발행 운영자의 OS 청사진을 그리고, 이미지를 HTML로 변환하는 플러그인을 만들었어요. 옵시디언+텔레그램 봇까지 연결해서 MVP를 완성했어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "스크랩어데이 — 우표형 일기 웹앱",
+      summary: "다꾸하듯 월 캘린더에 사진을 우표 모양으로 붙이는 일기 웹앱을 만들었어요. PRD를 라우터처럼 모듈로 분할해서 컨텍스트 윈도우 사용량을 줄였어요.",
+      insight: "CSS mask는 작은 사이즈에서 안 보여요 — SVG overlay로 전환하니 해결됐어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "스크랩어데이 Post-MVP + 로그인 구현",
+      summary: "특별한 날 스티커 17개, 배경 색상 자유 선택, 검색 통계, 이메일 인증 로그인까지 구현했어요. 디자인 규칙을 정확하게 명시하니까 정리가 됐어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "어디서부터 시작해서 어떻게 엮어나가면서 발전시켜야할지 모르겠다.",
-    after: "공유회 10번, SNS 12회, 셸 31개 받기. 용기를 주고 싶다고 했던 사람이, 실제로 가장 많은 응원을 받은 사람이 되었어요.",
+    after: "멀티채널 발행 OS에서 \"스크랩어데이\" 우표형 일기 웹앱까지, 어떻게 엮어 발전시킬지 몰랐던 사람이 MVP에서 Post-MVP까지 직접 키워낸 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -152,6 +171,8 @@ export default function RiboCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

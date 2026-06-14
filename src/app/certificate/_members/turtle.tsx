@@ -20,7 +20,7 @@ export default function TurtleCertificate() {
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 7,
     snsVerified: 6,
     shellsSent: 17,
@@ -34,7 +34,7 @@ export default function TurtleCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -50,6 +50,26 @@ export default function TurtleCertificate() {
     { sender: "박상임", message: "지식의 깊이가 남다르신! 올려주신 옵시디언 정보도 잘 보겠습니다~~" },
     { sender: "ppucca", message: "어제 꿀팁 너무 감사했습니다!!" },
     { sender: "Hook2", message: "같이 메타 들어요~~" },
+  ];
+
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "콘텐츠 제작 OS — LLM Wiki + 에이전트 구축",
+      summary: "1인 이커머스 셀러로서 상품 콘텐츠 제작 부담을 줄이기 위한 OS를 설계했어요. 옵시디언 Wiki + Claude Code를 기반으로 기획자·작가·비주얼 에이전트 구조를 잡았어요.",
+      insight: "냅다 한번 해보고, 문제점 고민한 뒤 다시 하면 훨씬 좋아요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "쇼핑인사이트 키워드 분석기",
+      summary: "네이버 쇼핑인사이트 Top100 키워드를 의미 단위로 분해하고 AI가 시장 해석을 붙여주는 로컬 웹앱을 만들었어요. 카테고리마다 키워드 DNA가 완전히 다르다는 걸 발견했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "콘텐츠 제작 OS — MCP 서버 + 자동화 시스템",
+      summary: "LLM Wiki를 MCP 서버로 세팅해서 모든 AI가 내 자료를 직접 꺼내 쓰는 구조를 만들었어요. 1회성 소모 작업을 재사용되는 자산으로 바꾼 게 핵심이에요.",
+      insight: "기술 용어를 몰라도 목적만 말하면 AI가 방법을 찾아요.",
+    },
   ];
 
   const beforeAfter = {
@@ -151,6 +171,8 @@ export default function TurtleCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

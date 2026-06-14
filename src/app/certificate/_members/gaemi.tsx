@@ -16,11 +16,11 @@ export default function GaemiCertificate() {
     type: "3조의 허브",
     image: "/certificate/character-connector.svg",
     description:
-      "셸 45개를 받고 29개를 보냈어요 — 전체 멤버 중 가장 많은 셸을 받은 사람이에요. 3조 멤버 전원에게 셸을 한 번씩 보냈어요. VOD 9개 구매로 VOD 큰 손 배지. 스킬 공유 3회 달성에 크루챗까지 — 이기적 올라운더에 가장 가까운 활동량.",
+      "GPT와 Claude 두 세션을 병행하며 OS 인터뷰를 비교 실험하고, \"즐거운 개미집\" 모임 커뮤니티 웹사이트를 직접 만들어 배포했어요. 5주차엔 UX v2 개편까지 진행하며 Phase 단위 검증-배포 사이클을 돌렸어요. 셸 45개를 받으며 전체 멤버 중 가장 많은 응원을 모은 3조의 허브예요.",
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 1,
     snsVerified: 6,
     shellsSent: 29,
@@ -34,7 +34,7 @@ export default function GaemiCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -55,9 +55,28 @@ export default function GaemiCertificate() {
     { sender: "솔라", message: "영차영차 5일차" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "GPT vs Claude 세션 병행 OS 인터뷰",
+      summary: "같은 인터뷰 스킬을 GPT와 Claude 두 세션에서 병행 진행했어요. 같은 통점에서 출발했는데 깊이형 vs 펜아웃형으로 완전히 다른 결과가 나왔어요. 두 부품을 비교한 뒤 장점을 합쳐 v0.2로 업그레이드했어요.",
+      insight: "같은 사용자, 같은 스킬이라도 세션이 다르면 결과가 갈라진다.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "즐거운 개미집 MVP 웹사이트 구현",
+      summary: "회사와 집만 반복하는 직장인을 위한 모임 커뮤니티 웹사이트를 실제로 배포했어요. 오늘의 질문, 익명 답변, 좋아요, 모임 상세 페이지까지 구현했어요. GPT로 요구사항 정리, Claude Code로 코드 작성하는 협업 방식을 썼어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "즐거운 개미집 UX v2 개편",
+      summary: "신청 도메인 정비, 작업 표준 문서화, 디자인 시스템 전면 개편까지 진행했어요. Phase 단위로 검증-승인-배포 사이클을 돌리며 체계적으로 리뉴얼했어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "이전에 원활하게 쓰인 프롬프트가 바뀌더라구요. AI 정보가 계속 갱신되는 것이 어려움.",
-    after: "셸 45개를 받으며 전체 멤버 중 가장 많은 응원을 모은 사람이 되었어요. 3조 멤버 전원에게 셸을 보내며 허브 역할을 했어요.",
+    after: "\"즐거운 개미집\" 웹사이트를 만들어 배포하고 UX v2 개편까지 완료했어요. 프롬프트가 바뀌어도 흔들리지 않는 자기만의 시스템을 갖게 된 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -154,6 +173,8 @@ export default function GaemiCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

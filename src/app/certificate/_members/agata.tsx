@@ -13,7 +13,7 @@ export default function AgataCertificate() {
       "\"퀄리티 항상성\"이 막힌 점이었어요. 그런데 3주차에 \"호흡의 하루\" — 하루 3번 자동 체크인 + 텔레그램 봇 + 옵시디언 기록 시스템을 만들어 MVP로 뽑혔어요. 공유회 10번 참여, 스킬 도전 8회. 1조에서 가장 적극적으로 배우고 시도한 사람이에요.",
   };
 
-  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 10, snsVerified: 2, shellsSent: 25, shellsReceived: 25 };
+  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 10, snsVerified: 2, shellsSent: 25, shellsReceived: 25 };
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
@@ -22,7 +22,7 @@ export default function AgataCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

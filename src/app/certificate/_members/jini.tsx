@@ -16,11 +16,11 @@ export default function JiniCertificate() {
     type: "스킬을 가장 많이 나눈 크루",
     image: "/certificate/character-speaker.svg",
     description:
-      "스킬 공유 8회 — 전체 멤버 중 최다. 공유회 11번 참여, 셸 30개 보내기. \"이제 어떤 AI도 충분히 누구보다 잘 활용할 수 있는 선두자\"로 기억되고 싶다고 했는데, 숫자가 그 방향을 증명하고 있어요.",
+      "1주차에 C레벨 마케팅 주간보고서 자동화 스킬을 만들고, 3주차엔 광고 데이터를 10가지 마케팅 이론으로 자동 진단하는 마케팅 OS 대시보드까지 구현했어요. 스킬 공유 8회 -- 전체 멤버 중 최다. 만든 것을 가장 많이 나눈 사람이에요.",
   };
 
   const stats = {
-    attendance: { present: 5, total: 7 },
+    attendance: { present: 6, total: 7 },
     sessionsAttended: 11,
     snsVerified: 8,
     shellsSent: 30,
@@ -34,7 +34,7 @@ export default function JiniCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -54,9 +54,23 @@ export default function JiniCertificate() {
     { sender: "개미", message: "지니 과제가 생각나더라고요...! 예전에 스타트업에 다닐 때의 경험이 빛나는" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "C레벨 마케팅 주간보고서 자동화 스킬",
+      summary: "OS 인터뷰로 C레벨 보고 번역 비용이 가장 큰 통점임을 발견했어요. 데이터 수집부터 PNG 차트 + HTML 보고서 자동 저장까지 되는 스킬을 만들었어요.",
+      insight: "인터뷰가 끝이 아니라 수정이 진짜 시작이에요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "마케팅 OS 대시보드 구현",
+      summary: "자사 광고 데이터를 업로드하면 10가지 마케팅 이론 룰로 자동 판단하고 이슈를 예측하는 진단 도구를 만들었어요. 사실 근거 + 권장 액션 묶음이 자동화의 의미예요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "할루시네이션 검증, 매체에서 말하는 딸깍 한번 구현이 어려움.",
-    after: "스킬 8회 공유, 공유회 11번 참여, 셸 30개 보내기. 딸깍 한 번이 어려웠던 사람이, 가장 많이 나누고 가장 많이 탐험한 사람이 되었어요.",
+    after: "C레벨 보고서 자동화부터 마케팅 OS 진단 대시보드까지 만들며 스킬 8회 공유. 딸깍 한 번이 어려웠던 사람이, 가장 많이 만들고 가장 많이 나눈 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -153,6 +167,8 @@ export default function JiniCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

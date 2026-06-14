@@ -13,7 +13,7 @@ export default function LaraCertificate() {
       "\"어려운 문제가 발생했을때 같이 끝까지 고민하고 시도하는 사람\"으로 기억되고 싶다고 했어요. 부조장으로서 6조를 이끌었어요.",
   };
 
-  const stats = { attendance: { present: 4, total: 7 }, sessionsAttended: 0, snsVerified: 4, shellsSent: 0, shellsReceived: 4 };
+  const stats = { attendance: { present: 5, total: 7 }, sessionsAttended: 0, snsVerified: 4, shellsSent: 0, shellsReceived: 4 };
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
@@ -22,7 +22,7 @@ export default function LaraCertificate() {
     { week: "3주차", date: "5/24", present: false },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: false },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

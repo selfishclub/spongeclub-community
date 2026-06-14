@@ -15,7 +15,7 @@ export default function ChoboCertificate() {
     { week: "3주차", date: "5/24", present: false },
     { week: "4주차", date: "5/31", present: false },
     { week: "5주차", date: "6/7", present: false },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: false },
   ];
 
   const hasDiploma = stats.attendance.present >= 2;

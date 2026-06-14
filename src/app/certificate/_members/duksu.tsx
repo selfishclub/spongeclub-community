@@ -16,7 +16,7 @@ export default function DuksuCertificate() {
     type: "남 주려고 정리한 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 브랜드 키트 스타터 OS를 제작 중이라 밝히며, \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의했어요. 2기 참여 의사도 내비친 사람이에요.",
+      "1주차에 \"오늘나\" 컨디션 맞춤 케어 앱 PRD를 완성하고, 3주차엔 Facette -- 디자이너 전용 레퍼런스 아카이브를 만들었어요. 방향을 다섯 번 넘게 엎었지만 동료 10분 인터뷰가 방향을 구했어요. \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의한 사람이에요.",
   };
 
   const stats = {
@@ -34,7 +34,7 @@ export default function DuksuCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: false },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: false },
   ];
 
   const badges = [
@@ -49,9 +49,24 @@ export default function DuksuCertificate() {
     { sender: "배짱", message: "덩기덕쿵더더덕수!" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "오늘나 — 컨디션 맞춤 케어 앱 PRD",
+      summary: "패키지 디자이너가 매일 변하는 컨디션에 맞춘 운동·식단 제안 앱을 설계했어요. 3시간 인터뷰 끝에 '정해진 루틴이 아닌 상태 대응 시스템'이라는 핵심을 찾았어요.",
+      insight: "모르는 것은 솔직하게 — 클로드가 질문 방향을 재조정해줘서 본질에 더 가깝게 접근할 수 있었어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "Facette — 디자이너 전용 레퍼런스 아카이브",
+      summary: "후가공·용기·무드 같은 디자이너 전용 태그로 교차검색하는 도구를 만들었어요. 방향을 다섯 번 넘게 엎었지만, 동료 10분 인터뷰가 방향을 구했어요.",
+      insight: "좁힐수록 강하다 — 디자이너 전용 facet 교차검색이라는 좁은 무기가 차별점이 됐어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "내가 원하는 결과물에 못미칠때 어디서 부터 건들여야하는지 막막함.",
-    after: "오프라인에서 \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의했어요. 브랜드 키트 스타터 OS를 만들며, 공유를 위해 먼저 이해하고 언어화하는 경험을 했어요.",
+    after: "\"오늘나\" 앱 PRD와 Facette 디자이너 아카이브를 만들며, 어디서부터 건드려야 할지 막막했던 사람이 \"좁힐수록 강하다\"는 방법론을 찾은 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -148,6 +163,8 @@ export default function DuksuCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

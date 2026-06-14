@@ -13,7 +13,7 @@ export default function SeokyingCertificate() {
       "셸 28개 보내기 — 6조에서 가장 많은 셸을 보낸 사람이에요. \"결과를 만들어 내는 사람\"으로 기억되고 싶다고 했어요.",
   };
 
-  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 3, snsVerified: 1, shellsSent: 28, shellsReceived: 13 };
+  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 3, snsVerified: 1, shellsSent: 28, shellsReceived: 13 };
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
@@ -22,7 +22,7 @@ export default function SeokyingCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

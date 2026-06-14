@@ -16,11 +16,11 @@ export default function ChikoCertificate() {
     type: "7개의 에이전트를 완성한 크루",
     image: "/certificate/character-star.svg",
     description:
-      "오프라인에서 솔리반을 참고해 7개의 에이전트를 완성했다고 밝혔어요. 링크드인·블로그·인스타 3개 채널 콘텐츠가 자동으로 생성되는 시스템을 구축. 센세 페르소나 기반 브랜드 전략과 피그마 방식 수정 패널까지. 셸 28개를 받으며 크루들에게 강한 인상을 남겼어요.",
+      "1주차에 커리어 OS 포폴 메이커를 만들어 JD 기반 포트폴리오 문장을 자동 생성했어요. 3주차엔 스폰지빌리지 과제 현황판 컴포넌트를 만들어 커뮤니티에 기여했어요. 오프라인에서 7개 에이전트를 완성했다고 밝혔고, 셸 28개를 받으며 3조에서 강한 인상을 남겼어요.",
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 4,
     snsVerified: 5,
     shellsSent: 16,
@@ -34,7 +34,7 @@ export default function ChikoCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -52,9 +52,24 @@ export default function ChikoCertificate() {
     { sender: "신연수", message: "셸보내기 운동 활성화되서 너무 좋네요! 바톤터치 이어갑니다~!" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "커리어 OS — 포폴 메이커 설계",
+      summary: "OS 인터뷰로 '정보가 너무 많아서 착지 못하는 상태'를 발견했어요. 경험 채굴부터 포트폴리오 문장 생성까지 6단계 부품을 설계하고, 실제 JD 기반 인터뷰형 포폴 메이커를 구현했어요.",
+      insight: "레퍼런스 리서치를 시켜서 나의 제품 방향성을 뚜렷하게 잡을 수 있었어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "스폰지빌리지 과제 현황판 컴포넌트",
+      summary: "스폰지클럽 멤버들에게 동기부여를 주는 비주얼 컴포넌트를 만들었어요. 6개 조의 파인애플 집이 과제 제출할 때마다 단계별로 완성되는 구조예요.",
+      insight: "왜 쓰는지 한 문장이 정해지면 기술 결정이 쉬워진다.",
+    },
+  ];
+
   const beforeAfter = {
     before: "채팅으로 질의응답까지고, 코드로 에이전트 활용하거나 반복적인 축적 스킬이 어려움.",
-    after: "오프라인에서 7개 에이전트 완성을 공유했어요. 채팅 수준에서 머물던 사람이, 3개 채널 자동 콘텐츠 생성 시스템을 구축한 사람이 되었어요.",
+    after: "커리어 OS 포폴 메이커부터 스폰지빌리지 현황판, 7개 에이전트까지 만들며 채팅 수준을 넘어 축적형 스킬 시스템을 구축한 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -151,6 +166,8 @@ export default function ChikoCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

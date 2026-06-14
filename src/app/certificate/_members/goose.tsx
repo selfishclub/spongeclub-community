@@ -20,7 +20,7 @@ export default function GooseCertificate() {
   };
 
   const stats = {
-    attendance: { present: 5, total: 7 },
+    attendance: { present: 6, total: 7 },
     sessionsAttended: 0,
     snsVerified: 2,
     shellsSent: 9,
@@ -34,7 +34,7 @@ export default function GooseCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: false },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -50,9 +50,17 @@ export default function GooseCertificate() {
     { sender: "리보", message: "클로드로 선택한 오늘의 셸 보내기 멤버 당첨되었습니다!" },
   ];
 
+  const timeline = [
+    {
+      week: "5주차", date: "6/7",
+      title: "공방 비품관리 대시보드",
+      summary: "공방 운영에 필요한 비품 관리를 대시보드 형태로 만들었어요. 실제 운영에서 쓸 수 있는 도구를 만드는 데 집중했어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "프롬프트를 어떻게 구체적으로 넣어야하는지가 궁금했어요.",
-    after: "오프라인에서 \"솔로프리너는 작은 세상에서 사는 것\"이라며 함께 공유하는 가치를 강조했어요. AI로 주문서 시스템과 ERP를 직접 만들며, 손으로 만드는 사람이 시스템도 만드는 사람이 되고 있어요.",
+    after: "공방 비품관리 대시보드와 커스터마이즈 주문서 시스템을 직접 만들었어요. 프롬프트 작성법이 궁금했던 사람이, 자기 공방을 위한 시스템을 직접 만드는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -149,6 +157,8 @@ export default function GooseCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

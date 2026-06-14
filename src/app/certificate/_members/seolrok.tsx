@@ -16,11 +16,11 @@ export default function SeolrokCertificate() {
     type: "가장 많이 탐험한 크루",
     image: "/certificate/character-explorer.svg",
     description:
-      "공유회 13번 참여, SNS 인증 15회 — 전체 멤버 중 최다. 셸 23개 보내기. \"어디서부터 시작해야 할지 모르겠다\"고 했지만, 실제로는 누구보다 많이 듣고, 많이 기록하고, 많이 나눈 사람이에요.",
+      "1주차에 카톡 회의를 노션으로 자동 정리하는 스킬을 만들고, 3주차엔 \"자화상\" -- 매일 한 줄 비춤 도구를 만들었어요. 5주차엔 다른 시점 비춤 기능을 더하며 44개 메모가 쌓인 도구로 진화시켰어요. 공유회 13번, SNS 15회 -- 누구보다 많이 탐험한 사람이에요.",
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 13,
     snsVerified: 15,
     shellsSent: 23,
@@ -34,7 +34,7 @@ export default function SeolrokCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -53,9 +53,29 @@ export default function SeolrokCertificate() {
     { sender: "솔라", message: "재치있는 프로필 사진부터 멋진 인스타그램 캐러셀까지 뚝딱 만들어내시는 금손 설록!!" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "카톡 회의 → 노션 자동 정리 스킬",
+      summary: "협동조합 OS 인터뷰를 세 번 다시 해서 진짜 통점을 찾았어요. 카톡 대화를 의사결정·액션아이템으로 구조화하는 스킬을 만들었어요.",
+      insight: "인터뷰는 한 번에 안 나와도 돼요 — 세 번 다시 하고서야 진짜 통점이 보였어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "자화상 — 매일 한 줄 비춤 도구",
+      summary: "한 줄 던지면 AI가 짧게 비춰주는 개인 일기 도구를 만들고, 병렬 2-에이전트와 순차 4-에이전트 파이프라인을 적용했어요. 44개 메모가 쌓이면서 도구가 진화했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "자화상에 다른 결 더하기 + 디자인 개편",
+      summary: "버튼을 누르면 다른 시점으로 비춰주는 기능을 더하고, 디자인 가이드 MD 파일로 따뜻한 톤을 입혔어요. 시점을 미리 고르게 하지 않는 게 핵심 결정이었어요.",
+      insight: "해석을 여러 개 줄 땐, 미리 고르게 하지 말고 그냥 받게 하자.",
+    },
+  ];
+
   const beforeAfter = {
     before: "어디서부터 시작해야 할지 모르겠습니다.",
-    after: "공유회 13번, SNS 15회, 셸 23개 보내기. 어디서부터 시작할지 몰랐다는 사람이, 실제로는 누구보다 많이 탐험한 사람이었어요.",
+    after: "카톡 자동 정리 스킬, \"자화상\" 비춤 도구까지 만들며 공유회 13번 참여. 어디서부터 시작할지 몰랐던 사람이, 누구보다 많이 만들고 탐험한 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -152,6 +172,8 @@ export default function SeolrokCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

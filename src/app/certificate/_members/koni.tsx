@@ -16,11 +16,11 @@ export default function KoniCertificate() {
     type: "진짜 돌아가는 걸 만드는 크루",
     image: "/certificate/character-builder.svg",
     description:
-      "\"진짜 돌아가는 뭔가를 들고 오는 사람\"으로 기억되고 싶다고 했어요. 스킬 공유 2회, 공유회 5번 참여, 셸 20개 보내기. 고퀄리티 삽질기로 크루들에게 호평을 받았어요.",
+      "헬스장 운동 기록 PWA를 배포하고, \"환자가 본 우리 병원\" 웹앱으로 MVP에 뽑혔어요. v1→v2→v3까지 두 번 갈아엎고 도착한 사람이에요. 5주차엔 와인 취향 통역기까지 기획하며 \"완성도와 서비스는 다르다\"는 걸 배웠어요.",
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 5,
     snsVerified: 6,
     shellsSent: 20,
@@ -34,7 +34,7 @@ export default function KoniCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -52,9 +52,29 @@ export default function KoniCertificate() {
     { sender: "신연수", message: "셸 모으기운동 서로 주고받아요오" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "흐름 리더 스킬 + 헬스장 생존 OS",
+      summary: "의료 마케터로서 데이터 해석 자동화 스킬을 설계하고, 헬스장 운동 기록 PWA까지 배포했어요. 좁은 타겟(PT 초보 + 내 헬스장)으로 시작하니 의사결정이 빨라졌어요.",
+      insight: "AI가 일반론으로 채우는 걸 잡아야 한다 — 결과물을 그냥 받지 말고 내 언어로 교정하는 과정이 필요해요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "환자가 본 우리 병원 — MVP 수상",
+      summary: "원장님 콘텐츠를 붙여넣으면 환자 시점에서 빠진 키워드를 보여주는 웹앱을 만들었어요. v1 자가진단 → v2 사람진단 → v3 환자시점 도구로 두 번 갈아엎고 도착했어요.",
+      insight: "인하우스 마케터는 모르는 사람한테 팔리는 감각이 무뎌져 있다는 걸 깨달았어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "와인 취향 통역기 기획",
+      summary: "기존 와인 웹앱을 폐기하고 기획부터 다시 시작했어요. 감각을 와인 가게에서 써먹을 수 있는 취향의 언어로 번역해주는 앱이에요. 완성도와 서비스는 다르다는 걸 배웠어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "자동화 파이프라인 설계, 만든 것을 실제 서비스나 수익으로 연결하는 것이 어려움.",
-    after: "고퀄리티 삽질기를 공유하며 크루들에게 호평을 받았어요. 진짜 돌아가는 걸 만드는 과정을 기록하고 나눈 사람이에요.",
+    after: "헬스장 PWA, \"환자가 본 우리 병원\" MVP, 와인 취향 통역기까지 3개 프로덕트를 만들며 자동화를 실제 서비스로 연결하는 감각을 키웠어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -151,6 +171,8 @@ export default function KoniCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

@@ -20,7 +20,7 @@ export default function KinoCertificate() {
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 9,
     snsVerified: 5,
     shellsSent: 16,
@@ -34,7 +34,7 @@ export default function KinoCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -54,9 +54,17 @@ export default function KinoCertificate() {
     { sender: "박상임", message: "키노처럼 '키치하게 만들어줘' 프롬프트를 추가했더니 기대 이상의 자기소개 영상이 나왔어요" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "퍼소나별 콘텐츠 제작 OS",
+      summary: "여러 퍼소나를 가진 프리랜서로서 퍼소나를 선택하면 롱폼 글쓰기와 숏폼 편집을 도와주는 OS를 만들었어요. 인스타 퍼소나로 스폰지타임즈 콘텐츠를 제작해봤어요.",
+    },
+  ];
+
   const beforeAfter = {
     before: "원하는 결과를 얻는 프롬프트, 결과물이 유저입장에서 어떻게 보이는지 궁금했어요.",
-    after: "오프라인에서 \"냅다 정신\"을 선언하고, 셸 40개를 받으며 크루들에게 가장 많은 영감을 준 사람 중 하나. 응급실에서도 열정을 보여준 사람이에요.",
+    after: "퍼소나별 콘텐츠 제작 OS를 만들고 데굴데굴 프로젝트까지 참여했어요. 프롬프트가 어려웠던 사람이, 냅다 선언하고 만들면서 답을 찾는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -153,6 +161,8 @@ export default function KinoCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>{week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}</div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

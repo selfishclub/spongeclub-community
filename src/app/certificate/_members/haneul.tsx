@@ -13,7 +13,7 @@ export default function HaneulCertificate() {
       "\"학습력이 좋은 사람\"으로 기억되고 싶다고 했어요. 공유회 8번 참여, 셸 19개 보내기. 스킬 공유 + 크루챗까지 — 6조에서 가장 다양하게 활동한 사람이에요.",
   };
 
-  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 19, shellsReceived: 14 };
+  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 19, shellsReceived: 14 };
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
@@ -22,7 +22,7 @@ export default function HaneulCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

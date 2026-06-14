@@ -13,7 +13,7 @@ export default function RayCertificate() {
       "오프라인에서 \"15년 디자이너인데 AI 발전으로 프리랜서 방식이 흔들리는 위기감을 느꼈다\"고 밝혔어요. 9월~내년 초 1인 스튜디오 독립을 목표로. \"AI 활용 두려움이 사라졌다\"고 말한 사람이에요.",
   };
 
-  const stats = { attendance: { present: 5, total: 7 }, sessionsAttended: 4, snsVerified: 1, shellsSent: 6, shellsReceived: 5 };
+  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 4, snsVerified: 1, shellsSent: 6, shellsReceived: 5 };
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
@@ -22,7 +22,7 @@ export default function RayCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: false },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: null },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
