@@ -124,7 +124,7 @@ export default function CertificateIndexPage() {
             스폰지클럽 1기 수료증
           </h1>
           <p className="text-sm text-[var(--ink-50)]">
-            {total}명의 활동 기록
+            모두 고생하셨습니다!
           </p>
         </div>
 
