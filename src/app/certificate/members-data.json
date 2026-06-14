@@ -412,7 +412,7 @@
       true,
       null
     ],
-    "attendanceCount": 4,
+    "attendanceCount": 5,
     "sessionsAttended": 5,
     "snsVerified": 1,
     "shellsSent": 8,
@@ -1249,7 +1249,7 @@
       false,
       null
     ],
-    "attendanceCount": 4,
+    "attendanceCount": 5,
     "sessionsAttended": 4,
     "snsVerified": 0,
     "shellsSent": 13,
@@ -1771,7 +1771,7 @@
       true,
       null
     ],
-    "attendanceCount": 3,
+    "attendanceCount": 6,
     "sessionsAttended": 8,
     "snsVerified": 4,
     "shellsSent": 11,
