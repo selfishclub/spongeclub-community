@@ -187,9 +187,9 @@ export default function IniCertificate() {
                   </div>
                   <p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p>
                   <p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>
-                  {week.insight && (
+                  {(week as any).insight && (
                     <div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]">
-                      <p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p>
+                      <p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{(week as any).insight}&rdquo;</p>
                     </div>
                   )}
                 </div>

@@ -139,7 +139,7 @@ export default function NamuCertificate() {
                     <div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div>
                     <p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p>
                     <p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>
-                    {week.insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{week.insight}&rdquo;</p></div>)}
+                    {(week as any).insight && (<div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]"><p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{(week as any).insight}&rdquo;</p></div>)}
                   </div>
                 </div>
               ))}
