@@ -118,7 +118,7 @@ export default function BaejjangCertificate() {
     },
   ];
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

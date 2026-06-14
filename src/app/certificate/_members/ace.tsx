@@ -46,7 +46,7 @@ export default function AceCertificate() {
     after: "오프라인에서 HTML 기반 강의 자료 전환과 책 집필 과정을 공유했어요. 오프라인 글쓰기 합평 모임까지 추진하며, AI를 쓸 곳과 쓰지 않을 곳의 경계를 직접 그어가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

@@ -44,7 +44,7 @@ export default function MemberJCertificate() {
     after: "공유회 8번 참여하며 다양한 활용사례를 직접 보고 배웠어요. 함께 발전하겠다는 말 그대로, 6조에서 꾸준히 참여한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

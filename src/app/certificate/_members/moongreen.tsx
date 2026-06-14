@@ -56,7 +56,7 @@ export default function MoongreenCertificate() {
     after: "오프라인에서 \"꼴찌라도 같이 배에 올라탔다\"고 말했지만, SNS 인증 21회로 전체 멤버 중 가장 많은 기록을 남겼어요. 새벽까지 작업해서 연동을 성공시킨 날도 있었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

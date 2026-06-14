@@ -53,7 +53,7 @@ export default function HazelCertificate() {
     after: "6주간 한 번도 빠지지 않고 출석하고, 셸 16개를 보냈어요. 어떻게든 해내겠다는 말 그대로, 반차까지 각오하며 자리를 지킨 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

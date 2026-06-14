@@ -45,7 +45,7 @@ export default function SeokyingCertificate() {
     after: "셸 28개를 보내며 6조에서 가장 많이 응원한 사람이 되었어요. 발표가 인상적이었다는 크루들의 반응이 증명하듯, 조용히 결과를 만들어낸 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

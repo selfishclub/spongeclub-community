@@ -70,7 +70,7 @@ export default function NinaCertificate() {
     after: "Glance의 5단계 파이프라인으로 흩어진 데이터를 구조화하는 법을 배웠어요. 셸 30개를 보내며 3조에서 가장 적극적으로 연결한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

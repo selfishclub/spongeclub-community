@@ -43,7 +43,7 @@ export default function RayCertificate() {
     after: "오프라인에서 \"AI 활용 두려움이 사라졌다\"고 말했어요. 15년 디자이너로서의 위기감을 행동으로 바꾸며, 독립을 향해 나아가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

@@ -63,7 +63,7 @@ export default function ModakCertificate() {
     after: "2주차에 콘텐츠 제작 OS로 MVP에 뽑혔고, 5주차엔 AI 글 감별기 SaaS를 출시했어요. 아이디어가 부족했던 게 아니라, 데이터 구조를 잡는 법을 몰랐던 것이었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

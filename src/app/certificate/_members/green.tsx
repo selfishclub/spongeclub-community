@@ -54,7 +54,7 @@ export default function GreenCertificate() {
     after: "오프라인에서 \"한 발자국 앞에만 있어도 도움이 된다\"고 말하며 PID 작성법을 공유했어요. 프롬프팅보다 기획 베이스가 먼저라는 걸 발견한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

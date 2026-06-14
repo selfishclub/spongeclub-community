@@ -55,7 +55,7 @@ export default function RinCertificate() {
     after: "SNS 인증 14회, 공유회 4번 참여했어요. 새로운 거 냅다 들이대겠다는 말 그대로, 꾸준히 기록을 남겼어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

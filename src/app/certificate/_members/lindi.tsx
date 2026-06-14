@@ -54,7 +54,7 @@ export default function LindiCertificate() {
     after: "끝까지 남았어요. 3조 크루들에게 클라우드 방식을 알려주고, 불편한 점을 하나씩 헤쳐나갔어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

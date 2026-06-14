@@ -78,7 +78,7 @@ export default function SlowquickCertificate() {
       "오프라인에서 밝힌 '정본' 방법론으로 학습 정체를 돌파하고, 화요일 자체 공유회까지 열었어요. 이기적 올라운더 배지 — SNS, 스킬 공유, 공유회 개최, 공유회 참여를 모두 달성한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

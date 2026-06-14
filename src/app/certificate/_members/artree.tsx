@@ -51,7 +51,7 @@ export default function ArtreeCertificate() {
     after: "오프라인에서 \"암묵지를 형식지로 전환하는 경험이 유익했다\"고 말했어요. 경영 관리와 프로젝트 사이의 균형을 AI로 풀어가는 방향을 잡았어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

@@ -53,7 +53,7 @@ export default function SunnyCertificate() {
     after: "공유회 6번, SNS 6회 — 균형 잡힌 참여로 꾸준히 자리를 지켰어요. 오웬이 \"OS가 인상 깊었다\"고 말할 만큼 결과물도 만들었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

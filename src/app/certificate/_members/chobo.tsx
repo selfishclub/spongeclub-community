@@ -17,7 +17,7 @@ export default function ChoboCertificate() {
     { week: "6주차", date: "6/14", present: null },
   ];
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

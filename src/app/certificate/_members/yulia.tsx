@@ -58,7 +58,7 @@ export default function YuliaCertificate() {
     after: "오프라인에서 \"가르치면서 내가 정확한지 재확인하게 됐다\"고 말했어요. 이기적 공유회를 예정하며, 품질 판단의 답을 나눔 속에서 찾아가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

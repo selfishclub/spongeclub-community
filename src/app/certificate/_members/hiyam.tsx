@@ -41,7 +41,7 @@ export default function HiyamCertificate() {
     after: "5주간 출석하며 크루들의 응원을 받았어요. 빠른 이해를 무기로, 다음 단계를 준비하는 중.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

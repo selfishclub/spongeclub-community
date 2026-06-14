@@ -74,7 +74,7 @@ export default function RaelCertificate() {
       "마케터 OS 청사진에서 광고 CVR 진단 웹까지, 여러 단계를 시스템으로 엮어냈어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

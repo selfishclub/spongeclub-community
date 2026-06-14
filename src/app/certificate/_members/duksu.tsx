@@ -53,7 +53,7 @@ export default function DuksuCertificate() {
     after: "오프라인에서 \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의했어요. 브랜드 키트 스타터 OS를 만들며, 공유를 위해 먼저 이해하고 언어화하는 경험을 했어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

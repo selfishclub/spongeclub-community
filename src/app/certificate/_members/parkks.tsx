@@ -54,7 +54,7 @@ export default function ParkKSCertificate() {
       "오프라인에서 '집다움' OS와 캐러셀·봇을 만든 과정을 공유했어요. 프롬프트를 잘 쓰는 것보다, 자신의 도메인 지식을 시스템에 담는 것이 더 중요하다는 걸 발견한 시간.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

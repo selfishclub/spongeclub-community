@@ -53,7 +53,7 @@ export default function VickyCertificate() {
     after: "SNS 인증 12회, 셸 12개 보내기. 열심히 참여하겠다는 말 그대로, 6주간 꾸준히 기록하고 나눈 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

@@ -55,7 +55,7 @@ export default function IanCertificate() {
     after: "6주간 꾸준히 출석하며 영상 제작과 스킬 공유까지. 오웬이 \"혼자서 엄청 열심히 하고 있을 것 같다\"고 말한 그대로, 조용히 만들어가는 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

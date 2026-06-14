@@ -23,7 +23,7 @@ export default function IoCertificate() {
     { sender: "이니", message: "셀나누기 운동!! 이오님 즐거운 금요일 보내세요" },
   ];
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

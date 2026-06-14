@@ -74,7 +74,7 @@ export default function PhonometerCertificate() {
       "PRD 13개 섹션을 작성하면 Claude Code가 자동 구현하는 워크플로우를 만들었어요. 완전 자동화가 아니라, 기획과 구현의 역할 분리가 답이라는 걸 발견.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

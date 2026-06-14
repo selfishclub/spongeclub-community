@@ -41,7 +41,7 @@ export default function LaraCertificate() {
     after: "부조장으로서 6조를 이끌며, 조용한 6조 스레드에서 응원의 목소리를 냈어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

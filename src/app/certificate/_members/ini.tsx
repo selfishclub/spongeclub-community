@@ -74,7 +74,7 @@ export default function IniCertificate() {
       "팀 대시보드, 레이블링 노트 시스템 등 6주차까지 모든 주차를 제출했어요. 두려웠지만 끝까지 만들었고, \"일을 쪼개 보니까 계속 할 일이 생겼다\"는 걸 발견한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

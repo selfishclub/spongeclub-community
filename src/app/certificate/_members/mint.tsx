@@ -55,7 +55,7 @@ export default function MintCertificate() {
     after: "공유회 8번, SNS 인증 8회, 셸 25개 보내기. 본업과 전혀 다른 영역에서 AI 도구를 적극적으로 탐험했고, 아가타와 함께 1조에서 가장 활발하게 응원을 주고받은 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

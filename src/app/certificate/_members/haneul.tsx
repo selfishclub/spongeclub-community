@@ -47,7 +47,7 @@ export default function HaneulCertificate() {
     after: "공유회 8번, 스킬 공유, 크루챗까지 — 6조에서 가장 다양한 영역에서 활동했어요. 학습력이 좋다는 말 그대로, 확장해서 쓰겠다는 목표를 실행으로 보여준 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

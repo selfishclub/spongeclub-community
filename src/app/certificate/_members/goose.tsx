@@ -54,7 +54,7 @@ export default function GooseCertificate() {
     after: "오프라인에서 \"솔로프리너는 작은 세상에서 사는 것\"이라며 함께 공유하는 가치를 강조했어요. AI로 주문서 시스템과 ERP를 직접 만들며, 손으로 만드는 사람이 시스템도 만드는 사람이 되고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

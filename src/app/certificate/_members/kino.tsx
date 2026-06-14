@@ -58,7 +58,7 @@ export default function KinoCertificate() {
     after: "오프라인에서 \"냅다 정신\"을 선언하고, 셸 40개를 받으며 크루들에게 가장 많은 영감을 준 사람 중 하나. 응급실에서도 열정을 보여준 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

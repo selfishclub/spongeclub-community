@@ -60,7 +60,7 @@ export default function PinoCertificate() {
       "OS 인터뷰에서 \"첫 부품 1개\"로 시작점을 좁혔어요. 6주간 한 번도 빠지지 않고 출석하며 꾸준히 자리를 지켰어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

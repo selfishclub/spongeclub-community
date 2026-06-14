@@ -40,7 +40,7 @@ export default function IrisCertificate() {
     after: "오프라인에서 Claude로 QR 기반 카카오 채널 10→214명 성과를 공유했어요. 10년 로스팅 노트를 특허·출판으로 연결하는 방향을 잡아가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

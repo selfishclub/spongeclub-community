@@ -56,7 +56,7 @@ export default function KoniCertificate() {
     after: "고퀄리티 삽질기를 공유하며 크루들에게 호평을 받았어요. 진짜 돌아가는 걸 만드는 과정을 기록하고 나눈 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

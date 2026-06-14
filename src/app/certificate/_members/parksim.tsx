@@ -59,7 +59,7 @@ export default function ParksimCertificate() {
     after: "셸 35개 보내기, SNS 22회, VOD 7개 구매. 채팅을 넘어 시스템을 만들고, 가장 적극적으로 나누는 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

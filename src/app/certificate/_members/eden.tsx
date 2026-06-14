@@ -58,7 +58,7 @@ export default function EdenCertificate() {
     after: "셸 34개를 받으며 1조에서 가장 많은 응원을 받은 사람이 되었어요. 과제 독려, 스레드 활성화, 먼저 인사하기 — 할루시네이션보다 더 중요한 건 사람 사이의 연결이라는 걸 보여줬어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

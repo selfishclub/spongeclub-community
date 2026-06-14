@@ -73,7 +73,7 @@ export default function JjiniCertificate() {
     after: "weeve에 '사실 지어내기 방지' 가드 하네스를 직접 만들어 환각을 방어했어요. 딸깍이 아니라 8개 하네스와 2개 파이프라인으로 구조를 쌓아올린 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

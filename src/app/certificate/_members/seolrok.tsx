@@ -57,7 +57,7 @@ export default function SeolrokCertificate() {
     after: "공유회 13번, SNS 15회, 셸 23개 보내기. 어디서부터 시작할지 몰랐다는 사람이, 실제로는 누구보다 많이 탐험한 사람이었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

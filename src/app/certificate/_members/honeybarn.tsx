@@ -41,7 +41,7 @@ export default function HoneybarnCertificate() {
     after: "크루들의 응원을 받으며 3회 출석. 완주하겠다는 마음으로 자리를 지킨 시간.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

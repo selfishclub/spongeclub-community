@@ -65,7 +65,7 @@ export default function AgataCertificate() {
     after: "8개 부품과 3개 하네스로 구성된 자동화 시스템을 만들어 MVP에 뽑혔어요. 퀄리티를 고민하던 사람이, 작고 단순한 것부터 쌓아올리는 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

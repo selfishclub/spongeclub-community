@@ -59,7 +59,7 @@ export default function GaemiCertificate() {
     after: "셸 45개를 받으며 전체 멤버 중 가장 많은 응원을 모은 사람이 되었어요. 3조 멤버 전원에게 셸을 보내며 허브 역할을 했어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

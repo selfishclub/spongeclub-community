@@ -58,7 +58,7 @@ export default function MunjiminCertificate() {
     after: "부조장으로서 4조를 이끌며 공지·안내에 항상 앞장섰어요. 막힌 지점을 먼저 꺼내겠다는 말 그대로, 솔직한 나눔으로 조를 움직인 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

@@ -52,7 +52,7 @@ export default function YongsCertificate() {
     after: "오프라인에서 20년 커리어의 도전과 실패를 솔직하게 나누며 크루들에게 위로를 줬어요. K-컬처 한국어 문화 앱 '글' 프로젝트의 방향을 잡고 8월 법인 설립을 향해 나아가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

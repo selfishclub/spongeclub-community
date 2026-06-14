@@ -64,7 +64,7 @@ export default function YusCertificate() {
     after: "Zendesk, Supabase, Gemini를 엮어 제로 비용 VOC 대시보드를 만들었어요. 어디서부터 시작할지 몰랐던 사람이, 제약 조건 안에서 9개 컴포넌트를 쌓아올린 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

@@ -58,7 +58,7 @@ export default function JiniCertificate() {
     after: "스킬 8회 공유, 공유회 11번 참여, 셸 30개 보내기. 딸깍 한 번이 어려웠던 사람이, 가장 많이 나누고 가장 많이 탐험한 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

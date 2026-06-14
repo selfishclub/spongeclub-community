@@ -54,7 +54,7 @@ export default function PpuccaCertificate() {
     after: "3조 안에서 질문하고, 셸을 주고받으며, 아무것도 모르던 상태에서 첫 걸음을 뗐다.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

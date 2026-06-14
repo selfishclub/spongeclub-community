@@ -70,7 +70,7 @@ export default function MaraCertificate() {
       "오프라인에서 30년 재무 로드맵 프로그램을 공유해 큰 피드백을 받았어요. 4개국어 능력을 활용한 해외 주식 정보 제공 OS까지 아이디어가 확장되었어요. 버그를 고치는 데 그치지 않고, 자신만의 강점을 시스템으로 만드는 방향을 찾아가고 있어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

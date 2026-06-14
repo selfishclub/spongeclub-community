@@ -67,7 +67,7 @@ export default function JejeCertificate() {
       "Career FIT OS를 1인용에서 공용으로 전환하며, 디테일한 수정이 아니라 구조적 전환을 경험했어요. SNS 인플루언서 배지까지 획득.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

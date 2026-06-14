@@ -56,7 +56,7 @@ export default function TurtleCertificate() {
     after: "오프라인에서 \"AI로 쌀 데이터를 분석해 누룽지 업체 담당자들보다 쌀에 대해 더 깊이 파악하고 있다는 평가를 받았다\"고 밝혔어요. 데이터를 DB화하는 고민이, 실제 비즈니스 제안으로 이어졌어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

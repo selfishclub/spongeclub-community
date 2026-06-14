@@ -56,7 +56,7 @@ export default function ChikoCertificate() {
     after: "오프라인에서 7개 에이전트 완성을 공유했어요. 채팅 수준에서 머물던 사람이, 3개 채널 자동 콘텐츠 생성 시스템을 구축한 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

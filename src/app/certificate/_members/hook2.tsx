@@ -46,7 +46,7 @@ export default function Hook2Certificate() {
     after: "공유회 7번, SNS 10회, 셸 22개 보내기. 함께 일해보고 싶은 사람이 되겠다는 말 그대로, 6조에서 가장 적극적으로 나눈 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

@@ -44,7 +44,7 @@ export default function SolCertificate() {
     after: "OS 인터뷰에서 \"못 자르기\"라는 본인의 통점을 정확히 짚었어요. 수익모델·시간·몸이 한 시스템이라는 선언을 세웠다. 어디서부터 시작할지 몰랐던 사람이, 첫 번째 질문을 찾았어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

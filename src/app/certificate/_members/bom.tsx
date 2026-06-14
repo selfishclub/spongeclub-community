@@ -69,7 +69,7 @@ export default function BomCertificate() {
       "SNS 인증 12회, 셸 22개 보내고 22개 받기. SNS 인플루언서 배지와 VOD 큰 손 배지까지 획득했어요. 오프라인에서 \"느린 속도이지만 매주 품질이 나아지고 있다\"고 말한 그대로, 꾸준함이 결과를 만들었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

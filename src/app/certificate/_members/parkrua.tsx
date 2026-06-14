@@ -53,7 +53,7 @@ export default function ParkRuaCertificate() {
     after: "오프라인에서 개인적 배경을 솔직하게 나누며 \"지금은 결과가 아닌 과정\"이라는 격려를 받았어요. 나로 시작하는 브랜드를 만들어가는 중.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

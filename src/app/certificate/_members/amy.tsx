@@ -87,7 +87,7 @@ export default function AmyCertificate() {
     after: "기획안→SRS→기능정의서→화면정의서를 자동으로 엮는 스킬을 직접 만들었고, 브랜드 포지셔닝을 3번 재정의하며 실제 유저가 등록하는 MVP를 출시했어요. 프로세스를 프롬프트로 만드는 게 아니라, 프로세스 자체를 시스템으로 만드는 사람이 되어 있었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

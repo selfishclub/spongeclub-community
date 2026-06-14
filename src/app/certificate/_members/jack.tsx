@@ -66,7 +66,7 @@ export default function JackCertificate() {
     after: "인스타 캐러셀 자동 생성, 콘텐츠 OS, 리뷰 코칭 도구 — 3개의 프로덕트를 만들며 오류를 줄이는 게 아니라 시스템으로 흡수하는 법을 배웠어요. 스킬 7회 나눔으로 1조에서 가장 많이 공유한 사람이에요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

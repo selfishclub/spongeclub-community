@@ -52,7 +52,7 @@ export default function NamuCertificate() {
     after: "과제 제출은 OT 한 번이었지만, 공유회에 참여하고 크루들과 인사를 나누며 커뮤니티 안에서 연결을 만들었어요. 릴스에서 떠올려줬다는 크루의 메시지는, 온라인 밖에서도 존재감을 남기고 있었다는 증거.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

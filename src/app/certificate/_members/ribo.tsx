@@ -57,7 +57,7 @@ export default function RiboCertificate() {
     after: "공유회 10번, SNS 12회, 셸 31개 받기. 용기를 주고 싶다고 했던 사람이, 실제로 가장 많은 응원을 받은 사람이 되었어요.",
   };
 
-  const hasDiploma = stats.attendance.present >= 3;
+  const hasDiploma = stats.attendance.present >= 4;
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">
