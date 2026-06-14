@@ -13,7 +13,7 @@ export default function IanCertificate() {
   };
 
   const character = {
-    type: "혼자서 뭔가 하고 있는 크루",
+    type: "묵묵히 만들어가는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
       "1주차에 script2storyboard -- 대본을 넣으면 컷 단위로 분해하고 이미지 프롬프트까지 생성하는 스킬을 만들었어요. 5주차엔 SSCUT에서 Weft로 재설계하며 GUI를 버리고 AI가 직접 구동하는 CLI 도구로 전환했어요. 조용히 혼자서 만들어가는 사람이에요.",

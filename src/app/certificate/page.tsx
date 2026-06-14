@@ -162,7 +162,7 @@ export default function CertificateIndexPage() {
                         }`}
                       >
                         <div className="absolute top-1 right-1 flex gap-0.5">
-                          {m.attendanceCount >= 6 && <span className="text-lg" title="개근상">💐</span>}
+                          {m.attendanceCount >= 7 && <span className="text-lg" title="개근상">💐</span>}
                           {rankMap[m.name] && <span className="text-lg">{RANK_EMOJI[rankMap[m.name]]}</span>}
                         </div>
                         <p className="text-sm font-extrabold text-[var(--ink)] truncate">
