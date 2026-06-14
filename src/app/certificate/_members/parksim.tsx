@@ -5,7 +5,7 @@ import RankBadge from "./_RankBadge";
 
 export default function ParksimCertificate() {
   const member = {
-    name: "박상임",
+    name: "애니",
     realName: "박상임",
     team: "5조",
     jobTitle: "구축프로젝트PMO",

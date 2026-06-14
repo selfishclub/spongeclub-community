@@ -5,7 +5,7 @@ import RankBadge from "./_RankBadge";
 
 export default function JjiniCertificate() {
   const member = {
-    name: "4조 지니",
+    name: "찌니",
     realName: "신진영",
     team: "4조",
     jobTitle: "인하우스 마케팅팀 리더 (사전 설문 기준)",
