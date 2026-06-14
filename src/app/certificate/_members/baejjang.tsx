@@ -178,8 +178,8 @@ export default function BaejjangCertificate() {
 
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
 
-                <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
-                <div className="mt-4 inline-block rotate-[-12deg]">
+                <p className="text-[11px] text-[#A8A29E]">스폰지클럽</p>
+                <div className="absolute bottom-24 right-16 rotate-[-12deg]">
                   <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
                     <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
                   </div>

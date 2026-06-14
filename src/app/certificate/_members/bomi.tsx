@@ -72,7 +72,7 @@ export default function BomiCertificate() {
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
             <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="보미" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
-                <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
+                <div className="flex justify-center mb-6"><Image src="/certificate/sponge-logo.png" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--ink)] tracking-wider mb-6">수 료 증</h2>
                 <div className="mb-4">
@@ -84,8 +84,8 @@ export default function BomiCertificate() {
                 <p className="text-xs text-[#A8A29E] mb-2">2026년 5월 3일 — 2026년 6월 14일</p>
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
-                <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
-                <div className="mt-4 inline-block rotate-[-12deg]">
+                <p className="text-[11px] text-[#A8A29E]">스폰지클럽</p>
+                <div className="absolute bottom-24 right-16 rotate-[-12deg]">
                   <div className="border-4 border-red-500 rounded-full px-4 py-2 opacity-70">
                     <p className="text-red-500 font-extrabold text-lg tracking-wider">우수 수료</p>
                   </div>

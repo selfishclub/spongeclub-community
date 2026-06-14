@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import membersData from "./members-data.json";
 
@@ -128,6 +128,9 @@ export default function CertificateIndexPage() {
           </p>
         </div>
 
+        {/* Naming Guide Toggle */}
+        <NamingGuide />
+
         {/* Groups */}
         <div className="space-y-8">
           {groups.map((groupNum) => {
@@ -184,6 +187,75 @@ export default function CertificateIndexPage() {
           })}
         </div>
       </div>
+    </div>
+  );
+}
+
+function NamingGuide() {
+  const [open, setOpen] = useState(false);
+  const toggle = useCallback(() => setOpen((v) => !v), []);
+
+  return (
+    <div className="mb-8 border-2 border-[var(--ink-10)]">
+      <button
+        onClick={toggle}
+        className="w-full flex items-center justify-between p-4 text-left hover:bg-[var(--ink-05)] transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-lg">📋</span>
+          <span className="text-sm font-extrabold text-[var(--ink)]">수료 네이밍 가이드</span>
+          <span className="text-xs text-[var(--ink-30)]">— 이력서·링크드인에 활용하세요</span>
+        </div>
+        <span className={`text-[var(--ink-30)] transition-transform ${open ? "rotate-180" : ""}`}>▼</span>
+      </button>
+
+      {open && (
+        <div className="px-5 pb-6 space-y-6 border-t border-[var(--ink-10)]">
+          {/* 수료 네이밍 */}
+          <div className="pt-5">
+            <h3 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-4">수료 네이밍</h3>
+            <div className="space-y-4">
+              <div className="bg-[var(--ink-05)] p-4">
+                <p className="text-[10px] font-bold text-[var(--ink-30)] mb-1">① 정식 명칭형 — 이력서·수료증 공식 표기</p>
+                <p className="text-sm font-bold text-[var(--ink)]">스폰지클럽 1기 수료 — 셀피쉬클럽 AI 실전활용 프로그램</p>
+                <p className="text-xs text-[var(--ink-50)] mt-1 italic">SpongeClub 1st Cohort, Completed — Selfish Club Practical AI Program</p>
+              </div>
+              <div className="bg-[var(--ink-05)] p-4">
+                <p className="text-[10px] font-bold text-[var(--ink-30)] mb-1">② 역량 강조형 — 링크드인 자격증/Certification 칸</p>
+                <p className="text-sm font-bold text-[var(--ink)]">스폰지클럽 AI Agent 빌딩 프로그램 수료 (7주 과정)</p>
+                <p className="text-xs text-[var(--ink-50)] mt-1 italic">SpongeClub AI Agent Building Program — Certificate of Completion (7 Weeks)</p>
+              </div>
+              <div className="bg-[var(--ink-05)] p-4">
+                <p className="text-[10px] font-bold text-[var(--ink-30)] mb-1">③ 간결형 — 한 줄 이력·경력 기술서 내 삽입</p>
+                <p className="text-sm font-bold text-[var(--ink)]">셀피쉬클럽 스폰지클럽 1기 수료</p>
+                <p className="text-xs text-[var(--ink-50)] mt-1 italic">Completed SpongeClub Cohort 1, Selfish Club</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 크루 활동 네이밍 */}
+          <div>
+            <h3 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-4">스폰지 크루 활동 네이밍</h3>
+            <div className="space-y-4">
+              <div className="bg-[var(--ink-05)] p-4">
+                <p className="text-[10px] font-bold text-[var(--ink-30)] mb-1">① 소속·직함형 — 경력 한 줄로 박을 때</p>
+                <p className="text-sm font-bold text-[var(--ink)]">스폰지크루 (셀피쉬클럽 AI 빌딩 크루)</p>
+                <p className="text-xs text-[var(--ink-50)] mt-1 italic">Sponge Crew, Selfish Club — AI Building Crew</p>
+              </div>
+              <div className="bg-[var(--ink-05)] p-4">
+                <p className="text-[10px] font-bold text-[var(--ink-30)] mb-1">② 활동 강조형 — 경험 기술 항목</p>
+                <p className="text-sm font-bold text-[var(--ink)]">셀피쉬클럽 스폰지크루 — AI 에이전트·프로덕트 빌딩 멤버</p>
+                <p className="text-xs text-[var(--ink-50)] mt-1 italic">Sponge Crew Member, Selfish Club — AI Agent &amp; Product Building</p>
+              </div>
+              <div className="bg-[var(--ink-05)] p-4">
+                <p className="text-[10px] font-bold text-[var(--ink-30)] mb-1">③ 커뮤니티형 — 사이드 프로젝트·커뮤니티 활동 칸</p>
+                <p className="text-sm font-bold text-[var(--ink)]">스폰지크루 (셀피쉬클럽 AI 실전 크루)</p>
+                <p className="text-xs text-[var(--ink-50)] mt-1 italic">Sponge Crew, Selfish Club AI Practitioner Community</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

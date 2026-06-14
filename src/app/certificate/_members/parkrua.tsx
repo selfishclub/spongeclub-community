@@ -5,7 +5,7 @@ import RankBadge from "./_RankBadge";
 
 export default function ParkRuaCertificate() {
   const member = {
-    name: "박루아",
+    name: "나로",
     realName: "박루아",
     team: "4조",
     jobTitle: "패키지·브랜드 디자인 1인 기업",
@@ -16,7 +16,7 @@ export default function ParkRuaCertificate() {
     type: "나로 시작하는 크루",
     image: "/certificate/character-sprout.svg",
     description:
-      "오프라인에서 닉네임을 '나로'로 바꿨다고 밝혔어요. 15년간 연인을 뒷바라지하다 사별 후 자신을 돌아보기 시작했다는 배경을 나누며, 크루들에게 깊은 인상을 남겼어요. '시오릴일일' 브랜드를 론칭하고, 디자인에 마케팅·기획 역량을 더하기 위해 참여했어요.",
+      "오프라인에서 닉네임을 '나로'로 바꿨다고 밝혔어요. 15년간 연인을 뒷바라지하다 사별 후 자신을 돌아보기 시작했다는 배경을 나누며, 크루들에게 깊은 인상을 남겼어요. '시호일일' 브랜드를 론칭하고, 디자인에 마케팅·기획 역량을 더하기 위해 참여했어요.",
   };
 
   const stats = {
@@ -72,7 +72,7 @@ export default function ParkRuaCertificate() {
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
             <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="박루아" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
-                <div className="flex justify-center mb-6"><Image src="/certificate/character-cheerleader.svg" alt="" width={64} height={64} className="w-16 h-16" /></div>
+                <div className="flex justify-center mb-6"><Image src="/certificate/sponge-logo.png" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--ink)] tracking-wider mb-6">수 료 증</h2>
                 <div className="mb-4">
@@ -84,7 +84,7 @@ export default function ParkRuaCertificate() {
                 <p className="text-xs text-[#A8A29E] mb-2">2026년 5월 3일 — 2026년 6월 14일</p>
                 <p className="text-sm font-bold text-[#B45309]">출석 {stats.attendance.present} / {stats.attendance.total}회</p>
                 <div className="w-32 h-px bg-[#FCD34D] mx-auto mt-6 mb-4" />
-                <p className="text-[11px] text-[#A8A29E]">스폰지클럽 · 이기적 공유 커뮤니티</p>
+                <p className="text-[11px] text-[#A8A29E]">스폰지클럽</p>
               </div>
             </div>
           </div>
