@@ -20,7 +20,7 @@ export default function PhonometerCertificate() {
   };
 
   const stats = {
-    attendance: { present: 6, total: 7 },
+    attendance: { present: 7, total: 7 },
     sessionsAttended: 6,
     snsVerified: 4,
     shellsSent: 14,
@@ -34,7 +34,7 @@ export default function PhonometerCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: false },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [

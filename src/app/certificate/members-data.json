@@ -45,7 +45,7 @@
       true,
       null
     ],
-    "attendanceCount": 4,
+    "attendanceCount": 5,
     "sessionsAttended": 1,
     "snsVerified": 0,
     "shellsSent": 4,
@@ -598,7 +598,7 @@
       true,
       null
     ],
-    "attendanceCount": 6,
+    "attendanceCount": 7,
     "sessionsAttended": 6,
     "snsVerified": 4,
     "shellsSent": 14,
