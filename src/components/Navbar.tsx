@@ -14,7 +14,7 @@ interface Member {
 const NAV_ITEMS = [
   { href: "/", label: "홈", icon: HomeIcon },
   { href: "/missions", label: "과제", icon: MissionIcon },
-  { href: "/crewchat", label: "크루챗", icon: ChatIcon },
+  // { href: "/crewchat", label: "크루챗", icon: ChatIcon }, // 종료
   { href: "/sessions/new", label: "공유회 열기", icon: PlusIcon },
   { href: "/mypage", label: "마이", icon: UserIcon },
 ];

@@ -965,11 +965,11 @@ export default function HomePage() {
                   <span className="text-sm font-extrabold text-[var(--ink)]">과제현황판</span>
                 </button>
               )}
-              <Link href="/crewchat"
-                className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] hover:border-[var(--ink-30)] transition-colors">
+              <div
+                className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] opacity-30 cursor-not-allowed">
                 <span>💬</span>
-                <span className="text-sm font-extrabold text-[var(--ink)]">크루챗</span>
-              </Link>
+                <span className="text-sm font-extrabold text-[var(--ink)]">크루챗 종료</span>
+              </div>
               {member ? (
                 <a href="https://sponge-dressup.vercel.app/"
                   className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] hover:border-[var(--ink-30)] transition-colors">
