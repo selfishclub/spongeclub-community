@@ -17,6 +17,20 @@ const CATEGORIES = [
 
 export default function NewSessionPage() {
   const router = useRouter();
+
+  // 공유회 직접 열기 임시 비활성화
+  return (
+    <div className="min-h-screen flex items-center justify-center px-5">
+      <div className="text-center space-y-4">
+        <p className="text-2xl">🎙️</p>
+        <p className="text-lg font-bold text-[var(--ink)]">공유회 직접 열기가 잠시 비활성화되어 있어요</p>
+        <p className="text-sm text-[var(--ink-50)]">곧 다시 열릴 예정이에요!</p>
+        <button onClick={() => router.push("/")} className="text-sm underline text-[var(--ink-50)] hover:text-[var(--ink)]">
+          홈으로 돌아가기
+        </button>
+      </div>
+    </div>
+  );
   const [members, setMembers] = useState<MemberOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

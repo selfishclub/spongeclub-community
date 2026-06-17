@@ -988,11 +988,13 @@ export default function HomePage() {
                 <span>📣</span>
                 <span className="text-sm font-extrabold text-[var(--ink)]">공유자 추천</span>
               </button>
-              <Link href="/sessions/new"
-                className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] hover:border-[var(--ink-30)] transition-colors">
+              {/* 공유회 직접 열기 — 임시 비활성화 */}
+              <div
+                className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-[var(--ink-10)] bg-[var(--paper)] opacity-40 cursor-not-allowed"
+                title="잠시 비활성화되어 있어요">
                 <span>🎙️</span>
                 <span className="text-sm font-extrabold text-[var(--ink)]">공유회 직접 열기</span>
-              </Link>
+              </div>
             </div>
           </div>
         </section>
