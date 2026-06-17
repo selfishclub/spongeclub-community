@@ -523,18 +523,19 @@ function VodSection({ member, onLoginRequired }: { member: Member | null; onLogi
     });
   }, [member, videos]);
 
-  const handlePurchase = async (videoId: string) => {
+  const handlePurchase = async (videoId: string, cost: number) => {
     if (!member) { onLoginRequired(); return; }
+    if (!confirm(`${cost}셸을 사용하여 구매할까요?`)) return;
     setRequesting(videoId);
     try {
       const res = await fetch(`/api/videos/${videoId}/purchase-request`, { method: "POST" });
       const data = await res.json();
       if (res.ok) {
-        setRequestedMap((prev) => ({ ...prev, [videoId]: "PENDING" }));
+        setRequestedMap((prev) => ({ ...prev, [videoId]: "RESOLVED" }));
       } else if (res.status === 409) {
-        setRequestedMap((prev) => ({ ...prev, [videoId]: "PENDING" }));
+        setRequestedMap((prev) => ({ ...prev, [videoId]: "RESOLVED" }));
       } else {
-        alert(data.error || "신청에 실패했어요.");
+        alert(data.error || "구매에 실패했어요.");
       }
     } catch { alert("네트워크 오류가 발생했어요."); }
     finally { setRequesting(null); }
@@ -576,16 +577,22 @@ function VodSection({ member, onLoginRequired }: { member: Member | null; onLogi
                 {isRequested ? (
                   <div className="py-1.5 text-center bg-[var(--ink-05)]">
                     <p className="text-[11px] font-extrabold text-[var(--ink-50)]">
-                      {status === "RESOLVED" ? "✅ 구매 완료" : "📼 구매 신청 완료"}
+                      ✅ 구매 완료
+                    </p>
+                  </div>
+                ) : member && member.shell_balance < v.cost ? (
+                  <div className="py-1.5 text-center bg-[var(--ink-05)]">
+                    <p className="text-[11px] font-extrabold text-[var(--ink-30)]">
+                      🐚 셸이 부족해요 ({member.shell_balance}/{v.cost})
                     </p>
                   </div>
                 ) : (
                   <button
-                    onClick={() => handlePurchase(v.id)}
+                    onClick={() => handlePurchase(v.id, v.cost)}
                     disabled={requesting === v.id}
                     className="w-full py-1.5 bg-[var(--ink)] text-[var(--paper)] text-[11px] font-extrabold hover:opacity-90 disabled:opacity-40 transition-opacity"
                   >
-                    {requesting === v.id ? "신청 중..." : `${v.cost}셸 구매하기`}
+                    {requesting === v.id ? "구매 중..." : `${v.cost}셸 구매하기`}
                   </button>
                 )}
               </div>
