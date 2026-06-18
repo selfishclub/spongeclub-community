@@ -30,7 +30,34 @@ export default function IrisCertificate() {
     { name: "셸 5회 받기", icon: "/badges/shell-receive-5.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "COFFEEMOMS CRM — 부산커피쇼 고객 관리 시스템",
+      summary: "Google Sheets, Forms, Apps Script로 부산커피쇼 고객 관리 자동화 시스템을 만들었어요. B2C/B2B 고객을 분리하고, QR 코드 기반 쿠폰 발급과 이메일 자동 발송까지 구현했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "COFFEEMOMS 고객 퍼널 OS — QR에서 재구매까지",
+      summary: "QR 초대장을 입구로, 카카오채널로 관계를 유지하고, 스마트스토어로 재구매를 연결하는 고객 퍼널 OS를 설계했어요. 4일간 카카오채널 구독자 5명에서 214명으로 증가시켰어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "고객 여정 하네스 9개 + 오케스트레이션 설계",
+      summary: "QR 커피초대장부터 카카오싱크까지 9가지 하네스를 정의하고, 고객 여정에 맞춰 순차 배치하는 오케스트레이션을 완성했어요. \"QR은 입구, 쿠폰은 행동 장치, 카카오채널은 관계 유지 공간\"이라는 구조를 잡았어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "49세 왕초보 영어회화 OS — 매일 문장 5개 입에 붙이기",
+      summary: "파닉스, 단어, 패턴 조립, 말하기, 복습이 하나의 흐름으로 연결되는 영어 학습 OS를 만들었어요. \"I want coffee.\" 한 문장부터 시작해, 카페 현장에서 바로 쓸 수 있는 구조를 설계했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "고1 딸을 위한 숨 쉬는 학습 OS",
+      summary: "기말고사 준비 중인 딸을 위한 학습 관리 웹앱을 만들었어요. \"엄마, 숨을 못 쉬겠어\"라는 피드백으로 방향을 전환해, 오늘 목표 3개만 보여주고 나머지는 숨기는 구조로 바꿨어요.",
+      insight: "좋은 학습 OS는 자료를 많이 모으는 시스템이 아니라, 아이가 공부할 수 있는 상태를 만들어주는 시스템이다.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "석영", message: "셀을 보냈습니다~!" },

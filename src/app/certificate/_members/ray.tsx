@@ -33,7 +33,23 @@ export default function RayCertificate() {
     { name: "셸 5회 받기", icon: "/badges/shell-receive-5.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "나만의 OS 인터뷰 + marketing-points 스킬 — 감각만 남기고 나머지는 시스템에",
+      summary: "OS 인터뷰를 통해 \"감각이 필요한 부분만 하고, 나머지는 시스템이 한다\"는 선언문을 도출했어요. 첫 부품으로 인스타 캡션/셀링 포인트를 뽑아주는 marketing-points 스킬을 만들었어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "텔레그램 claudeBot — 1주차 OS 스킬을 모바일에서 활용",
+      summary: "텔레그램 봇을 만들어서 1주차에 만든 OS 스킬로 업무 스케줄 관리, 파일 관리, 인스타 캡션 추출까지 할 수 있게 했어요. 토큰을 실수로 무효화하는 삽질도 했지만 빠르게 해결했어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "DIETGO PWA — 다이어트앱이 아닌 건강식품 브랜드 챌린지 운영 도구",
+      summary: "건강식품 브랜드 마케팅용 다이어트 챌린지 운영 PWA를 설계했어요. AI 칼로리 분석을 의도적으로 빼고 운영자 손 코멘트를 차별점으로 삼은 게 핵심이에요. 하네스와 오케스트레이션 개념도 직접 정의하고 적용했어요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "석영", message: "셸선물보내드립니다~ㅎ" },

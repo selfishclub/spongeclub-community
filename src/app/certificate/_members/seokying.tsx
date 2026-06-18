@@ -34,7 +34,28 @@ export default function SeokyingCertificate() {
     { name: "첫 크루챗", icon: "/badges/first-crewchat.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "SEO 강의 영상 제작 방향 + 할일 Chrome Extension",
+      summary: "SEO 6시간 강의 영상 제작 포맷(얼굴 비공개 + AI 목소리 + Vrew 편집)을 결정하고, 매일 할 일을 체크하는 Chrome Extension을 만들었어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "코칭 노트 사이트 — 0에서 1까지 구축",
+      summary: "note.seonbiz.com을 Astro + Cloudflare Pages로 만들고, SEO·JSON-LD·GA4·GTM까지 한 번에 셋업했어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "쇼핑몰 상세페이지 자동 생성 OS",
+      summary: "상품 URL 입력만으로 페르소나 분석 → 섹션 기획 → cafe24/스마트스토어 코드 생성까지 자동화하는 비개발자용 웹앱을 만들었어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "코램프 상세페이지 OS — Phase 1~2 구축",
+      summary: "클로드코드 작업 환경(폴더 구조 + CLAUDE.md + GitHub 연결)을 셋업하고, /plan-product 명령어로 기획을 자동 실행하는 Phase 2를 설계했어요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "Galia", message: "어제 발표가 너무 인상적이었습니다! 응원하는 마음으로 보냅니다" },

@@ -35,7 +35,38 @@ export default function GaliaCertificate() {
     { name: "스킬 공유 3회 달성", icon: "/badges/skill-share-3.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "goal-to-roadmap 스킬 — 목표를 로드맵으로 자동 분해",
+      summary: "OS 인터뷰로 '컨텍스트 휘발' 통점을 발견하고, 목표를 스테이지 표 + Gantt 차트 + 투두로 분해해주는 Claude 스킬을 만들었어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Sullivan — 텔레그램 24/7 AI 비서 + Obsidian 대시보드",
+      summary: "할 일·성장·수면을 자연어로 기록하고 아침/저녁 브리핑을 받는 텔레그램 비서를 만들고, 쌓인 데이터를 Obsidian Dataview로 시각화했어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "Ploplan — AI 맞춤 여행 플래너 기능 업데이트",
+      summary: "페르소나 캔버스 기반으로 여행 복제, 동선 최적화, Gemini AI 일정 자동 생성 기능을 구현했어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "Ploplan — 실사용자 피드백 반영 + 워크로그 스킬",
+      summary: "구글폼 설문 + 직접 사용성 테스트로 피드백을 받고, createlog 스킬로 작업 기록을 옵시디언에 시각화했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "스폰지클럽 갤러리 & 크루 페이지 개편",
+      summary: "산출물 48개를 스토리텔링 카드로 정리하고, 크루 소개 페이지에 조별/유닛별 보기와 제출 양식 스킬을 만들었어요.",
+    },
+    {
+      week: "6주차", date: "6/14",
+      title: "Ploplan — 보안 강화 + 비용 방어",
+      summary: "RLS 보안 정책, PIN 인증, API 비용 방어(호출 제한·예산 알림·자동 결제중지)까지 실서비스 보안을 완성했어요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "J", message: "열심히 하시는 모습에 동기부여가 됩니다! 화이팅!" },

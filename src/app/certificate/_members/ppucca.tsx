@@ -45,6 +45,34 @@ export default function PpuccaCertificate() {
     { name: "셸 5회 보내기", icon: "/badges/shell-send-5.svg", earned: "2026.05" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "자투리 배정기 + AI 트렌드 브리핑 OS",
+      summary: "자투리 시간에 할 일을 자동 배정해주는 스킬과, 매일 아침 8시에 AI 뉴스 요약을 카카오톡으로 보내주는 자동화를 만들었어요. 주간 질문 7개를 1개로 줄이는 등 실사용 편의를 계속 개선했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "개인 대시보드 OS — 텔레그램 + 노션 + Next.js",
+      summary: "운동, 식단, 감정, 생각을 텔레그램 봇으로 입력하고 노션 DB에 저장, Next.js 대시보드로 보는 4계층 시스템을 구축했어요. Tailscale로 외부 노출 없이 폰에서 접근하는 보안 구조도 완성했어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "자서전 인터뷰 웹앱 — 비전문가를 위한 자서전 쓰기",
+      summary: "글쓰기에 자신 없는 사람이 AI 가이드 질문으로 삶의 소재를 뽑아낼 수 있는 사전 인터뷰 웹앱을 만들었어요. \"AI는 배경 도구, 진짜 차별점은 출판 경험자의 직접 안내\"라는 방향을 잡았어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "자서전 인터뷰 고도화 — 유형별 맞춤 질문 설계",
+      summary: "\"한 가지 질문이 모두에게 통하지 않는다\"는 깨달음으로, 자서전 유형별(나를 위한 책/가족에게 남기는 책 등) 맞춤 질문 분기를 설계했어요. 가상 페르소나로 4가지 유형을 빠르게 테스트했어요.",
+    },
+    {
+      week: "6주차", date: "6/14",
+      title: "자서전 인터뷰 웹 완성 + 실사용자 피드백",
+      summary: "웹 인터페이스를 완성하고 실사용자 테스트를 진행했어요. \"꼬리물기식 질문이 지루해진다\"는 피드백으로 진행률 바를 추가하고, 1800자 단위 분할 저장으로 안정성도 확보했어요.",
+    },
+  ];
+
   const giftMessages = [
     { sender: "신연수", message: "응원의 마음을 담아 셸 보내요!!" },
     { sender: "Nina", message: "텔레그램 봇 연결 공감되는 고민중인 뿌" },
@@ -161,6 +189,34 @@ export default function PpuccaCertificate() {
           </div>
         </div>
       </section>
+
+      {timeline.length > 0 && (
+        <section className="border-b border-[var(--ink-10)]">
+          <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">
+            <h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2>
+            <div className="space-y-0">
+              {timeline.map((week, i) => (
+                <div key={week.week} className="relative pl-10 pb-12 last:pb-0">
+                  {i < timeline.length - 1 && (
+                    <div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />
+                  )}
+                  <div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">
+                    {week.week.replace("주차", "")}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span>
+                      <span className="text-xs text-[var(--ink-30)]">{week.date}</span>
+                    </div>
+                    <p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p>
+                    <p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {giftMessages.length > 0 && (
         <section className="border-b border-[var(--ink-10)]">

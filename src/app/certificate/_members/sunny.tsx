@@ -44,6 +44,19 @@ export default function SunnyCertificate() {
     { name: "첫 셸 보내기", icon: "/badges/first-shell-send.svg", earned: "2026.05" },
   ];
 
+  const timeline = [
+    {
+      week: "2주차", date: "5/17",
+      title: "한글 받침 학습 게임 — 받침 우주 탐험",
+      summary: "아이들이 한글 받침을 재미있게 배울 수 있는 웹 게임을 만들었어요. MediaPipe 손동작 인식으로 손가락 슈팅 기능을 넣고, 마인크래프트 스타일 3D 블록 에셋 14개도 직접 제작했어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "받침 학습 게임 — 하네스 엔지니어링 + 사용자 피드백",
+      summary: "CLAUDE.md 기반 하네스 구조를 점검하고, 아이·배우자·한글학교 선생님에게 실제 피드백을 받았어요. '기능보다 AI 작업 환경 설계가 먼저'라는 관점의 전환이 있었어요.",
+    },
+  ];
+
   const giftMessages = [
     { sender: "헤이즐", message: "2주차 미션 완료를 축하해요! 이따 줌에서 만나요" },
     { sender: "박상임", message: "일리노이에서도 화이팅입니다" },
@@ -149,6 +162,8 @@ export default function SunnyCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p></div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

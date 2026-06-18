@@ -30,7 +30,28 @@ export default function LaraCertificate() {
     { name: "첫 SNS 인증", icon: "/badges/first-sns.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "Claude Code 인터뷰 + PARA 시스템 — 나만의 콘텐츠 저장소 구축",
+      summary: "Claude Code로 1:1 인터뷰를 진행해서 방향성을 정리하고, Tiago Forte의 PARA 방법론을 벤치마킹해서 옵시디언에 나만의 콘텐츠 저장소를 직접 만들었어요. 바탕화면 파일 정리까지 확장 적용했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "카드뉴스 제작 — 뉴스레터를 카드뉴스로 변환",
+      summary: "뉴스레터 콘텐츠를 카드뉴스로 가공하는 작업을 했어요. 레퍼런스 제공 후 HTML로 1차 제작하고, 피그마로 변환해서 수정한 뒤 MCP로 피그마 연동까지 시도했어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "주택담보대출 계산기 — 실제 배포까지 완료한 웹 도구",
+      summary: "아파트 정보와 소득을 입력하면 대출 한도와 이자를 계산해주는 웹사이트를 만들었어요. 30년차 대출 전문가 페르소나로 검토받아 방공제 누락, 2주택자 처리 오류 등을 잡고 v2까지 개선했어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "내용증명 생성기 — 법조문 자동 인용 웹 도구",
+      summary: "매매/용역 대금 미수금 시 보내는 내용증명서를 빈칸만 채우면 자동으로 완성해주는 사이트를 만들었어요. 거래 유형에 따라 민법/상법 조문이 자동으로 갈아 끼워지는 구조예요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "하늘", message: "조용한 6조 미팅 채팅방에서 응원해주셔서 감사했습니다!" },

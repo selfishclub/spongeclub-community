@@ -45,6 +45,29 @@ export default function LindiCertificate() {
     { name: "셸 5회 보내기", icon: "/badges/shell-send-5.svg", earned: "2026.05" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "Daily OS Note — 일일 생산성 스킬 빌드",
+      summary: "AI를 '최고의 비서'로 활용하는 생산성 시스템을 리서치하고, 일일 OS 노트 스킬을 직접 만들었어요. 매일 아침 결정 3개를 정하고, 시간 배치 제안까지 받는 구조를 완성했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Daily OS Note v2 — 메모 허브 구축",
+      summary: "메모앱, 카톡 나에게, 프로젝트 단톡 세 곳에 흩어진 기록을 한 곳으로 모아주는 허브를 설계했어요. \"나는 메모만 던지면 되고, 분류와 검색은 시스템이 한다\"는 원칙을 세웠어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "상담심리센터 OS — 인테이크 분류기",
+      summary: "1~2인 소규모 상담심리센터의 문의 접수를 자동 분류하는 부품을 만들었어요. 자유 서술 문의를 분야/대상/검사 여부 등 9항목으로 정리해 \"바로 콜백 가능한 한 줄\"로 바꿔주는 도구를 Claude 프로젝트 지침으로 변환 완료했어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "NOLO 기획 + 고객 피드백 반영",
+      summary: "기획 방향을 정리하고 찐 고객 2명에게 피드백을 받았어요. \"귀찮아서 안 쓸 것 같다\", \"기존 캘린더와 연동되면 좋겠다\" 등 솔직한 피드백을 통해 구글캘린더 연동 방향을 잡았어요.",
+    },
+  ];
+
   const giftMessages = [
     { sender: "신연수", message: "불편한 점 하나씩 헤쳐나가는 모습 응원드리며 선물해봅니다!!" },
     { sender: "개미", message: "린디를 끝으로 3조 멤버 전원에게 셸을 한 번씩 보냈네요!" },
@@ -166,6 +189,34 @@ export default function LindiCertificate() {
           </div>
         </div>
       </section>
+
+      {timeline.length > 0 && (
+        <section className="border-b border-[var(--ink-10)]">
+          <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">
+            <h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2>
+            <div className="space-y-0">
+              {timeline.map((week, i) => (
+                <div key={week.week} className="relative pl-10 pb-12 last:pb-0">
+                  {i < timeline.length - 1 && (
+                    <div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />
+                  )}
+                  <div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">
+                    {week.week.replace("주차", "")}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span>
+                      <span className="text-xs text-[var(--ink-30)]">{week.date}</span>
+                    </div>
+                    <p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p>
+                    <p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {giftMessages.length > 0 && (
         <section className="border-b border-[var(--ink-10)]">

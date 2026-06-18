@@ -44,6 +44,14 @@ export default function ParkRuaCertificate() {
     { name: "셸 5회 받기", icon: "/badges/shell-receive-5.svg", earned: "2026.05" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "Claude Code 설치 + OS 인터뷰 + SNS 벤치마킹",
+      summary: "25년차 편집디자이너로서 처음 코드 환경에 발을 디뎠어요. Claude Code를 설치하고 os-interview 스킬로 인터뷰를 완주했어요. 그림비(@grim_b) 작가를 벤치마킹하며, 과거 이모티콘 작가 경력을 살려 손그림 중심의 시호일일 콘텐츠 시각 시스템을 설계했어요.",
+    },
+  ];
+
   const giftMessages = [
     { sender: "리보", message: "이번주 화이팅이에요!!" },
     { sender: "먼지민", message: "오늘도 화이팅" },
@@ -144,6 +152,32 @@ export default function ParkRuaCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (
+        <section className="border-b border-[var(--ink-10)]">
+          <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">
+            <h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2>
+            <div className="space-y-0">
+              {timeline.map((week, i) => (
+                <div key={week.week} className="relative pl-10 pb-12 last:pb-0">
+                  {i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}
+                  <div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">
+                    {week.week.replace("주차", "")}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span>
+                      <span className="text-xs text-[var(--ink-30)]">{week.date}</span>
+                    </div>
+                    <p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p>
+                    <p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

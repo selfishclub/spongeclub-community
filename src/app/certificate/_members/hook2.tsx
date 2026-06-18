@@ -35,7 +35,33 @@ export default function Hook2Certificate() {
     { name: "첫 크루챗", icon: "/badges/first-crewchat.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "visitor-crm PRD + yt2blog 슬래시 커맨드",
+      summary: "OS 인터뷰로 참관객 CRM 자동화 PRD를 설계하고, YouTube 영상 1개를 K-Expo 인사이트 블로그로 자동 생성하는 3단 에이전트 스킬을 만들었어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "self-discovery 봇 + kexpo-content-studio 웹앱",
+      summary: "매일 아침 텔레그램으로 행동 기반 회상 질문을 보내는 개인 봇과, 비개발자도 버튼 한 번에 콘텐츠 4,000자를 생성하는 Vercel 웹앱을 동시에 만들었어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "OnMove — 운동 센터 올인원 워크스페이스",
+      summary: "필라테스·PT 사장님을 위한 회원·강사·비용·세금 관리 SaaS를 빌드하기 시작했어요. 세무 대비 가계부가 차별점이에요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "3개 프로덕트 동시 하네스 적용 + 페르소나 피드백",
+      summary: "OnMove(신규), 인생집(구축), B2B 리드 마그넷(스케일업) 3개 프로덕트에 하네스 구조를 적용하고 각각 실사용자 피드백을 수집했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "OnMove — 회원·강사·재무 통합 완성",
+      summary: "회원 등록 시 수강권·결제·담당 강사를 한번에 연결하고, 강사 급여 자동 계산과 세금 예측 추천까지 구현했어요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "하늘", message: "저도 보냅니다" },

@@ -43,6 +43,19 @@ export default function ArtreeCertificate() {
     { name: "첫 SNS 인증", icon: "/badges/first-sns.svg", earned: "2026.05" },
   ];
 
+  const timeline = [
+    {
+      week: "1주차", date: "5/10",
+      title: "OS 인터뷰 완주 — 통점 진단과 부품 8개 도출",
+      summary: "os-interview 스킬로 6단계 인터뷰를 완주했어요. CEO+PM 1인 다역, 정보가 머릿속에만 있는 SPOF 문제를 진단하고, 잡일 시스템화와 학습 흐름 두 축으로 부품 후보 8개를 도출했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "research-intake 스킬 — v0.1에서 v0.6까지 진화",
+      summary: "1주차 청사진을 바탕으로 학습 리서치 보조 스킬 research-intake를 만들고 4번의 피드백을 거쳐 v0.6까지 발전시켰어요. 연희동 도슨트 미팅 준비에 실제로 활용해 카드 10장을 생성하며 작동을 검증했어요.",
+    },
+  ];
+
   const giftMessages = [
     { sender: "박상임", message: "고민이 많은 만큼 좋은 결과물이 내실꺼란 기대감에 응원의 셸을 보내봐요~!" },
     { sender: "오웬", message: "바쁘지만 최선을 다해서 팔로업 하고 있는 아트리에게 오늘의 셸을 보내요!" },
@@ -142,6 +155,32 @@ export default function ArtreeCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (
+        <section className="border-b border-[var(--ink-10)]">
+          <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">
+            <h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2>
+            <div className="space-y-0">
+              {timeline.map((week, i) => (
+                <div key={week.week} className="relative pl-10 pb-12 last:pb-0">
+                  {i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}
+                  <div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">
+                    {week.week.replace("주차", "")}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span>
+                      <span className="text-xs text-[var(--ink-30)]">{week.date}</span>
+                    </div>
+                    <p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p>
+                    <p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

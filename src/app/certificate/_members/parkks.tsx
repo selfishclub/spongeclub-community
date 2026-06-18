@@ -45,6 +45,29 @@ export default function ParkKSCertificate() {
     { name: "셸 5회 보내기", icon: "/badges/shell-send-5.svg" },
   ];
 
+  const timeline = [
+    {
+      week: "2주차", date: "5/17",
+      title: "집다움 OS — 인테리어 브랜드 캐러셀 자동화",
+      summary: "6개 이상 툴에 흩어져 있던 인스타그램 캐러셀 제작 워크플로우를 하나의 웹앱으로 통합했어요. Next.js + Supabase + Claude Sonnet으로 주제 선택부터 PNG 내보내기까지 한 번에 가능하게 만들었어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "집다움 Discovery — 리모델링 사전 상담 도구",
+      summary: "리모델링을 준비하는 고객이 신뢰할 수 있는 디자이너를 찾도록 돕는 대화형 인터페이스를 만들었어요. '왜'가 불명확하면 Claude Code도 텍스트 기계일 뿐이라는 인사이트를 얻었어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "Space Fit — 인테리어 스타일 진단 웹앱",
+      summary: "5~7개 질문으로 개인 스타일·예산·시공사 적합도를 진단해주는 무료 웹앱을 만들었어요. AI 의존 없이 규칙 기반 점수 시스템으로 안정적인 진단 결과를 구현했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "모임온(Moim-On) — 정기 모임 관리 플랫폼",
+      summary: "QR 출석, 자동 회계, AI 포스터 생성까지 갖춘 정기 모임 관리 웹앱을 만들었어요. 13개 이상 화면을 Claude AI Design으로 리디자인하면서 기존 기능은 100% 유지했어요.",
+    },
+  ];
+
   const giftMessages = [
     { sender: "이니", message: "열심히 하는 모습 멋지세요!!!!" },
     { sender: "포노미터", message: "오늘 공유회 때 만나요~~" },
@@ -145,6 +168,8 @@ export default function ParkKSCertificate() {
           </p>
         </div>
       </section>
+
+      {timeline.length > 0 && (<section className="border-b border-[var(--ink-10)]"><div className="max-w-3xl mx-auto px-6 py-12 md:py-16"><h2 className="text-xs font-extrabold text-[var(--ink-30)] uppercase tracking-widest mb-10 text-center">주차별 여정</h2><div className="space-y-0">{timeline.map((week, i) => (<div key={week.week} className="relative pl-10 pb-12 last:pb-0">{i < timeline.length - 1 && (<div className="absolute left-[13px] top-8 bottom-0 w-0.5 bg-[var(--ink-10)]" />)}<div className="absolute left-0 top-0 w-7 h-7 flex items-center justify-center text-[11px] font-extrabold bg-[var(--yellow)] text-[var(--ink)]">{week.week.replace("주차", "")}</div><div><div className="flex items-center gap-2 mb-2"><span className="text-base font-extrabold text-[var(--ink)]">{week.week}</span><span className="text-xs text-[var(--ink-30)]">{week.date}</span></div><p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p><p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p></div></div>))}</div></div></section>)}
 
       <section className="border-b border-[var(--ink-10)] bg-[var(--ink-05)]">
         <div className="max-w-3xl mx-auto px-6 py-12 md:py-16">

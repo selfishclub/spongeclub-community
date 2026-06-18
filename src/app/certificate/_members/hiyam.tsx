@@ -30,7 +30,13 @@ export default function HiyamCertificate() {
     { name: "셸 5회 받기", icon: "/badges/shell-receive-5.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "광고주 메일 회신 도우미 PRD + 라이프 OS 설계 — 3번 피벗해서 zero-cost로",
+      summary: "OS 인터뷰로 광고주 메일 회신 도우미 PRD를 만들었어요. Claude 스킬에서 Apps Script+Claude API, 다시 Gemini 측면패널 활용으로 3번 피벗하면서 추가 비용 0원 구조로 안착했어요. 워너비 벤치마킹으로 라이프 OS도 설계했어요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "J", message: "오늘도 화이팅 하세요~!" },

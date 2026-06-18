@@ -30,7 +30,13 @@ export default function HoneybarnCertificate() {
     { name: "셸 5회 받기", icon: "/badges/shell-receive-5.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "2주차", date: "5/17",
+      title: "텔레그램 봇 + 워킹맘 AI 비서 — 가정일과 회사일을 함께 관리",
+      summary: "텔레그램과 Gemini API를 연동한 봇을 만들고, 워킹맘에 특화된 AI 비서를 기획했어요. 매일 오후 5시까지 전달한 일과를 정리해서 아침에 브리핑해주고, 가정일과 회사일의 우선순위를 구분해주는 게 목표예요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "하늘", message: "응원을 담아 보냅니다! 혹시 도움 요청반 신청을 해보시는것은 어떨까요?" },

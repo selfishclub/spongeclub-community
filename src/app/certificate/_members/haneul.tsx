@@ -36,7 +36,38 @@ export default function HaneulCertificate() {
     { name: "첫 크루챗", icon: "/badges/first-crewchat.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "아이디어 수집기 스킬 + 투두 게시판",
+      summary: "콘텐츠 크리에이터의 '오늘 뭐 만들지' 결정 비용을 없애는 Claude 스킬을 만들고, 단일 HTML 투두 게시판 CRUD도 완성했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Carousel OS — 유튜브 영상 → 캐러셀 자동 생성",
+      summary: "유튜브 영상 스크립트를 넣으면 8장 PNG 캐러셀 + 캡션을 자동 생성하고 인라인 편집까지 되는 웹앱을 만들었어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "Mecovery — 영양 자가체크 도구 (커뮤니티 입구)",
+      summary: "사용자 컨디션 입력 → 영양제를 '처방'이 아닌 '함께 볼 가설'로 추천하는 셀프 체크 도구를 만들었어요. MVP로 선정됐어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "Mecovery — 하네스 5기둥 점검 + 톤가드 설계",
+      summary: "CLAUDE.md·PRD·memory·SKILL·agent 5개 기둥을 점검하고, '가설 톤 검수 에이전트' 필요성을 발견했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "Mecovery — 사용자 언어로 전면 재설계",
+      summary: "전문 용어를 사용자 언어로 바꾸고, 인스타툰 캐릭터·빨간불 비유·편지 톤 결과지로 전면 개편했어요. MVP로 선정됐어요.",
+    },
+    {
+      week: "6주차", date: "6/14",
+      title: "Mecovery — 교육 버전 전환 (도구 봉인)",
+      summary: "의료법 리스크를 판단해 영양소 추천·진단을 들어내고, 몸의 작동원리 교육 콘텐츠만 남긴 안전한 버전으로 전환했어요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "J", message: "화이팅입니다~~! ㅎㅎ" },

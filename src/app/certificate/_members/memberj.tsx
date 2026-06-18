@@ -33,7 +33,33 @@ export default function MemberJCertificate() {
     { name: "셸 5회 받기", icon: "/badges/shell-receive-5.svg" },
   ];
 
-  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [];
+  const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
+    {
+      week: "1주차", date: "5/10",
+      title: "주간보고서 자동화 + 주식 분석 스킬",
+      summary: "엑셀 데이터 붙여넣기로 주간보고서를 자동 생성하는 스킬과, 시황/종목/포트폴리오/실적 4모드 주식 분석 스킬을 만들었어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "텔레그램 일정관리 봇 — 개인 OS",
+      summary: "하루 6번 자동으로 할 일과 진척도를 물어보는 텔레그램 어시스턴트 봇을 만들었어요. 플러그인 전역 등록이 핵심 삽질 포인트였어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "네이버 블로그 주제 브리핑 봇",
+      summary: "네이버 카페·인스타·유튜브 3개 소스를 병렬 검색해서 오늘 날짜 기준 핫한 글감 10개를 추천하고, 카카오톡 발송까지 자동화했어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "하네스 구조 리팩터링 — CLAUDE.md + PRD 분리",
+      summary: "CLAUDE.md에 몰려있던 API·프롬프트·UI 로직을 PRD 4개 + MEMORY.md로 분리하고, 실사용자 2명에게 직접 피드백을 받았어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "블로그 브리핑 봇 — Gemini API + UI 디벨롭",
+      summary: "Gemini API 연결, 더보기·아코디언·세션캐시·에러처리 UI를 붙여 실배포 직전 상태까지 완성했어요.",
+    },
+  ];
 
   const giftMessages = [
     { sender: "하늘", message: "감사합니다~! 저도 응원 보냅니다!" },
