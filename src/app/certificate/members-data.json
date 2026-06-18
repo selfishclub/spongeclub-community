@@ -1614,9 +1614,9 @@
       true,
       true,
       true,
-      null
+      true
     ],
-    "attendanceCount": 6,
+    "attendanceCount": 7,
     "sessionsAttended": 3,
     "snsVerified": 2,
     "shellsSent": 6,
