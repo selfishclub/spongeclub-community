@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function PpuccaCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function PpuccaCertificate() {
       "\"아무것도 모르던 애가 뭘 만들어내긴 했네,,\"라고 기억되고 싶다고 했어요. 과제 제출은 적었지만 셸 16개를 받으며 크루들에게 존재감을 남겼어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("ppucca", {
     attendance: { present: 4, total: 7 },
     sessionsAttended: 0,
     snsVerified: 1,
     shellsSent: 8,
     shellsReceived: 16,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

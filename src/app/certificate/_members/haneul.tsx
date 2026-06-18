@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function HaneulCertificate() {
   const member = { name: "하늘", realName: "정하늘", team: "6조", jobTitle: "신경과전문의 / 유튜브채널 운영 중", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function HaneulCertificate() {
       "\"학습력이 좋은 사람\"으로 기억되고 싶다고 했어요. 공유회 8번 참여, 셸 19개 보내기. 스킬 공유 + 크루챗까지 — 6조에서 가장 다양하게 활동한 사람이에요.",
   };
 
-  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 19, shellsReceived: 14 };
+  const stats = useLiveStats("하늘", { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 19, shellsReceived: 14 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

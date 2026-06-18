@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function IanCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function IanCertificate() {
       "1주차에 script2storyboard -- 대본을 넣으면 컷 단위로 분해하고 이미지 프롬프트까지 생성하는 스킬을 만들었어요. 5주차엔 SSCUT에서 Weft로 재설계하며 GUI를 버리고 AI가 직접 구동하는 CLI 도구로 전환했어요. 조용히 혼자서 만들어가는 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("이안(박민우)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 3,
     snsVerified: 2,
     shellsSent: 6,
     shellsReceived: 8,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

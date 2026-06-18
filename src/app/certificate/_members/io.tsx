@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function IoCertificate() {
   const member = { name: "이오", realName: "오국봉", team: "2조", jobTitle: "외식업 마케터", period: "2026.05.03 — 2026.06.14" };
 
-  const stats = { attendance: { present: 1, total: 7 }, sessionsAttended: 0, snsVerified: 0, shellsSent: 0, shellsReceived: 1 };
+  const stats = useLiveStats("이오(오국봉)", { attendance: { present: 1, total: 7 }, sessionsAttended: 0, snsVerified: 0, shellsSent: 0, shellsReceived: 1 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

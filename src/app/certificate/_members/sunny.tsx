@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function SunnyCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function SunnyCertificate() {
       "\"필요한 도구를 정확히 골라 제대로 쓰는 사람\"으로 기억되고 싶다고 했어요. 공유회 6번 참여, SNS 인증 6회. 균형 잡힌 참여로 자리를 지켰어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("써니", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 6,
     snsVerified: 6,
     shellsSent: 2,
     shellsReceived: 7,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

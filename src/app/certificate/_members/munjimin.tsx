@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function MunjiminCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function MunjiminCertificate() {
       "1주차에 저녁 마감 OS를 설계하며 매일 반복되는 결정 피로와 맥락 반복 문제를 구조적으로 풀었어요. \"도구가 늘어날수록 정리 비용도 같이 늘어난다\"는 발견. 부조장으로서 4조를 이끌며 막힌 지점을 먼저 꺼내는 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("먼지민(석지민)", {
     attendance: { present: 3, total: 7 },
     sessionsAttended: 9,
     snsVerified: 10,
     shellsSent: 16,
     shellsReceived: 16,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

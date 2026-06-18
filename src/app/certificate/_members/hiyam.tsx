@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function HiyamCertificate() {
   const member = { name: "히얌", realName: "최효연", team: "6조", jobTitle: "퍼포먼스 마케팅 에이전시 1년차 AE", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function HiyamCertificate() {
       "\"빠른 이해와 터득을 기반으로, 다양한 문제 내 적용력이 좋은 사람\"으로 기억되고 싶다고 했어요.",
   };
 
-  const stats = { attendance: { present: 5, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 0, shellsReceived: 7 };
+  const stats = useLiveStats("히얌", { attendance: { present: 5, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 0, shellsReceived: 7 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

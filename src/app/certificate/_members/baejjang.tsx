@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function BaejjangCertificate() {
   const member = {
@@ -22,15 +23,13 @@ export default function BaejjangCertificate() {
       "공유회도 5번이나 다니고, SNS 인증도 꾸준히 했지만, 배짱이 진짜 많이 한 건 셸 보내기. 25번이나 다른 크루에게 셸을 보냈어요. 본인이 \"AI를 쉽게 진정성있게 풀어내는 사람\"으로 기억되고 싶다고 했는데, 실제로 말보다 응원으로 먼저 움직이는 사람이었어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("배짱(박종배)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 5,
     snsVerified: 5,
     shellsSent: 26,
     shellsReceived: 20,
-    badges: 6,
-    skillShared: 0,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

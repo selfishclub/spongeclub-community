@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function PinoCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function PinoCertificate() {
       "\"어디서부터 시작하는 게 맞는지 결정하는 게 쉽지 않다\"고 했어요. 1주차 OS 인터뷰에서 \"다 해야 한다\"는 막연함이 \"첫 부품 1개\"로 좁혀지는 경험을 했어요. 아침 브리핑 스킬을 만들고, 노션 업무 OS를 벤치마킹.",
   };
 
-  const stats = {
+  const stats = useLiveStats("피노", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 1,
     snsVerified: 0,
     shellsSent: 0,
     shellsReceived: 2,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

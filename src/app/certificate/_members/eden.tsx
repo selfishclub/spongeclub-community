@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function EdenCertificate() {
   const member = { name: "이든", realName: "김다현", team: "1조", jobTitle: "1인 패션 플랫폼 창업가", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function EdenCertificate() {
       "\"할루시네이션 방어\"가 막힌 점이었지만, 실제로 이든이 7주간 가장 많이 한 건 사람을 연결하는 일이었어요. 셸 24개 보내기, 34개 받기 — 1조에서 가장 많은 셸을 받은 사람이에요. 오프라인 모임에서 AI를 \"진짜 반쪽\"이라고 표현하며, ADHD를 AI로 보완하고 워크로그 클러스터링 서비스를 개발 중이라고 밝혔어요. 과제 독려, 스레드 활성화, 먼저 인사하기. 조용히 1조의 중심을 잡아준 에너지.",
   };
 
-  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 0, shellsSent: 24, shellsReceived: 34 };
+  const stats = useLiveStats("이든", { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 0, shellsSent: 24, shellsReceived: 34 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

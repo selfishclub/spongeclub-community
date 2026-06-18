@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function HoneybarnCertificate() {
   const member = { name: "허니바른", realName: "허니바른", team: "6조", jobTitle: "이커머스 대표", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function HoneybarnCertificate() {
       "\"끝까지 완주하고 오래함께할사람\"으로 기억되고 싶다고 했어요.",
   };
 
-  const stats = { attendance: { present: 3, total: 7 }, sessionsAttended: 0, snsVerified: 0, shellsSent: 0, shellsReceived: 5 };
+  const stats = useLiveStats("허니바른", { attendance: { present: 3, total: 7 }, sessionsAttended: 0, snsVerified: 0, shellsSent: 0, shellsReceived: 5 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function MoongreenCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function MoongreenCertificate() {
       "오프라인에서 \"꼴찌라도 같이 배에 올라탔다\"는 표현으로 심리적 안정감을 설명했어요. 처음 클로드를 사용하며 \"새 스펀지처럼 흡수가 덜 된 상태\"라고 했지만, SNS 인증 21회 — 전체 멤버 중 최다. 흡수가 덜 됐다고 했지만 기록은 누구보다 많이 남긴 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("달빛그린", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 6,
     snsVerified: 21,
     shellsSent: 17,
     shellsReceived: 8,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

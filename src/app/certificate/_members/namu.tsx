@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function NamuCertificate() {
   const member = { name: "나무", realName: "김남욱", team: "1조", jobTitle: "미디어커머스 마케팅 총괄", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function NamuCertificate() {
       "\"결과물의 품질 판단\"이 어렵다고 했던 사람이에요. OT에서 \"왜 옵시디언을 쓰는지 자세히는 모르지만 감각적으로 이해가 가고 있다\"고 썼다. 완벽히 이해하기 전에 먼저 감각으로 부딪히는 사람이에요. 과제 제출은 OT 한 번이었지만, 크루 4명에게 셸을 보내며 커뮤니티 안에서 조용히 존재감을 남겼어요.",
   };
 
-  const stats = { attendance: { present: 5, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 4, shellsReceived: 6 };
+  const stats = useLiveStats("나무(김남욱)", { attendance: { present: 5, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 4, shellsReceived: 6 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

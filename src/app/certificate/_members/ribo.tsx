@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function RiboCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function RiboCertificate() {
       "1주차에 멀티채널 발행 OS와 텔레그램 봇 MVP를 만들고, 3주차엔 \"스크랩어데이\" -- 다꾸하듯 우표형 사진 일기 웹앱을 구현했어요. 5주차엔 스티커 17개, 이메일 로그인까지 붙이며 Post-MVP로 발전시켰어요. 셸 31개를 받으며 용기를 주는 사람으로 기억되고 있어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("리보(이보경)", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 10,
     snsVerified: 12,
     shellsSent: 20,
     shellsReceived: 31,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

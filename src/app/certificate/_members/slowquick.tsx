@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function SlowquickCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function SlowquickCertificate() {
       "오프라인에서 \"경력 단절 기간이 길었고, 과부하로 3~4주 학습이 정체됐다\"고 솔직하게 밝혔어요. 개발자 남편에게 배운 '정본' 방법론으로 돌파구를 만들고, 화요일 자체 공유회를 열었어요. 1주차에 블로그 플랫폼을, 2주차엔 Sullivan 사고 파트너 시스템을 텔레그램 봇으로 연결하며, \"봇 만들기와 시스템 연결은 완전히 다른 단계\"라는 핵심 학습을 했어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("슬로우퀵(박은아)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 9,
     snsVerified: 6,
     shellsSent: 19,
     shellsReceived: 11,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

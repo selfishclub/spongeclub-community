@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function SeolrokCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function SeolrokCertificate() {
       "1주차에 카톡 회의를 노션으로 자동 정리하는 스킬을 만들고, 3주차엔 \"자화상\" -- 매일 한 줄 비춤 도구를 만들었어요. 5주차엔 다른 시점 비춤 기능을 더하며 44개 메모가 쌓인 도구로 진화시켰어요. 공유회 13번, SNS 15회 -- 누구보다 많이 탐험한 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("설록(권효선)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 13,
     snsVerified: 15,
     shellsSent: 23,
     shellsReceived: 16,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

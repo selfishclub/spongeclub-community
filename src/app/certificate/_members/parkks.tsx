@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ParkKSCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function ParkKSCertificate() {
       "오프라인 모임에서 '에이미'로 불리며, 기업 대상 프로젝트에서 개인 레지던스 서비스로 피보팅 중이라고 밝혔어요. '집다움' OS를 제작하고 캐러셀 콘텐츠와 봇도 함께 만들었어요. 이기적 공유의 핵심을 '남을 위해 공부하는 것'으로 정의한 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("박경선", {
     attendance: { present: 5, total: 7 },
     sessionsAttended: 5,
     snsVerified: 1,
     shellsSent: 8,
     shellsReceived: 12,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: false },

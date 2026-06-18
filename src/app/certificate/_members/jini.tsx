@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function JiniCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function JiniCertificate() {
       "1주차에 C레벨 마케팅 주간보고서 자동화 스킬을 만들고, 3주차엔 광고 데이터를 10가지 마케팅 이론으로 자동 진단하는 마케팅 OS 대시보드까지 구현했어요. 스킬 공유 8회 -- 전체 멤버 중 최다. 만든 것을 가장 많이 나눈 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("지니", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 11,
     snsVerified: 8,
     shellsSent: 25,
     shellsReceived: 20,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: false },

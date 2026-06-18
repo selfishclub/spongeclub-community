@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function HazelCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function HazelCertificate() {
       "1주차에 신사 점심 파인더를 실제로 배포하고, 3주차엔 네이버 플레이스 운영 자동화 봇을 만들어 MVP에 뽑혔어요. 리뷰 답변 자동 생성부터 Make 연동 리드 저장까지 한 흐름으로 묶은 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("헤이즐(성윤재)", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 1,
     snsVerified: 3,
     shellsSent: 16,
     shellsReceived: 5,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

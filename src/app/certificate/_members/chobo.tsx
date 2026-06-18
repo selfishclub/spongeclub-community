@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ChoboCertificate() {
   const member = { name: "초보자", realName: "김명근", team: "6조", jobTitle: "회사 사무직", period: "2026.05.03 — 2026.06.14" };
 
-  const stats = { attendance: { present: 3, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 0, shellsReceived: 2 };
+  const stats = useLiveStats("초보자", { attendance: { present: 3, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 0, shellsReceived: 2 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

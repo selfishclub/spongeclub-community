@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function GreenCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function GreenCertificate() {
       "1주차에 노션 클리너 스킬을 세 번 자기교정하며 만들었고, 3주차엔 만성질환 진료 관리 PWA를 구현하며 PRD를 v1.3까지 네 번 다듬었어요. 오프라인에서 \"한 발자국 앞에만 있어도 도움이 된다\"며 PID 작성법을 공유한 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("그린(이유경)", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 6,
     snsVerified: 3,
     shellsSent: 25,
     shellsReceived: 20,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function NinaCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function NinaCertificate() {
       "\"별도 세팅 없이 여러 프로젝트를 분산해서 사용하다보니 과거 데이터를 참고하기 어렵다\"고 했어요. 1주차에 CS 도구 Glance를 설계 — AI 챗봇이 못 푼 문의가 사람에게 넘어올 때 \"아무 맥락 없이 화난 고객을 마주치는 장면\"을 개선했어요. 셸 30개 보내기 — 3조에서 가장 많은 셸을 보낸 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("Nina(이예지)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 4,
     snsVerified: 7,
     shellsSent: 30,
     shellsReceived: 21,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

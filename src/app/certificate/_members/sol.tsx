@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function SolCertificate() {
   const member = { name: "솔", realName: "임솔", team: "1조", jobTitle: "", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function SolCertificate() {
       "\"어디서부터 시작해야 할지 모르겠다\"는 막힌 점이 있었지만, 1주차에 60분 OS 인터뷰를 완주하고 \"못 자르기\"라는 통점을 정확히 짚었어요. 수익모델·시간·몸을 하나의 시스템으로 보는 OS를 선언했어요. 과제 제출은 OT과 1주차 두 번이었지만, 시작점을 만든 것 자체가 이 여정의 의미.",
   };
 
-  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 2, snsVerified: 0, shellsSent: 13, shellsReceived: 5 };
+  const stats = useLiveStats("솔(임솔)", { attendance: { present: 6, total: 7 }, sessionsAttended: 2, snsVerified: 0, shellsSent: 13, shellsReceived: 5 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

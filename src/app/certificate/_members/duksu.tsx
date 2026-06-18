@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function DuksuCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function DuksuCertificate() {
       "1주차에 \"오늘나\" 컨디션 맞춤 케어 앱 PRD를 완성하고, 3주차엔 Facette -- 디자이너 전용 레퍼런스 아카이브를 만들었어요. 방향을 다섯 번 넘게 엎었지만 동료 10분 인터뷰가 방향을 구했어요. \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의한 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("덕수(김효정)", {
     attendance: { present: 5, total: 7 },
     sessionsAttended: 1,
     snsVerified: 0,
     shellsSent: 5,
     shellsReceived: 8,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function KoniCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function KoniCertificate() {
       "헬스장 운동 기록 PWA를 배포하고, \"환자가 본 우리 병원\" 웹앱으로 MVP에 뽑혔어요. v1→v2→v3까지 두 번 갈아엎고 도착한 사람이에요. 5주차엔 와인 취향 통역기까지 기획하며 \"완성도와 서비스는 다르다\"는 걸 배웠어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("코니(황초롱)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 5,
     snsVerified: 6,
     shellsSent: 20,
     shellsReceived: 15,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

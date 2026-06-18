@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function MemberJCertificate() {
   const member = { name: "J", realName: "허지은", team: "6조", jobTitle: "온라인MD", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function MemberJCertificate() {
       "\"함께 발전하고, 크루들에게도 도움이 될 수 있는 사람\"으로 기억되고 싶다고 했어요. 공유회 8번 참여, 셸 11개 보내기.",
   };
 
-  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 11, shellsReceived: 10 };
+  const stats = useLiveStats("J", { attendance: { present: 6, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 11, shellsReceived: 10 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

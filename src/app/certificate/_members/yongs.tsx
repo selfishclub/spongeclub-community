@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function YongsCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function YongsCertificate() {
       "오프라인에서 \"약 20년 동안 5개 포지션을 경험하며 도전과 실패를 반복해왔다\"고 밝혔어요. 한국어 감성 단어를 비주얼·음악·시 구절과 연동하는 글로벌 한국어 문화 앱 '글' 프로젝트를 준비 중. 8월 법인 설립 목표.",
   };
 
-  const stats = {
+  const stats = useLiveStats("yongs(전용규)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 3,
     snsVerified: 0,
     shellsSent: 1,
     shellsReceived: 4,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

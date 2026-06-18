@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function AgataCertificate() {
   const member = { name: "아가타", realName: "정재율", team: "1조", jobTitle: "IP 비즈니스 및 브랜드 컨설팅", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function AgataCertificate() {
       "\"퀄리티 항상성\"이 막힌 점이었어요. 그런데 3주차에 \"호흡의 하루\" — 하루 3번 자동 체크인 + 텔레그램 봇 + 옵시디언 기록 시스템을 만들어 MVP로 뽑혔어요. 공유회 10번 참여, 스킬 도전 8회. 1조에서 가장 적극적으로 배우고 시도한 사람이에요.",
   };
 
-  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 10, snsVerified: 2, shellsSent: 25, shellsReceived: 25 };
+  const stats = useLiveStats("아가타", { attendance: { present: 7, total: 7 }, sessionsAttended: 10, snsVerified: 2, shellsSent: 25, shellsReceived: 25 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

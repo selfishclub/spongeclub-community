@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function JjiniCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function JjiniCertificate() {
       "1주차에 weeve — 디지털 조문보 플랫폼을 설계했어요. AI 인터뷰로 고인의 이야기를 수집하고, 영정 사진에서 의료장비를 제거하며 배경을 교체하는 이미지 편집까지. 3주차엔 8개 하네스와 \"사실 지어내기 방지\" 가드까지 구축. 공유회 13번 참여 — 전체 멤버 중 최다.",
   };
 
-  const stats = {
+  const stats = useLiveStats("4조 지니(신진영)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 13,
     snsVerified: 7,
     shellsSent: 25,
     shellsReceived: 20,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

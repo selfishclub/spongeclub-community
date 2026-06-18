@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function GaemiCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function GaemiCertificate() {
       "GPT와 Claude 두 세션을 병행하며 OS 인터뷰를 비교 실험하고, \"즐거운 개미집\" 모임 커뮤니티 웹사이트를 직접 만들어 배포했어요. 5주차엔 UX v2 개편까지 진행하며 Phase 단위 검증-배포 사이클을 돌렸어요. 셸 45개를 받으며 전체 멤버 중 가장 많은 응원을 모은 3조의 허브예요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("개미(임종범)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 1,
     snsVerified: 6,
     shellsSent: 29,
     shellsReceived: 47,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function AceCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function AceCertificate() {
       "오프라인에서 강의 자료를 PPT 대신 HTML 사이트로 제작하는 방식으로 전환했다고 밝혔어요. 책 집필 중이며, AI를 사용하지 않는 오프라인 글쓰기 합평 모임도 추진 중. \"막히는 지점을 좀더 쉽게 설명하고 끝까지 완주하는 사람\"으로 기억되고 싶다고 했어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("에이스(최학곤)", {
     attendance: { present: 4, total: 7 },
     sessionsAttended: 2,
     snsVerified: 0,
     shellsSent: 0,
     shellsReceived: 2,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ParksimCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function ParksimCertificate() {
       "\"단순 채팅으로 끝나는 부분\"이 막힌 점이었어요. 하지만 1주차에 CPA 블로그 자동 브리핑 스킬을 만들고, 3주차엔 알뜰폰 비교 도구를 배포하고, 5주차엔 친구 피드백 5개를 반영해 전면 재설계까지. 셸 35개 보내기, SNS 22회, VOD 7개 구매 — 모든 숫자가 전체 멤버 최상위권인 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("박상임", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 7,
     snsVerified: 22,
     shellsSent: 35,
     shellsReceived: 29,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

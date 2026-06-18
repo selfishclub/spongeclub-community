@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function PhonometerCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function PhonometerCertificate() {
       "\"바이브코딩이 불편한데 거의 완전 자동화가 가능한지\"가 막힌 점이었어요. 1주차에 SyncAlive(사운드 전문가 매칭 플랫폼) OS 청사진을, 2주차엔 캐러셀 생성기 MVP를 Vite+React로 구현. \"컨텍스트 스위칭\"이 본질적 통점이라는 발견.",
   };
 
-  const stats = {
+  const stats = useLiveStats("포노미터(김미라)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 6,
     snsVerified: 4,
     shellsSent: 14,
     shellsReceived: 11,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

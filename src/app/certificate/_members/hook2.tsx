@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function Hook2Certificate() {
   const member = { name: "Hook2", realName: "이창환", team: "6조", jobTitle: "전시회 디지털 마케터", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function Hook2Certificate() {
       "\"함께 일해보고 싶은 사람! 믿고 맡기면 어떻게든 해올 사람\"으로 기억되고 싶다고 했어요. 공유회 7번 참여, SNS 10회, 셸 22개 보내기. 6조에서 가장 활발하게 활동한 사람 중 하나.",
   };
 
-  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 7, snsVerified: 10, shellsSent: 22, shellsReceived: 9 };
+  const stats = useLiveStats("Hook2(이창환)", { attendance: { present: 6, total: 7 }, sessionsAttended: 7, snsVerified: 10, shellsSent: 22, shellsReceived: 9 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

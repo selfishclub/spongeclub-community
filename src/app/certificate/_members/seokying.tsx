@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function SeokyingCertificate() {
   const member = { name: "석영", realName: "석영", team: "6조", jobTitle: "1인 회사 대표 / 쇼핑몰운영 대표 대상 온라인 비즈니스", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function SeokyingCertificate() {
       "셸 28개 보내기 — 6조에서 가장 많은 셸을 보낸 사람이에요. \"결과를 만들어 내는 사람\"으로 기억되고 싶다고 했어요.",
   };
 
-  const stats = { attendance: { present: 7, total: 7 }, sessionsAttended: 3, snsVerified: 1, shellsSent: 28, shellsReceived: 13 };
+  const stats = useLiveStats("석영", { attendance: { present: 7, total: 7 }, sessionsAttended: 3, snsVerified: 1, shellsSent: 28, shellsReceived: 13 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

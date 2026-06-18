@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function LaraCertificate() {
   const member = { name: "라라", realName: "라라", team: "6조", jobTitle: "1인 브랜드", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function LaraCertificate() {
       "\"어려운 문제가 발생했을때 같이 끝까지 고민하고 시도하는 사람\"으로 기억되고 싶다고 했어요. 부조장으로서 6조를 이끌었어요.",
   };
 
-  const stats = { attendance: { present: 5, total: 7 }, sessionsAttended: 0, snsVerified: 4, shellsSent: 0, shellsReceived: 4 };
+  const stats = useLiveStats("라라", { attendance: { present: 5, total: 7 }, sessionsAttended: 0, snsVerified: 4, shellsSent: 0, shellsReceived: 4 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

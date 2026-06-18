@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function LindiCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function LindiCertificate() {
       "\"끝까지 남은 사람 (많은 발전이 있었던 사람)\"으로 기억되고 싶다고 했어요. 5주간 출석하며 자리를 지켰어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("린디", {
     attendance: { present: 5, total: 7 },
     sessionsAttended: 3,
     snsVerified: 1,
     shellsSent: 7,
     shellsReceived: 6,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

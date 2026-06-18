@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ChesterCertificate() {
   const member = { name: "체스터", realName: "이상윤", team: "1조", jobTitle: "IT회사 기획 리서치 및 기술 관리", period: "2026.05.03 — 2026.06.14" };
 
-  const stats = { attendance: { present: 1, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 0, shellsReceived: 0 };
+  const stats = useLiveStats("체스터 (이상윤)", { attendance: { present: 1, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 0, shellsReceived: 0 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

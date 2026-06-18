@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function BomiCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function BomiCertificate() {
       "1주차에 cycle-os -- 여성 호르몬 주기에 따라 화장품·일정·운동·음식·감정을 추천하는 자기관리 스킬을 만들었어요. 회사 자료 접근 불가로 work-helper에서 피벗한 결과물이에요. 6주간 꾸준히 출석하며 자리를 지킨 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("보미", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 0,
     snsVerified: 2,
     shellsSent: 2,
     shellsReceived: 5,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

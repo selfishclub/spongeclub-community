@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function YusCertificate() {
   const member = { name: "유스", realName: "김기태", team: "1조", jobTitle: "고객 전략 기획 및 업무 프로세스 개선", period: "2026.05.03 — 2026.06.14" };
@@ -13,7 +14,7 @@ export default function YusCertificate() {
       "\"어디서부터 시작해야 할지 모르겠다\"고 했지만, 2주차에 제로 비용으로 회사 VOC 분석 대시보드(MEDIT CX Hub)를 만들었어요. Zendesk + Supabase + Gemini를 엮어 주간 보고서, 임원 브리핑, 글로벌 뉴스레터까지 자동화. 제약을 부정하지 않고 그 안에서 일을 좁히는 사람이에요.",
   };
 
-  const stats = { attendance: { present: 6, total: 7 }, sessionsAttended: 4, snsVerified: 1, shellsSent: 12, shellsReceived: 17 };
+  const stats = useLiveStats("유스", { attendance: { present: 6, total: 7 }, sessionsAttended: 4, snsVerified: 1, shellsSent: 12, shellsReceived: 17 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function RoykangCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function RoykangCertificate() {
       "이기적 공유회를 열어 투자 관련 꿀팁을 가감없이 풀었어요. 크루들이 VOD까지 구매해서 다시 볼 만큼 가치 있는 공유를 한 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("로이캉", {
     attendance: { present: 2, total: 7 },
     sessionsAttended: 0,
     snsVerified: 0,
     shellsSent: 0,
     shellsReceived: 5,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

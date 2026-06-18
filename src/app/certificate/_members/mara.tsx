@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function MaraCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function MaraCertificate() {
       "오프라인 모임에서 영어·한국어·스페인어·프랑스어 4개국어 능력과 모의투자 대회 1등 경력을 공유했어요. 1주차에 실시간 뉴스 댓글 감정 분석으로 시장 고점을 판별하는 기능을 만들었고, 30년 재무 로드맵 프로그램을 커뮤니티에 공유해 많은 피드백을 받았어요. 방향을 찾는 중이지만, 이미 다양한 방향에서 결과물을 만들어내고 있는 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("마라", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 9,
     snsVerified: 5,
     shellsSent: 5,
     shellsReceived: 12,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function RinCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function RinCertificate() {
       "1주차에 캐릭터 그림 변환 로컬 웹앱을 만들어 그림 노동 6시간을 단축했어요. Gemini 2.5 Flash로 4모드 토글, AI 배경 제거, 모션 블러 패널까지 구현. SNS 인증 14회로 꾸준히 기록을 남긴 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("린", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 4,
     snsVerified: 14,
     shellsSent: 25,
     shellsReceived: 20,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

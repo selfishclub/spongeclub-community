@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ArtreeCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function ArtreeCertificate() {
       "오프라인에서 \"15명 규모 법인을 운영하며 하고 싶은 프로젝트와 경영 관리 사이의 균형이 키워드\"라고 밝혔어요. AI 자동화로 경영 관리 부담을 줄여 원하는 프로젝트에 집중하고 싶다고. 암묵지를 형식지로 전환하는 경험이 유익했다고 말한 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("artree", {
     attendance: { present: 4, total: 7 },
     sessionsAttended: 1,
     snsVerified: 1,
     shellsSent: 4,
     shellsReceived: 3,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

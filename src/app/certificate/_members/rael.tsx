@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function RaelCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function RaelCertificate() {
       "\"AI만을 활용해서 원하는 결과가 나올 수 있게 하는 법\"이 막힌 점이었어요. 1주차에 마케터 OS 청사진을 설계하고 집 매매 재무 분석 도구까지 만들었어요. 2주차엔 광고 CVR 진단 시스템을 웹 UI로 구현. 기록하고 판단하는 과정을 시스템으로 만든 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("라엘", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 4,
     snsVerified: 5,
     shellsSent: 5,
     shellsReceived: 5,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

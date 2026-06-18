@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function YuliaCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function YuliaCertificate() {
       "5주차에 Agentic OS를 설계하며 Interview에서 Verify까지 7단계 SDD 워크플로우를 정리했어요. \"AI에게 알아서 해달라고 맡기는 게 아니라, 실패하기 어렵게 길을 깔아주는 것\"이 핵심이라는 발견. 소모임에서 기초 개념을 가르치며 자신도 재확인하는 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("율리아(조유리)", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 6,
     snsVerified: 2,
     shellsSent: 23,
     shellsReceived: 30,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

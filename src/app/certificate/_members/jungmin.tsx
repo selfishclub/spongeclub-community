@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function JungminCertificate() {
   const member = {
@@ -11,13 +12,13 @@ export default function JungminCertificate() {
     period: "2026.05.03 — 2026.06.14",
   };
 
-  const stats = {
+  const stats = useLiveStats("정민", {
     attendance: { present: 2, total: 7 },
     sessionsAttended: 0,
     snsVerified: 0,
     shellsSent: 0,
     shellsReceived: 0,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

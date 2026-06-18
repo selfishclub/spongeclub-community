@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function IniCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function IniCertificate() {
       "\"개발 지식에 대한 두려움, 이것까지 될까라는 생각\"이 막힌 점이었어요. 하지만 1주차에 팀 작업 현황판 웹 대시보드를, 2주차엔 레이블링 노트 시스템을 만들며 6주차까지 모든 주차를 제출했어요. 두려움이 있었지만 끝까지 만든 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("이니", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 5,
     snsVerified: 4,
     shellsSent: 14,
     shellsReceived: 10,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

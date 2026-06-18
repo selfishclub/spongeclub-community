@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function BomCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function BomCertificate() {
       "오프라인에서 \"AI가 처음이라 모든 것이 낯설고 어렵지만, 매주 꾸준히 수행하며 점진적으로 성장하고 있다\"고 말했어요. 실제로 SNS 인증 12회, 셸 22개 보내기 — 느리다고 했지만 숫자는 조용히 쌓이고 있었어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("봄(김연미)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 5,
     snsVerified: 12,
     shellsSent: 22,
     shellsReceived: 22,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

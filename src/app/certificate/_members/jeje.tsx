@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function JejeCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function JejeCertificate() {
       "\"디테일한 수정 부분이 매번 어렵다\"고 했어요. 1주차에 Career FIT OS — K-뷰티 직무 기준 공고 분석 도구를 만들고, 2주차엔 1인용에서 공용으로 전환. \"1인용 → 공용은 방향 전환이 아니라 예정된 다음 단계\"라는 발견.",
   };
 
-  const stats = {
+  const stats = useLiveStats("제제(최지예)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 5,
     snsVerified: 10,
     shellsSent: 6,
     shellsReceived: 12,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

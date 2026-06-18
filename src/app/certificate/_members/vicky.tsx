@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function VickyCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function VickyCertificate() {
       "1주차에 Qoo10 키워드 트래커 OS를 설계하며 \"결과를 보고 확인·선택·결정만 하고 나머지는 시스템이 하는 구조\"를 만들었어요. 일본 이커머스 운영대행이라는 독특한 도메인에서 SNS 12회 기록을 남기며 꾸준히 참여한 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("비키(서승리)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 3,
     snsVerified: 12,
     shellsSent: 13,
     shellsReceived: 4,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

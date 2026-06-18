@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ShinYSCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function ShinYSCertificate() {
       "육아휴직 중인 PM이 1주차에 장보기 도우미, 제품 구매 판단기, 이유식 식단 생성기 세 가지 스킬을 한 세션에 완성했어요. \"결제가 아니라 결정이 진짜 비용\"이라는 발견으로 육아 OS를 만든 사람이에요. 셸 26개를 보내며 3조에서 가장 적극적으로 연결한 사람 중 하나.",
   };
 
-  const stats = {
+  const stats = useLiveStats("신연수", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 6,
     snsVerified: 5,
     shellsSent: 27,
     shellsReceived: 18,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

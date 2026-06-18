@@ -1,5 +1,7 @@
 "use client";
 
+import { useLiveStats } from "./_useLiveStats";
+
 export default function SeolMJCertificate() {
   const member = {
     name: "설민주",
@@ -9,13 +11,13 @@ export default function SeolMJCertificate() {
     period: "2026.05.03 — 2026.06.14",
   };
 
-  const stats = {
+  const stats = useLiveStats("설민주", {
     attendance: { present: 0, total: 7 },
     sessionsAttended: 0,
     snsVerified: 0,
     shellsSent: 0,
     shellsReceived: 0,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: false },

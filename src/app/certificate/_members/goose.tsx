@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function GooseCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function GooseCertificate() {
       "오프라인에서 에르메스 '툴박스' 모델을 참고한 완전 수작업 가죽가방(1개 완성에 약 8시간)을 만든다고 소개했어요. Claude AI로 커스터마이즈 주문서 시스템과 재고·원가 관리 ERP를 직접 제작 중. \"솔로프리너는 작은 세상에서 사는 것\"이라며 함께 모여 공유할 때 시너지가 폭발한다고 말했어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("거위의꿈", {
     attendance: { present: 6, total: 7 },
     sessionsAttended: 0,
     snsVerified: 2,
     shellsSent: 9,
     shellsReceived: 10,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

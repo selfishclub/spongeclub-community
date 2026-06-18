@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ChikoCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function ChikoCertificate() {
       "1주차에 커리어 OS 포폴 메이커를 만들어 JD 기반 포트폴리오 문장을 자동 생성했어요. 3주차엔 스폰지빌리지 과제 현황판 컴포넌트를 만들어 커뮤니티에 기여했어요. 오프라인에서 7개 에이전트를 완성했다고 밝혔고, 셸 28개를 받으며 3조에서 강한 인상을 남겼어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("치코(김나영)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 4,
     snsVerified: 5,
     shellsSent: 16,
     shellsReceived: 29,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

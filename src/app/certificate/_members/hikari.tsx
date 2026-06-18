@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function HikariCertificate() {
   const member = { name: "히카리", realName: "윤준영", team: "2조", jobTitle: "자영업자(식당)/마케팅대행", period: "2026.05.03 — 2026.06.14" };
 
-  const stats = { attendance: { present: 1, total: 7 }, sessionsAttended: 0, snsVerified: 0, shellsSent: 0, shellsReceived: 0 };
+  const stats = useLiveStats("히카리(윤준영)", { attendance: { present: 1, total: 7 }, sessionsAttended: 0, snsVerified: 0, shellsSent: 0, shellsReceived: 0 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

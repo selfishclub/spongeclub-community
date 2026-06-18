@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function ParkRuaCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function ParkRuaCertificate() {
       "편집디자이너 20여년차이자 지금은 팀원들과 함께 스타트업을 AI로 구축하는 중이에요. 디자인에 AI를 더해 나다운 일을 만들고 싶어서 참여했어요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("나로(박루아)", {
     attendance: { present: 5, total: 7 },
     sessionsAttended: 4,
     snsVerified: 0,
     shellsSent: 13,
     shellsReceived: 8,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

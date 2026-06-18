@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function TurtleCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function TurtleCertificate() {
       "오프라인에서 \"LG에서 20년 근무 후 1인 사업을 시작했고, AI 덕분에 직원 12명 시절보다 더 많은 업무를 처리하고 있다\"고 밝혔어요. 네이버 쇼핑 인사이트로 쌀 데이터를 분석해 누룽지 업체로부터 비즈니스 계획서를 제안받는 성과를 냈어요. 공유회 7번 참여, 셸 17개 보내기.",
   };
 
-  const stats = {
+  const stats = useLiveStats("거북이(나병우)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 7,
     snsVerified: 6,
     shellsSent: 17,
     shellsReceived: 24,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

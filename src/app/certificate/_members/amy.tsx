@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function AmyCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function AmyCertificate() {
       "\"여러 단계 작업물을 엮는 게 어렵다\"고 했던 사람이, 기획안→SRS→기능정의서→화면정의서를 자동으로 연결하는 스킬을 직접 만들었어요. 거기서 멈추지 않고 PLOT에서 베이스캠프로 브랜드를 3번 재정의하며 실제 등록자를 받는 MVP까지 출시했어요. 동선을 먼저 설계하고 기능을 붙이는 사람이에요.",
   };
 
-  const stats = {
+  const stats = useLiveStats("Amy", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 4,
     snsVerified: 5,
     shellsSent: 10,
     shellsReceived: 7,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import RankBadge from "./_RankBadge";
+import { useLiveStats } from "./_useLiveStats";
 
 export default function KinoCertificate() {
   const member = {
@@ -19,13 +20,13 @@ export default function KinoCertificate() {
       "오프라인에서 이기적 공유회를 \"발등에 불이 떨어진 듯 움직이게 하는 존재\"로 표현했어요. 모르더라도 먼저 선언하고 준비하는 '냅다 정신'이 셀피쉬클럽의 문화와 잘 맞는다고. 셸 40개를 받으며 전체 멤버 중 2위. 공유회 9번 참여, 스킬 도전 3회. 스폰지타임즈 프로젝트에 참여하며 다음 기수를 위한 사이트 제작까지.",
   };
 
-  const stats = {
+  const stats = useLiveStats("키노(강은주)", {
     attendance: { present: 7, total: 7 },
     sessionsAttended: 9,
     snsVerified: 5,
     shellsSent: 16,
     shellsReceived: 41,
-  };
+  });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
