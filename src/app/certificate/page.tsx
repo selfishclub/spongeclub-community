@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import membersData from "./members-data.json";
 
 type Member = {
   name: string;
@@ -55,14 +54,14 @@ const READY: Set<string> = new Set([
   "치코-김나영",
   "코니-황초롱",
   // 4조
-  "4조-지니-신진영",
+  "찌니-신진영",
   "yongs-전용규",
   "거위의꿈",
   "달빛그린",
   "리보-이보경",
   "린",
   "먼지민-석지민",
-  "박루아",
+  "나로-박루아",
   "설민주",
   "에이스-최학곤",
   "정민",
@@ -95,24 +94,42 @@ const READY: Set<string> = new Set([
 const RANK_EMOJI: Record<number, string> = { 1: "🥇", 2: "🥈", 3: "🥉" };
 
 export default function CertificateIndexPage() {
-  const members = membersData as Member[];
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
   const [rankMap, setRankMap] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    fetch("/api/ranking?type=ranking")
-      .then((r) => r.json())
-      .then((data) => {
-        const map: Record<string, number> = {};
-        for (const r of (data.ranking || []).slice(0, 3)) {
-          map[r.name] = r.rank;
-        }
-        setRankMap(map);
-      })
-      .catch(() => {});
+    // Fetch members from API and ranking in parallel
+    Promise.all([
+      fetch("/api/certificate/stats")
+        .then((r) => r.json())
+        .then((data) => {
+          if (Array.isArray(data)) setMembers(data);
+        }),
+      fetch("/api/ranking?type=ranking")
+        .then((r) => r.json())
+        .then((data) => {
+          const map: Record<string, number> = {};
+          for (const r of (data.ranking || []).slice(0, 3)) {
+            map[r.name] = r.rank;
+          }
+          setRankMap(map);
+        }),
+    ])
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const totalReady = members.filter((m) => READY.has(m.slug)).length;
   const total = members.length;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[var(--paper)] flex items-center justify-center">
+        <p className="text-sm text-[var(--ink-30)]">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[var(--paper)]">

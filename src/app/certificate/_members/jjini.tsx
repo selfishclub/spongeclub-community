@@ -8,7 +8,7 @@ export default function JjiniCertificate() {
     name: "찌니",
     realName: "신진영",
     team: "4조",
-    jobTitle: "인하우스 마케팅팀 리더 (사전 설문 기준)",
+    jobTitle: "시니어 플랫폼 기획, 운영",
     period: "2026.05.03 — 2026.06.14",
   };
 
@@ -90,7 +90,7 @@ export default function JjiniCertificate() {
       {hasDiploma && (
         <section className="bg-[var(--ink-05)] border-b border-[var(--ink-10)]">
           <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="4조 지니(신진영)" />
+            <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-8 md:p-12 text-center relative"><RankBadge memberName="찌니(신진영)" />
               <div className="border border-dashed border-[#FCD34D] p-6 md:p-10">
                 <div className="flex justify-center mb-6"><Image src="/certificate/sponge-logo.png" alt="" width={64} height={64} className="w-16 h-16" /></div>
                 <p className="text-[10px] font-bold text-[#B45309] tracking-[6px] uppercase mb-4">CERTIFICATE OF COMPLETION</p>

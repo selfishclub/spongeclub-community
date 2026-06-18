@@ -1019,9 +1019,9 @@
   },
   {
     "id": "7171dfe3-60f1-407e-9d1f-3cde2a4923f7",
-    "name": "4조 지니(신진영)",
+    "name": "찌니(신진영)",
     "group": 4,
-    "slug": "4조-지니-신진영",
+    "slug": "찌니-신진영",
     "shellBalance": 0,
     "attendance": [
       true,
@@ -1236,9 +1236,9 @@
   },
   {
     "id": "dedf3f53-87fb-44b8-ae6f-6ba158af6b15",
-    "name": "박루아",
+    "name": "나로(박루아)",
     "group": 4,
-    "slug": "박루아",
+    "slug": "나로-박루아",
     "shellBalance": 0,
     "attendance": [
       true,
