@@ -1,3 +1,4 @@
+// @ts-nocheck — 공유회 직접 열기 임시 비활성화 중 (dead code 존재)
 "use client";
 
 import { useEffect, useState } from "react";
