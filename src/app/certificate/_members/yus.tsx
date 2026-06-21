@@ -49,8 +49,9 @@ export default function YusCertificate() {
     },
     {
       week: "5주차", date: "6/7",
-      title: "딜러 지원 도구 설계",
-      summary: "MEDIT Dealer Support Tool — 트러블슈팅 체크리스트와 추적 가능한 결과 대시보드를 프로토타입으로 구현했어요.",
+      title: "딜러 트러블슈팅 도구 프로토타입",
+      summary: "MEDIT 딜러 지원 도구를 프로토타입으로 구현했어요. 해결법별 효과 추적, 사진+시리얼 기반 컨텍스트 티켓, 어드민 대시보드(데드 스텝/검색 통계)까지. 5개 피드백에서 얻은 교훈: \"what과 why의 명확성 + 작은 반복 루프가 완성도를 이긴다.\"",
+      insight: "what과 why가 명확하면, 작은 반복 루프가 완성도를 이긴다.",
     },
   ];
 

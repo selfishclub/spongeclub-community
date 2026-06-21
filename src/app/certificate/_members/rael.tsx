@@ -14,10 +14,10 @@ export default function RaelCertificate() {
   };
 
   const character = {
-    type: "기록하며 판단하는 크루",
+    type: "판단을 시스템으로 바꾼 크루",
     image: "/certificate/character-steady.svg",
     description:
-      "\"AI만을 활용해서 원하는 결과가 나올 수 있게 하는 법\"이 막힌 점이었어요. 1주차에 마케터 OS 청사진을 설계하고 집 매매 재무 분석 도구까지 만들었어요. 2주차엔 광고 CVR 진단 시스템을 웹 UI로 구현. 기록하고 판단하는 과정을 시스템으로 만든 사람이에요.",
+      "1주차에 weekly-self 회고 스킬로 \"나의 언어를 찾는\" OS를 선언하고, 2주차엔 광고 판단 기준(CVR/매체효율/예산)을 코드로 만들었어요. 4주차에는 Playwright로 멀티페이지 웹 데이터 자동화를, 5주차엔 Vercel 서버리스 기반 청약분석 시스템 v2(한국은행 API, 네이버 뉴스, 유튜브 실시간 연동)까지 완성했어요. 매주 과제를 빠짐없이 제출하며, 판단의 부담을 시스템으로 줄여간 사람이에요.",
   };
 
   const stats = useLiveStats("라엘", {
@@ -50,17 +50,38 @@ export default function RaelCertificate() {
     {
       week: "1주차",
       date: "5/10",
-      title: "마케터 OS 청사진 + 재무 분석 도구",
+      title: "weekly-self 회고 스킬",
       summary:
-        "OS 인터뷰로 개인 마케터 OS 청사진을 설계. \"오늘 일에만 집중하고, 내 언어는 시스템이 쌓아둔다\"는 선언문. 집 매매 재무 분석 도구도 제작.",
-      insight: "지금 알고 있는 걸 그때도 알았더라면.",
+        "15분 주간 회고를 쓸만한 문단으로 변환하는 weekly-self 스킬을 만들었어요. \"나의 언어를 찾는\" OS를 선언.",
+      insight: "판단 부담 줄이기는 생산성 도구가 아니라, 나를 찾는 과정이다.",
     },
     {
       week: "2주차",
       date: "5/17",
-      title: "광고 CVR 진단 시스템",
+      title: "Ad Account Manager OS",
       summary:
-        "광고 AE 업무용 판단 부하 감소 OS. GPT 기반으로 광고 성과(CVR) 진단 시스템을 웹 UI로 구현했어요.",
+        "광고 판단 기준(CVR/매체효율/예산)을 코드로 만든 광고 계정 관리 OS. 판단 부담을 줄이는 게 핵심이었어요.",
+    },
+    {
+      week: "3주차",
+      date: "5/24",
+      title: "익명 광고정보 공유 플랫폼 설계",
+      summary:
+        "커뮤니티 기반 익명 광고정보 공유 플랫폼을 설계. 방향을 모색하며 다양한 가능성을 탐색했어요.",
+    },
+    {
+      week: "4주차",
+      date: "5/31",
+      title: "멀티페이지 웹 데이터 자동화",
+      summary:
+        "Playwright + Google Sheets로 URL 크롤링→변경감지→이메일 알림 파이프라인 구축. Windows Task Scheduler로 자동 실행까지 완성했어요.",
+    },
+    {
+      week: "5주차",
+      date: "6/7",
+      title: "청약분석 시스템 v2",
+      summary:
+        "Vercel 서버리스 기반으로 한국은행 API, 네이버 뉴스, 유튜브를 실시간 연동하는 청약분석 시스템. 저축 계산기와 구독 캘린더까지 포함된 종합 도구를 완성했어요.",
     },
   ];
 
@@ -70,10 +91,9 @@ export default function RaelCertificate() {
   ];
 
   const beforeAfter = {
-    before:
-      "AI만을 활용해서 원하는 결과가 나올 수 있게 하는 법, 여러 단계의 작업물을 엮는 것",
+    before: `AI만을 활용해서 원하는 결과가 나올 수 있게 하는 법(보통 후작업이 필요함)\n여러 단계의 작업을 엮는 법, 결과물에 대한 검증 및 근거 확인 `,
     after:
-      "마케터 OS 청사진에서 광고 CVR 진단 웹까지, 여러 단계를 시스템으로 엮어냈어요.",
+      "회고 스킬에서 광고 OS, 웹 크롤링 자동화, 청약분석 시스템까지 — 매주 다른 도메인의 여러 단계를 시스템으로 엮어냈어요. 0~5주차 모두 제출한 꾸준함의 증거.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

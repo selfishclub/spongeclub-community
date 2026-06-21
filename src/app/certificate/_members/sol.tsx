@@ -11,7 +11,7 @@ export default function SolCertificate() {
     type: "OS를 선언한 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"어디서부터 시작해야 할지 모르겠다\"는 막힌 점이 있었지만, 1주차에 60분 OS 인터뷰를 완주하고 \"못 자르기\"라는 통점을 정확히 짚었어요. 수익모델·시간·몸을 하나의 시스템으로 보는 OS를 선언했어요. 과제 제출은 OT과 1주차 두 번이었지만, 시작점을 만든 것 자체가 이 여정의 의미.",
+      "\"채우기만 하고 못 자른다\" — 10년간의 패턴을 OS 인터뷰에서 정확히 짚었어요. 수익·시간·몸을 하나의 시스템으로 보는 OS를 선언하고, 첫 부품으로 revenue-setup-interview 메타도구를 만들었어요. 빌더 조쉬를 벤치마킹해 4개 채택 + 3개 자르기를 결정하고, \"검증된 것만 파는\" 차별점을 발견. v0.1에 가드레일 패치까지 적용한 깊은 1주차였어요.",
   };
 
   const stats = useLiveStats("솔(임솔)", { attendance: { present: 6, total: 7 }, sessionsAttended: 2, snsVerified: 0, shellsSent: 13, shellsReceived: 5 });
@@ -42,8 +42,8 @@ export default function SolCertificate() {
   const giftMessages: { sender: string; message: string }[] = [];
 
   const beforeAfter = {
-    before: "어디서부터 시작해야 할지 모르겠다",
-    after: "OS 인터뷰에서 \"못 자르기\"라는 본인의 통점을 정확히 짚었어요. 수익모델·시간·몸이 한 시스템이라는 선언을 세웠다. 어디서부터 시작할지 몰랐던 사람이, 첫 번째 질문을 찾았어요.",
+    before: "채우기만 하고 못 자른다. 10년간의 패턴.",
+    after: "OS 인터뷰에서 통점을 정확히 짚고, revenue-setup-interview 메타도구를 설계했어요. 빌더 조쉬 벤치마킹에서 4개 채택 + 3개 자르기를 결정하며 \"못 자르기\" 근육을 처음으로 써본 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

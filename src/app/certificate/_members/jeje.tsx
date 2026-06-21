@@ -14,10 +14,10 @@ export default function JejeCertificate() {
   };
 
   const character = {
-    type: "1인용을 공용으로 바꾼 크루",
+    type: "3회 MVP에 빛나는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"디테일한 수정 부분이 매번 어렵다\"고 했어요. 1주차에 Career FIT OS — K-뷰티 직무 기준 공고 분석 도구를 만들고, 2주차엔 1인용에서 공용으로 전환. \"1인용 → 공용은 방향 전환이 아니라 예정된 다음 단계\"라는 발견.",
+      "1주차에 GitHub Pages 웹사이트와 ZeZe Day OS(할일 게임화, Habitica 벤치마킹)를 만들고, 2주차엔 MuteZeze OS로 인스타 콘텐츠 소재 창고를 구축. 3주차부터 Career FIT OS(K-뷰티 이직자 공고 판단·이력서 생성)를 시작해 3, 4, 5주차 연속 MVP에 선정되었어요. 고객 5명 테스트, 공고판단 도식화, 자기소개서 초안, 거르개 정확도 수정까지. \"좁게 시작해서 넓히기\", \"화면정리는 빼기다\", \"칭찬보다 '당황했다'가 100배 값짐\"이라는 인사이트를 남긴 사람이에요.",
   };
 
   const stats = useLiveStats("제제(최지예)", {
@@ -50,10 +50,40 @@ export default function JejeCertificate() {
     {
       week: "1주차",
       date: "5/10",
-      title: "Career FIT OS — 이직 준비 도구",
+      title: "GitHub Pages + ZeZe Day OS",
       summary:
-        "K-뷰티 직무 기준으로 공고를 분석하고 추천하는 Career FIT OS를 설계. 찐고객 2명의 페르소나 피드백으로 멀티유저 전환.",
-      insight: "1인용 → 공용은 방향 전환이 아니라 예정된 다음 단계였다.",
+        "GitHub Pages 웹사이트를 만들고, 할일을 게임화하는 ZeZe Day OS를 설계. Habitica를 벤치마킹해 일상 관리 도구의 방향을 잡았어요.",
+    },
+    {
+      week: "2주차",
+      date: "5/17",
+      title: "MuteZeze OS — 콘텐츠 소재 창고",
+      summary:
+        "인스타 콘텐츠 카드뉴스 소재를 체계적으로 관리하는 MuteZeze OS를 구축했어요.",
+    },
+    {
+      week: "3주차",
+      date: "5/24",
+      title: "Career FIT OS 탄생 (MVP 선정)",
+      summary:
+        "K-뷰티 이직자를 위한 공고 판단·이력서 생성 도구 Career FIT OS를 만들어 MVP에 선정. 좁은 타겟으로 시작하는 전략이 통했어요.",
+      insight: "좁게 시작해서 넓히기.",
+    },
+    {
+      week: "4주차",
+      date: "5/31",
+      title: "Career FIT OS 멀티유저 전환 (MVP 선정)",
+      summary:
+        "1인용에서 멀티유저로 전환하고 고객 5명 테스트를 진행. 연속 MVP 선정.",
+      insight: "화면정리는 빼기다.",
+    },
+    {
+      week: "5주차",
+      date: "6/7",
+      title: "Career FIT OS 최종 개선 (MVP 선정)",
+      summary:
+        "공고판단 도식화, 자기소개서 초안 생성, 거르개 정확도 수정, 각자 API키 입력 방식 도입. 3주 연속 MVP 선정을 달성했어요.",
+      insight: "칭찬보다 '당황했다'가 100배 값짐.",
     },
   ];
 
@@ -63,10 +93,9 @@ export default function JejeCertificate() {
   ];
 
   const beforeAfter = {
-    before:
-      "디테일한 수정 부분이 매번 어렵다. 전체 큰 틀은 잘 잡아주는데 그 안에서 수정하는 게 어려움.",
+    before: `디테일한 마이너적인 수정 부분\n전체 큰 틀은 잘 잡아주는데 그 안에서 수정하는게 매번 어려움`,
     after:
-      "Career FIT OS를 1인용에서 공용으로 전환하며, 디테일한 수정이 아니라 구조적 전환을 경험했어요. SNS 인플루언서 배지까지 획득.",
+      "ZeZe Day OS에서 시작해 Career FIT OS를 3주 연속 MVP로 진화시켰어요. 고객 5명 테스트, 멀티유저 전환, API키 입력까지 — 디테일한 수정을 두려워하던 사람이 3회 MVP 선정자가 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

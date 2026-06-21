@@ -8,10 +8,10 @@ export default function SeokyingCertificate() {
   const member = { name: "석영", realName: "석영", team: "6조", jobTitle: "1인 회사 대표 / 쇼핑몰운영 대표 대상 온라인 비즈니스", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "조용히 응원하는 크루",
+    type: "결과를 만드는 크루",
     image: "/certificate/character-connector.svg",
     description:
-      "셸 28개 보내기 — 6조에서 가장 많은 셸을 보낸 사람이에요. \"결과를 만들어 내는 사람\"으로 기억되고 싶다고 했어요.",
+      "SEO 강의 제작 방향(얼굴 비공개+AI 목소리+QuickTime+Vrew)을 정하고, 매일 체크리스트 Chrome Extension을 만들었어요. 2/7 과제 제출이지만, 셸 28개 보내기로 6조에서 가장 많이 응원한 사람이에요. \"결과를 만들어 내는 사람\"으로 기억되고 싶다고 했어요.",
   };
 
   const stats = useLiveStats("석영", { attendance: { present: 7, total: 7 }, sessionsAttended: 3, snsVerified: 1, shellsSent: 28, shellsReceived: 13 });
@@ -37,13 +37,13 @@ export default function SeokyingCertificate() {
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
       week: "1주차", date: "5/10",
-      title: "SEO 강의 영상 제작 방향 + 할일 Chrome Extension",
-      summary: "SEO 6시간 강의 영상 제작 포맷(얼굴 비공개 + AI 목소리 + Vrew 편집)을 결정하고, 매일 할 일을 체크하는 Chrome Extension을 만들었어요.",
+      title: "SEO 강의 제작 방향 — 얼굴 비공개 + AI 목소리 + Vrew",
+      summary: "SEO 6시간 강의 영상 제작 포맷을 결정했어요. 얼굴 비공개 + AI 목소리 + QuickTime 녹화 + Vrew 편집 조합으로 혼자서도 강의 콘텐츠를 만들 수 있는 구조를 잡았어요.",
     },
     {
       week: "2주차", date: "5/17",
-      title: "코칭 노트 사이트 — 0에서 1까지 구축",
-      summary: "note.seonbiz.com을 Astro + Cloudflare Pages로 만들고, SEO·JSON-LD·GA4·GTM까지 한 번에 셋업했어요.",
+      title: "코칭 노트 사이트 + 매일 체크리스트 Chrome Extension",
+      summary: "note.seonbiz.com을 Astro + Cloudflare Pages로 만들고, SEO·JSON-LD·GA4·GTM까지 한 번에 셋업했어요. 매일 할 일을 체크하는 Chrome Extension도 만들었어요.",
     },
     {
       week: "3주차", date: "5/24",
@@ -64,8 +64,8 @@ export default function SeokyingCertificate() {
   ];
 
   const beforeAfter = {
-    before: "claude opus가 나오면서 나아졌지만, 예전에는 원하는 결과를 얻기 어려웠다.",
-    after: "셸 28개를 보내며 6조에서 가장 많이 응원한 사람이 되었어요. 발표가 인상적이었다는 크루들의 반응이 증명하듯, 조용히 결과를 만들어낸 사람이에요.",
+    before: `claude opus 4.6이 나오면서 원하는 결과를 얻을 수 있어 나아졌지만, \n예전에는 핵심을 벗어난 답변이 나올때가 많아 어려웠습니다.`,
+    after: "2/7 과제 제출이지만, SEO 강의 포맷을 정하고 Chrome Extension을 만들며 자기만의 방식을 찾았어요. 셸 28개를 보내며 6조에서 가장 많이 응원한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

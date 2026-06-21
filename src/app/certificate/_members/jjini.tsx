@@ -14,10 +14,10 @@ export default function JjiniCertificate() {
   };
 
   const character = {
-    type: "디지털 조문보를 만든 크루",
+    type: "시장 데이터가 최고의 코치인 크루",
     image: "/certificate/character-builder.svg",
     description:
-      "1주차에 weeve — 디지털 조문보 플랫폼을 설계했어요. AI 인터뷰로 고인의 이야기를 수집하고, 영정 사진에서 의료장비를 제거하며 배경을 교체하는 이미지 편집까지. 3주차엔 8개 하네스와 \"사실 지어내기 방지\" 가드까지 구축. 공유회 13번 참여 — 전체 멤버 중 최다.",
+      "1주차에 senior-marketing-pump 스킬 v0.3에서 v0.4로 진화시켰어요(트렌드에서 5종 콘텐츠 자동생성, SEO/AEO/GEO 통합). Mel Robbins를 벤치마킹하고 IP \"Re:Boot 50+\"로 Threads 287 좋아요를 검증했어요. \"시장 데이터가 최고의 코치\", \"책은 시작이 아니라 부산물\", \"위기와 실패가 IP의 원료\"라는 인사이트를 남겼어요.",
   };
 
   const stats = useLiveStats("4조 지니(신진영)", {
@@ -52,15 +52,9 @@ export default function JjiniCertificate() {
     {
       week: "1주차",
       date: "5/10",
-      title: "weeve — 디지털 조문보 플랫폼",
-      summary: "AI 인터뷰로 고인의 이야기를 수집하고, 영정 사진 AI 보정(의료장비 제거, 배경 교체)까지 설계.",
-      insight: "이미지 생성 ≠ 이미지 편집. 얼굴 보존이 중요하면 반드시 편집 API를 사용해야 한다.",
-    },
-    {
-      week: "3주차",
-      date: "5/24",
-      title: "weeve 하네스 + 가드 시스템",
-      summary: "8개 하네스와 2개 파이프라인을 구축. '사실 지어내기 방지' 가드 하네스로 AI 환각을 방어. 이미지 API를 3번 교체(OpenAI→Replicate→Gemini)하며 최적해를 찾았어요.",
+      title: "senior-marketing-pump 스킬 v0.4 + Re:Boot 50+ IP 검증",
+      summary: "senior-marketing-pump 스킬을 v0.3에서 v0.4로 진화시켰어요(트렌드에서 5종 콘텐츠 자동생성, SEO/AEO/GEO 통합). Mel Robbins를 벤치마킹하고, IP \"Re:Boot 50+\"로 Threads 287 좋아요를 달성하며 시장 검증을 완료했어요.",
+      insight: "시장 데이터가 최고의 코치. 책은 시작이 아니라 부산물. 위기와 실패가 IP의 원료.",
     },
   ];
 
@@ -71,8 +65,8 @@ export default function JjiniCertificate() {
   ];
 
   const beforeAfter = {
-    before: "할루시네이션 검증, 딸깍 한번 구현이 어려움.",
-    after: "weeve에 '사실 지어내기 방지' 가드 하네스를 직접 만들어 환각을 방어했어요. 딸깍이 아니라 8개 하네스와 2개 파이프라인으로 구조를 쌓아올린 사람이에요.",
+    before: "백엔드까지 연결 부분",
+    after: "senior-marketing-pump 스킬로 트렌드에서 5종 콘텐츠를 자동생성하고, Re:Boot 50+ IP로 Threads 287 좋아요를 달성했어요. \"시장 데이터가 최고의 코치\"라는 원칙을 찾은 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

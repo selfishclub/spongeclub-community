@@ -14,10 +14,10 @@ export default function GooseCertificate() {
   };
 
   const character = {
-    type: "손으로 만드는 크루",
+    type: "디자인 시스템으로 공방을 굴리는 크루",
     image: "/certificate/character-builder.svg",
     description:
-      "오프라인에서 에르메스 '툴박스' 모델을 참고한 완전 수작업 가죽가방(1개 완성에 약 8시간)을 만든다고 소개했어요. Claude AI로 커스터마이즈 주문서 시스템과 재고·원가 관리 ERP를 직접 제작 중. \"솔로프리너는 작은 세상에서 사는 것\"이라며 함께 모여 공유할 때 시너지가 폭발한다고 말했어요.",
+      "1주차에 Studio DEUM 가죽공방 OS(작업일지·제품마스터·콘텐츠 캘린더)를 설계하고, 2주차에 30-60대 남성 타겟 고급 실용성 ERP를 기획했어요. 5주차에 Google Sheet+Vercel 공방물품관리 대시보드와 야구유니폼 키링 캐러셀을 완성. 디자인 시스템 v1을 적용하고 EXIF 회전 문제를 해결한 사람이에요.",
   };
 
   const stats = useLiveStats("거위의꿈", {
@@ -53,15 +53,26 @@ export default function GooseCertificate() {
 
   const timeline = [
     {
+      week: "1주차", date: "5/10",
+      title: "Studio DEUM 가죽공방 OS",
+      summary: "작업일지·제품마스터·콘텐츠 캘린더를 포함한 가죽공방 운영 OS를 설계했어요. 공방의 모든 흐름을 하나의 시스템으로 정리하는 첫 발을 뗐어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "ERP 프로덕트 기획",
+      summary: "30-60대 남성을 타겟으로 고급 실용성을 갖춘 ERP 프로덕트를 기획했어요. 공방 운영자의 실제 니즈에서 출발한 설계.",
+    },
+    {
       week: "5주차", date: "6/7",
-      title: "공방 비품관리 대시보드",
-      summary: "공방 운영에 필요한 비품 관리를 대시보드 형태로 만들었어요. 실제 운영에서 쓸 수 있는 도구를 만드는 데 집중했어요.",
+      title: "공방물품관리 대시보드 + 야구유니폼 키링 캐러셀",
+      summary: "Google Sheet와 Vercel을 연동한 공방물품관리 대시보드를 만들고, 야구유니폼 키링 캐러셀도 완성했어요. 디자인 시스템 v1을 적용하고 EXIF 회전 문제를 해결했어요.",
+      insight: "디자인 시스템을 먼저 정의하면 구현 속도가 달라져요.",
     },
   ];
 
   const beforeAfter = {
-    before: "프롬프트를 어떻게 구체적으로 넣어야하는지가 궁금했어요.",
-    after: "공방 비품관리 대시보드와 커스터마이즈 주문서 시스템을 직접 만들었어요. 프롬프트 작성법이 궁금했던 사람이, 자기 공방을 위한 시스템을 직접 만드는 사람이 되었어요.",
+    before: "궁금한 정보를 물어보는 정도로만 사용했어요. 프롬프트를 어떻게 구체적으로 넣어야하는지가 궁금했고 실행결과 활용하는 부분 궁금했습니다.",
+    after: "Studio DEUM OS에서 ERP 기획, Google Sheet+Vercel 대시보드, 야구유니폼 키링 캐러셀까지 5주 동안 꾸준히 만들었어요. 디자인 시스템 v1을 적용하고 EXIF 회전 문제까지 해결한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

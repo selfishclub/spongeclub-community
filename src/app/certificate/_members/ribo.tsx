@@ -14,10 +14,10 @@ export default function RiboCertificate() {
   };
 
   const character = {
-    type: "용기를 주는 크루",
+    type: "TDD로 단순함을 선택한 MVP 크루",
     image: "/certificate/character-connector.svg",
     description:
-      "1주차에 멀티채널 발행 OS와 텔레그램 봇 MVP를 만들고, 3주차엔 \"스크랩어데이\" -- 다꾸하듯 우표형 사진 일기 웹앱을 구현했어요. 5주차엔 스티커 17개, 이메일 로그인까지 붙이며 Post-MVP로 발전시켰어요. 셸 31개를 받으며 용기를 주는 사람으로 기억되고 있어요.",
+      "1주차에 inbox-OS PRD(텔레그램 봇+Obsidian+자동 분류)를 설계하고, 2주차에 Gemini 통합·YouTube 챕터 추출까지 진화시키며 7 commit, 116에서 166 테스트로 MVP를 확정했어요. 3주차에 스크랩어데이 월캘린더 웹앱을 만들었어요. \"TDD RED 단계가 올바른 이유로 실패하는지 검증\", \"단순성 vs 강력함에서 항상 단순 선택\"이라는 원칙을 가진 사람이에요.",
   };
 
   const stats = useLiveStats("리보(이보경)", {
@@ -57,25 +57,27 @@ export default function RiboCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "멀티채널 발행 OS + 텔레그램 봇 MVP",
-      summary: "멀티채널 발행 운영자의 OS 청사진을 그리고, 이미지를 HTML로 변환하는 플러그인을 만들었어요. 옵시디언+텔레그램 봇까지 연결해서 MVP를 완성했어요.",
+      title: "inbox-OS PRD — 텔레그램 봇 + Obsidian + 자동 분류",
+      summary: "텔레그램 봇으로 수집하고 Obsidian에 자동 분류하는 inbox-OS PRD를 설계했어요.",
+      insight: "메타데이터 우선 사용 — 구조를 먼저 잡으면 분류는 자동이에요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "inbox-os 진화 — Gemini 통합, YouTube 챕터 추출 (MVP)",
+      summary: "Gemini를 통합하고 YouTube 챕터 추출 기능을 추가했어요. 7 commit, 116에서 166 테스트로 커버리지를 올리며 MVP를 확정했어요.",
+      insight: "TDD RED 단계가 올바른 이유로 실패하는지 검증하는 것이 핵심이에요.",
     },
     {
       week: "3주차", date: "5/24",
-      title: "스크랩어데이 — 우표형 일기 웹앱",
-      summary: "다꾸하듯 월 캘린더에 사진을 우표 모양으로 붙이는 일기 웹앱을 만들었어요. PRD를 라우터처럼 모듈로 분할해서 컨텍스트 윈도우 사용량을 줄였어요.",
-      insight: "CSS mask는 작은 사이즈에서 안 보여요 — SVG overlay로 전환하니 해결됐어요.",
-    },
-    {
-      week: "5주차", date: "6/7",
-      title: "스크랩어데이 Post-MVP + 로그인 구현",
-      summary: "특별한 날 스티커 17개, 배경 색상 자유 선택, 검색 통계, 이메일 인증 로그인까지 구현했어요. 디자인 규칙을 정확하게 명시하니까 정리가 됐어요.",
+      title: "스크랩어데이 — 월캘린더 웹앱",
+      summary: "다꾸하듯 월 캘린더에 사진을 붙이는 스크랩어데이 웹앱을 만들었어요.",
+      insight: "단순성 vs 강력함에서 항상 단순을 선택해요.",
     },
   ];
 
   const beforeAfter = {
-    before: "어디서부터 시작해서 어떻게 엮어나가면서 발전시켜야할지 모르겠다.",
-    after: "멀티채널 발행 OS에서 \"스크랩어데이\" 우표형 일기 웹앱까지, 어떻게 엮어 발전시킬지 몰랐던 사람이 MVP에서 Post-MVP까지 직접 키워낸 사람이 되었어요.",
+    before: `어디서부터 시작을해서 어떻게 엮어나가면서 발전시켜야할지 모르겠습니다. \n단순 질문과 답변을 얻는것에 끝나는게 아니라 자동화까지 가는 부분이 어렵습니다.`,
+    after: "inbox-OS PRD에서 Gemini 통합·YouTube 챕터 추출까지 진화시키며 MVP를 확정하고, 스크랩어데이 웹앱까지 만들었어요. TDD와 \"항상 단순 선택\" 원칙으로 엮어 발전시키는 법을 찾은 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

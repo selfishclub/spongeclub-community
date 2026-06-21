@@ -47,8 +47,8 @@ export default function ModakCertificate() {
     },
     {
       week: "5주차", date: "6/7",
-      title: "전지적독자시점 SaaS 개선",
-      summary: "AI 글 감별기 SaaS(slop-detector-beta.vercel.app)를 개선했어요. PDF 한국어 렌더링 수정, UI 보이스를 '날카로운 편집자'에서 '글쓴이 편인 편집자'로 전환. 타겟도 'SNS 사용자'에서 '6개월 이상 꾸준히 쓰지만 반응이 없는 글쓴이'로 재정의했어요.",
+      title: "Slop Detector — AI 글 감별기 개선",
+      summary: "AI 글 감별기 SaaS(slop-detector-beta.vercel.app)를 개선했어요. 패턴 분석 전체선택, PDF 한국어 렌더링, UI 전면 개편. 보이스를 '날카로운 편집자'에서 '글쓴이 편인 편집자'로 전환하고, 타겟도 '6개월 이상 꾸준히 쓰지만 반응이 없고 솔직한 피드백을 받을 곳이 없는 사람'으로 재정의했어요.",
       insight: "말투는 기능이다 — 인터페이스의 톤이 사용자 경험을 결정한다.",
     },
   ];
@@ -61,7 +61,7 @@ export default function ModakCertificate() {
   ];
 
   const beforeAfter = {
-    before: "보안 및 저작권 허용 범위 지키기, 활용 아이디어 부족",
+    before: `보안 및 저작권 허용 범위 지키기\n활용 아이디어 부족(어떤걸 만들어야 하나)`,
     after: "2주차에 콘텐츠 제작 OS로 MVP에 뽑혔고, 5주차엔 AI 글 감별기 SaaS를 출시했어요. 아이디어가 부족했던 게 아니라, 데이터 구조를 잡는 법을 몰랐던 것이었어요.",
   };
 

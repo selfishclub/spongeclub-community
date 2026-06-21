@@ -8,10 +8,10 @@ export default function IrisCertificate() {
   const member = { name: "아이리스", realName: "이선애", team: "6조", jobTitle: "커피 로스팅 전문가 / 디자이너", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "29번 수상한 로스터",
+    type: "반복 작업을 덜어낸 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 교량 설계·반도체·디자인(8년)을 거쳐 커피 로스팅 전문가로 활동 중이라고 소개했어요. 국내외 대회 29개 수상, 칭다오 중국 대회 1위. Claude를 활용해 QR 코드 기반 카카오 채널 구독자를 10명에서 214명으로 증가시켰어요. 10년간 축적한 로스팅 노트 데이터를 특허·출판으로 연결하는 방안을 모색 중이에요.",
+      "부산커피쇼 CRM 자동화를 Google Sheets+Forms+Apps Script로 구축했어요. B2C/B2B 리드를 분리 수집하고, 자동 쿠폰 발급에서 후속 추적까지 연결했어요. '자동화 = 거창한 기술이 아닌 반복 작업 덜기'라는 인사이트를 발견했어요. 6/7 과제 제출, 국내외 대회 29개 수상 로스팅 전문가.",
   };
 
   const stats = useLiveStats("아이리스(이선애)", { attendance: { present: 7, total: 7 }, sessionsAttended: 2, snsVerified: 0, shellsSent: 0, shellsReceived: 14 });
@@ -33,8 +33,9 @@ export default function IrisCertificate() {
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
       week: "1주차", date: "5/10",
-      title: "COFFEEMOMS CRM — 부산커피쇼 고객 관리 시스템",
-      summary: "Google Sheets, Forms, Apps Script로 부산커피쇼 고객 관리 자동화 시스템을 만들었어요. B2C/B2B 고객을 분리하고, QR 코드 기반 쿠폰 발급과 이메일 자동 발송까지 구현했어요.",
+      title: "COFFEEMOMS CRM — 부산커피쇼 고객 관리 자동화",
+      summary: "Google Sheets, Forms, Apps Script로 부산커피쇼 CRM 자동화 시스템을 만들었어요. B2C/B2B 리드를 분리 수집하고, 자동 쿠폰 발급에서 후속 추적까지 연결했어요.",
+      insight: "자동화 = 거창한 기술이 아닌 반복 작업 덜기.",
     },
     {
       week: "2주차", date: "5/17",
@@ -65,8 +66,8 @@ export default function IrisCertificate() {
   ];
 
   const beforeAfter = {
-    before: "이제는 카테고리별 정리를 하고 싶습니다. 너무 많이 벌려놓아서요.",
-    after: "오프라인에서 Claude로 QR 기반 카카오 채널 10→214명 성과를 공유했어요. 10년 로스팅 노트를 특허·출판으로 연결하는 방향을 잡아가고 있어요.",
+    before: "이제는 카테고리별 정리를 하고 싶습니다. 너무 많이 벌려놓아서요....그리고 카페 시스템을 전산화 구조화, 체계적인걸로 정리하고 싶습니다. ",
+    after: "6/7 과제 제출. 부산커피쇼 CRM을 Google Sheets+Forms+Apps Script로 자동화하고, B2C/B2B 리드 분리 수집에서 자동 쿠폰, 후속 추적까지 연결했어요. '자동화는 반복 작업 덜기'라는 원칙을 세운 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

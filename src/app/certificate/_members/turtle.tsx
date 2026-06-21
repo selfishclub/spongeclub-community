@@ -14,10 +14,10 @@ export default function TurtleCertificate() {
   };
 
   const character = {
-    type: "12명 시절보다 더 많은 일을 하는 크루",
+    type: "냅다 해보고 다시 하는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 \"LG에서 20년 근무 후 1인 사업을 시작했고, AI 덕분에 직원 12명 시절보다 더 많은 업무를 처리하고 있다\"고 밝혔어요. 네이버 쇼핑 인사이트로 쌀 데이터를 분석해 누룽지 업체로부터 비즈니스 계획서를 제안받는 성과를 냈어요. 공유회 7번 참여, 셸 17개 보내기.",
+      "0, 1주차 과제를 제출하며 sogood-writer 콘텐츠 제작 OS에서 시작해, LLM Wiki + 6-agent 시스템으로 확장했어요. 식약 표시 규정 자동 점검 시스템을 만들고 아르밍 제품 9개를 ingest하며 실전에 적용한 사람이에요. \"냅다 한번 해보고, 문제점 고민 후 다시 하면 훨씬 좋다\"는 철학과 \"MECE는 도구가 아니라 책임 기준\"이라는 통찰을 남겼어요.",
   };
 
   const stats = useLiveStats("거북이(나병우)", {
@@ -56,26 +56,21 @@ export default function TurtleCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "콘텐츠 제작 OS — LLM Wiki + 에이전트 구축",
-      summary: "1인 이커머스 셀러로서 상품 콘텐츠 제작 부담을 줄이기 위한 OS를 설계했어요. 옵시디언 Wiki + Claude Code를 기반으로 기획자·작가·비주얼 에이전트 구조를 잡았어요.",
+      title: "sogood-writer 스킬 — 콘텐츠 제작 OS",
+      summary: "1인 이커머스 셀러로서 상품 콘텐츠 제작 부담을 줄이기 위한 sogood-writer 스킬을 만들었어요. 콘텐츠 제작 OS의 첫 부품이에요.",
       insight: "냅다 한번 해보고, 문제점 고민한 뒤 다시 하면 훨씬 좋아요.",
     },
     {
-      week: "3주차", date: "5/24",
-      title: "쇼핑인사이트 키워드 분석기",
-      summary: "네이버 쇼핑인사이트 Top100 키워드를 의미 단위로 분해하고 AI가 시장 해석을 붙여주는 로컬 웹앱을 만들었어요. 카테고리마다 키워드 DNA가 완전히 다르다는 걸 발견했어요.",
-    },
-    {
-      week: "5주차", date: "6/7",
-      title: "콘텐츠 제작 OS — MCP 서버 + 자동화 시스템",
-      summary: "LLM Wiki를 MCP 서버로 세팅해서 모든 AI가 내 자료를 직접 꺼내 쓰는 구조를 만들었어요. 1회성 소모 작업을 재사용되는 자산으로 바꾼 게 핵심이에요.",
-      insight: "기술 용어를 몰라도 목적만 말하면 AI가 방법을 찾아요.",
+      week: "2주차", date: "5/17",
+      title: "LLM Wiki + 6-agent 시스템 — 식약 표시 규정 자동 점검",
+      summary: "LLM Wiki 기반으로 6개 에이전트 시스템을 구축하고, 식약 표시 규정 자동 점검 시스템을 만들었어요. 아르밍 제품 9개를 ingest하며 실전에 적용했어요.",
+      insight: "MECE는 도구가 아니라 책임 기준이에요.",
     },
   ];
 
   const beforeAfter = {
-    before: "콘텐츠 제작, 기획서 작성, 데이터 분석 등 작업을 위한 기초 데이터를 어떻게 DB화하고 연결할지.",
-    after: "오프라인에서 \"AI로 쌀 데이터를 분석해 누룽지 업체 담당자들보다 쌀에 대해 더 깊이 파악하고 있다는 평가를 받았다\"고 밝혔어요. 데이터를 DB화하는 고민이, 실제 비즈니스 제안으로 이어졌어요.",
+    before: ` 컨텐츠 제작, 기획서 작성, 데이터 분석 등 작업을 위한 기초 데이터를 어떻게 DB화하고\n이 데이터들을 어떻게 활용해서 결과물의 퀄리티를 높일 수 있을까?\n-> 옵시디언에 LLM Wiki를 세팅하는 것이 나에게는 최적의 답이라고 판단!!`,
+    after: "sogood-writer에서 시작해 LLM Wiki + 6-agent 시스템까지 확장하며, 식약 표시 규정 자동 점검이라는 실전 도구를 만들었어요. \"냅다 해보고 다시 하면 훨씬 좋다\"는 자기만의 학습법을 찾은 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

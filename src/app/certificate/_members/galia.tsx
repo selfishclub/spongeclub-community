@@ -8,10 +8,10 @@ export default function GaliaCertificate() {
   const member = { name: "Galia", realName: "방경은", team: "6조", jobTitle: "취준생", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "끝까지 완주한 크루",
+    type: "라이프 OS를 설계한 크루",
     image: "/certificate/character-steady.svg",
     description:
-      "\"끝까지 완주한 사람\"으로 기억되고 싶다고 했어요. 공유회 5번 참여, SNS 7회, 셸 24개 보내기, 스킬 공유 2회. 6주간 한 번도 빠지지 않고 출석하며 실제로 완주했어요.",
+      "OS 인터뷰에서 goal-to-roadmap 스킬을 만들고, Periodic Notes로 Daily-Weekly-Monthly가 자동 연결되는 라이프 OS를 설계했어요. Paul Dickson의 Notion to Obsidian Life OS를 벤치마킹하며 방향을 잡았어요. 7/7 과제 전량 제출, 공유회 5번 참여, SNS 7회, 셸 24개 보내기, 스킬 공유 2회. 6주간 한 번도 빠지지 않고 출석하며 실제로 완주했어요.",
   };
 
   const stats = useLiveStats("Galia(방경은)", { attendance: { present: 7, total: 7 }, sessionsAttended: 5, snsVerified: 7, shellsSent: 25, shellsReceived: 19 });
@@ -39,7 +39,8 @@ export default function GaliaCertificate() {
     {
       week: "1주차", date: "5/10",
       title: "goal-to-roadmap 스킬 — 목표를 로드맵으로 자동 분해",
-      summary: "OS 인터뷰로 '컨텍스트 휘발' 통점을 발견하고, 목표를 스테이지 표 + Gantt 차트 + 투두로 분해해주는 Claude 스킬을 만들었어요.",
+      summary: "OS 인터뷰로 '컨텍스트 휘발' 통점을 발견하고, 목표를 스테이지 표 + Gantt 차트 + 투두로 분해해주는 Claude 스킬을 만들었어요. Periodic Notes로 Daily-Weekly-Monthly 자동 연결 라이프 OS를 설계했어요. Paul Dickson 'Notion to Obsidian Life OS' 벤치마킹.",
+      insight: "컨텍스트 휘발 문제를 월요일 아침 자동 요약 보고서로 해결. 한 가지 골라서 쪼개서 시작하는 게 핵심.",
     },
     {
       week: "2주차", date: "5/17",
@@ -75,8 +76,8 @@ export default function GaliaCertificate() {
   ];
 
   const beforeAfter = {
-    before: "만든 서비스의 실 사용자를 확보하는 것, 보안 세팅, 어디까지 권한을 줘야할지 고민.",
-    after: "6주간 한 번도 빠지지 않고 출석하고, 스킬 공유 2회, 셸 24개 보내기. 끝까지 완주하겠다는 말 그대로 해낸 사람이에요.",
+    before: "만든 서비스의 실 사용자를 확보하는 것, 보안 세팅, 어디까지 권한을 줘야할지 고민이 됨",
+    after: "7/7 과제 전량 제출. goal-to-roadmap 스킬로 컨텍스트 휘발 문제를 구조적으로 풀고, Periodic Notes 라이프 OS까지 설계했어요. 6주간 한 번도 빠지지 않고 출석하며 끝까지 완주한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

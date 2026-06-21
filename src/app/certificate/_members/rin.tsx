@@ -14,10 +14,10 @@ export default function RinCertificate() {
   };
 
   const character = {
-    type: "새로운 거 냅다 들이대는 크루",
+    type: "'하지 마'보다 '단어 자체를 안 쓰기'를 발견한 크루",
     image: "/certificate/character-star.svg",
     description:
-      "1주차에 캐릭터 그림 변환 로컬 웹앱을 만들어 그림 노동 6시간을 단축했어요. Gemini 2.5 Flash로 4모드 토글, AI 배경 제거, 모션 블러 패널까지 구현. SNS 인증 14회로 꾸준히 기록을 남긴 사람이에요.",
+      "1주차에 캐릭터 일러스트 자동화 웹앱(Next.js+Gemini 2.5 Flash)을 만들었어요. 4모드 토글, LLM 풍부화, 배경제거까지 구현. \"AI는 '하지 마'보다 '단어 자체를 안 쓰기'에 반응한다\"는 인사이트와 \"PRD 계획이 바뀌는 게 정상\"이라는 태도를 보여줬어요.",
   };
 
   const stats = useLiveStats("린", {
@@ -55,15 +55,15 @@ export default function RinCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "캐릭터 그림 변환 로컬 웹앱",
-      summary: "그림 노동 6시간을 단축하기 위한 웹앱을 만들었어요. Gemini 2.5 Flash로 4모드 토글, AI 배경 제거, 모션 블러 패널까지 구현했어요. API 키 보안 사고를 즉시 처리하는 법도 배웠어요.",
-      insight: "API 키가 있다고 바로 사용 가능한 건 아니에요 — 모델별 과금 정책 확인이 중요해요.",
+      title: "캐릭터 일러스트 자동화 웹앱 (Next.js + Gemini 2.5 Flash)",
+      summary: "4모드 토글, LLM 풍부화, 배경제거를 갖춘 캐릭터 일러스트 자동화 웹앱을 만들었어요.",
+      insight: "AI는 '하지 마'보다 '단어 자체를 안 쓰기'에 반응해요. PRD 계획이 바뀌는 게 정상이에요.",
     },
   ];
 
   const beforeAfter = {
-    before: "원하는 결과가 나올때까지 어떻게 프롬프트를 다듬어야하는지 모르겠다.",
-    after: "캐릭터 그림 변환 웹앱을 만들어 6시간 노동을 단축했어요. 프롬프트를 다듬는 법을 몰랐던 사람이, 직접 웹앱을 만들어 문제를 해결하는 사람이 되었어요.",
+    before: "원하는 결과가 나올때까지 어떻게 프롬프트를 다듬어야하는지. 클로드가 어디까지 되는지 가늠이 안감",
+    after: "캐릭터 일러스트 자동화 웹앱을 만들며 \"AI는 '하지 마'보다 '단어 자체를 안 쓰기'에 반응한다\"는 원칙을 발견했어요. 프롬프트를 다듬는 법 대신, 직접 웹앱을 만들어 문제를 해결하는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

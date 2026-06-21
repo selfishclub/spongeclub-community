@@ -8,10 +8,10 @@ export default function EdenCertificate() {
   const member = { name: "이든", realName: "김다현", team: "1조", jobTitle: "1인 패션 플랫폼 창업가", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "1조의 에너지",
-    image: "/certificate/character-connector.svg",
+    type: "매주 꺼내 쓴 크루",
+    image: "/certificate/character-builder.svg",
     description:
-      "\"할루시네이션 방어\"가 막힌 점이었지만, 실제로 이든이 7주간 가장 많이 한 건 사람을 연결하는 일이었어요. 셸 24개 보내기, 34개 받기 — 1조에서 가장 많은 셸을 받은 사람이에요. 오프라인 모임에서 AI를 \"진짜 반쪽\"이라고 표현하며, ADHD를 AI로 보완하고 워크로그 클러스터링 서비스를 개발 중이라고 밝혔어요. 과제 독려, 스레드 활성화, 먼저 인사하기. 조용히 1조의 중심을 잡아준 에너지.",
+      "\"약을 제때 못 먹는다\" — ADHD 약물 치료의 통점에서 출발해 약 복용 기록 웹앱을 만들었어요. 0주차부터 6주차까지 한 주도 빠지지 않고 과제를 제출하며, 피드백 12건을 수렴하고 기능을 다듬었어요. \"기록이 쉬워야 한다는 건 기능을 빼는 용기\"라는 발견까지 도달. 완성이 아니라 공유가 먼저라는 걸 몸소 보여준 사람이에요.",
   };
 
   const stats = useLiveStats("이든", { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 0, shellsSent: 24, shellsReceived: 34 });
@@ -37,14 +37,31 @@ export default function EdenCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "ADHD 관리 OS + 모닝 스케줄 스킬",
-      summary: "ADHD로 인한 일정 관리 어려움을 OS로 풀어보려 했어요. 모닝 스케줄 요약 스킬을 설계하고, Lazy Glow를 벤치마킹했어요.",
-      insight: "벤치마킹은 똑같이 따라하는 게 아니라 내 것과 다른 점을 찾는 과정.",
+      title: "ADHD 약 복용 기록 앱 MVP",
+      summary: "OS 인터뷰에서 \"약을 제때 못 먹는다\"는 통점을 짚고, React + Vite로 ADHD 약 복용 기록 웹앱을 만들어 Vercel에 배포했어요. 약 기록, 수면 기록, 효과/부작용 태그, 감정 메모, 데이터 백업 기능까지 구현.",
+      insight: "통점은 '불편함'이 아니라 '그날이 망가진다'는 수준이어야 한다.",
     },
     {
-      week: "2주차", date: "5/17",
-      title: "ADHD 관리 OS 설계",
-      summary: "ADHD 관리 시스템을 본격적으로 설계했어요. 비용에 대한 고민(\"돈이 너무 많이 들어간다\")도 솔직하게 기록.",
+      week: "3주차", date: "5/24",
+      title: "고객 정의 + 하네스/오케스트레이션 설계",
+      summary: "타겟을 '성인 ADHD 약물 치료 중, 약물 조정 단계인 사람'으로 좁혔어요. 알림 → 기록 → 효과 입력 → 주간 리포트 → 진료 공유 요약까지의 자동화 비전을 설계. \"사람이 잊어버려도 시스템이 붙잡아주는 것\"이 핵심.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "피드백 12건 수렴 + 기능 방향 재정립",
+      summary: "1조 멤버와 2조 띵크에게서 12개 피드백을 수렴했어요. 약 사진 촬영 기록, 듀오링고식 집착 푸시, 구독제, 병원 연계 홍보, AI 리포트 등. \"기록이 쉬워야 한다는 건 기능을 빼는 용기\"라는 발견.",
+      insight: "기록이 쉬워야 한다는 건 기능을 빼는 용기다.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "빠르게 만들고 공유하기",
+      summary: "코드 개선보다 공유를 먼저 하기로 결정. 머지/푸시 미숙함을 솔직히 기록하면서도, \"완벽한 공유보다 지금 있는 것 공유가 먼저\"라는 원칙을 세웠어요.",
+    },
+    {
+      week: "6주차", date: "6/14",
+      title: "갤러리 최종 등록",
+      summary: "ADHD 약 복용 기록 앱을 갤러리에 최종 출품했어요. 푸시 알림, PWA, AI 리포트는 미해결이지만, \"완성이 아니라 공유가 먼저\"라는 자세로 마무리.",
+      insight: "완성이 아니라 공유가 먼저다.",
     },
   ];
 
@@ -56,8 +73,8 @@ export default function EdenCertificate() {
   ];
 
   const beforeAfter = {
-    before: "할루시네이션 방어가 어려웠다.",
-    after: "셸 34개를 받으며 1조에서 가장 많은 응원을 받은 사람이 되었어요. 과제 독려, 스레드 활성화, 먼저 인사하기 — 할루시네이션보다 더 중요한 건 사람 사이의 연결이라는 걸 보여줬어요.",
+    before: "할루시네이션 방어",
+    after: "ADHD 약 복용 기록 웹앱을 만들어 배포하고, 12건의 피드백을 수렴하며 갤러리까지 출품했어요. 0주차부터 6주차까지 매주 과제를 제출한 유일한 크루. 완벽하지 않아도 공유하는 법을 배운 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

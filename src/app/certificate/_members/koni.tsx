@@ -14,10 +14,10 @@ export default function KoniCertificate() {
   };
 
   const character = {
-    type: "진짜 돌아가는 걸 만드는 크루",
+    type: "입력 마찰을 줄이는 크루",
     image: "/certificate/character-builder.svg",
     description:
-      "헬스장 운동 기록 PWA를 배포하고, \"환자가 본 우리 병원\" 웹앱으로 MVP에 뽑혔어요. v1→v2→v3까지 두 번 갈아엎고 도착한 사람이에요. 5주차엔 와인 취향 통역기까지 기획하며 \"완성도와 서비스는 다르다\"는 걸 배웠어요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 flow-reader 스킬(데이터 신호 라벨링, 3축 분해)을 만들고, 2주차에 Fitness Tracker PWA를 Vercel에 배포했어요. \"이상적 장면이 기능 리스트보다 어렵다\", \"입력 마찰: 2탭 max vs 11단계 로깅\"이라는 인사이트로 UX의 핵심을 잡은 사람이에요.",
   };
 
   const stats = useLiveStats("코니(황초롱)", {
@@ -56,26 +56,21 @@ export default function KoniCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "흐름 리더 스킬 + 헬스장 생존 OS",
-      summary: "의료 마케터로서 데이터 해석 자동화 스킬을 설계하고, 헬스장 운동 기록 PWA까지 배포했어요. 좁은 타겟(PT 초보 + 내 헬스장)으로 시작하니 의사결정이 빨라졌어요.",
-      insight: "AI가 일반론으로 채우는 걸 잡아야 한다 — 결과물을 그냥 받지 말고 내 언어로 교정하는 과정이 필요해요.",
+      title: "flow-reader 스킬 — 데이터 신호 라벨링",
+      summary: "데이터 신호를 라벨링하고 3축으로 분해하는 flow-reader 스킬을 만들었어요.",
+      insight: "이상적 장면이 기능 리스트보다 어렵다.",
     },
     {
-      week: "3주차", date: "5/24",
-      title: "환자가 본 우리 병원 — MVP 수상",
-      summary: "원장님 콘텐츠를 붙여넣으면 환자 시점에서 빠진 키워드를 보여주는 웹앱을 만들었어요. v1 자가진단 → v2 사람진단 → v3 환자시점 도구로 두 번 갈아엎고 도착했어요.",
-      insight: "인하우스 마케터는 모르는 사람한테 팔리는 감각이 무뎌져 있다는 걸 깨달았어요.",
-    },
-    {
-      week: "5주차", date: "6/7",
-      title: "와인 취향 통역기 기획",
-      summary: "기존 와인 웹앱을 폐기하고 기획부터 다시 시작했어요. 감각을 와인 가게에서 써먹을 수 있는 취향의 언어로 번역해주는 앱이에요. 완성도와 서비스는 다르다는 걸 배웠어요.",
+      week: "2주차", date: "5/17",
+      title: "Fitness Tracker PWA 배포",
+      summary: "Fitness Tracker PWA를 Vercel에 배포했어요(https://fitness-tracker-five-ruddy.vercel.app).",
+      insight: "입력 마찰: 2탭 max vs 11단계 로깅.",
     },
   ];
 
   const beforeAfter = {
-    before: "자동화 파이프라인 설계, 만든 것을 실제 서비스나 수익으로 연결하는 것이 어려움.",
-    after: "헬스장 PWA, \"환자가 본 우리 병원\" MVP, 와인 취향 통역기까지 3개 프로덕트를 만들며 자동화를 실제 서비스로 연결하는 감각을 키웠어요.",
+    before: "자동화 파이프라인 설계 / 각종 SNS에서 말하는 '딸깍' / 만든 것을 실제 서비스나 수익으로 연결하는 방법",
+    after: "flow-reader 스킬과 Fitness Tracker PWA를 만들며, 입력 마찰을 2탭으로 줄이는 UX 감각을 키웠어요. 0-6주차 과제 전부 제출한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

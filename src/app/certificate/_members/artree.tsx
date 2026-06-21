@@ -14,10 +14,10 @@ export default function ArtreeCertificate() {
   };
 
   const character = {
-    type: "경계에서 균형을 찾는 크루",
+    type: "풀 OS에서 파일럿으로 피벗한 크루",
     image: "/certificate/character-recorder.svg",
     description:
-      "오프라인에서 \"15명 규모 법인을 운영하며 하고 싶은 프로젝트와 경영 관리 사이의 균형이 키워드\"라고 밝혔어요. AI 자동화로 경영 관리 부담을 줄여 원하는 프로젝트에 집중하고 싶다고. 암묵지를 형식지로 전환하는 경험이 유익했다고 말한 사람이에요.",
+      "0, 1, 2주차 과제를 제출하며 research-intake Claude Skill을 v0.1에서 v0.6까지 발전시켰어요. AI 리서치 학습 OS라는 풀 비전에서 파일럿 모드로 피벗하고, 10개 소스를 등록해 리서치 카드 10장을 생성하며 실제 작동을 검증한 사람이에요. 심리적 안전성 규칙을 중시하는 설계 철학이 인상적이에요.",
   };
 
   const stats = useLiveStats("artree", {
@@ -46,13 +46,14 @@ export default function ArtreeCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "OS 인터뷰 완주 — 통점 진단과 부품 8개 도출",
-      summary: "os-interview 스킬로 6단계 인터뷰를 완주했어요. CEO+PM 1인 다역, 정보가 머릿속에만 있는 SPOF 문제를 진단하고, 잡일 시스템화와 학습 흐름 두 축으로 부품 후보 8개를 도출했어요.",
+      title: "research-intake Claude Skill v0.1 — AI 리서치 학습 OS 시작",
+      summary: "AI 리서치 학습 OS를 설계하고 research-intake 스킬 v0.1을 만들었어요. 10개 소스를 등록하고 리서치 카드 10장을 생성하며 실제 작동을 검증했어요.",
+      insight: "풀 OS 비전에서 파일럿 모드로 피벗 — 심리적 안전성 규칙을 중시하며 작은 단위부터 검증하는 방식을 택했어요.",
     },
     {
       week: "2주차", date: "5/17",
-      title: "research-intake 스킬 — v0.1에서 v0.6까지 진화",
-      summary: "1주차 청사진을 바탕으로 학습 리서치 보조 스킬 research-intake를 만들고 4번의 피드백을 거쳐 v0.6까지 발전시켰어요. 연희동 도슨트 미팅 준비에 실제로 활용해 카드 10장을 생성하며 작동을 검증했어요.",
+      title: "research-intake v0.6 — 4번의 피드백으로 진화",
+      summary: "1주차 스킬을 4번의 피드백을 거쳐 v0.6까지 발전시켰어요. 연희동 도슨트 미팅 준비에 실제로 활용해 카드 10장을 생성하며 작동을 검증했어요.",
     },
   ];
 
@@ -62,8 +63,8 @@ export default function ArtreeCertificate() {
   ];
 
   const beforeAfter = {
-    before: "여러 단계 작업을 엮는 법, 결과물의 품질 판단, 모르는 전문용어들로 설명될때 어려움.",
-    after: "오프라인에서 \"암묵지를 형식지로 전환하는 경험이 유익했다\"고 말했어요. 경영 관리와 프로젝트 사이의 균형을 AI로 풀어가는 방향을 잡았어요.",
+    before: "여러 단계 작업을 엮는 법, 결과물의 품질 판단, 모르는 전문용어들로 설명될때",
+    after: "research-intake 스킬을 v0.1에서 v0.6까지 발전시키며 풀 OS 비전을 파일럿 단위로 쪼개는 법을 배웠어요. 심리적 안전성 규칙을 세우고, 작은 검증 루프를 돌리는 사람이 되었어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

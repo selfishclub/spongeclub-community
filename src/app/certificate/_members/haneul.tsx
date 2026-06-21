@@ -8,10 +8,10 @@ export default function HaneulCertificate() {
   const member = { name: "하늘", realName: "정하늘", team: "6조", jobTitle: "신경과전문의 / 유튜브채널 운영 중", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "학습력이 좋은 크루",
+    type: "가벼운 부품부터 시작하는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"학습력이 좋은 사람\"으로 기억되고 싶다고 했어요. 공유회 8번 참여, 셸 19개 보내기. 스킬 공유 + 크루챗까지 — 6조에서 가장 다양하게 활동한 사람이에요.",
+      "idea-collector 스킬(콘텐츠 아이디어 수집기)을 만들고, 단일 HTML 투두 게시판(localStorage, 반응형, 의존성 0)을 완성했어요. '통점을 3가지로 쪼개는 질문이 효과적', '처음 부품은 가장 가벼운 것부터'라는 인사이트를 발견했어요. 7/7 과제 전량 제출, 공유회 8번, 셸 19개 보내기. 6조에서 가장 다양하게 활동한 사람이에요.",
   };
 
   const stats = useLiveStats("하늘", { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 19, shellsReceived: 14 });
@@ -39,13 +39,14 @@ export default function HaneulCertificate() {
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
       week: "1주차", date: "5/10",
-      title: "아이디어 수집기 스킬 + 투두 게시판",
-      summary: "콘텐츠 크리에이터의 '오늘 뭐 만들지' 결정 비용을 없애는 Claude 스킬을 만들고, 단일 HTML 투두 게시판 CRUD도 완성했어요.",
+      title: "idea-collector 스킬 — 콘텐츠 아이디어 수집기",
+      summary: "콘텐츠 크리에이터의 '오늘 뭐 만들지' 결정 비용을 없애는 idea-collector Claude 스킬을 만들었어요.",
+      insight: "통점을 3가지로 쪼개는 질문이 효과적. 처음 부품은 가장 가벼운 것부터.",
     },
     {
       week: "2주차", date: "5/17",
-      title: "Carousel OS — 유튜브 영상 → 캐러셀 자동 생성",
-      summary: "유튜브 영상 스크립트를 넣으면 8장 PNG 캐러셀 + 캡션을 자동 생성하고 인라인 편집까지 되는 웹앱을 만들었어요.",
+      title: "단일 HTML 투두 게시판 + Carousel OS",
+      summary: "localStorage 기반, 반응형, 의존성 0으로 단일 HTML 투두 게시판 CRUD를 완성했어요. 유튜브 영상 스크립트를 넣으면 8장 PNG 캐러셀 + 캡션을 자동 생성하고 인라인 편집까지 되는 웹앱도 만들었어요.",
     },
     {
       week: "3주차", date: "5/24",
@@ -76,8 +77,8 @@ export default function HaneulCertificate() {
   ];
 
   const beforeAfter = {
-    before: "더 효율적으로 사용할 수 있지 않을까. 더 확장해서 쓸 수 있지 않을까.",
-    after: "공유회 8번, 스킬 공유, 크루챗까지 — 6조에서 가장 다양한 영역에서 활동했어요. 학습력이 좋다는 말 그대로, 확장해서 쓰겠다는 목표를 실행으로 보여준 사람이에요.",
+    before: `더 효율적으로 사용할 수 있지 않을까.\n더 확장해서 쓸 수 있지 않을까 하는 생각이 있었어요. 혼자서 쓰다보니 제가 잘 쓰고 있는게 맞는지 모르겠더라구요. (품질검증 안됨) 바이브코딩도 해보고 싶었는데 엄두가 나지 않았습니다.`,
+    after: "7/7 과제 전량 제출. idea-collector 스킬로 시작해서 투두 게시판, Carousel OS, Mecovery까지 확장했어요. '처음 부품은 가장 가벼운 것부터'라는 원칙대로 6조에서 가장 다양하게 활동한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

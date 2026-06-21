@@ -51,7 +51,7 @@ export default function RoykangCertificate() {
   ];
 
   const beforeAfter = {
-    before: "자동화의 한계.",
+    before: "자동화의 한계",
     after: "이기적 공유회를 열어 투자 관련 꿀팁을 가감없이 풀었어요. 크루들이 VOD까지 구매해서 다시 볼 만큼 가치 있는 공유를 한 사람이에요.",
   };
 

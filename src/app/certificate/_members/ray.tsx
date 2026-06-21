@@ -8,10 +8,10 @@ export default function RayCertificate() {
   const member = { name: "레이", realName: "레이", team: "6조", jobTitle: "웹디자이너", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "위기감을 행동으로 바꾼 크루",
+    type: "4단계 워크플로우의 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 \"15년 디자이너인데 AI 발전으로 프리랜서 방식이 흔들리는 위기감을 느꼈다\"고 밝혔어요. 9월~내년 초 1인 스튜디오 독립을 목표로. \"AI 활용 두려움이 사라졌다\"고 말한 사람이에요.",
+      "marketing-points 스킬로 작업물 목적을 명확화하는 4단계 워크플로우(1.목적 -> 2.타겟 -> 3.포인트 -> 4.출력)를 만들었어요. 4/7 과제 제출. 15년 디자이너의 위기감을 행동으로 바꾸며 AI 활용 두려움을 없앤 사람이에요.",
   };
 
   const stats = useLiveStats("레이", { attendance: { present: 6, total: 7 }, sessionsAttended: 4, snsVerified: 1, shellsSent: 6, shellsReceived: 5 });
@@ -36,8 +36,9 @@ export default function RayCertificate() {
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
       week: "1주차", date: "5/10",
-      title: "나만의 OS 인터뷰 + marketing-points 스킬 — 감각만 남기고 나머지는 시스템에",
+      title: "marketing-points 스킬 — 작업물 목적 명확화 4단계 워크플로우",
       summary: "OS 인터뷰를 통해 \"감각이 필요한 부분만 하고, 나머지는 시스템이 한다\"는 선언문을 도출했어요. 첫 부품으로 인스타 캡션/셀링 포인트를 뽑아주는 marketing-points 스킬을 만들었어요.",
+      insight: "1단계(목적) -> 2단계(타겟) -> 3단계(포인트) -> 4단계(출력). 순서를 정하면 감각만 남길 수 있다.",
     },
     {
       week: "2주차", date: "5/17",
@@ -57,8 +58,8 @@ export default function RayCertificate() {
   ];
 
   const beforeAfter = {
-    before: "원하는 결과를 얻는 방법. 바이브코딩은 처음이에요.",
-    after: "오프라인에서 \"AI 활용 두려움이 사라졌다\"고 말했어요. 15년 디자이너로서의 위기감을 행동으로 바꾸며, 독립을 향해 나아가고 있어요.",
+    before: `원하는 결과를 얻는 방법\n바이브코딩은 처음입니다`,
+    after: "4/7 과제 제출. marketing-points 스킬로 4단계 워크플로우를 만들며 '감각만 남기고 나머지는 시스템에' 맡기는 구조를 잡았어요. AI 활용 두려움이 사라졌다고 말한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

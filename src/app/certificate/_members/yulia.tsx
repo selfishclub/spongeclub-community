@@ -14,10 +14,10 @@ export default function YuliaCertificate() {
   };
 
   const character = {
-    type: "가르치며 배우는 크루",
+    type: "데이터 카탈로그를 지식 그래프로 바꾸는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "5주차에 Agentic OS를 설계하며 Interview에서 Verify까지 7단계 SDD 워크플로우를 정리했어요. \"AI에게 알아서 해달라고 맡기는 게 아니라, 실패하기 어렵게 길을 깔아주는 것\"이 핵심이라는 발견. 소모임에서 기초 개념을 가르치며 자신도 재확인하는 사람이에요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 schema-extract 스킬로 BQ/GCS/Sheets 카탈로그(785 테이블, 39 데이터셋)를 추출하고, 2주차에 Graphify 스킬로 785 노드, 90 커뮤니티의 지식 그래프를 만들었어요. \"코드 grep으로는 부족, gcloud 명령어로 실제 값 확인 필요\"라는 인사이트를 얻은 사람이에요.",
   };
 
   const stats = useLiveStats("율리아(조유리)", {
@@ -57,16 +57,21 @@ export default function YuliaCertificate() {
 
   const timeline = [
     {
-      week: "5주차", date: "6/7",
-      title: "Agentic OS — SDD 기반 워크플로우 설계",
-      summary: "agent가 알아서 일하길 기대했지만, 핵심은 agent 성능이 아니라 목적과 범위를 구체화하는 것이었어요. Interview → Clarify → Spec → Plan → Tasks → Execute → Verify 흐름을 정리했어요.",
-      insight: "AI에게 알아서 해달라고 맡기는 방법이 아니라, AI가 실패하기 어렵게 길을 깔아주는 방법이 핵심이에요.",
+      week: "1주차", date: "5/10",
+      title: "schema-extract 스킬 — 데이터 카탈로그 추출",
+      summary: "BQ, GCS, Sheets에서 785 테이블, 39 데이터셋의 카탈로그를 추출하는 schema-extract 스킬을 만들었어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Graphify 스킬 — 지식 그래프 구축",
+      summary: "785 노드, 90 커뮤니티의 지식 그래프를 생성하는 Graphify 스킬을 만들었어요.",
+      insight: "코드 grep으로는 부족, gcloud 명령어로 실제 값 확인 필요.",
     },
   ];
 
   const beforeAfter = {
-    before: "결과물의 품질 판단이 어려움.",
-    after: "Agentic OS의 SDD 워크플로우를 설계하고, 이기적 공유회를 열며 가르치는 과정에서 품질 판단의 기준을 직접 세워가고 있어요.",
+    before: "결과물의 품질 판단",
+    after: "schema-extract로 785 테이블 카탈로그를 추출하고, Graphify로 90 커뮤니티의 지식 그래프를 만들며 데이터 품질을 직접 검증하는 방법을 체득했어요. 0-6주차 과제 전부 제출한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

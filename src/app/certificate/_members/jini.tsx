@@ -14,10 +14,10 @@ export default function JiniCertificate() {
   };
 
   const character = {
-    type: "스킬을 가장 많이 나눈 크루",
+    type: "인터뷰 다음 세션이 진짜인 크루",
     image: "/certificate/character-speaker.svg",
     description:
-      "1주차에 C레벨 마케팅 주간보고서 자동화 스킬을 만들고, 3주차엔 광고 데이터를 10가지 마케팅 이론으로 자동 진단하는 마케팅 OS 대시보드까지 구현했어요. 스킬 공유 8회 -- 전체 멤버 중 최다. 만든 것을 가장 많이 나눈 사람이에요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 C-Level MKT Report 스킬(PNG + HTML 자동 생성)을 만들고, 2주차에 Figma MCP로 디자인 토큰(colors, typography, spacing)을 추출했어요. \"인터뷰가 끝이 아니라 다음 세션에서 스킬 수정이 진짜 완성\", \"Figma 토큰 기본 1일을 90일로 변경 필수\"라는 실전 인사이트를 남긴 사람이에요.",
   };
 
   const stats = useLiveStats("지니", {
@@ -58,20 +58,21 @@ export default function JiniCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "C레벨 마케팅 주간보고서 자동화 스킬",
-      summary: "OS 인터뷰로 C레벨 보고 번역 비용이 가장 큰 통점임을 발견했어요. 데이터 수집부터 PNG 차트 + HTML 보고서 자동 저장까지 되는 스킬을 만들었어요.",
-      insight: "인터뷰가 끝이 아니라 수정이 진짜 시작이에요.",
+      title: "C-Level MKT Report 스킬",
+      summary: "C레벨 마케팅 보고서를 PNG 차트 + HTML로 자동 생성하는 스킬을 만들었어요.",
+      insight: "인터뷰가 끝이 아니라 다음 세션에서 스킬 수정이 진짜 완성.",
     },
     {
-      week: "3주차", date: "5/24",
-      title: "마케팅 OS 대시보드 구현",
-      summary: "자사 광고 데이터를 업로드하면 10가지 마케팅 이론 룰로 자동 판단하고 이슈를 예측하는 진단 도구를 만들었어요. 사실 근거 + 권장 액션 묶음이 자동화의 의미예요.",
+      week: "2주차", date: "5/17",
+      title: "Figma MCP + 디자인 토큰 추출",
+      summary: "Figma MCP를 활용해 colors, typography, spacing 등 디자인 토큰을 추출했어요.",
+      insight: "Figma 토큰 기본 1일에서 90일로 변경 필수.",
     },
   ];
 
   const beforeAfter = {
-    before: "할루시네이션 검증, 매체에서 말하는 딸깍 한번 구현이 어려움.",
-    after: "C레벨 보고서 자동화부터 마케팅 OS 진단 대시보드까지 만들며 스킬 8회 공유. 딸깍 한 번이 어려웠던 사람이, 가장 많이 만들고 가장 많이 나눈 사람이 되었어요.",
+    before: "할루시네이션 검증, 매체에서 말하는 딸깍 한번 구현이 어려움",
+    after: "C-Level MKT Report 자동화와 Figma MCP 디자인 토큰 추출을 만들며, 인터뷰 다음 세션에서 수정하는 것이 진짜 완성이라는 걸 체득했어요. 0-6주차 과제 전부 제출한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

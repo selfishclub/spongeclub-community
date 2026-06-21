@@ -14,10 +14,10 @@ export default function VickyCertificate() {
   };
 
   const character = {
-    type: "꾸준히 기록하는 크루",
+    type: "실사용 후 하나씩 고치는 크루",
     image: "/certificate/character-steady.svg",
     description:
-      "1주차에 Qoo10 키워드 트래커 OS를 설계하며 \"결과를 보고 확인·선택·결정만 하고 나머지는 시스템이 하는 구조\"를 만들었어요. 일본 이커머스 운영대행이라는 독특한 도메인에서 SNS 12회 기록을 남기며 꾸준히 참여한 사람이에요.",
+      "0, 1, 2, 3주차 과제를 모두 제출하며 Qoo10 Keyword Tracker를 PRD에서 MVP까지 완주했어요. Python + Playwright + SQLite로 자동 로그인, 538에서 722 키워드 추적, Streamlit 대시보드 14가지 인사이트까지 만들었어요. 3주차엔 재로그인 버튼, 기준 변경 등 UX를 개선하며 \"실사용 후 편의성 고려하여 하나씩 수정\"하는 접근을 보여준 사람이에요.",
   };
 
   const stats = useLiveStats("비키(서승리)", {
@@ -53,14 +53,26 @@ export default function VickyCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "Qoo10 키워드 트래커 OS 설계",
-      summary: "이커머스 셀러로서 키워드 추적 자동화를 위한 OS 청사진과 첫 부품 PRD를 완성했어요. 결과를 보고 확인·선택·결정만 하고 나머지는 시스템이 하는 구조를 설계했어요.",
+      title: "Qoo10 Keyword Tracker PRD",
+      summary: "이커머스 셀러로서 키워드 추적 자동화를 위한 PRD를 완성했어요. Python + Playwright + SQLite 기반으로 설계했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "MVP 완성 — 자동 로그인, 722 키워드, Streamlit 대시보드",
+      summary: "자동 로그인을 구현하고 538에서 722 키워드로 추적 범위를 확장했어요. Streamlit 대시보드로 14가지 인사이트를 시각화하며 MVP를 완성했어요.",
+      insight: "reCAPTCHA 우회에 3시간 이상 소요 -- 실전의 벽을 직접 경험했어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "UX 개선 — 재로그인 버튼, 기준 변경",
+      summary: "실사용 후 편의성을 고려해 재로그인 버튼 추가, 기준 변경 등 UX를 하나씩 수정했어요.",
+      insight: "실사용 후 편의성 고려하여 하나씩 수정하는 것이 핵심이에요.",
     },
   ];
 
   const beforeAfter = {
-    before: "결과물이 안 좋을 때, 사실과 다를 때 어려움.",
-    after: "Qoo10 키워드 트래커 OS를 설계하며, 결과물이 안 좋을 때 어떻게 할지 몰랐던 사람이 시스템으로 판단을 자동화하는 방법을 찾았어요.",
+    before: "결과물이 안 좋을 때, 사실과 다를 때",
+    after: "Qoo10 Keyword Tracker를 PRD에서 MVP까지 완주하고, 3주차엔 실사용 기반 UX 개선까지 해냈어요. 결과물이 안 좋을 때 어떻게 할지 몰랐던 사람이, 실사용 후 하나씩 고치는 방법을 찾은 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

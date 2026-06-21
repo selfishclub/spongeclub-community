@@ -11,7 +11,7 @@ export default function HoneybarnCertificate() {
     type: "끝까지 완주하는 크루",
     image: "/certificate/character-steady.svg",
     description:
-      "\"끝까지 완주하고 오래함께할사람\"으로 기억되고 싶다고 했어요.",
+      "윈도우 git+옵시디언 레지스트리 오류를 극복하며 환경 셋업부터 시작했어요. 2/7 과제 제출. \"끝까지 완주하고 오래 함께할 사람\"으로 기억되고 싶다고 했어요.",
   };
 
   const stats = useLiveStats("허니바른", { attendance: { present: 3, total: 7 }, sessionsAttended: 0, snsVerified: 0, shellsSent: 0, shellsReceived: 5 });
@@ -32,6 +32,11 @@ export default function HoneybarnCertificate() {
 
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
+      week: "0주차", date: "5/3",
+      title: "윈도우 환경 셋업 — git+옵시디언 레지스트리 오류 극복",
+      summary: "윈도우 환경에서 git과 옵시디언 레지스트리 오류를 극복하며 개발 환경을 셋업했어요.",
+    },
+    {
       week: "2주차", date: "5/17",
       title: "텔레그램 봇 + 워킹맘 AI 비서 — 가정일과 회사일을 함께 관리",
       summary: "텔레그램과 Gemini API를 연동한 봇을 만들고, 워킹맘에 특화된 AI 비서를 기획했어요. 매일 오후 5시까지 전달한 일과를 정리해서 아침에 브리핑해주고, 가정일과 회사일의 우선순위를 구분해주는 게 목표예요.",
@@ -45,8 +50,8 @@ export default function HoneybarnCertificate() {
   ];
 
   const beforeAfter = {
-    before: "프롬프트가 막막해요 응용이 잘안되고 마케팅 용어자체가 생소합니다.",
-    after: "크루들의 응원을 받으며 3회 출석. 완주하겠다는 마음으로 자리를 지킨 시간.",
+    before: "프롬프트가 막막해요 응용이 잘안되고 마케팅 용어자체가 생소합니다",
+    after: "2/7 과제 제출. 윈도우 git+옵시디언 레지스트리 오류를 극복하며 환경부터 직접 셋업했어요. 크루들의 응원을 받으며 자리를 지킨 시간.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

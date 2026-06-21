@@ -14,10 +14,10 @@ export default function SunnyCertificate() {
   };
 
   const character = {
-    type: "필요한 도구를 정확히 고르는 크루",
+    type: "에셋 먼저, 구현은 나중인 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"필요한 도구를 정확히 골라 제대로 쓰는 사람\"으로 기억되고 싶다고 했어요. 공유회 6번 참여, SNS 인증 6회. 균형 잡힌 참여로 자리를 지켰어요.",
+      "0, 2주차 과제를 제출하며 한글 받침 학습 게임 \"받침 우주 탐험\"을 만들었어요. MediaPipe 손 인식, 마인크래프트 3D 블록 에셋, 직접 녹음한 14개 음성 파일까지 넣어 Vercel에 배포(hangul-game-black.vercel.app)한 사람이에요. \"에셋 먼저, 구현은 나중\"이라는 순서와 \"문제발견 -> 인터뷰 -> 기획 -> MD -> 에셋 -> 구현 -> 배포\"라는 프로세스를 정립했어요.",
   };
 
   const stats = useLiveStats("써니", {
@@ -47,13 +47,9 @@ export default function SunnyCertificate() {
   const timeline = [
     {
       week: "2주차", date: "5/17",
-      title: "한글 받침 학습 게임 — 받침 우주 탐험",
-      summary: "아이들이 한글 받침을 재미있게 배울 수 있는 웹 게임을 만들었어요. MediaPipe 손동작 인식으로 손가락 슈팅 기능을 넣고, 마인크래프트 스타일 3D 블록 에셋 14개도 직접 제작했어요.",
-    },
-    {
-      week: "4주차", date: "5/31",
-      title: "받침 학습 게임 — 하네스 엔지니어링 + 사용자 피드백",
-      summary: "CLAUDE.md 기반 하네스 구조를 점검하고, 아이·배우자·한글학교 선생님에게 실제 피드백을 받았어요. '기능보다 AI 작업 환경 설계가 먼저'라는 관점의 전환이 있었어요.",
+      title: "받침 우주 탐험 — 한글 받침 학습 게임",
+      summary: "아이들이 한글 받침을 재미있게 배울 수 있는 웹 게임을 만들었어요. MediaPipe 손 인식으로 손가락 슈팅 기능을 넣고, 마인크래프트 3D 블록 에셋과 직접 녹음한 14개 음성 파일을 활용해 Vercel에 배포(hangul-game-black.vercel.app)했어요.",
+      insight: "에셋 먼저, 구현은 나중. 순서: 문제발견 -> 인터뷰 -> 기획 -> MD -> 에셋 -> 구현 -> 배포.",
     },
   ];
 
@@ -64,8 +60,8 @@ export default function SunnyCertificate() {
   ];
 
   const beforeAfter = {
-    before: "원하는 수준의 결과물을 얻기 위해 요청 내용을 구체적으로 정리하는 과정이 가장 어려움.",
-    after: "공유회 6번, SNS 6회 — 균형 잡힌 참여로 꾸준히 자리를 지켰어요. 오웬이 \"OS가 인상 깊었다\"고 말할 만큼 결과물도 만들었어요.",
+    before: `원하는 수준의 결과물을 얻기 위해 요청 내용을 구체적으로 정리하는 과정이 가장 어렵습니다. 저는 결과물의 완성도 기준이 높은 편이라 목적, 조건, 변수, 디테일까지 많이 고려하는데, 이를 AI가 이해할 수 있게 구조화해서 전달하는 데 시간이 꽤 걸립니다. \n프롬프트를 잘 설계하면 결과 도출 시간은 크게 줄어들지만, \n생각을 정리해 입력하는 단계의 효율화는 아직 계속 개선 중입니다.`,
+    after: "한글 받침 학습 게임 \"받침 우주 탐험\"을 MediaPipe + 마인크래프트 3D + 직접 녹음까지 조합해 Vercel에 배포했어요. \"에셋 먼저, 구현은 나중\"이라는 자기만의 제작 프로세스를 정립한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

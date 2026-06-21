@@ -14,10 +14,10 @@ export default function ChikoCertificate() {
   };
 
   const character = {
-    type: "7개의 에이전트를 완성한 크루",
+    type: "좁은 타겟으로 빠른 결정을 내리는 크루",
     image: "/certificate/character-star.svg",
     description:
-      "1주차에 커리어 OS 포폴 메이커를 만들어 JD 기반 포트폴리오 문장을 자동 생성했어요. 3주차엔 스폰지빌리지 과제 현황판 컴포넌트를 만들어 커뮤니티에 기여했어요. 오프라인에서 7개 에이전트를 완성했다고 밝혔고, 셸 28개를 받으며 3조에서 강한 인상을 남겼어요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 Career OS와 Portfolio-Maker PRD(경력 인터뷰에서 지원서 자동 생성)를 설계하고, 2주차에 Portfolio-Maker 앱(localhost, 인터뷰/카드/생성 탭)을 구현했어요. W3-6에 걸쳐 앱을 고도화하고 스펙 예측에 도전하며, \"PRD 스펙 추정이 어렵다(API 비용 예측 불가)\", \"좁은 타겟 = 빠른 결정\"이라는 인사이트를 남긴 사람이에요.",
   };
 
   const stats = useLiveStats("치코(김나영)", {
@@ -56,21 +56,26 @@ export default function ChikoCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "커리어 OS — 포폴 메이커 설계",
-      summary: "OS 인터뷰로 '정보가 너무 많아서 착지 못하는 상태'를 발견했어요. 경험 채굴부터 포트폴리오 문장 생성까지 6단계 부품을 설계하고, 실제 JD 기반 인터뷰형 포폴 메이커를 구현했어요.",
-      insight: "레퍼런스 리서치를 시켜서 나의 제품 방향성을 뚜렷하게 잡을 수 있었어요.",
+      title: "Career OS + Portfolio-Maker PRD",
+      summary: "경력 인터뷰에서 지원서를 자동 생성하는 Portfolio-Maker의 PRD를 설계했어요.",
+      insight: "좁은 타겟 = 빠른 결정.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Portfolio-Maker 앱 구현",
+      summary: "localhost에서 인터뷰/카드/생성 탭으로 구성된 Portfolio-Maker 앱을 구현했어요.",
+      insight: "PRD 스펙 추정이 어렵다(API 비용 예측 불가).",
     },
     {
       week: "3주차", date: "5/24",
-      title: "스폰지빌리지 과제 현황판 컴포넌트",
-      summary: "스폰지클럽 멤버들에게 동기부여를 주는 비주얼 컴포넌트를 만들었어요. 6개 조의 파인애플 집이 과제 제출할 때마다 단계별로 완성되는 구조예요.",
-      insight: "왜 쓰는지 한 문장이 정해지면 기술 결정이 쉬워진다.",
+      title: "앱 고도화 + 스펙 예측 도전",
+      summary: "W3-6에 걸쳐 Portfolio-Maker 앱을 고도화하고 스펙 예측에 도전했어요.",
     },
   ];
 
   const beforeAfter = {
-    before: "채팅으로 질의응답까지고, 코드로 에이전트 활용하거나 반복적인 축적 스킬이 어려움.",
-    after: "커리어 OS 포폴 메이커부터 스폰지빌리지 현황판, 7개 에이전트까지 만들며 채팅 수준을 넘어 축적형 스킬 시스템을 구축한 사람이 되었어요.",
+    before: "채팅으로 질의응답까지고 코드로 에이전트 활용하거나 반복적인 축적 스킬을 해서 더 나은 결과물을 얻는방법이 어려웠음.",
+    after: "Career OS PRD에서 Portfolio-Maker 앱 구현, 6주간 고도화까지 완료하며 채팅을 넘어 축적형 스킬 시스템을 구축했어요. 0-6주차 과제 전부 제출한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

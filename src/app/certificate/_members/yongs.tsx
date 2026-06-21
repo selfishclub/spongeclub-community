@@ -14,10 +14,10 @@ export default function YongsCertificate() {
   };
 
   const character = {
-    type: "오뚜기",
+    type: "A부터 만들고 C로 업그레이드하는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 \"약 20년 동안 5개 포지션을 경험하며 도전과 실패를 반복해왔다\"고 밝혔어요. 한국어 감성 단어를 비주얼·음악·시 구절과 연동하는 글로벌 한국어 문화 앱 '글' 프로젝트를 준비 중. 8월 법인 설립 목표.",
+      "1주차에 OS 인터뷰를 완주하고 \"아이템-노트\" Claude 스킬(자동 요약·개선안·액션 아이템)과 Slack 글감 파이프라인을 만들었어요. \"A부터 만들고 C로 업그레이드\"하는 전략으로, 마찰을 줄여 습관을 형성하는 접근법을 보여줬어요.",
   };
 
   const stats = useLiveStats("yongs(전용규)", {
@@ -46,8 +46,9 @@ export default function YongsCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "OS 인터뷰 + 슬랙 글감 파이프라인",
-      summary: "Claude Code로 os-interview 스킬을 설치하고 6단계 인터뷰를 완주해서 OS 청사진과 첫 부품(아이템-노트 스킬)을 만들었어요. 조쉬빌더를 벤치마킹해서 슬랙에서 /글감 입력하면 Notion DB에 자동 저장되는 글감 파이프라인도 구축했어요.",
+      title: "OS 인터뷰 + 아이템-노트 스킬 + Slack 글감 파이프라인",
+      summary: "OS 인터뷰를 완주하고 \"아이템-노트\" Claude 스킬(자동 요약·개선안·액션 아이템 추출)을 만들었어요. Slack에서 /글감 입력하면 Notion DB에 자동 저장되는 글감 파이프라인도 구축했어요.",
+      insight: "A부터 만들고 C로 업그레이드 — 마찰을 줄이는 것이 습관 형성의 핵심이에요.",
     },
   ];
 
@@ -59,7 +60,7 @@ export default function YongsCertificate() {
 
   const beforeAfter = {
     before: "어디서부터 시작해야할지 모르겠음.",
-    after: "오프라인에서 20년 커리어의 도전과 실패를 솔직하게 나누며 크루들에게 위로를 줬어요. K-컬처 한국어 문화 앱 '글' 프로젝트의 방향을 잡고 8월 법인 설립을 향해 나아가고 있어요.",
+    after: "1주차에 아이템-노트 스킬과 Slack 글감 파이프라인을 만들며 시작점을 찾았어요. \"A부터 만들고 C로 업그레이드\"하는 전략으로 마찰을 줄이고 습관을 형성하는 법을 배웠어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
@@ -175,6 +176,11 @@ export default function YongsCertificate() {
                     </div>
                     <p className="text-sm font-bold text-[var(--ink)] mb-2">{week.title}</p>
                     <p className="text-sm text-[var(--ink-80)] leading-[1.8]">{week.summary}</p>
+                    {(week as any).insight && (
+                      <div className="mt-4 border-l-4 border-[var(--yellow)] pl-4 py-2 bg-[var(--ink-05)]">
+                        <p className="text-sm text-[var(--ink)] italic font-medium">&ldquo;{(week as any).insight}&rdquo;</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

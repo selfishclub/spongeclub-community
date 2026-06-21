@@ -14,10 +14,10 @@ export default function GreenCertificate() {
   };
 
   const character = {
-    type: "한 발자국 앞에서 길을 보여주는 크루",
+    type: "이미 만든 것을 되살리는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "1주차에 노션 클리너 스킬을 세 번 자기교정하며 만들었고, 3주차엔 만성질환 진료 관리 PWA를 구현하며 PRD를 v1.3까지 네 번 다듬었어요. 오프라인에서 \"한 발자국 앞에만 있어도 도움이 된다\"며 PID 작성법을 공유한 사람이에요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 Notion-cleaner 스킬(트리아지 분류)을 만들고, 2주차에 PARA 시스템으로 노션 정리 루틴을 세웠어요. 3주차에는 PARA 파이프라인에 Claude Routine 자동화(주간 자동 트리거)를 연결하며 시스템을 완성한 사람이에요.",
   };
 
   const stats = useLiveStats("그린(이유경)", {
@@ -54,21 +54,26 @@ export default function GreenCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "노션 클리너 스킬 — 세 번의 자기교정",
-      summary: "OS 인터뷰 후 첫 부품을 pm-doc에서 notion-cleaner로 두 번 교체했어요. 노션 페이지를 자동 분류하고 일괄 archive하는 스킬을 만들었어요.",
-      insight: "첫 결정에 갇히지 말 것 — 잘못된 부품을 골라봐야 진짜 부품이 보여요.",
+      title: "Notion-cleaner 스킬 — 트리아지 분류",
+      summary: "노션 페이지를 자동으로 트리아지 분류하는 스킬을 만들었어요.",
+      insight: "OS는 처음부터 만드는 게 아니라 이미 만든 것을 되살리는 것.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "PARA 시스템 + 노션 정리 루틴",
+      summary: "PARA 시스템을 적용해 노션 정리 루틴을 세웠어요. 흩어진 페이지를 체계적으로 관리하는 구조를 완성했어요.",
     },
     {
       week: "3주차", date: "5/24",
-      title: "진료 관리 PWA 구현",
-      summary: "만성질환 진료 기록을 질환별로 추적하는 앱을 만들었어요. 캘린더 앱에서 질환 추적 앱으로 재정의한 게 전체 구조를 바꿨어요. PRD를 v1.3까지 네 번 다듬었어요.",
-      insight: "캘린더는 날짜가 중심이라 6개월에 한 번 일어나는 일을 담기엔 부적합해요.",
+      title: "PARA 파이프라인 + Claude Routine 자동화",
+      summary: "PARA 파이프라인에 Claude Routine을 연결해 주간 자동 트리거로 노션 정리가 자동 실행되는 시스템을 구축했어요.",
+      insight: "Archive는 PARA의 4번째 단계가 아니다.",
     },
   ];
 
   const beforeAfter = {
-    before: "결과물을 일관성 있게 디벨롭할 수 있는 정교한 프롬프팅 작성이 어려움.",
-    after: "노션 클리너 스킬과 진료 관리 PWA를 만들며, 정교한 프롬프팅이 아니라 기획 구조를 잡는 게 먼저라는 걸 발견했어요.",
+    before: `결과물을 일관성 있게 디벨롭할 수 있는 정교한 프롬프팅 작성.\n이전에 나눈 대화 내용을 스스로 기억하지 못할 때가 있어서 다시 돌아가서 확인하고, 요약해달라고 하는 과정도 힘든 포인트 중 하나.`,
+    after: "Notion-cleaner에서 PARA 시스템, Claude Routine 자동화까지 3주 만에 노션 정리 파이프라인을 완성했어요. OS는 처음부터 만드는 게 아니라 이미 만든 것을 되살리는 것이라는 걸 발견한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

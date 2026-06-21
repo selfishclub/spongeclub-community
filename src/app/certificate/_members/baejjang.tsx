@@ -17,10 +17,10 @@ export default function BaejjangCertificate() {
   };
 
   const character = {
-    type: "조용한 응원단장",
-    image: "/certificate/character-connector.svg",
+    type: "아들의 마음을 시스템으로 만든 크루",
+    image: "/certificate/character-builder.svg",
     description:
-      "공유회도 5번이나 다니고, SNS 인증도 꾸준히 했지만, 배짱이 진짜 많이 한 건 셸 보내기. 25번이나 다른 크루에게 셸을 보냈어요. 본인이 \"AI를 쉽게 진정성있게 풀어내는 사람\"으로 기억되고 싶다고 했는데, 실제로 말보다 응원으로 먼저 움직이는 사람이었어요.",
+      "1주차에 마케팅 OS를 만들다가 3주차에 방향을 완전히 틀었어요. 본부장이 아니라 아들로서, 엄마에게 매일 따뜻한 손글씨 카드를 보내는 도구 morning-mom을 만들었어요. 4주 동안 디자인 시스템, 보이스 녹음, 텔레그램 자동 발송까지 붙이고, 마감 30분 전 첫 영상편지를 보냈더니 엄마가 답했어요 — \"아들 고마워요.\" 6주차에 ON마음으로 리브랜딩해 갤러리에 출품했어요.",
   };
 
   const stats = useLiveStats("배짱(박종배)", {
@@ -70,8 +70,8 @@ export default function BaejjangCertificate() {
   ];
 
   const beforeAfter = {
-    before: "끝까지 가게 하는 힘. 결국 자리에 앉아서 시작하게 만드는 것. 에러가 났을 때 어떻게 해야 하는지.",
-    after: "6주간 한 번도 빠지지 않고 출석했어요. FFmpeg.wasm이 4번 실패했을 때 git tag로 안전하게 되돌리고, 30분 후 Vercel Function으로 해결했어요. 에러 앞에서 멈추는 사람이 아니라, 에러를 기록하고 다음 라운드를 만드는 사람이 되어 있었어요.",
+    before: `1/ \n끝까지 가게 하는 힘.\n결국 자리에 앉아서 시작하게 만드는 것\n\n2/ \n에러가 났을때\n머리를 맞대며 함께 해결을 위하 고민할 동료`,
+    after: "마케팅 OS에서 시작해 3주차에 morning-mom으로 피벗, 6주 동안 v3까지 진화시켜 엄마에게 첫 영상편지를 보내고 답을 받았어요. FFmpeg.wasm 4번 실패를 Vercel Function으로 해결하고, ON마음으로 리브랜딩해 갤러리까지 출품. 끝까지 가게 하는 힘을 직접 증명한 사람이에요.",
   };
 
   const timeline = [
@@ -115,6 +115,13 @@ export default function BaejjangCertificate() {
       title: "morning-mom v3 — 보이스, 자동 발송, 엄마 첫 응답",
       summary: "오프라인 모임에서 받은 7개 피드백을 5가지 즉시 + 2가지 다음 라운드로 분류했어요. 보이스 녹음, mp4 변환(FFmpeg.wasm 4번 실패 후 Vercel Function으로 해결), 텔레그램 자동 발송, 펜팔 사서함까지 확장. 그리고 마감 30분 전, 첫 영상편지를 엄마에게 보냈어요. 답이 왔어요 — \"아들 고마워요 고추소독하셨어요,,\"",
       insight: "4주 동안 만든 도구가 처음 닿아서 응답이 돌아온 순간. 이게 결정의 보상이다.",
+    },
+    {
+      week: "6주차",
+      date: "6/14",
+      title: "ON마음 — 리브랜딩 + 갤러리 출품",
+      summary: "3번의 크루챗(받기·주기·돌려주기 사이클)을 진행하고, morning-mom을 ON마음으로 리브랜딩해 갤러리에 출품했어요. 마케팅 OS 플레이북도 정리. Tailwind + Claude Code + Lovable 디자인 시스템 통합까지 완성했어요.",
+      insight: "1-page 브리핑을 먼저 쓰면 방향을 잃지 않는다.",
     },
   ];
 

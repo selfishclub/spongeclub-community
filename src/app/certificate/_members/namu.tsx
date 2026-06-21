@@ -11,7 +11,7 @@ export default function NamuCertificate() {
     type: "감각으로 시작하는 크루",
     image: "/certificate/character-sprout.svg",
     description:
-      "\"결과물의 품질 판단\"이 어렵다고 했던 사람이에요. OT에서 \"왜 옵시디언을 쓰는지 자세히는 모르지만 감각적으로 이해가 가고 있다\"고 썼다. 완벽히 이해하기 전에 먼저 감각으로 부딪히는 사람이에요. 과제 제출은 OT 한 번이었지만, 크루 4명에게 셸을 보내며 커뮤니티 안에서 조용히 존재감을 남겼어요.",
+      "\"결과물의 품질 판단\"이 어렵다고 했던 사람이에요. 1주차에 50개 이상 브랜드의 ROAS를 분석하는 퍼포먼스 마케팅 OS를 설계했어요. \"나는 전략과 의사결정만 하고, 나머지는 시스템이 한다\"는 선언과 함께 이상 감지 자동화를 구상했어요. 완벽히 이해하기 전에 먼저 감각으로 부딪히는 사람이에요.",
   };
 
   const stats = useLiveStats("나무(김남욱)", { attendance: { present: 5, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 4, shellsReceived: 6 });
@@ -40,6 +40,13 @@ export default function NamuCertificate() {
       summary: "Python과 R을 배웠던 10년 전 경험이 Git과 옵시디언을 이해하는 데 도움이 됐어요. Pull과 Push의 개념을 잡고, 감각적으로 이 시스템을 이해하기 시작했어요.",
       insight: "왜 옵시디언을 쓰는지 자세히는 모르지만 감각적으로 이해가 가고 있다.",
     },
+    {
+      week: "1주차",
+      date: "5/10",
+      title: "퍼포먼스 마케팅 OS 설계",
+      summary: "50개 이상 브랜드의 ROAS 기반 캠페인 성과를 분석하는 OS를 설계했어요. 이상 감지와 레드플래그 자동 탐지 시스템을 구상하고, \"나는 전략과 의사결정만 하고, 나머지는 시스템이 한다\"고 선언.",
+      insight: "AI 시스템화를 해도, 원시 데이터 입력은 사람이 해야 한다. 자동화할 수 있는 것과 없는 것을 현실적으로 구분해야 한다.",
+    },
   ];
 
   const giftMessages = [
@@ -50,8 +57,8 @@ export default function NamuCertificate() {
   ];
 
   const beforeAfter = {
-    before: "결과물의 품질 판단이 어려웠다.",
-    after: "과제 제출은 OT 한 번이었지만, 공유회에 참여하고 크루들과 인사를 나누며 커뮤니티 안에서 연결을 만들었어요. 릴스에서 떠올려줬다는 크루의 메시지는, 온라인 밖에서도 존재감을 남기고 있었다는 증거.",
+    before: "결과물의 품질 판단",
+    after: "1주차에 50개 브랜드 ROAS 분석 OS를 설계하며 시작점을 만들었어요. 자동화할 수 있는 것과 없는 것을 구분하는 현실 감각을 발견한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

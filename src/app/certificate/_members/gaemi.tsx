@@ -14,10 +14,10 @@ export default function GaemiCertificate() {
   };
 
   const character = {
-    type: "3조의 허브",
+    type: "듀얼 세션을 실험하는 크루",
     image: "/certificate/character-connector.svg",
     description:
-      "GPT와 Claude 두 세션을 병행하며 OS 인터뷰를 비교 실험하고, \"즐거운 개미집\" 모임 커뮤니티 웹사이트를 직접 만들어 배포했어요. 5주차엔 UX v2 개편까지 진행하며 Phase 단위 검증-배포 사이클을 돌렸어요. 셸 45개를 받으며 전체 멤버 중 가장 많은 응원을 모은 3조의 허브예요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 Thread Converter 스킬 v0.2(인스타 카드 자동 출력)를 만들면서 GPT와 Claude 듀얼 세션을 비교 실험했어요. 2주차에 Repo mapping 분석(549 md 파일을 8섹션으로 분석)을 완료하고, W3-6에 걸쳐 스레드 변환기를 고도화하며 콘텐츠 파이프라인을 구축한 사람이에요.",
   };
 
   const stats = useLiveStats("개미(임종범)", {
@@ -59,25 +59,26 @@ export default function GaemiCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "GPT vs Claude 세션 병행 OS 인터뷰",
-      summary: "같은 인터뷰 스킬을 GPT와 Claude 두 세션에서 병행 진행했어요. 같은 통점에서 출발했는데 깊이형 vs 펜아웃형으로 완전히 다른 결과가 나왔어요. 두 부품을 비교한 뒤 장점을 합쳐 v0.2로 업그레이드했어요.",
-      insight: "같은 사용자, 같은 스킬이라도 세션이 다르면 결과가 갈라진다.",
+      title: "Thread Converter v0.2 + GPT vs Claude 듀얼 세션",
+      summary: "인스타 카드를 자동 출력하는 Thread Converter 스킬 v0.2를 만들면서, GPT와 Claude 두 세션을 병행 비교했어요.",
+      insight: "두 세션은 격리 규칙 없으면 통제 불가.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Repo mapping 분석 — 549 md 파일 → 8섹션",
+      summary: "549개 마크다운 파일을 8개 섹션으로 분석하는 Repo mapping을 완료했어요.",
+      insight: "수동 레퍼런스 수집에서 AI 리서치 위임으로 전환하면 10배 빠르다.",
     },
     {
       week: "3주차", date: "5/24",
-      title: "즐거운 개미집 MVP 웹사이트 구현",
-      summary: "회사와 집만 반복하는 직장인을 위한 모임 커뮤니티 웹사이트를 실제로 배포했어요. 오늘의 질문, 익명 답변, 좋아요, 모임 상세 페이지까지 구현했어요. GPT로 요구사항 정리, Claude Code로 코드 작성하는 협업 방식을 썼어요.",
-    },
-    {
-      week: "5주차", date: "6/7",
-      title: "즐거운 개미집 UX v2 개편",
-      summary: "신청 도메인 정비, 작업 표준 문서화, 디자인 시스템 전면 개편까지 진행했어요. Phase 단위로 검증-승인-배포 사이클을 돌리며 체계적으로 리뉴얼했어요.",
+      title: "스레드 변환기 고도화 + 콘텐츠 파이프라인",
+      summary: "W3-6에 걸쳐 스레드 변환기를 고도화하고, 콘텐츠 파이프라인을 구축했어요.",
     },
   ];
 
   const beforeAfter = {
-    before: "이전에 원활하게 쓰인 프롬프트가 바뀌더라구요. AI 정보가 계속 갱신되는 것이 어려움.",
-    after: "\"즐거운 개미집\" 웹사이트를 만들어 배포하고 UX v2 개편까지 완료했어요. 프롬프트가 바뀌어도 흔들리지 않는 자기만의 시스템을 갖게 된 사람이에요.",
+    before: `현재 기존 AI의 정보들이 계속 갱신되며, 이전에 원활하게 쓰인 프롬프트가 바뀌더라구요. 그러다보니 계속 매번 찾기 어렵다는 부분과, 필요한 정보 (이미지 제작, 글쓰기 등등)에 가장 적합한 AI 모델이 무엇인지 모른다는 점 입니다.\n\n핵심은 계속해서 갱신되는 AI 정보를 놓치지 않고 파악하기가 어렵네요.`,
+    after: "GPT와 Claude 듀얼 세션 비교를 통해 세션 격리 규칙을 발견하고, 549개 파일을 분석하는 Repo mapping과 스레드 변환기 콘텐츠 파이프라인을 완성했어요. 0-6주차 과제 전부 제출한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

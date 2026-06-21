@@ -14,10 +14,10 @@ export default function IniCertificate() {
   };
 
   const character = {
-    type: "끝까지 만드는 크루",
+    type: "쪼개서 돌파하는 크루",
     image: "/certificate/character-builder.svg",
     description:
-      "\"개발 지식에 대한 두려움, 이것까지 될까라는 생각\"이 막힌 점이었어요. 하지만 1주차에 팀 작업 현황판 웹 대시보드를, 2주차엔 레이블링 노트 시스템을 만들며 6주차까지 모든 주차를 제출했어요. 두려움이 있었지만 끝까지 만든 사람이에요.",
+      "\"개발 지식에 대한 두려움, 이것까지 될까라는 생각\"이 막힌 점이었어요. 하지만 1주차에 Work Dashboard + Labeling Note 시스템을 Vercel에 배포하고, 3주차엔 포트폴리오 축적 사이트 'Inked'를, 5주차엔 OPIc AI 튜터링 시스템까지 만들었어요. \"스펙부터 쓰면 3배 덜 고친다\", \"매일 쓰는 걸 만들어야 판단이 빠르다\"는 걸 발견한 사람이에요.",
   };
 
   const stats = useLiveStats("이니", {
@@ -49,17 +49,25 @@ export default function IniCertificate() {
     {
       week: "1주차",
       date: "5/10",
-      title: "팀 작업 현황판 대시보드",
+      title: "Work Dashboard + Labeling Note 시스템",
       summary:
-        "Next.js, Supabase, Vercel로 다중 브랜드 프로젝트의 일정·기획안·피드백을 실시간으로 보여주는 대시보드를 구현. 권한 3단계(관리자/뷰어/차단)까지 설계.",
-      insight: "처음엔 할 게 별로 없을 줄 알았는데, 일을 쪼개 보니까 계속 할 일이 생겼다.",
+        "Work Dashboard와 Labeling Note 시스템을 Vercel에 배포. AI 자동 라벨링과 macOS 알림 기능을 구현했어요.",
+      insight: "프로젝트를 가장 작은 조각으로 쪼개면 막히지 않는다.",
     },
     {
-      week: "2주차",
-      date: "5/17",
-      title: "레이블링 노트 시스템",
+      week: "3주차",
+      date: "5/24",
+      title: "Inked — 포트폴리오 축적 사이트",
       summary:
-        "한명수 인터뷰에서 영감 받아 \"남의 지식을 자기 언어로 명명할 때 내 세계가 된다\"는 철학으로 레이블링 노트 시스템 구축. 매주 일요일 자동 회고 알림 + 자기 사전 색인화.",
+        "텍스트 붙여넣기만 하면 7개 필드 카드로 자동 정리되는 포트폴리오 축적 사이트. 하네스(JSON 스키마, CSS 토큰)와 오케스트레이션(Phase 게이트)을 적용했어요.",
+    },
+    {
+      week: "5주차",
+      date: "6/7",
+      title: "OPIc IH Planner — AI 영어회화 튜터링",
+      summary:
+        "커리큘럼 체크리스트와 실시간 피드백을 제공하는 AI 영어회화 튜터링 시스템. Gemini API를 활용해 OPIc IH 등급 달성을 돕는 도구를 만들었어요.",
+      insight: "스펙부터 쓰면 3배 덜 고친다. 매일 쓰는 걸 만들어야 판단이 빠르다.",
     },
   ];
 
@@ -70,10 +78,9 @@ export default function IniCertificate() {
   ];
 
   const beforeAfter = {
-    before:
-      "개발 지식 등 모르는 용어, 복잡하다고 느껴지는 것에 대한 두려움, 이것까지 될까라는 생각",
+    before: "개발 지식 등 모르는 용어, 복잡하다고 느껴지는 것에 대한 두려움, 이것까지 될까라는 생각으로 시작했다가 막막해져서 포기하게 되는 삽질, 로딩을 기다리는 절대적인 물리적 시간, 때로는 되고 때로는 되지 않은 ai의 랜덤성(변덕성)에 대한 답답함 등..",
     after:
-      "팀 대시보드, 레이블링 노트 시스템 등 6주차까지 모든 주차를 제출했어요. 두려웠지만 끝까지 만들었고, \"일을 쪼개 보니까 계속 할 일이 생겼다\"는 걸 발견한 사람이에요.",
+      "Work Dashboard, Inked 포트폴리오 사이트, OPIc AI 튜터까지 매주 다른 프로덕트를 완성했어요. \"스펙부터 쓰면 3배 덜 고친다\"는 자신만의 원칙을 찾은 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

@@ -14,10 +14,10 @@ export default function PhonometerCertificate() {
   };
 
   const character = {
-    type: "소리를 시스템으로 만든 크루",
+    type: "소리를 시스템으로, 시스템을 사업으로 만든 크루",
     image: "/certificate/character-builder.svg",
     description:
-      "\"바이브코딩이 불편한데 거의 완전 자동화가 가능한지\"가 막힌 점이었어요. 1주차에 SyncAlive(사운드 전문가 매칭 플랫폼) OS 청사진을, 2주차엔 캐러셀 생성기 MVP를 Vite+React로 구현. \"컨텍스트 스위칭\"이 본질적 통점이라는 발견.",
+      "1주차에 SyncAlive 사운드 전문가 매칭 플랫폼 OS를 선언하고 캐러셀 생성기 스킬을 만들었어요. 2주차에 Gemini 이미지 생성·캡션·태그 자동생성까지 확장. 4주차에는 syncalive.com 공식 홈페이지를 런칭하고(Resend 이메일, Cloudflare Turnstile), 고객 3명 인터뷰에서 컨설팅으로 피벗. 5주차에 홈페이지를 완성했어요. \"첫 부품은 큰 게 아니라 빠른 것\", \"CLAUDE.md 활용의 중요성\"을 발견한 사람이에요.",
   };
 
   const stats = useLiveStats("포노미터(김미라)", {
@@ -50,17 +50,32 @@ export default function PhonometerCertificate() {
     {
       week: "1주차",
       date: "5/10",
-      title: "SyncAlive OS 청사진 + 캐러셀 스킬",
+      title: "SyncAlive OS 선언 + 캐러셀 스킬",
       summary:
-        "사운드 전문가 매칭 플랫폼 SyncAlive의 OS 청사진을 설계하고, 인스타 캐러셀 자동 생성 스킬을 만들었어요. 드러그푸딩으로 디자인 시스템을 4회 정정.",
+        "사운드 전문가 매칭 플랫폼 SyncAlive의 OS를 선언하고, insta-carousel-script 스킬과 캐러셀 생성기 v3를 만들었어요.",
     },
     {
       week: "2주차",
       date: "5/17",
-      title: "SyncAlive 캐러셀 생성기 MVP",
+      title: "캐러셀 생성기 v3 개선",
       summary:
-        "Vite + React로 PRD 13개 섹션 → 자동 구현. 입력 폼에서 카드 8장 실시간 미리보기, PNG ZIP 일괄 다운로드까지.",
-      insight: "표면 통점 \"클로드 디자인과 분리\"가 아니라, \"컨텍스트 스위칭\"이 본질적 통점이었어요.",
+        "Gemini 이미지 생성, 업로드, 캡션·태그 자동생성까지 캐러셀 생성기를 확장했어요.",
+      insight: "컨텍스트 스위칭이 본질적 통점이었어요.",
+    },
+    {
+      week: "4주차",
+      date: "5/31",
+      title: "SyncAlive 공식 홈페이지 런칭",
+      summary:
+        "syncalive.com 공식 홈페이지를 런칭. 사운드 진단 신청 MVP, Resend 이메일, Cloudflare Turnstile을 적용. 고객 3명 인터뷰에서 컨설팅으로 피벗을 결정했어요.",
+      insight: "첫 부품은 큰 게 아니라 빠른 것.",
+    },
+    {
+      week: "5주차",
+      date: "6/7",
+      title: "SyncAlive 홈페이지 완성",
+      summary:
+        "홈페이지를 완성하고 CLAUDE.md 활용의 중요성을 발견. 사운드 컨설팅 사업의 디지털 기반을 확립했어요.",
     },
   ];
 
@@ -70,10 +85,9 @@ export default function PhonometerCertificate() {
   ];
 
   const beforeAfter = {
-    before:
-      "바이브 코딩하면서 VS CODE에 직접 코드를 넣어야 되는 것이 불편. 거의 완전 자동화가 가능할까.",
+    before: `바이브 코딩하면서 VS CODE에 직접 코드를 넣어야 되는 것이 불편한데 거의 완전 자동화된 방법이 없는지 궁금하고 \n아직 초보라 더 어려운 개발을 해보고 싶습니다.`,
     after:
-      "PRD 13개 섹션을 작성하면 Claude Code가 자동 구현하는 워크플로우를 만들었어요. 완전 자동화가 아니라, 기획과 구현의 역할 분리가 답이라는 걸 발견.",
+      "캐러셀 스킬에서 시작해 syncalive.com 공식 홈페이지를 런칭하고, 고객 인터뷰에서 컨설팅으로 피벗까지. 완전 자동화가 아니라, 첫 부품을 빠르게 만드는 게 답이라는 걸 발견한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

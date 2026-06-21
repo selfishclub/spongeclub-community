@@ -8,10 +8,10 @@ export default function HiyamCertificate() {
   const member = { name: "히얌", realName: "최효연", team: "6조", jobTitle: "퍼포먼스 마케팅 에이전시 1년차 AE", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "빠른 이해의 크루",
+    type: "3번 피벗한 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"빠른 이해와 터득을 기반으로, 다양한 문제 내 적용력이 좋은 사람\"으로 기억되고 싶다고 했어요.",
+      "gmail-reply-drafter PRD(광고주 메일 회신 도우미)를 만들며 Claude 스킬에서 Apps Script+Claude API, 다시 Apps Script+Gemini(0원/월)로 3번 피벗했어요. '자동화 100% 지양, 사용자 손에 남기는 단계가 핵심 가치'라는 인사이트를 발견했어요. 2/7 과제 제출.",
   };
 
   const stats = useLiveStats("히얌", { attendance: { present: 5, total: 7 }, sessionsAttended: 1, snsVerified: 0, shellsSent: 0, shellsReceived: 7 });
@@ -33,8 +33,9 @@ export default function HiyamCertificate() {
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
       week: "1주차", date: "5/10",
-      title: "광고주 메일 회신 도우미 PRD + 라이프 OS 설계 — 3번 피벗해서 zero-cost로",
-      summary: "OS 인터뷰로 광고주 메일 회신 도우미 PRD를 만들었어요. Claude 스킬에서 Apps Script+Claude API, 다시 Gemini 측면패널 활용으로 3번 피벗하면서 추가 비용 0원 구조로 안착했어요. 워너비 벤치마킹으로 라이프 OS도 설계했어요.",
+      title: "gmail-reply-drafter PRD — 3번 피벗해서 zero-cost로",
+      summary: "광고주 메일 회신 도우미 PRD를 만들었어요. Claude 스킬에서 Apps Script+Claude API, 다시 Apps Script+Gemini(0원/월)로 3번 피벗하면서 추가 비용 0원 구조로 안착했어요.",
+      insight: "자동화 100% 지양, 사용자 손에 남기는 단계가 핵심 가치.",
     },
   ];
 
@@ -45,8 +46,8 @@ export default function HiyamCertificate() {
   ];
 
   const beforeAfter = {
-    before: "여러 단계 작업을 엮는 법 / 프롬프트 기술 / 결과물 품질 판단.",
-    after: "5주간 출석하며 크루들의 응원을 받았어요. 빠른 이해를 무기로, 다음 단계를 준비하는 중.",
+    before: "여러 단계 작업을 엮는 법 / 프롬프트 기술 / 결과물 품질 판단",
+    after: "2/7 과제 제출. gmail-reply-drafter를 3번 피벗해서 0원/월 구조로 안착시켰어요. '자동화 100% 지양, 사용자 손에 남기는 단계가 핵심'이라는 원칙을 세운 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

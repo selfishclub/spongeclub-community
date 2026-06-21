@@ -14,10 +14,10 @@ export default function DuksuCertificate() {
   };
 
   const character = {
-    type: "남 주려고 정리한 크루",
+    type: "고민 시간을 시스템으로 줄이는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "1주차에 \"오늘나\" 컨디션 맞춤 케어 앱 PRD를 완성하고, 3주차엔 Facette -- 디자이너 전용 레퍼런스 아카이브를 만들었어요. 방향을 다섯 번 넘게 엎었지만 동료 10분 인터뷰가 방향을 구했어요. \"남 주려고 정리했는데 결국 내가 더 많이 남는 것\"이라고 이기적 공유를 정의한 사람이에요.",
+      "0, 1, 2주차 과제를 제출하며 \"오늘나\" Daily AI Care App PRD를 완성했어요. 아침 30초 체크인으로 맞춤형 운동과 식단을 제안하는 시스템을 설계한 사람이에요. \"OS는 의사결정의 자동화 -- 고민할 시간을 줄여주는 시스템\"이라는 정의를 남겼어요.",
   };
 
   const stats = useLiveStats("덕수(김효정)", {
@@ -53,21 +53,15 @@ export default function DuksuCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "오늘나 — 컨디션 맞춤 케어 앱 PRD",
-      summary: "패키지 디자이너가 매일 변하는 컨디션에 맞춘 운동·식단 제안 앱을 설계했어요. 3시간 인터뷰 끝에 '정해진 루틴이 아닌 상태 대응 시스템'이라는 핵심을 찾았어요.",
-      insight: "모르는 것은 솔직하게 — 클로드가 질문 방향을 재조정해줘서 본질에 더 가깝게 접근할 수 있었어요.",
-    },
-    {
-      week: "3주차", date: "5/24",
-      title: "Facette — 디자이너 전용 레퍼런스 아카이브",
-      summary: "후가공·용기·무드 같은 디자이너 전용 태그로 교차검색하는 도구를 만들었어요. 방향을 다섯 번 넘게 엎었지만, 동료 10분 인터뷰가 방향을 구했어요.",
-      insight: "좁힐수록 강하다 — 디자이너 전용 facet 교차검색이라는 좁은 무기가 차별점이 됐어요.",
+      title: "오늘나 (Daily AI Care App) PRD",
+      summary: "아침 30초 체크인으로 그날의 컨디션에 맞춘 운동과 식단을 제안하는 앱을 설계했어요. 정해진 루틴이 아닌 상태 대응 시스템이라는 핵심을 찾았어요.",
+      insight: "OS는 의사결정의 자동화 -- 고민할 시간을 줄여주는 시스템이에요.",
     },
   ];
 
   const beforeAfter = {
-    before: "내가 원하는 결과물에 못미칠때 어디서 부터 건들여야하는지 막막함.",
-    after: "\"오늘나\" 앱 PRD와 Facette 디자이너 아카이브를 만들며, 어디서부터 건드려야 할지 막막했던 사람이 \"좁힐수록 강하다\"는 방법론을 찾은 사람이 되었어요.",
+    before: "내가 원하는 결과물에 못미칠때 어디서 부터 건들여야하는지 막막함",
+    after: "\"오늘나\" Daily AI Care App PRD를 완성하며 고민할 시간을 시스템으로 줄이는 방법을 찾았어요. 의사결정의 자동화라는 OS의 본질을 정의한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

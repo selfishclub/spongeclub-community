@@ -21,9 +21,14 @@ export default function ChoboCertificate() {
 
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
+      week: "0주차", date: "5/3",
+      title: "AI의 설계자이자 시스템을 만드는 사람",
+      summary: "\"AI의 설계자이자 시스템을 만드는 사람\"이 되겠다는 목표를 세웠어요.",
+    },
+    {
       week: "1주차", date: "5/10",
-      title: "OS 인터뷰 + 아침 브리핑 플러그인 — 의사결정만 남기는 시스템",
-      summary: "OS 인터뷰를 완주해서 \"나는 의사결정만 하고, 나머지는 시스템이 한다\"는 선언문을 도출했어요. 첫 부품으로 매일 아침 업무 브리핑을 자동으로 해주는 Claude Code 플러그인을 만들었어요.",
+      title: "아침 브리핑 플러그인 + tracking.md",
+      summary: "매일 아침 업무 브리핑을 자동으로 해주는 Claude Code 플러그인을 만들고, tracking.md로 진행 상황을 기록하기 시작했어요.",
     },
     {
       week: "2주차", date: "5/17",

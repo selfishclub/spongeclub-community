@@ -43,6 +43,11 @@ export default function MintCertificate() {
       summary: "Claude Code로 지속 가능한 다이어트 루틴 OS를 만들었어요. Release AI로 유튜브 영상에서 다이어트 프로세스를 추출하고, MD 파일로 문서화했어요. AI 없이 직접 인스타그램 글도 작성.",
       insight: "냅다 하면 초심자도 할 수 있다!",
     },
+    {
+      week: "6주차", date: "6/14",
+      title: "크루챗 + 블로그팀 합류",
+      summary: "커피챗을 계획하고, 과제를 미션에 올리고, 블로그팀에 합류했어요. 과제 제출은 적었지만 공유회와 SNS 인증으로 커뮤니티에 꾸준히 참여한 사람이에요.",
+    },
   ];
 
   const giftMessages = [
@@ -53,7 +58,7 @@ export default function MintCertificate() {
   ];
 
   const beforeAfter = {
-    before: "프롬프트를 최적화하는 방법을 모르겠음. 개발자가 아니라 바이브코딩 등 효율적으로 사용이 어려움.",
+    before: "프롬프트를 최적화 하는 방법을 모르겠음, 개발자가 아니라 바이브코딩 등 효율적으로 사용이 어렵고 한단계 업그레이드 된 AI사용을 하고자 함 ",
     after: "공유회 8번, SNS 인증 8회, 셸 25개 보내기. 본업과 전혀 다른 영역에서 AI 도구를 적극적으로 탐험했고, 아가타와 함께 1조에서 가장 활발하게 응원을 주고받은 사람이 되었어요.",
   };
 

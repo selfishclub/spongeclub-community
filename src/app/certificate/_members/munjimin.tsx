@@ -14,10 +14,10 @@ export default function MunjiminCertificate() {
   };
 
   const character = {
-    type: "막힌 지점을 먼저 꺼내는 크루",
+    type: "그릇이 부품보다 먼저인 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "1주차에 저녁 마감 OS를 설계하며 매일 반복되는 결정 피로와 맥락 반복 문제를 구조적으로 풀었어요. \"도구가 늘어날수록 정리 비용도 같이 늘어난다\"는 발견. 부조장으로서 4조를 이끌며 막힌 지점을 먼저 꺼내는 사람이에요.",
+      "1주차에 OS 청사진과 저녁 닫기 스킬(git·파일·대화 스캔 후 초안 제시)을 만들고, 부품 라이브러리와 ADR 8건을 작성했어요. \"빈 칸·주관식 질문은 가장 비싼 입력\", \"그릇이 부품보다 먼저\", \"Draft First, Confirm Second\"라는 원칙을 세운 사람이에요.",
   };
 
   const stats = useLiveStats("먼지민(석지민)", {
@@ -58,15 +58,15 @@ export default function MunjiminCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "저녁 마감 OS — evening-close 스킬 설계",
-      summary: "매일 반복되는 결정 피로와 맥락 반복 문제를 해결하는 OS를 설계했어요. AI에게 배경부터 다시 설명하는 비용을 없애는 구조를 만들었어요.",
-      insight: "도구가 늘어날수록 정리 비용도 같이 늘어나요 — 유지보수 폭발을 막는 게 핵심이에요.",
+      title: "OS 청사진 + 저녁 닫기 스킬 + 부품 라이브러리·ADR 8건",
+      summary: "저녁 닫기 스킬(git·파일·대화 스캔 후 초안 제시)을 만들고, 부품 라이브러리와 ADR(Architecture Decision Record) 8건을 작성했어요.",
+      insight: "빈 칸·주관식 질문은 가장 비싼 입력이에요. 그릇이 부품보다 먼저, Draft First, Confirm Second.",
     },
   ];
 
   const beforeAfter = {
-    before: "AI를 쓰면서 좋은 답변이 나와도 시간이 지나면 맥락이 쉽게 흩어진다.",
-    after: "저녁 마감 OS로 맥락 반복 비용을 구조적으로 해결하고, 부조장으로서 4조를 이끌었어요. 맥락이 흩어지는 문제를 시스템으로 잡는 법을 배운 사람이에요.",
+    before: `AI를 쓰면서 가장 어려웠던 점은 좋은 답변과 아이디어가 나와도 시간이 지나면 맥락이 쉽게 흩어진다는 점이었습니다.\n\n초안, 메모, 파일, 결정사항이 Notion, Google Drive, GitHub, 채팅 기록 안에 분산되면서 다시 활용하기 어려운 경우가 많았습니다. AI를 적극적으로 쓸수록 결과물은 많아지는데, 무엇이 임시 메모이고 무엇이 실제 기준인지 구분하는 일도 더 중요해졌습니다.\n\n이번에는 AI와 함께 일한 과정과 산출물을 기록하고, 다시 불러와 실제 업무와 생활에 계속 붙여 쓸 수 있는 구조를 만들고 싶습니다.`,
+    after: "저녁 닫기 스킬과 부품 라이브러리·ADR 8건으로 맥락 흩어짐을 구조적으로 해결했어요. \"그릇이 부품보다 먼저\"라는 원칙을 세우고, Draft First, Confirm Second로 결정 비용을 줄인 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

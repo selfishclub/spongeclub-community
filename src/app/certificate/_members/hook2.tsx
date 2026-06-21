@@ -8,10 +8,10 @@ export default function Hook2Certificate() {
   const member = { name: "Hook2", realName: "이창환", team: "6조", jobTitle: "전시회 디지털 마케터", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "함께 일하고 싶은 크루",
+    type: "마케팅 실행자 + 사내 해결사 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"함께 일해보고 싶은 사람! 믿고 맡기면 어떻게든 해올 사람\"으로 기억되고 싶다고 했어요. 공유회 7번 참여, SNS 10회, 셸 22개 보내기. 6조에서 가장 활발하게 활동한 사람 중 하나.",
+      "참관객 CRM 자동화 PRD와 yt2blog 슬래시 커맨드(YouTube를 K-Expo 톤 블로그로 자동 생성)를 만들었어요. 3단 오케스트레이터 + 마크다운 에이전트 분리 아키텍처를 설계하며, 마케팅 실행자와 사내 문제 해결사 두 갈래 방향에서 중복 투자를 회피하는 전략을 잡았어요. 6/7 과제 제출, 공유회 7번, SNS 10회, 셸 22개 보내기. 6조에서 가장 활발하게 활동한 사람 중 하나.",
   };
 
   const stats = useLiveStats("Hook2(이창환)", { attendance: { present: 6, total: 7 }, sessionsAttended: 7, snsVerified: 10, shellsSent: 22, shellsReceived: 9 });
@@ -39,7 +39,8 @@ export default function Hook2Certificate() {
     {
       week: "1주차", date: "5/10",
       title: "visitor-crm PRD + yt2blog 슬래시 커맨드",
-      summary: "OS 인터뷰로 참관객 CRM 자동화 PRD를 설계하고, YouTube 영상 1개를 K-Expo 인사이트 블로그로 자동 생성하는 3단 에이전트 스킬을 만들었어요.",
+      summary: "OS 인터뷰로 참관객 CRM 자동화 PRD를 설계하고, YouTube 영상 1개를 K-Expo 인사이트 블로그로 자동 생성하는 yt2blog 슬래시 커맨드를 만들었어요. 3단 오케스트레이터 + 마크다운 에이전트 분리 아키텍처로 설계.",
+      insight: "마케팅 실행자 + 사내 문제 해결사 두 갈래 방향에서 중복 투자를 회피하는 게 핵심.",
     },
     {
       week: "2주차", date: "5/17",
@@ -70,8 +71,8 @@ export default function Hook2Certificate() {
   ];
 
   const beforeAfter = {
-    before: "캡처해서 오류를 고쳐나가는 과정이 힘들다.",
-    after: "공유회 7번, SNS 10회, 셸 22개 보내기. 함께 일해보고 싶은 사람이 되겠다는 말 그대로, 6조에서 가장 적극적으로 나눈 사람이에요.",
+    before: "대화하고 캡처해서 오류를 고쳐나가는 과정까진 어렵진 않은데 캡처하는 것도 너무 힘들긴 한 것 같습니다. 하지만 이렇게 단순 대화로 뭔가를 얻어내는 것은 할만한데, 에이전트처럼 아예 맡기는 것까진 아직 할 줄 모릅니다. 에이전트를 만들고 싶습니다.",
+    after: "6/7 과제 제출. CRM 자동화 PRD + yt2blog 스킬로 마케팅 실행을 자동화하고, 3단 오케스트레이터 아키텍처를 설계했어요. 공유회 7번, SNS 10회, 셸 22개 보내기. 6조에서 가장 적극적으로 나눈 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

@@ -14,10 +14,10 @@ export default function IanCertificate() {
   };
 
   const character = {
-    type: "묵묵히 만들어가는 크루",
+    type: "추측보다 실측으로 검증하는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "1주차에 script2storyboard -- 대본을 넣으면 컷 단위로 분해하고 이미지 프롬프트까지 생성하는 스킬을 만들었어요. 5주차엔 SSCUT에서 Weft로 재설계하며 GUI를 버리고 AI가 직접 구동하는 CLI 도구로 전환했어요. 조용히 혼자서 만들어가는 사람이에요.",
+      "0, 1, 2, 3주차 과제를 모두 제출하며 W2에서 MVP를 달성했어요. AI 영상 제작 OS + script2storyboard 스킬로 대본에서 2-layer 콘티를 자동 생성하고, 무료 로컬(mflux+SVD) vs 유료 OpenAI를 비교 검증한 뒤 유료로 pivot했어요. 고양이 영상 1편(13.2s, $0.5)을 완주하며 \"무료 설치 비용이 유료 작업 비용보다 크다\"는 것과 \"추측보다 실측, 5분 검증 루프\"의 가치를 증명한 사람이에요.",
   };
 
   const stats = useLiveStats("이안(박민우)", {
@@ -55,19 +55,20 @@ export default function IanCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "script2storyboard — 영상 스토리보드 자동화",
-      summary: "대본을 넣으면 컷 단위로 분해하고 이미지 프롬프트까지 생성하는 스킬을 만들었어요. 영상 도메인의 OS를 설계하고 첫 부품을 v0.1.1까지 다듬었어요.",
+      title: "AI 영상 제작 OS + script2storyboard 스킬",
+      summary: "대본을 넣으면 2-layer 콘티를 자동 생성하는 script2storyboard 스킬을 만들었어요. 영상 도메인의 OS를 설계하고 첫 부품을 완성했어요.",
     },
     {
-      week: "5주차", date: "6/7",
-      title: "SSCUT에서 Weft로 — 영상 편집 도구 재설계",
-      summary: "자체 렌더링을 포기하고 CapCut 프로젝트 파일까지만 만드는 CLI 도구로 재설계했어요. GUI를 버리고 AI가 직접 구동하는 도구로 바꾼 게 핵심 전환이었어요.",
+      week: "2주차", date: "5/17",
+      title: "MVP 달성 — 무료 vs 유료 비교 검증, 고양이 영상 1편 완주",
+      summary: "무료 로컬(mflux+SVD) vs 유료 OpenAI를 비교 검증한 뒤 유료로 pivot했어요. 고양이 영상 1편(13.2s, $0.5)을 완주하며 MVP를 달성했어요.",
+      insight: "무료 설치 비용 >> 유료 작업 비용. 추측보다 실측 -- 5분 검증 루프가 핵심이에요.",
     },
   ];
 
   const beforeAfter = {
-    before: "여러 단계를 엮거나 작업물 품질판단을 수동으로 하고있는데 이걸 자동화하는 것이 어려움.",
-    after: "script2storyboard에서 Weft까지, 영상 편집 자동화 도구를 두 번 재설계하며 여러 단계를 엮는 자동화의 답을 직접 찾아간 사람이에요.",
+    before: "여러 단계를 엮거나 작업물 품질판단을 수동으로 하고있는데 이걸 자동화하는 것에서 진도가 느려요.",
+    after: "script2storyboard 스킬로 대본에서 콘티 자동 생성을 만들고, 무료 vs 유료를 직접 비교해 유료 pivot까지 결정했어요. \"추측보다 실측, 5분 검증 루프\"로 고양이 영상 1편을 완주한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

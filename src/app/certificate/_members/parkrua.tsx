@@ -14,10 +14,10 @@ export default function ParkRuaCertificate() {
   };
 
   const character = {
-    type: "나로 시작하는 크루",
+    type: "손그림 주 2회 메인을 선언한 크루",
     image: "/certificate/character-sprout.svg",
     description:
-      "편집디자이너 20여년차이자 지금은 팀원들과 함께 스타트업을 AI로 구축하는 중이에요. 디자인에 AI를 더해 나다운 일을 만들고 싶어서 참여했어요.",
+      "50대 디자이너의 일상 OS를 설계하며 이모티콘 작가 경력을 살린 콘텐츠 시스템을 구상했어요. @grim_b를 벤치마킹하고 \"손그림 주 2회 메인, AI일러스트는 백업\"이라는 OS 선언을 했어요. 나다운 방식으로 시작점을 잡은 사람이에요.",
   };
 
   const stats = useLiveStats("나로(박루아)", {
@@ -47,8 +47,8 @@ export default function ParkRuaCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "Claude Code 설치 + OS 인터뷰 + SNS 벤치마킹",
-      summary: "25년차 편집디자이너로서 처음 코드 환경에 발을 디뎠어요. Claude Code를 설치하고 os-interview 스킬로 인터뷰를 완주했어요. 그림비(@grim_b) 작가를 벤치마킹하며, 과거 이모티콘 작가 경력을 살려 손그림 중심의 시호일일 콘텐츠 시각 시스템을 설계했어요.",
+      title: "50대 디자이너 일상 OS + @grim_b 벤치마킹",
+      summary: "이모티콘 작가 경력을 살린 50대 디자이너 일상 OS를 설계했어요. @grim_b를 벤치마킹하며 \"손그림 주 2회 메인, AI일러스트 백업\"이라는 OS 선언을 했어요.",
     },
   ];
 
@@ -59,8 +59,8 @@ export default function ParkRuaCertificate() {
   ];
 
   const beforeAfter = {
-    before: "내가 원하는 결과물에 못미칠때 어디서 부터 건들여야하는지 막막함.",
-    after: "오프라인에서 개인적 배경을 솔직하게 나누며 \"지금은 결과가 아닌 과정\"이라는 격려를 받았어요. 나로 시작하는 브랜드를 만들어가는 중.",
+    before: "된줄알았는데 게속 에러메세지",
+    after: "50대 디자이너 일상 OS를 설계하고 \"손그림 주 2회 메인\"이라는 자기만의 방향을 선언했어요. 막막했던 시작점을 나다운 방식으로 잡은 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

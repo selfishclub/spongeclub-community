@@ -14,10 +14,10 @@ export default function MoongreenCertificate() {
   };
 
   const character = {
-    type: "꼴찌라도 같이 탄 크루",
+    type: "파이프라인의 상류를 설계하는 크루",
     image: "/certificate/character-sprout.svg",
     description:
-      "오프라인에서 \"꼴찌라도 같이 배에 올라탔다\"는 표현으로 심리적 안정감을 설명했어요. 처음 클로드를 사용하며 \"새 스펀지처럼 흡수가 덜 된 상태\"라고 했지만, SNS 인증 21회 — 전체 멤버 중 최다. 흡수가 덜 됐다고 했지만 기록은 누구보다 많이 남긴 사람이에요.",
+      "0-6주차 과제를 전부 제출한 3조 조장이에요. 1주차에 Thought-to-Knowledge PRD(Telegram에서 Obsidian)를 설계하고, 2주차에 Omini(개인 AI 비서: Linear+Obsidian+OpenClaw+Telegram, 11개 자동 크론, 6개 훅 스크립트)를 만들었어요. 3주차에 Selforge 시스템 문서화(2채널 tmux, 페르소나 톤 가드, vault 보호)를 완성하며 \"파이프라인: 상류가 작동해야 하류도 작동\"이라는 인사이트를 남긴 사람이에요.",
   };
 
   const stats = useLiveStats("달빛그린", {
@@ -56,25 +56,27 @@ export default function MoongreenCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "두뇌창고 PRD + 맛집 카드 스킬",
-      summary: "흩어진 메모를 AI가 자동 분류하는 앱 '두뇌창고' 기획서를 완성했어요. 맛집 사진만 던지면 인스타 카드를 자동 생성하는 스킬도 만들었어요.",
-      insight: "분류 결정 비용이 높으면 뇌가 분류를 포기해요 — 결정을 없애는 게 해결책이에요.",
+      title: "Thought-to-Knowledge PRD",
+      summary: "Telegram에서 Obsidian으로 생각을 지식으로 전환하는 PRD를 설계했어요.",
+      insight: "통점 없음에서 메타 인사이트(아이디어와 실현의 갭)를 발견.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Omini — 개인 AI 비서 시스템",
+      summary: "Linear, Obsidian, OpenClaw, Telegram을 연결하는 개인 AI 비서 Omini를 만들었어요. 11개 자동 크론과 6개 훅 스크립트로 구동되는 시스템이에요.",
+      insight: "스케줄링이 일일 계획보다 중요하다.",
     },
     {
       week: "3주차", date: "5/24",
-      title: "JY Creator DB — 캡처 인사이트 추출 웹앱",
-      summary: "캡처 이미지를 올리면 Claude가 핵심을 뽑고 공통 테마를 연결하는 웹앱을 만들었어요. 문제는 수집이 아니라 꺼내 쓰는 것이었어요.",
-    },
-    {
-      week: "5주차", date: "6/7",
-      title: "텔레그램 봇 + GitHub 자동 저장 시스템",
-      summary: "텔레그램으로 캡처를 보내면 AI가 분석하고 GitHub에 자동 저장하는 시스템을 만들었어요. AI 모델을 4번 전환하며 비용 최적화를 경험했어요.",
+      title: "Selforge 시스템 문서화",
+      summary: "2채널 tmux, 페르소나 톤 가드, vault 보호 구조를 포함한 Selforge 시스템을 문서화했어요.",
+      insight: "파이프라인: 상류가 작동해야 하류도 작동.",
     },
   ];
 
   const beforeAfter = {
-    before: "내 머리 속에 것을 어떻게 구현할 수 있는지, 원하는 결과물로 구체적으로 수정하는 것이 어려움.",
-    after: "\"두뇌창고\" 기획서를 완성하고, JY Creator DB 웹앱, 텔레그램 봇+GitHub 자동 저장 시스템까지 만들었어요. 구현이 어려웠던 사람이, 새벽까지 작업해서 연동을 성공시키는 사람이 되었어요.",
+    before: "내 머리 속에 것을 어떻게 구현할 수 있는지만 원하는 결과물로 구체적으로 수정하는 것 (컨셉 수준이 아니라)",
+    after: "Thought-to-Knowledge PRD에서 Omini(11 크론, 6 훅), Selforge 시스템 문서화까지 완성하며 파이프라인의 상류를 설계하는 조장이 되었어요. 0-6주차 과제 전부 제출했어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

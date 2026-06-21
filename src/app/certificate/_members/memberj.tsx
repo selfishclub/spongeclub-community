@@ -8,13 +8,13 @@ export default function MemberJCertificate() {
   const member = { name: "J", realName: "허지은", team: "6조", jobTitle: "온라인MD", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "함께 발전하는 크루",
+    type: "반복 비용을 흡수하는 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "\"함께 발전하고, 크루들에게도 도움이 될 수 있는 사람\"으로 기억되고 싶다고 했어요. 공유회 8번 참여, 셸 11개 보내기.",
+      "주간 보고서 + 주식 분석 2개 스킬로 4시간 걸리던 작업을 1시간으로 단축했어요. 텔레그램 봇 'J의 비서' + 노션 MCP 동기화를 구축하며, '자동화 = 도구 교체가 아니라 반복 비용 흡수'라는 인사이트를 발견했어요. 5/7 과제 제출, 공유회 8번 참여, 셸 11개 보내기.",
   };
 
-  const stats = useLiveStats("J", { attendance: { present: 6, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 11, shellsReceived: 10 });
+  const stats = useLiveStats("J", { attendance: { present: 7, total: 7 }, sessionsAttended: 8, snsVerified: 4, shellsSent: 11, shellsReceived: 10 });
 
   const attendance = [
     { week: "OT", date: "5/3", present: true },
@@ -23,7 +23,7 @@ export default function MemberJCertificate() {
     { week: "3주차", date: "5/24", present: true },
     { week: "4주차", date: "5/31", present: true },
     { week: "5주차", date: "6/7", present: true },
-    { week: "6주차", date: "6/14", present: false },
+    { week: "6주차", date: "6/14", present: true },
   ];
 
   const badges = [
@@ -37,7 +37,8 @@ export default function MemberJCertificate() {
     {
       week: "1주차", date: "5/10",
       title: "주간보고서 자동화 + 주식 분석 스킬",
-      summary: "엑셀 데이터 붙여넣기로 주간보고서를 자동 생성하는 스킬과, 시황/종목/포트폴리오/실적 4모드 주식 분석 스킬을 만들었어요.",
+      summary: "엑셀 데이터 붙여넣기로 주간보고서를 자동 생성하는 스킬과, 시황/종목/포트폴리오/실적 4모드 주식 분석 스킬을 만들었어요. 4시간 걸리던 작업을 1시간으로 단축. 텔레그램 봇 'J의 비서' + 노션 MCP 동기화도 구축.",
+      insight: "자동화 = 도구 교체가 아니라 반복 비용 흡수.",
     },
     {
       week: "2주차", date: "5/17",
@@ -68,8 +69,8 @@ export default function MemberJCertificate() {
   ];
 
   const beforeAfter = {
-    before: "프롬프트를 처음부터 어떻게 잘 줄지 고민. 다양한 활용사례를 보고 활발하게 쓰고 싶다.",
-    after: "공유회 8번 참여하며 다양한 활용사례를 직접 보고 배웠어요. 함께 발전하겠다는 말 그대로, 6조에서 꾸준히 참여한 사람이에요.",
+    before: `프롬프트를 처음부터 어떻게 잘 줄지 고민이됨. \n다양한 활용사례를 보고, 활발하게 쓰고 싶은데 온라인 상의 쏟아지는 정보 중엔 나에게 핏하는게 잘 없는 것 같다. (배우는 과정 발품 소요)`,
+    after: "5/7 과제 제출. 주간보고서 + 주식 분석 스킬로 반복 작업 시간을 75% 줄이고, 텔레그램 봇 + 노션 MCP 동기화까지 구축했어요. '자동화는 반복 비용 흡수'라는 자신만의 원칙을 세운 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

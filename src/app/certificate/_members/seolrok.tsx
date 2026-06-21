@@ -14,10 +14,10 @@ export default function SeolrokCertificate() {
   };
 
   const character = {
-    type: "가장 많이 탐험한 크루",
+    type: "OS 선언이 나침반인 크루",
     image: "/certificate/character-explorer.svg",
     description:
-      "1주차에 카톡 회의를 노션으로 자동 정리하는 스킬을 만들고, 3주차엔 \"자화상\" -- 매일 한 줄 비춤 도구를 만들었어요. 5주차엔 다른 시점 비춤 기능을 더하며 44개 메모가 쌓인 도구로 진화시켰어요. 공유회 13번, SNS 15회 -- 누구보다 많이 탐험한 사람이에요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 협동조합 OS와 Kakao-to-Notion Meeting 스킬을 만들고, 2주차에 카카오 메모를 Google Sheets로 아카이빙(966건 분류)하는 시스템을 구축했어요. \"인터뷰 3회 반복해야 진짜 통점 발견\", \"OS 선언이 모든 결정의 나침반\"이라는 인사이트를 얻은 사람이에요.",
   };
 
   const stats = useLiveStats("설록(권효선)", {
@@ -57,26 +57,21 @@ export default function SeolrokCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "카톡 회의 → 노션 자동 정리 스킬",
-      summary: "협동조합 OS 인터뷰를 세 번 다시 해서 진짜 통점을 찾았어요. 카톡 대화를 의사결정·액션아이템으로 구조화하는 스킬을 만들었어요.",
-      insight: "인터뷰는 한 번에 안 나와도 돼요 — 세 번 다시 하고서야 진짜 통점이 보였어요.",
+      title: "협동조합 OS + Kakao-to-Notion Meeting 스킬",
+      summary: "협동조합 OS 인터뷰를 통해 통점을 찾고, 카카오톡 회의 내용을 노션으로 자동 정리하는 Meeting 스킬을 만들었어요.",
+      insight: "인터뷰 3회 반복해야 진짜 통점 발견.",
     },
     {
-      week: "3주차", date: "5/24",
-      title: "자화상 — 매일 한 줄 비춤 도구",
-      summary: "한 줄 던지면 AI가 짧게 비춰주는 개인 일기 도구를 만들고, 병렬 2-에이전트와 순차 4-에이전트 파이프라인을 적용했어요. 44개 메모가 쌓이면서 도구가 진화했어요.",
-    },
-    {
-      week: "5주차", date: "6/7",
-      title: "자화상에 다른 결 더하기 + 디자인 개편",
-      summary: "버튼을 누르면 다른 시점으로 비춰주는 기능을 더하고, 디자인 가이드 MD 파일로 따뜻한 톤을 입혔어요. 시점을 미리 고르게 하지 않는 게 핵심 결정이었어요.",
-      insight: "해석을 여러 개 줄 땐, 미리 고르게 하지 말고 그냥 받게 하자.",
+      week: "2주차", date: "5/17",
+      title: "카카오 메모 → Google Sheets 아카이빙",
+      summary: "카카오 메모 966건을 Google Sheets로 분류·아카이빙하는 시스템을 구축했어요.",
+      insight: "OS 선언이 모든 결정의 나침반.",
     },
   ];
 
   const beforeAfter = {
     before: "어디서부터 시작해야 할지 모르겠습니다.",
-    after: "카톡 자동 정리 스킬, \"자화상\" 비춤 도구까지 만들며 공유회 13번 참여. 어디서부터 시작할지 몰랐던 사람이, 누구보다 많이 만들고 탐험한 사람이 되었어요.",
+    after: "협동조합 OS를 세우고, Kakao-to-Notion 스킬과 966건 아카이빙 시스템을 구축했어요. OS 선언이 모든 결정의 나침반이 된 사람이에요. 0-6주차 과제 전부 제출했어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

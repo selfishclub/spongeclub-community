@@ -14,10 +14,10 @@ export default function NinaCertificate() {
   };
 
   const character = {
-    type: "gap을 찾아 채우는 크루",
+    type: "데이터로 자기를 이해하는 크루",
     image: "/certificate/character-recorder.svg",
     description:
-      "\"별도 세팅 없이 여러 프로젝트를 분산해서 사용하다보니 과거 데이터를 참고하기 어렵다\"고 했어요. 1주차에 CS 도구 Glance를 설계 — AI 챗봇이 못 푼 문의가 사람에게 넘어올 때 \"아무 맥락 없이 화난 고객을 마주치는 장면\"을 개선했어요. 셸 30개 보내기 — 3조에서 가장 많은 셸을 보낸 사람이에요.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 OS Blueprint와 Figma-to-Claude 자동 브리프 스킬을 만들고, 2주차에 텔레그램 에너지 트래킹 봇 Ollio로 MVP에 선정되었어요. Glance(이커머스 CS 도구)를 W3부터 반복 개선하며 thought partner 시스템까지 구축한 사람이에요.",
   };
 
   const stats = useLiveStats("Nina(이예지)", {
@@ -49,15 +49,21 @@ export default function NinaCertificate() {
     {
       week: "1주차",
       date: "5/10",
-      title: "Glance — CS 도구 설계",
-      summary: "채널톡 분석 기반 CS 도구 Glance 설계. AI 챗봇이 못 푼 문의가 사람에게 넘어올 때 감정 자동 분석, 대화 요약, 오프닝 문구 자동 생성.",
-      insight: "기존 서비스의 gap은 '없는 기능'이 아니라 '있는데 제한이 있는 것'에서 나온다.",
+      title: "OS Blueprint + Review Briefing Skill",
+      summary: "Figma 디자인을 Claude에 넘기면 자동으로 브리프를 생성하는 스킬을 만들었어요. OS 인터뷰로 자기 워크플로우의 청사진을 그렸어요.",
+    },
+    {
+      week: "2주차",
+      date: "5/17",
+      title: "Ollio — 텔레그램 에너지 트래킹 봇 (MVP 선정)",
+      summary: "하루 3회 체크인으로 에너지 상태를 기록하고, AI가 패턴을 분석해주는 텔레그램 봇 Ollio를 만들어 MVP에 선정되었어요.",
+      insight: "데이터 기반 자기이해가 순수 사고보다 낫다.",
     },
     {
       week: "3주차",
       date: "5/24",
-      title: "Glance 구현 + 하네스/오케스트레이션",
-      summary: "5단계 파이프라인(인터뷰→팩트추출→내러티브→가드검증→레이아웃)으로 Glance를 구현했어요.",
+      title: "Glance — 이커머스 CS 도구",
+      summary: "AI 감정 분석 + 정형 응답을 결합한 이커머스 CS 도구 Glance를 구현했어요. 이후 W4-6까지 반복 개선하며 thought partner 시스템을 구축했어요.",
     },
   ];
 
@@ -68,8 +74,8 @@ export default function NinaCertificate() {
   ];
 
   const beforeAfter = {
-    before: "여러 프로젝트를 분산해서 사용하다보니 과거 데이터를 참고하기 어렵다.",
-    after: "Glance의 5단계 파이프라인으로 흩어진 데이터를 구조화하는 법을 배웠어요. 셸 30개를 보내며 3조에서 가장 적극적으로 연결한 사람이에요.",
+    before: "별도 세팅 없이 프로젝트별로 분산해서 사용하다보니, 여러 프로젝트나 과거 데이터를 참고하여 새로운 대화를 나누고 싶을 때 이전 데이터를 요약해서 사전 데이터를 입력해야 하여 번거로움을 느낌",
+    after: "Ollio(에너지 트래킹 봇)로 MVP에 선정되고, Glance를 4주에 걸쳐 반복 개선하며 데이터 기반 자기이해 시스템을 완성했어요. 0-6주차 과제 전부 제출한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

@@ -17,7 +17,7 @@ export default function SlowquickCertificate() {
     type: "정본으로 돌파한 크루",
     image: "/certificate/character-cheerleader.svg",
     description:
-      "오프라인에서 \"경력 단절 기간이 길었고, 과부하로 3~4주 학습이 정체됐다\"고 솔직하게 밝혔어요. 개발자 남편에게 배운 '정본' 방법론으로 돌파구를 만들고, 화요일 자체 공유회를 열었어요. 1주차에 블로그 플랫폼을, 2주차엔 Sullivan 사고 파트너 시스템을 텔레그램 봇으로 연결하며, \"봇 만들기와 시스템 연결은 완전히 다른 단계\"라는 핵심 학습을 했어요.",
+      "0주차에 Git/GitHub/옵시디언 워크플로우를 상세하게 이해하고 기록한 것에서 시작했어요. 1주차에 Vibelog(Next.js + Supabase 블로그)를 Vercel에 배포하며 \"핵심 기능 먼저 계획해야 한다\"는 교훈을 얻었고, 2주차엔 Sullivan 시스템 — AI 사고 동반자를 텔레그램 + Claude Code로 연결하며 \"봇은 우편함이지 대화 상대가 아님\"이라는 핵심 학습을 했어요. Codex 이미지→영상→내레이션 파이프라인도 구축했어요.",
   };
 
   const stats = useLiveStats("슬로우퀵(박은아)", {
@@ -54,17 +54,18 @@ export default function SlowquickCertificate() {
     {
       week: "1주차",
       date: "5/10",
-      title: "Vibelog — 블로그 플랫폼 구현",
+      title: "Vibelog — Next.js + Supabase 블로그",
       summary:
-        "Next.js + Supabase 기반 블로그 플랫폼 vibelog를 구현. 마크다운 렌더링부터 배포까지 자동화 스킬 개발.",
+        "Next.js + Supabase 기반 블로그 플랫폼 Vibelog를 Vercel에 배포. 마크다운 렌더링부터 배포까지 자동화.",
+      insight: "핵심 기능을 먼저 계획해야 한다.",
     },
     {
       week: "2주차",
       date: "5/17",
-      title: "Sullivan 사고 파트너 시스템",
+      title: "Sullivan — AI 사고 동반자 시스템",
       summary:
-        "텔레그램 봇을 Claude Code에 연결하는 Sullivan 시스템 1차 구축. gwscli를 통한 Google 서비스 자동화도 벤치마킹.",
-      insight: "봇 만들기와 Claude 연결은 완전히 다른 단계였다. 봇은 우체통이고 메시지 전달이 따로 필요.",
+        "텔레그램 + Claude Code로 AI 사고 동반자 Sullivan 시스템을 구축. Codex 이미지→영상→내레이션 파이프라인도 만들었어요.",
+      insight: "봇은 우편함이지 대화 상대가 아니다. 봇 만들기와 시스템 연결은 완전히 다른 단계.",
     },
   ];
 
@@ -74,10 +75,9 @@ export default function SlowquickCertificate() {
   ];
 
   const beforeAfter = {
-    before:
-      "정말 잘하고 싶은데, 사실... 정말 잘하는 사람들 사이에서 자신감이 없었어요.",
+    before: `저는 경력단절 여성이였다가 ai공부 하고 마케팅도 공부 하고 했는데, 사실... 정말 잘하는 전문 분야가 없어서 그런지 뭔가를 만들다가도 막히고 자신감이 없어 포기하고 그런 경험들이 있습니다. \n`,
     after:
-      "오프라인에서 밝힌 '정본' 방법론으로 학습 정체를 돌파하고, 화요일 자체 공유회까지 열었어요. 이기적 올라운더 배지 — SNS, 스킬 공유, 공유회 개최, 공유회 참여를 모두 달성한 사람이에요.",
+      "Vibelog 블로그 배포, Sullivan AI 사고 동반자 시스템, Codex 파이프라인까지 만들었어요. '정본' 방법론으로 학습 정체를 돌파하고, 이기적 올라운더 배지를 획득한 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

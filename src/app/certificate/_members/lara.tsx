@@ -8,10 +8,10 @@ export default function LaraCertificate() {
   const member = { name: "라라", realName: "라라", team: "6조", jobTitle: "1인 브랜드", period: "2026.05.03 — 2026.06.14" };
 
   const character = {
-    type: "끝까지 고민하는 크루",
+    type: "방향만 내가, 실행은 AI가 크루",
     image: "/certificate/character-steady.svg",
     description:
-      "\"어려운 문제가 발생했을때 같이 끝까지 고민하고 시도하는 사람\"으로 기억되고 싶다고 했어요. 부조장으로서 6조를 이끌었어요.",
+      "1주차에 '콘텐츠 저장소 구축' 목표를 명확히 하고, Tiago Forte PARA 시스템을 벤치마킹해 옵시디언+바탕화면 폴더 체계를 직접 구축했어요. '방향만 내가, 실행은 AI가'라는 원칙을 세웠어요. 7/7 과제 전량 제출. 부조장으로서 6조를 이끌었어요.",
   };
 
   const stats = useLiveStats("라라", { attendance: { present: 5, total: 7 }, sessionsAttended: 0, snsVerified: 4, shellsSent: 0, shellsReceived: 4 });
@@ -33,8 +33,9 @@ export default function LaraCertificate() {
   const timeline: { week: string; date: string; title: string; summary: string; insight?: string }[] = [
     {
       week: "1주차", date: "5/10",
-      title: "Claude Code 인터뷰 + PARA 시스템 — 나만의 콘텐츠 저장소 구축",
-      summary: "Claude Code로 1:1 인터뷰를 진행해서 방향성을 정리하고, Tiago Forte의 PARA 방법론을 벤치마킹해서 옵시디언에 나만의 콘텐츠 저장소를 직접 만들었어요. 바탕화면 파일 정리까지 확장 적용했어요.",
+      title: "콘텐츠 저장소 구축 — PARA 시스템 벤치마킹",
+      summary: "'콘텐츠 저장소 구축' 목표를 명확히 하고, Tiago Forte의 PARA 시스템을 벤치마킹해서 옵시디언에 나만의 콘텐츠 저장소를 직접 만들었어요. 바탕화면 파일 정리까지 확장 적용했어요.",
+      insight: "방향만 내가, 실행은 AI가.",
     },
     {
       week: "2주차", date: "5/17",
@@ -60,8 +61,8 @@ export default function LaraCertificate() {
   ];
 
   const beforeAfter = {
-    before: "결과물의 품질 디테일하게 끌어올리기가 어려움.",
-    after: "부조장으로서 6조를 이끌며, 조용한 6조 스레드에서 응원의 목소리를 냈어요.",
+    before: "결과물의 품질 디테일하게 끌어올리기",
+    after: "7/7 과제 전량 제출. PARA 시스템으로 콘텐츠 저장소를 구축하고, '방향만 내가, 실행은 AI가'라는 원칙을 세웠어요. 부조장으로서 6조를 이끌며 응원의 목소리를 낸 사람이에요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;

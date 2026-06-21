@@ -14,10 +14,10 @@ export default function ShinYSCertificate() {
   };
 
   const character = {
-    type: "연결하고 응원하는 크루",
+    type: "PM급 QA로 디자인 갭을 잡는 크루",
     image: "/certificate/character-connector.svg",
     description:
-      "육아휴직 중인 PM이 1주차에 장보기 도우미, 제품 구매 판단기, 이유식 식단 생성기 세 가지 스킬을 한 세션에 완성했어요. \"결제가 아니라 결정이 진짜 비용\"이라는 발견으로 육아 OS를 만든 사람이에요. 셸 26개를 보내며 3조에서 가장 적극적으로 연결한 사람 중 하나.",
+      "0-6주차 과제를 전부 제출했어요. 1주차에 육아 OS 3종 스킬(이유식-플래너, 공구-판단-도우미, 월령-발달-브리핑)을 완성하고, 2주차에 Blog OS와 WordPress로 40분 글쓰기 시스템을 만들었어요. W3-6에 걸쳐 블로그 자동화와 AI 트렌드 브리핑 스킬을 구축하며, \"PM급 QA: 사용자가 AI보다 디자인 갭을 더 잘 잡는다\"는 인사이트를 얻은 사람이에요.",
   };
 
   const stats = useLiveStats("신연수", {
@@ -56,15 +56,25 @@ export default function ShinYSCertificate() {
   const timeline = [
     {
       week: "1주차", date: "5/10",
-      title: "육아 OS — 뚝딱뚝딱 스킬 3종 완성",
-      summary: "육아휴직 중인 PM이 결정 비용을 줄이기 위한 OS를 만들었어요. 장보기 도우미, 제품 구매 판단기, 이유식 식단 생성기까지 세 가지 스킬을 한 세션에 완성했어요.",
-      insight: "결제가 아니라 결정이 진짜 비용이에요.",
+      title: "육아 OS 3종 스킬",
+      summary: "이유식-플래너, 공구-판단-도우미, 월령-발달-브리핑 세 가지 스킬을 한 세션에 완성했어요.",
+    },
+    {
+      week: "2주차", date: "5/17",
+      title: "Blog OS + WordPress — 40분 글쓰기",
+      summary: "Blog OS를 설계하고 WordPress와 연동해 40분 안에 글을 완성하는 시스템을 만들었어요.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "블로그 자동화 + AI 트렌드 브리핑 스킬",
+      summary: "W3-6에 걸쳐 블로그 자동화 파이프라인과 AI 트렌드 브리핑 스킬을 구축했어요.",
+      insight: "PM급 QA: 사용자가 AI보다 디자인 갭을 더 잘 잡는다.",
     },
   ];
 
   const beforeAfter = {
-    before: "질문 시 어디까지 신뢰할 수 있을지 판단이 어려움. 답변에서 사용자를 우쭈쭈 해주는 것이 아닌지.",
-    after: "육아 OS로 장보기·구매 판단·이유식 스킬 3종을 한 세션에 완성했어요. AI 답변을 신뢰하기 어려웠던 사람이, 자기 도메인에서 직접 검증하며 스킬을 만드는 사람이 되었어요.",
+    before: `질문 시 어디까지 신뢰할 수 있을지 판단이 어려웠습니다.\n특히 답변 상에서 사용자를 우쭈쭈 해주는 느낌(잘하고 있어! 맞아! 등)을 많이 받아서요`,
+    after: "육아 OS 3종 스킬, Blog OS, 블로그 자동화, AI 트렌드 브리핑까지 만들며 PM급 QA로 디자인 갭을 직접 잡는 사람이 되었어요. 0-6주차 과제 전부 제출했어요.",
   };
 
   const hasDiploma = stats.attendance.present >= 2;
