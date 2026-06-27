@@ -41,16 +41,18 @@ export default function ImportPage() {
           CSV 형식
         </h2>
         <code className="block bg-[var(--ink-05)] p-4 text-xs text-[var(--ink)] font-mono mb-4">
-          name,phone_last4,email,slack_user_id,survey_completed
+          name,phone_last4,email,slack_user_id,survey_completed,cohort,pin
           <br />
-          홍길동,1234,hong@email.com,U0123ABCDEF,true
+          홍길동,1234,hong@email.com,U0123ABCDEF,true,2,0000
           <br />
-          김영희,5678,,U0456GHIJKL,true
+          김영희,,,,true,2,0000
         </code>
         <ul className="text-xs text-[var(--ink-50)] space-y-1 font-medium">
-          <li>- <strong>name, phone_last4</strong>: 필수</li>
-          <li>- <strong>email, slack_user_id</strong>: 선택 (빈 값 가능)</li>
+          <li>- <strong>name</strong>: 필수</li>
+          <li>- <strong>phone_last4, email, slack_user_id</strong>: 선택 (빈 값 가능)</li>
           <li>- <strong>survey_completed</strong>: true이면 가입 보너스 +10셸 자동 지급</li>
+          <li>- <strong>cohort</strong>: 기수 (1, 2 등)</li>
+          <li>- <strong>pin</strong>: 초기 PIN (기본값 0000)</li>
         </ul>
       </div>
 

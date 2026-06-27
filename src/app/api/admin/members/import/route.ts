@@ -24,34 +24,52 @@ export async function POST(request: NextRequest) {
     header.forEach((h, idx) => (row[h] = values[idx] || ""));
 
     const name = row["name"];
-    const phone_last4 = row["phone_last4"];
+    const phone_last4 = row["phone_last4"] || null;
     const email = row["email"] || null;
     const slack_user_id = row["slack_user_id"] || null;
     const survey_completed = row["survey_completed"] === "true";
+    const cohort = row["cohort"] ? parseInt(row["cohort"]) : null;
+    const pin = row["pin"] || "0000";
 
-    if (!name || !phone_last4) {
-      errors.push(`${i + 1}행: name 또는 phone_last4 누락`);
+    if (!name) {
+      errors.push(`${i + 1}행: name 누락`);
       failed++;
       continue;
     }
 
-    if (phone_last4.length !== 4) {
-      errors.push(`${i + 1}행: phone_last4는 4자리여야 합니다 (${phone_last4})`);
-      failed++;
-      continue;
+    // slack_user_id 중복 체크
+    if (slack_user_id) {
+      const { data: existingSlack } = await supabase
+        .from("members")
+        .select("id")
+        .eq("slack_user_id", slack_user_id)
+        .single();
+
+      if (existingSlack) {
+        errors.push(`${i + 1}행: 이미 등록된 Slack ID (${slack_user_id}) — ${name}`);
+        failed++;
+        continue;
+      }
     }
 
-    // 중복 체크
-    const { data: existing } = await supabase
-      .from("members")
-      .select("id")
-      .eq("phone_last4", phone_last4)
-      .single();
+    // phone_last4 중복 체크 (있는 경우만)
+    if (phone_last4) {
+      if (phone_last4.length !== 4) {
+        errors.push(`${i + 1}행: phone_last4는 4자리여야 합니다 (${phone_last4})`);
+        failed++;
+        continue;
+      }
+      const { data: existing } = await supabase
+        .from("members")
+        .select("id")
+        .eq("phone_last4", phone_last4)
+        .single();
 
-    if (existing) {
-      errors.push(`${i + 1}행: 이미 등록된 뒷4자리 (${phone_last4}) — ${name}`);
-      failed++;
-      continue;
+      if (existing) {
+        errors.push(`${i + 1}행: 이미 등록된 뒷4자리 (${phone_last4}) — ${name}`);
+        failed++;
+        continue;
+      }
     }
 
     // 멤버 등록
@@ -66,6 +84,9 @@ export async function POST(request: NextRequest) {
         shell_balance: survey_completed ? 10 : 0,
         is_admin: false,
         is_active: true,
+        ...(cohort != null && { cohort }),
+        pin,
+        pin_changed: false,
       })
       .select()
       .single();
