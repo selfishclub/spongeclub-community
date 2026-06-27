@@ -70,6 +70,17 @@ export default function ShinYSCertificate() {
       summary: "W3-6에 걸쳐 블로그 자동화 파이프라인과 AI 트렌드 브리핑 스킬을 구축했어요.",
       insight: "PM급 QA: 사용자가 AI보다 디자인 갭을 더 잘 잡는다.",
     },
+    {
+      week: "4주차", date: "5/31",
+      title: "뚝딱 이유식 플래너 — 브랜딩 + 배포",
+      summary: "프로젝트를 분리 정리하고 worklog 스킬을 만들었어요. 이유식 플래너 '뚝딱'의 핵심가치·페르소나·로고를 확정하고 상세페이지 초안과 웹앱을 Netlify에 배포했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "뚝딱 — 하네스 점검 + 페르소나 인터뷰",
+      summary: "하네스 엔지니어링 관점에서 점검해 ddukddak 스킬을 정리하고, 페르소나 기반 사용자 인터뷰를 진행했어요. 컨텍스트 관리를 위한 중간 정리의 중요성을 깨달았어요.",
+      insight: "컨텍스트를 줄이기 위해서 중간중간 정리가 필요하다.",
+    },
   ];
 
   const beforeAfter = {

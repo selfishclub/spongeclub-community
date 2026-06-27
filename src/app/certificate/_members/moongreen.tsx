@@ -72,6 +72,18 @@ export default function MoongreenCertificate() {
       summary: "2채널 tmux, 페르소나 톤 가드, vault 보호 구조를 포함한 Selforge 시스템을 문서화했어요.",
       insight: "파이프라인: 상류가 작동해야 하류도 작동.",
     },
+    {
+      week: "4주차", date: "5/31",
+      title: "JY Creator Board — 텔레그램 봇 캡처 아카이브",
+      summary: "텔레그램 봇으로 캡처를 보내면 Claude API가 인사이트를 추출하고 GitHub repo에 자동 저장하는 시스템을 만들었어요. 별도 DB 없이 GitHub API를 저장소로 활용하는 구조로 첫 배포까지 완성했어요.",
+      insight: "GitHub을 DB로 쓰는 발상 — 무료 스택으로 실제 작동하는 프로덕트를 만드는 핵심 결정.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "JY Creator Board — 웹 업로드 + AI 모델 스위칭",
+      summary: "텔레그램 + 웹 업로드 이중 입력 구조를 완성하고, Claude Haiku → GPT-4o mini로 4번 모델 전환을 거쳤어요. 미디어 그룹(여러 장 동시 전송) 동시성 문제는 끝까지 미해결 — GitHub API의 원자적 조작 한계를 직접 경험했어요.",
+      insight: "모델 선택은 비용으로 시작하라. GitHub을 DB로 쓰면 동시성 문제에서 한계가 온다.",
+    },
   ];
 
   const beforeAfter = {

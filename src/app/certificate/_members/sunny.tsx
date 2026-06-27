@@ -51,6 +51,12 @@ export default function SunnyCertificate() {
       summary: "아이들이 한글 받침을 재미있게 배울 수 있는 웹 게임을 만들었어요. MediaPipe 손 인식으로 손가락 슈팅 기능을 넣고, 마인크래프트 3D 블록 에셋과 직접 녹음한 14개 음성 파일을 활용해 Vercel에 배포(hangul-game-black.vercel.app)했어요.",
       insight: "에셋 먼저, 구현은 나중. 순서: 문제발견 -> 인터뷰 -> 기획 -> MD -> 에셋 -> 구현 -> 배포.",
     },
+    {
+      week: "4주차", date: "5/31",
+      title: "한글 게임 하네스 점검 + 방학 학습 OS 방향",
+      summary: "기존 한글 받침 게임을 하네스 엔지니어링 관점에서 점검했어요. CLAUDE.md·PRD·Memory·Skill·Agent 5가지가 전부 비어있는 상태를 확인하고, CLAUDE.md부터 채우기로 결정. 아이·남편·현지 한글학교 선생님에게 피드백을 받았어요.",
+      insight: "만드는 것보다 환경 설계가 먼저. CLAUDE.md 하나만 제대로 있어도 매번 같은 말 반복하지 않아도 된다.",
+    },
   ];
 
   const giftMessages = [

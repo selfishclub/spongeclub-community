@@ -63,6 +63,11 @@ export default function GooseCertificate() {
       summary: "30-60대 남성을 타겟으로 고급 실용성을 갖춘 ERP 프로덕트를 기획했어요. 공방 운영자의 실제 니즈에서 출발한 설계.",
     },
     {
+      week: "3주차", date: "5/24",
+      title: "Studio DEUM 고객 페르소나 정의",
+      summary: "Studio DEUM의 고객을 30-60대 남성, 명품 퀄리티의 미니멀하고 실용적인 가죽 제품을 원하는 커스터마이즈 고객으로 구체화했어요. 하네스를 '합창단 지휘자'에 비유하며 개념을 정리했어요.",
+    },
+    {
       week: "5주차", date: "6/7",
       title: "공방물품관리 대시보드 + 야구유니폼 키링 캐러셀",
       summary: "Google Sheet와 Vercel을 연동한 공방물품관리 대시보드를 만들고, 야구유니폼 키링 캐러셀도 완성했어요. 디자인 시스템 v1을 적용하고 EXIF 회전 문제를 해결했어요.",

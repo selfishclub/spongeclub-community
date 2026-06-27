@@ -55,6 +55,12 @@ export default function SeokyingCertificate() {
       title: "코램프 상세페이지 OS — Phase 1~2 구축",
       summary: "클로드코드 작업 환경(폴더 구조 + CLAUDE.md + GitHub 연결)을 셋업하고, /plan-product 명령어로 기획을 자동 실행하는 Phase 2를 설계했어요.",
     },
+    {
+      week: "6주차", date: "6/14",
+      title: "AI 워크샵 학습 → OS 확장 방향 설계",
+      summary: "AI 워크샵 정리본을 토대로 모르는 개념을 공부 목록으로 정리하고, 기존 상세페이지 OS와 연결해 실무에서 배우는 방식으로 OS를 확장할 방향을 설계했어요.",
+      insight: "공부 따로 일 따로가 아니라, 일을 하면서 개념을 익히는 게 맞다.",
+    },
   ];
 
   const giftMessages = [

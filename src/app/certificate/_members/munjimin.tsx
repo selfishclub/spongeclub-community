@@ -62,6 +62,12 @@ export default function MunjiminCertificate() {
       summary: "저녁 닫기 스킬(git·파일·대화 스캔 후 초안 제시)을 만들고, 부품 라이브러리와 ADR(Architecture Decision Record) 8건을 작성했어요.",
       insight: "빈 칸·주관식 질문은 가장 비싼 입력이에요. 그릇이 부품보다 먼저, Draft First, Confirm Second.",
     },
+    {
+      week: "2주차", date: "5/17",
+      title: "AX-OS — AI 다마고치 시스템 + PERSONA.md",
+      summary: "AI에게 매번 자기소개를 안 해도 되는 시스템 AX-OS를 설계했어요. 컴퓨터 OS의 6가지 구조(부팅·커널·기억·파일·입출력·사용자)를 벤치마킹해서 CLAUDE.md, 룰 모듈 7개, 메모리 21건 등으로 매핑하고, 첫 문서 PERSONA.md를 완성했어요.",
+      insight: "AI에게 가장 잘 통하는 언어는 컴퓨터 구조론의 발전과 닿아 있다.",
+    },
   ];
 
   const beforeAfter = {

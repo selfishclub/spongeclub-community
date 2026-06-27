@@ -64,6 +64,24 @@ export default function IanCertificate() {
       summary: "무료 로컬(mflux+SVD) vs 유료 OpenAI를 비교 검증한 뒤 유료로 pivot했어요. 고양이 영상 1편(13.2s, $0.5)을 완주하며 MVP를 달성했어요.",
       insight: "무료 설치 비용 >> 유료 작업 비용. 추측보다 실측 -- 5분 검증 루프가 핵심이에요.",
     },
+    {
+      week: "3주차", date: "5/24",
+      title: "SSCUT — 자기소개 영상 컷 편집 도구",
+      summary: "img_gen에서 SSCUT으로 발전시켜 25컷 자기소개 영상 파이프라인을 만들었어요. 자체 렌더 한계(20분 영상에 20분+)를 확인하고 최종 렌더는 외부 NLE에 위임하는 방향으로 전환했어요.",
+      insight: "직접 만든 도구로 끝까지 가려 들지 말고, 잘하는 도구에 위임하는 게 합리적.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "Weft v0.1.0 — 이중 트랙 영상 워크플로우 CLI 공개",
+      summary: "SSCUT의 불편함(느린 렌더, per-cut 결합, 웹앱 스케일 한계)을 해결한 Weft를 만들어 GitHub에 공개 배포했어요. 나레이션 비트와 비주얼 샷을 분리한 이중 트랙 모델로 재설계하고, picker만 남기고 나머지를 CLI로 내려 AI가 직접 호출하는 도구로 바꿨어요.",
+      insight: "렌더를 버리니 GUI도 버릴 수 있었다. 결정 하나가 인터페이스 전체를 바꿨다.",
+    },
+    {
+      week: "6주차", date: "6/14",
+      title: "Automation Level Advisor + Weft 갤러리 출품",
+      summary: "자동화 수준을 진단하는 Automation Level Advisor 스킬과 Weft를 갤러리에 출품했어요. ROI가 아닌 감독/개입 수준(oversight)을 축으로 판단하는 컨설턴트 도구를 완성했어요.",
+      insight: "자동화의 판단 기준은 ROI가 아니라 개입 수준(oversight)이다.",
+    },
   ];
 
   const beforeAfter = {

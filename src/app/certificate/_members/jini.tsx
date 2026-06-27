@@ -68,6 +68,28 @@ export default function JiniCertificate() {
       summary: "Figma MCP를 활용해 colors, typography, spacing 등 디자인 토큰을 추출했어요.",
       insight: "Figma 토큰 기본 1일에서 90일로 변경 필수.",
     },
+    {
+      week: "3주차", date: "5/24",
+      title: "marketing-os — 마케팅 데이터 자동 진단 대시보드",
+      summary: "자사 광고·계약 XLSX를 업로드하면 10가지 마케팅 이론 룰로 자동 판단하고 이슈를 예측하는 대시보드를 만들었어요. 페르소나 5단계 인터뷰로 고객(마케팅 비전공 리더)을 도출하고, real-javis·CarouselOS까지 부품을 얹었어요.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "zeroeyes — 하네스 기반 마케팅 대시보드 고도화",
+      summary: "사양 9종 + CLAUDE.md를 먼저 세우고 Next.js 골격으로 전환. 배포 직후 전체 404 사고를 복구하고, 채널 분류 충돌·Naver 광고비 누락 등 데이터 검증 레이어를 설계했어요.",
+      insight: "하네스 먼저 — 코드보다 사양을 먼저 세우면 AI 헷갈림이 줄어든다.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "Mingli — 사주 기반 한국이름 작명 서비스",
+      summary: "생년월일 입력 → 16가지 사주 유형 판별 → 사주에 맞는 한국 이름 추천 + 공유 카드 생성까지. 외국인 타겟 영문 서비스로 Vercel 배포 완료했어요.",
+    },
+    {
+      week: "6주차", date: "6/14",
+      title: "Mingli 브랜딩 + 온라인 커피챗",
+      summary: "Mingli 브랜드 로고·캐릭터(오행 정령)·홈페이지를 완성하고 갤러리에 등록했어요. 띵크·슬로우퀵과 커피챗으로 대시보드 피드백과 초기 리서치 실무 flow를 공유했어요.",
+      insight: "60%만 알고 이기적 공유를 하면 100%가 될 수 있다.",
+    },
   ];
 
   const beforeAfter = {

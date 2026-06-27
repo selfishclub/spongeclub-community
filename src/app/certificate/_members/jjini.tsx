@@ -56,6 +56,29 @@ export default function JjiniCertificate() {
       summary: "senior-marketing-pump 스킬을 v0.3에서 v0.4로 진화시켰어요(트렌드에서 5종 콘텐츠 자동생성, SEO/AEO/GEO 통합). Mel Robbins를 벤치마킹하고, IP \"Re:Boot 50+\"로 Threads 287 좋아요를 달성하며 시장 검증을 완료했어요.",
       insight: "시장 데이터가 최고의 코치. 책은 시작이 아니라 부산물. 위기와 실패가 IP의 원료.",
     },
+    {
+      week: "2주차", date: "5/17",
+      title: "멀티 브랜드 캐러셀 OS — 자동화 웹앱",
+      summary: "Next.js 15로 멀티 브랜드 캐러셀 OS 웹앱을 만들었어요. 기획→편집→다운로드를 한 화면에 통합하고, AI 이미지 생성·인라인 편집·PPTX/PDF 출력·블로그 본문 자동 생성까지 구현했어요.",
+      insight: "가장 어려웠던 건 코드가 아니라 Anthropic 결제 세팅 한국 카드 통과였다.",
+    },
+    {
+      week: "3주차", date: "5/24",
+      title: "weeve(위브) — 디지털 조문보 플랫폼",
+      summary: "가족이 고인의 이야기를 나누면 디지털 추모 책자를 자동 생성하는 weeve를 만들었어요. 영정 사진 보정(API 3번 교체), 내러티브 생성, 팩트 검증까지 AI 파이프라인으로 처리. 영정 사진 보정에 이틀 내내 삽질했어요.",
+      insight: "이미지 생성 ≠ 이미지 편집. API를 3번 교체하며 배웠다.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "weeve — 영정 파이프라인 안정화 + 다국어",
+      summary: "weeve 영정 변환 파이프라인을 안정화하고 한/영/일 다국어를 추가했어요. 조문보 생성 흐름을 재기획하고, 도메인 운영(weeve.day → vercel 임시 도메인) 전환과 Tier 0 API 한도를 경험했어요.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "weeve-next — 전면 재설계 착수",
+      summary: "4주차 '과한 기획으로 꼬임' 반성을 반영해 별도 레포 weeve-next에서 구조부터 새로 깔았어요. 하네스 6종·오케스트레이터·스키마를 일괄 구축하고, 기존 사진 보정 자산은 재개발 없이 이식했어요.",
+      insight: "버릴 것과 살릴 것을 구분하는 게 핵심. 기존 자산은 재개발하지 않고 이식.",
+    },
   ];
 
   const giftMessages = [

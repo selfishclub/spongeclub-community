@@ -69,6 +69,12 @@ export default function GreenCertificate() {
       summary: "PARA 파이프라인에 Claude Routine을 연결해 주간 자동 트리거로 노션 정리가 자동 실행되는 시스템을 구축했어요.",
       insight: "Archive는 PARA의 4번째 단계가 아니다.",
     },
+    {
+      week: "4주차", date: "5/31",
+      title: "doc-doc — 진료 관리 PWA MVP 완성",
+      summary: "3일 만에 35커밋, 11개 신규 화면으로 진료 관리 앱 doc-doc MVP를 완성했어요. CLAUDE.md를 닻으로 박고, Dexie v2 마이그레이션, 도그푸딩으로 5건 피드백 중 4건을 같은 날 코드에 반영했어요.",
+      insight: "CLAUDE.md가 Claude Code의 뇌. PRD는 '무엇을'이라면 CLAUDE.md는 '어떻게 일할 것인가'.",
+    },
   ];
 
   const beforeAfter = {

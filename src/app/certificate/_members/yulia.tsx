@@ -67,6 +67,24 @@ export default function YuliaCertificate() {
       summary: "785 노드, 90 커뮤니티의 지식 그래프를 생성하는 Graphify 스킬을 만들었어요.",
       insight: "코드 grep으로는 부족, gcloud 명령어로 실제 값 확인 필요.",
     },
+    {
+      week: "3주차", date: "5/24",
+      title: "AXops — AX 온보딩 MVP 구조 설계",
+      summary: "고객 인터뷰를 Paperclip의 목표·역할·이슈·승인게이트·루틴으로 바꿔주는 AX 온보딩 구조를 설계했어요. 자동 실행이 아니라 검토 가능한 운영 구조를 먼저 만드는 데 집중했어요.",
+      insight: "진짜 제품 가치는 설문 자체가 아니라 설문 이후의 실행 구조에 있다.",
+    },
+    {
+      week: "4주차", date: "5/31",
+      title: "AX 반복업무 진단 사이트 — 피드백 반영 + Vercel 배포",
+      summary: "받은 피드백 4가지를 반영해 어려운 용어를 업무 말로 바꾸고, 예시 채우기 버튼을 추가했어요. GitHub → Vercel로 실제 배포까지 완료(ax-intake-copilot.vercel.app).",
+      insight: "방향을 먼저 정하지 않고 화면부터 고치면 목적을 여러 번 갈아엎게 된다.",
+    },
+    {
+      week: "5주차", date: "6/7",
+      title: "Agentic OS — SDD 기반 워크플로우 설계",
+      summary: "목적을 agent가 실행 가능한 워크플로우로 바꾸는 나만의 OS를 설계했어요. Interview→Clarify→Spec→Plan→Tasks→Execute→Verify 흐름을 SDD 기반으로 정리하고, Hermes agent profile과 Paperclip control plane을 연결했어요.",
+      insight: "AI에게 알아서 해달라고 맡기는 게 아니라, AI가 실패하기 어렵게 일의 길을 먼저 깔아주는 것이 핵심.",
+    },
   ];
 
   const beforeAfter = {
