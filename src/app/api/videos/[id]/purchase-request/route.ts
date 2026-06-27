@@ -112,13 +112,28 @@ export async function POST(
     return NextResponse.json({ error: "권한 부여에 실패했어요" }, { status: 500 });
   }
 
-  // 6. vod_request 기록 (즉시 RESOLVED)
-  await supabase.from("vod_requests").insert({
-    video_id: videoId,
-    member_id: session.memberId,
-    status: "RESOLVED",
-    resolved_at: new Date().toISOString(),
-  });
+  // 6. 기존 PENDING vod_request가 있으면 RESOLVED로 업데이트
+  const { data: existingReq } = await supabase
+    .from("vod_requests")
+    .select("id")
+    .eq("video_id", videoId)
+    .eq("member_id", session.memberId)
+    .eq("status", "PENDING")
+    .maybeSingle();
+
+  if (existingReq) {
+    await supabase
+      .from("vod_requests")
+      .update({ status: "RESOLVED", resolved_at: new Date().toISOString() })
+      .eq("id", existingReq.id);
+  } else {
+    await supabase.from("vod_requests").insert({
+      video_id: videoId,
+      member_id: session.memberId,
+      status: "RESOLVED",
+      resolved_at: new Date().toISOString(),
+    });
+  }
 
   return NextResponse.json({ success: true, purchased: true });
 }
