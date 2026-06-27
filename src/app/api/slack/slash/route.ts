@@ -5,7 +5,6 @@ import {
   sendShellGift,
   getTodayGiftCount,
   submitSnsVerification,
-  submitSkillShare,
 } from "@/lib/shell-service";
 import { after } from "next/server";
 
@@ -166,36 +165,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         response_type: "in_channel",
         text: `📸 <@${userId}>님의 SNS 인증 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +2🐚이 지급됩니다.\n👉 웹에서도 가능: https://spongeclub-community.vercel.app/mypage`,
-      });
-    }
-
-    case "/써본스킬":
-    case "/써보고싶은스킬": {
-      const isTried = command === "/써본스킬";
-      const type = isTried ? "SKILL_TRIED" : "SKILL_SHARE";
-      const label = isTried ? "써본 스킬" : "써보고싶은 스킬";
-      const reward = isTried ? 3 : 1;
-
-      const url = extractUrl(text);
-      if (!url && !text.trim()) {
-        return NextResponse.json({
-          response_type: "ephemeral",
-          text: `사용법: \`${command} 링크 또는 내용\`\n예: \`${command} https://blog.com/my-post\` 또는 \`${command} ChatGPT로 블로그 글 작성\``,
-        });
-      }
-
-      const result = await submitSkillShare(member.id, url || text.trim(), type);
-      if (!result.success) {
-        return NextResponse.json({
-          response_type: "ephemeral",
-          text: "신청 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
-        });
-      }
-
-      const linkLine = url ? `\n🔗 ${url}` : (text ? `\n💬 ${text}` : "");
-      return NextResponse.json({
-        response_type: "in_channel",
-        text: `📚 <@${userId}>님의 ${label} 신청이 접수되었어요!${linkLine}\n어드민 승인 후 +${reward}🐚이 지급됩니다.`,
       });
     }
 
