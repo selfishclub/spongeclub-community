@@ -36,6 +36,14 @@ export async function GET(request: NextRequest) {
     return query;
   }
 
+  // cohort 필터: 멤버의 cohort가 일치하는지 (2기 탭에서 1기 전용 멤버 제외)
+  function matchesCohort(member: { cohort?: number | null }): boolean {
+    if (!cohort) return true;
+    const c = parseInt(cohort);
+    const memberCohort = member.cohort ?? 1;
+    return memberCohort === c;
+  }
+
   // 이번 주 월요일 00:00 KST 계산 헬퍼
   function getThisWeekMondayUTC() {
     const now = new Date();
@@ -55,7 +63,7 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
       .gte("created_at", mondayUTC.toISOString());
 
     // 2기 필터: 이미 이번 주 범위이므로 2기 시작일 이후인지만 추가 체크
@@ -67,8 +75,9 @@ export async function GET(request: NextRequest) {
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
+      if (!matchesCohort(member)) continue;
 
       const existing = aggregated.get(row.member_id);
       const absAmount = Math.abs(row.amount);
@@ -97,15 +106,16 @@ export async function GET(request: NextRequest) {
   if (type === "ranking") {
     const baseQuery = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)");
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)");
 
     const data = await fetchAll(applyDateFilter(baseQuery));
 
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number; earned: number; spent: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
+      if (!matchesCohort(member)) continue;
 
       const existing = aggregated.get(row.member_id);
       const absAmount = Math.abs(row.amount);
@@ -138,7 +148,7 @@ export async function GET(request: NextRequest) {
   if (type === "spent") {
     const baseQuery = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
       .lt("amount", 0);
 
     const data = await fetchAll(applyDateFilter(baseQuery));
@@ -146,8 +156,9 @@ export async function GET(request: NextRequest) {
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
+      if (!matchesCohort(member)) continue;
 
       const absAmount = Math.abs(row.amount);
       const existing = aggregated.get(row.member_id);
@@ -176,7 +187,7 @@ export async function GET(request: NextRequest) {
   if (type === "earned") {
     const baseQuery = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
       .gt("amount", 0);
 
     const data = await fetchAll(applyDateFilter(baseQuery));
@@ -184,8 +195,9 @@ export async function GET(request: NextRequest) {
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
     for (const row of data || []) {
-      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+      const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
+      if (!matchesCohort(member)) continue;
 
       const existing = aggregated.get(row.member_id);
       if (existing) {

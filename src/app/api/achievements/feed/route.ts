@@ -15,18 +15,24 @@ export async function GET(request: Request) {
   // Top 3: 배지 많은 순
   let badgeQuery = supabase
     .from("member_achievements")
-    .select("member_id, earned_at, members!member_achievements_member_id_fkey(name, is_active, is_admin, profile_image)");
+    .select("member_id, earned_at, members!member_achievements_member_id_fkey(name, is_active, is_admin, profile_image, cohort)");
 
   if (cohort === "2") badgeQuery = badgeQuery.gte("earned_at", COHORT2_START_UTC);
   else if (cohort === "1") badgeQuery = badgeQuery.lt("earned_at", COHORT2_START_UTC);
 
   const { data: topData } = await badgeQuery;
 
+  function matchesCohort(member: { cohort?: number | null }): boolean {
+    if (!cohort) return true;
+    return (member.cohort ?? 1) === parseInt(cohort);
+  }
+
   const badgeCounts = new Map<string, { member_id: string; name: string; profile_image: string | null; count: number }>();
 
   for (const row of topData || []) {
-    const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null };
+    const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
     if (!member.is_active || member.is_admin) continue;
+    if (!matchesCohort(member)) continue;
 
     const existing = badgeCounts.get(row.member_id);
     if (existing) {
