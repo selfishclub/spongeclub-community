@@ -3,13 +3,24 @@ import { createAdminClient } from "@/lib/supabase";
 
 // GET /api/achievements/feed
 // 배지 Top 3 + 최근 획득 피드
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const cohort = searchParams.get("cohort");
+
   const supabase = createAdminClient();
 
+  // 2기 시작일 (KST 2026-06-28 00:00 = UTC 2026-06-27 15:00)
+  const COHORT2_START_UTC = "2026-06-27T15:00:00.000Z";
+
   // Top 3: 배지 많은 순
-  const { data: topData } = await supabase
+  let badgeQuery = supabase
     .from("member_achievements")
-    .select("member_id, members!member_achievements_member_id_fkey(name, is_active, is_admin, profile_image)");
+    .select("member_id, earned_at, members!member_achievements_member_id_fkey(name, is_active, is_admin, profile_image)");
+
+  if (cohort === "2") badgeQuery = badgeQuery.gte("earned_at", COHORT2_START_UTC);
+  else if (cohort === "1") badgeQuery = badgeQuery.lt("earned_at", COHORT2_START_UTC);
+
+  const { data: topData } = await badgeQuery;
 
   const badgeCounts = new Map<string, { member_id: string; name: string; profile_image: string | null; count: number }>();
 

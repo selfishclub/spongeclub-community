@@ -888,6 +888,7 @@ export default function HomePage() {
   const [loginRedirect, setLoginRedirect] = useState<string | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
   const [rankTab, setRankTab] = useState<"ranking" | "group">("ranking");
+  const [cohortFilter, setCohortFilter] = useState<"2" | "1" | "">("2"); // 디폴트 2기
   const [badgeTop3, setBadgeTop3] = useState<BadgeTop3Entry[]>([]);
   const [badgeFeed, setBadgeFeed] = useState<BadgeFeedEntry[]>([]);
   const [showSuggestModal, setShowSuggestModal] = useState(false);
@@ -898,14 +899,15 @@ export default function HomePage() {
 
   useEffect(() => {
     fetch("/api/auth/me").then((r) => r.json()).then((data) => { setMember(data.member || null); setAuthChecked(true); }).catch(() => setAuthChecked(true));
-    fetch("/api/achievements/feed").then((r) => r.json()).then((data) => { setBadgeTop3(data.top3 || []); setBadgeFeed(data.recent || []); }).catch(() => {});
     fetch("/api/activity/today").then((r) => r.json()).then((data) => { setTeamMessages(data.team || []); setActivityFeed(data.individual || []); }).catch(() => {});
   }, []);
 
   useEffect(() => {
+    const cohortParam = cohortFilter ? `&cohort=${cohortFilter}` : "";
     setLoading(true);
-    fetch(`/api/ranking?type=${rankTab}`).then((r) => r.json()).then((data) => { setRanking(data.ranking || []); setLoading(false); }).catch(() => setLoading(false));
-  }, [rankTab]);
+    fetch(`/api/ranking?type=${rankTab}${cohortParam}`).then((r) => r.json()).then((data) => { setRanking(data.ranking || []); setLoading(false); }).catch(() => setLoading(false));
+    fetch(`/api/achievements/feed${cohortFilter ? `?cohort=${cohortFilter}` : ""}`).then((r) => r.json()).then((data) => { setBadgeTop3(data.top3 || []); setBadgeFeed(data.recent || []); }).catch(() => {});
+  }, [rankTab, cohortFilter]);
 
   // 팀 메시지 로테이션
   useEffect(() => {
@@ -1023,6 +1025,27 @@ export default function HomePage() {
                 <LiveTicker badgeFeed={badgeFeed} activityFeed={activityFeed} />
               </div>
             )}
+
+            {/* 기수 필터 */}
+            <div className="flex gap-2 mb-8">
+              {[
+                { value: "2" as const, label: "2기" },
+                { value: "1" as const, label: "1기" },
+                { value: "" as const, label: "전체" },
+              ].map((tab) => (
+                <button
+                  key={tab.value}
+                  onClick={() => setCohortFilter(tab.value)}
+                  className={`px-4 py-2 text-xs font-extrabold transition-colors ${
+                    cohortFilter === tab.value
+                      ? "bg-[var(--ink)] text-[var(--paper)]"
+                      : "bg-[var(--paper)] text-[var(--ink)] border-2 border-[var(--ink-10)] hover:bg-[var(--ink-05)]"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
             <div className="md:grid md:grid-cols-2 md:gap-12">
 

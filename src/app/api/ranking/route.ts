@@ -18,11 +18,23 @@ async function fetchAll(query: any): Promise<any[]> {
   return all;
 }
 
+// 2기 시작일 (KST 2026-06-28 00:00 = UTC 2026-06-27 15:00)
+const COHORT2_START_UTC = "2026-06-27T15:00:00.000Z";
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type") || "ranking";
+  const cohort = searchParams.get("cohort"); // "1", "2", or null (전체)
 
   const supabase = createAdminClient();
+
+  // cohort=2 → 2기 시작일 이후 거래만, cohort=1 → 이전만, null → 전체
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function applyDateFilter(query: any) {
+    if (cohort === "2") return query.gte("created_at", COHORT2_START_UTC);
+    if (cohort === "1") return query.lt("created_at", COHORT2_START_UTC);
+    return query;
+  }
 
   // 이번 주 월요일 00:00 KST 계산 헬퍼
   function getThisWeekMondayUTC() {
@@ -41,14 +53,16 @@ export async function GET(request: NextRequest) {
   if (type === "weekly") {
     const mondayUTC = getThisWeekMondayUTC();
 
-    const { data, error } = await supabase
+    let query = supabase
       .from("shell_transactions")
       .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
       .gte("created_at", mondayUTC.toISOString());
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+    // 2기 필터: 이미 이번 주 범위이므로 2기 시작일 이후인지만 추가 체크
+    if (cohort === "2") query = query.gte("created_at", COHORT2_START_UTC);
+
+    const { data, error } = await query;
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
@@ -81,11 +95,11 @@ export async function GET(request: NextRequest) {
 
   // 전체 활동 랭킹: 적립 + 지출 분리
   if (type === "ranking") {
-    const data = await fetchAll(
-      supabase
-        .from("shell_transactions")
-        .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
-    );
+    const baseQuery = supabase
+      .from("shell_transactions")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)");
+
+    const data = await fetchAll(applyDateFilter(baseQuery));
 
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number; earned: number; spent: number }>();
 
@@ -122,12 +136,12 @@ export async function GET(request: NextRequest) {
 
   // 셸 지출 랭킹: 가장 많이 쓴 사람
   if (type === "spent") {
-    const data = await fetchAll(
-      supabase
-        .from("shell_transactions")
-        .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
-        .lt("amount", 0)
-    );
+    const baseQuery = supabase
+      .from("shell_transactions")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
+      .lt("amount", 0);
+
+    const data = await fetchAll(applyDateFilter(baseQuery));
 
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
@@ -160,12 +174,12 @@ export async function GET(request: NextRequest) {
 
   // 셸 적립 랭킹: 가장 많이 받은 사람
   if (type === "earned") {
-    const data = await fetchAll(
-      supabase
-        .from("shell_transactions")
-        .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
-        .gt("amount", 0)
-    );
+    const baseQuery = supabase
+      .from("shell_transactions")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image)")
+      .gt("amount", 0);
+
+    const data = await fetchAll(applyDateFilter(baseQuery));
 
     const aggregated = new Map<string, { member_id: string; name: string; profile_image: string | null; total: number }>();
 
@@ -215,11 +229,11 @@ export async function GET(request: NextRequest) {
     }
 
     // 2) 거래 내역 합산
-    const data = await fetchAll(
-      supabase
-        .from("shell_transactions")
-        .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, group_number)")
-    );
+    const baseQuery = supabase
+      .from("shell_transactions")
+      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, group_number)");
+
+    const data = await fetchAll(applyDateFilter(baseQuery));
 
     const groupTotals = new Map<number, { group_number: number; total: number; earned: number; spent: number }>();
 

@@ -156,15 +156,18 @@ export async function POST(request: NextRequest) {
 
       const result = await submitSnsVerification(member.id, url);
       if (!result.success) {
+        const errMsg = result.error === "DUPLICATE_URL"
+          ? "이미 인증된 링크예요! 다른 게시물로 인증해주세요."
+          : "인증 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.";
         return NextResponse.json({
           response_type: "ephemeral",
-          text: "신청 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
+          text: errMsg,
         });
       }
 
       return NextResponse.json({
         response_type: "in_channel",
-        text: `📸 <@${userId}>님의 SNS 인증 신청이 접수되었어요!\n🔗 ${url}\n어드민 승인 후 +2🐚이 지급됩니다.\n👉 웹에서도 가능: https://spongeclub-community.vercel.app/mypage`,
+        text: `📸 <@${userId}>님이 SNS 인증으로 +1🐚을 받았어요!\n🔗 ${url}`,
       });
     }
 

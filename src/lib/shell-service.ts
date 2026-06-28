@@ -121,21 +121,58 @@ export async function sendShellGift(
   return { success: true, giftCount: todayCount + 1 };
 }
 
-// SNS 인증 신청 (대기 상태로 저장)
+// SNS 인증 — 중복 체크 + 즉시 승인 + 1셸 지급
 export async function submitSnsVerification(
   memberId: string,
   url: string
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = createAdminClient();
 
-  const { error } = await supabase.from("shell_requests").insert({
+  // 중복 링크 체크 (같은 URL이 이미 APPROVED된 적 있으면 거부)
+  const { data: dup } = await supabase
+    .from("shell_requests")
+    .select("id")
+    .eq("url", url)
+    .eq("type", "SNS_VERIFY")
+    .eq("status", "APPROVED")
+    .limit(1);
+
+  if (dup && dup.length > 0) {
+    return { success: false, error: "DUPLICATE_URL" };
+  }
+
+  // 즉시 승인으로 저장
+  const { data: req, error: insertError } = await supabase
+    .from("shell_requests")
+    .insert({
+      member_id: memberId,
+      type: "SNS_VERIFY",
+      url,
+      status: "APPROVED",
+      reviewed_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
+
+  if (insertError || !req) return { success: false, error: "TX_FAILED" };
+
+  // 1셸 즉시 지급
+  await supabase.from("shell_transactions").insert({
     member_id: memberId,
-    type: "SNS_VERIFY",
-    url,
-    status: "PENDING",
+    amount: 1,
+    reason: "SNS_VERIFY",
+    reason_detail: `SNS 인증: ${url}`,
   });
 
-  if (error) return { success: false, error: "TX_FAILED" };
+  await supabase.rpc("increment_shell_balance", {
+    p_member_id: memberId,
+    p_amount: 1,
+  });
+
+  await Promise.allSettled([
+    checkAndNotifyRankingChanges().catch((e) => console.error("[ranking-notify] snsVerify:", e)),
+    checkAchievements(memberId).catch((e) => console.error("[achievements] snsVerify:", e)),
+  ]);
 
   return { success: true };
 }
@@ -174,7 +211,7 @@ export async function approveShellRequest(requestId: string, adminId: string | n
   if (reqError || !req) return { success: false, error: "NOT_FOUND" };
 
   const amount =
-    req.type === "SNS_VERIFY" ? 2 : req.type === "SKILL_TRIED" ? 3 : 1;
+    req.type === "SNS_VERIFY" ? 1 : req.type === "SKILL_TRIED" ? 3 : 1;
   const reasonDetail =
     req.type === "SNS_VERIFY"
       ? "SNS 인증"
