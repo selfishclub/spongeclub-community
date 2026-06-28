@@ -26,10 +26,15 @@ export async function POST(request: NextRequest) {
 
   switch (command) {
     case "/이기적스폰지": {
-      return NextResponse.json({
-        response_type: "ephemeral",
-        text: "🐚 이기적 스폰지클럽 바로가기\n👉 https://spongeclub-community.vercel.app/",
+      after(async () => {
+        await sendSlackResponse(responseUrl, {
+          response_type: "in_channel",
+          text: "🐚 이기적 스폰지클럽 바로가기\n👉 https://spongeclub-community.vercel.app/",
+          unfurl_links: true,
+          replace_original: true,
+        });
       });
+      return new NextResponse(null, { status: 200 });
     }
 
     case "/잔고": {
