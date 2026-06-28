@@ -19,7 +19,8 @@ async function fetchAll(query: any): Promise<any[]> {
 }
 
 // 2기 시작일 (KST 2026-06-28 00:00 = UTC 2026-06-27 15:00)
-const COHORT2_START_UTC = "2026-06-27T15:00:00.000Z";
+// 2기 시작: KST 2026-06-28 19:00 = UTC 2026-06-28 10:00
+const COHORT2_START_UTC = "2026-06-28T10:00:00.000Z";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
