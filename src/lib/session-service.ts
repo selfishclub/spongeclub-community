@@ -3,7 +3,7 @@ import { checkAndNotifyRankingChanges } from "./ranking-notify";
 import { checkAchievements } from "./achievement-service";
 import { getSlackClient } from "./slack";
 
-const SESSION_NOTIFY_CHANNEL = "C0B18TB1N3G";
+const SESSION_NOTIFY_CHANNEL = "C0BD3HPDPPF";
 
 // 공유회 당일 자정(KST) — 신청 취소 가능 기한
 export function cancelDeadline(scheduledAt: string): Date {

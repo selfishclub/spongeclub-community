@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase";
 import { approveSession, rejectSession, completeSession } from "@/lib/session-service";
 import { getSlackClient } from "@/lib/slack";
 
-const SESSION_NOTIFY_CHANNEL = "C0B18TB1N3G";
+const SESSION_NOTIFY_CHANNEL = "C0BD3HPDPPF";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
