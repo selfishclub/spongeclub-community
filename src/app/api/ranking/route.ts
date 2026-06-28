@@ -29,12 +29,21 @@ export async function GET(request: NextRequest) {
 
   const supabase = createAdminClient();
 
+  // 랭킹에서 제외할 거래 유형 (활동이 아닌 것)
+  const EXCLUDED_REASONS = ["SIGNUP_BONUS", "ADMIN_ADJUSTMENT"];
+
   // cohort=2 → 2기 시작일 이후 거래만, cohort=1 → 이전만, null → 전체
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function applyDateFilter(query: any) {
-    if (cohort === "2") return query.gte("created_at", COHORT2_START_UTC);
-    if (cohort === "1") return query.lt("created_at", COHORT2_START_UTC);
-    return query;
+    let q = query;
+    if (cohort === "2") q = q.gte("created_at", COHORT2_START_UTC);
+    if (cohort === "1") q = q.lt("created_at", COHORT2_START_UTC);
+    return q;
+  }
+
+  // 랭킹 제외 대상인지 체크
+  function isExcludedReason(reason: string): boolean {
+    return EXCLUDED_REASONS.includes(reason);
   }
 
   // cohort 필터: 멤버의 cohort가 일치하는지 (2기 탭에서 1기 전용 멤버 제외)
@@ -64,7 +73,7 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
+      .select("member_id, amount, reason, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
       .gte("created_at", mondayUTC.toISOString());
 
     // 2기 필터: 이미 이번 주 범위이므로 2기 시작일 이후인지만 추가 체크
@@ -79,6 +88,7 @@ export async function GET(request: NextRequest) {
       const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
       if (!matchesCohort(member)) continue;
+      if (isExcludedReason(row.reason)) continue;
 
       const existing = aggregated.get(row.member_id);
       const absAmount = Math.abs(row.amount);
@@ -107,7 +117,7 @@ export async function GET(request: NextRequest) {
   if (type === "ranking") {
     const baseQuery = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)");
+      .select("member_id, amount, reason, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)");
 
     const data = await fetchAll(applyDateFilter(baseQuery));
 
@@ -117,6 +127,7 @@ export async function GET(request: NextRequest) {
       const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
       if (!matchesCohort(member)) continue;
+      if (isExcludedReason(row.reason)) continue;
 
       const existing = aggregated.get(row.member_id);
       const absAmount = Math.abs(row.amount);
@@ -149,7 +160,7 @@ export async function GET(request: NextRequest) {
   if (type === "spent") {
     const baseQuery = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
+      .select("member_id, amount, reason, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
       .lt("amount", 0);
 
     const data = await fetchAll(applyDateFilter(baseQuery));
@@ -160,6 +171,7 @@ export async function GET(request: NextRequest) {
       const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
       if (!matchesCohort(member)) continue;
+      if (isExcludedReason(row.reason)) continue;
 
       const absAmount = Math.abs(row.amount);
       const existing = aggregated.get(row.member_id);
@@ -188,7 +200,7 @@ export async function GET(request: NextRequest) {
   if (type === "earned") {
     const baseQuery = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
+      .select("member_id, amount, reason, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, profile_image, cohort)")
       .gt("amount", 0);
 
     const data = await fetchAll(applyDateFilter(baseQuery));
@@ -199,6 +211,7 @@ export async function GET(request: NextRequest) {
       const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; profile_image: string | null; cohort?: number | null };
       if (!member.is_active || member.is_admin) continue;
       if (!matchesCohort(member)) continue;
+      if (isExcludedReason(row.reason)) continue;
 
       const existing = aggregated.get(row.member_id);
       if (existing) {
@@ -244,7 +257,7 @@ export async function GET(request: NextRequest) {
     // 2) 거래 내역 합산
     const baseQuery = supabase
       .from("shell_transactions")
-      .select("member_id, amount, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, group_number)");
+      .select("member_id, amount, reason, reason_detail, members!shell_transactions_member_id_fkey(name, is_active, is_admin, group_number)");
 
     const data = await fetchAll(applyDateFilter(baseQuery));
 
@@ -253,6 +266,7 @@ export async function GET(request: NextRequest) {
     for (const row of data || []) {
       const member = row.members as unknown as { name: string; is_active: boolean; is_admin: boolean; group_number: number | null };
       if (!member.is_active || !member.group_number) continue;
+      if (isExcludedReason(row.reason)) continue;
 
       const absAmount = Math.abs(row.amount);
       const existing = groupTotals.get(member.group_number);
