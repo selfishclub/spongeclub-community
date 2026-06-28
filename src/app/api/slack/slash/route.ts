@@ -165,10 +165,16 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      return NextResponse.json({
-        response_type: "in_channel",
-        text: `📸 <@${userId}>님이 SNS 인증으로 +1🐚을 받았어요!\n🔗 ${url}`,
+      after(async () => {
+        await sendSlackResponse(responseUrl, {
+          response_type: "in_channel",
+          text: `📸 <@${userId}>님이 SNS 인증으로 +1🐚을 받았어요!\n🔗 ${url}`,
+          unfurl_links: true,
+          replace_original: true,
+        });
       });
+
+      return new NextResponse(null, { status: 200 });
     }
 
     default:
