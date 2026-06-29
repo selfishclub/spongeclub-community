@@ -121,12 +121,56 @@ export async function sendShellGift(
   return { success: true, giftCount: todayCount + 1 };
 }
 
+// 이번 주 월~일(KST) 범위 계산
+function getThisWeekRangeUTC() {
+  const kstOffset = 9 * 60 * 60 * 1000;
+  const kstNow = new Date(Date.now() + kstOffset);
+  const day = kstNow.getUTCDay();
+  const diffToMonday = day === 0 ? 6 : day - 1;
+  const monday = new Date(kstNow);
+  monday.setUTCDate(kstNow.getUTCDate() - diffToMonday);
+  monday.setUTCHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setUTCDate(monday.getUTCDate() + 6);
+  sunday.setUTCHours(23, 59, 59, 999);
+  return {
+    start: new Date(monday.getTime() - kstOffset).toISOString(),
+    end: new Date(sunday.getTime() - kstOffset).toISOString(),
+  };
+}
+
 // SNS 인증 — 중복 체크 + 즉시 승인 + 1셸 지급
+// 1기: 주 1회 한도 / 2기: 무제한
 export async function submitSnsVerification(
   memberId: string,
   url: string
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = createAdminClient();
+
+  // 멤버 cohort 조회
+  const { data: memberData } = await supabase
+    .from("members")
+    .select("cohort")
+    .eq("id", memberId)
+    .single();
+  const memberCohort = memberData?.cohort ?? 1;
+
+  // 1기: 주 1회 한도 체크
+  if (memberCohort === 1) {
+    const { start, end } = getThisWeekRangeUTC();
+    const { data: weeklyCount } = await supabase
+      .from("shell_requests")
+      .select("id")
+      .eq("member_id", memberId)
+      .eq("type", "SNS_VERIFY")
+      .eq("status", "APPROVED")
+      .gte("reviewed_at", start)
+      .lte("reviewed_at", end);
+
+    if (weeklyCount && weeklyCount.length >= 1) {
+      return { success: false, error: "WEEKLY_LIMIT" };
+    }
+  }
 
   // 중복 링크 체크 (같은 URL이 이미 APPROVED된 적 있으면 거부)
   const { data: dup } = await supabase

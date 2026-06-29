@@ -163,7 +163,9 @@ export async function POST(request: NextRequest) {
       if (!result.success) {
         const errMsg = result.error === "DUPLICATE_URL"
           ? "이미 인증된 링크예요! 다른 게시물로 인증해주세요."
-          : "인증 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.";
+          : result.error === "WEEKLY_LIMIT"
+            ? "이번 주 SNS 인증을 이미 완료했어요! 다음 주에 다시 인증해주세요."
+            : "인증 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.";
         return NextResponse.json({
           response_type: "ephemeral",
           text: errMsg,
