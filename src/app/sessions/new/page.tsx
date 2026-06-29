@@ -1,4 +1,3 @@
-// @ts-nocheck — 공유회 직접 열기 임시 비활성화 중 (dead code 존재)
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,6 +6,7 @@ import { useRouter } from "next/navigation";
 interface MemberOption {
   id: string;
   name: string;
+  cohort?: number | null;
 }
 
 const CATEGORIES = [
@@ -16,22 +16,23 @@ const CATEGORIES = [
   { value: "LIFESTYLE", label: "일상/취미" },
 ];
 
+// 기수별 가능 요일 (0=일, 1=월, ..., 5=금, 6=토)
+const COHORT_ALLOWED_DAYS: Record<number, number[]> = {
+  1: [5],          // 1기: 금요일만
+  2: [1, 2, 3, 4], // 2기: 월, 화, 수, 목
+};
+
+function getAllowedDays(cohort: number): number[] {
+  return COHORT_ALLOWED_DAYS[cohort] || [1, 2, 3, 4, 5]; // 기본: 월~금
+}
+
+function getDayLabel(days: number[]): string {
+  const names = ["일", "월", "화", "수", "목", "금", "토"];
+  return days.map((d) => names[d]).join(", ");
+}
+
 export default function NewSessionPage() {
   const router = useRouter();
-
-  // 공유회 직접 열기 임시 비활성화
-  return (
-    <div className="min-h-screen flex items-center justify-center px-5">
-      <div className="text-center space-y-4">
-        <p className="text-2xl">🎙️</p>
-        <p className="text-lg font-bold text-[var(--ink)]">공유회 직접 열기가 잠시 비활성화되어 있어요</p>
-        <p className="text-sm text-[var(--ink-50)]">곧 다시 열릴 예정이에요!</p>
-        <button onClick={() => router.push("/")} className="text-sm underline text-[var(--ink-50)] hover:text-[var(--ink)]">
-          홈으로 돌아가기
-        </button>
-      </div>
-    </div>
-  );
   const [members, setMembers] = useState<MemberOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,13 +51,14 @@ export default function NewSessionPage() {
   const [capacity, setCapacity] = useState("");
 
   useEffect(() => {
-    fetch("/api/admin/members")
+    fetch("/api/auth/members")
       .then((r) => r.json())
       .then((data) => {
         setMembers(
-          (data.members || [])
-            .filter((m: MemberOption & { is_active: boolean }) => m.is_active)
-            .map((m: MemberOption) => ({ id: m.id, name: m.name }))
+          (data.members || []).map((m: MemberOption) => ({
+            ...m,
+            cohort: m.cohort ?? 1,
+          }))
         );
       });
   }, []);
@@ -65,6 +67,22 @@ export default function NewSessionPage() {
     m.name.toLowerCase().includes(hostSearch.toLowerCase())
   );
 
+  const hostCohort = selectedHost?.cohort ?? 2;
+  const allowedDays = getAllowedDays(hostCohort);
+
+  // 날짜 선택 시 요일 체크
+  const handleDateChange = (value: string) => {
+    if (!value) { setDate(""); return; }
+    const d = new Date(value + "T00:00:00");
+    const day = d.getDay();
+    if (!allowedDays.includes(day)) {
+      setError(`${hostCohort}기는 ${getDayLabel(allowedDays)}요일에만 공유회를 열 수 있어요.`);
+      return;
+    }
+    setError("");
+    setDate(value);
+  };
+
   const handleSubmit = async () => {
     if (!selectedHost) {
       setError("진행자를 선택해주세요.");
@@ -72,6 +90,13 @@ export default function NewSessionPage() {
     }
     if (!title || !date) {
       setError("제목과 날짜는 필수입니다.");
+      return;
+    }
+
+    // 최종 요일 체크
+    const d = new Date(date + "T00:00:00");
+    if (!allowedDays.includes(d.getDay())) {
+      setError(`${hostCohort}기는 ${getDayLabel(allowedDays)}요일에만 공유회를 열 수 있어요.`);
       return;
     }
 
@@ -147,7 +172,7 @@ export default function NewSessionPage() {
               <div className="flex items-center justify-between px-4 py-3 bg-[var(--ink-05)]">
                 <span className="text-sm text-[var(--ink)] font-bold">{selectedHost.name}</span>
                 <button
-                  onClick={() => { setSelectedHost(null); setHostSearch(""); }}
+                  onClick={() => { setSelectedHost(null); setHostSearch(""); setDate(""); }}
                   className="text-xs font-bold text-[var(--ink-30)] hover:text-[var(--ink)] transition-colors"
                 >
                   변경
@@ -174,7 +199,7 @@ export default function NewSessionPage() {
                         <button
                           key={m.id}
                           onMouseDown={(e) => e.preventDefault()}
-                          onClick={() => { setSelectedHost(m); setShowHostList(false); setHostSearch(""); }}
+                          onClick={() => { setSelectedHost(m); setShowHostList(false); setHostSearch(""); setDate(""); }}
                           className="w-full text-left px-4 py-2.5 text-sm text-[var(--ink)] font-medium hover:bg-[var(--yellow-dim)] transition-colors border-b border-[var(--ink-05)] last:border-0"
                         >
                           {m.name}
@@ -238,9 +263,14 @@ export default function NewSessionPage() {
               <input
                 type="date"
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
+                onChange={(e) => handleDateChange(e.target.value)}
                 className={inputClass}
               />
+              {selectedHost && (
+                <p className="text-[11px] text-[var(--ink-30)] mt-1.5 font-medium">
+                  {hostCohort}기 가능 요일: {getDayLabel(allowedDays)}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">시간</label>
