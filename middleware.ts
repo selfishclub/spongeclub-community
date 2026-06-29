@@ -10,25 +10,35 @@ const JWT_SECRET = new TextEncoder().encode(
 const ADMIN_COOKIE = "admin-auth";
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get(ADMIN_COOKIE)?.value;
-  const loginUrl = new URL("/admin-login", request.url);
+  const isApi = request.nextUrl.pathname.startsWith("/api/");
+  const isAdminAuthEndpoint = request.nextUrl.pathname === "/api/admin/auth";
 
+  if (isAdminAuthEndpoint) {
+    return NextResponse.next();
+  }
+
+  const unauthorized = () =>
+    isApi
+      ? NextResponse.json({ error: "Forbidden" }, { status: 403 })
+      : NextResponse.redirect(new URL("/admin-login", request.url));
+
+  const token = request.cookies.get(ADMIN_COOKIE)?.value;
   if (!token) {
-    return NextResponse.redirect(loginUrl);
+    return unauthorized();
   }
 
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
     if (payload.role !== "admin") {
-      return NextResponse.redirect(loginUrl);
+      return unauthorized();
     }
   } catch {
-    return NextResponse.redirect(loginUrl);
+    return unauthorized();
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*"],
+  matcher: ["/admin", "/admin/:path*", "/api/admin/:path*"],
 };

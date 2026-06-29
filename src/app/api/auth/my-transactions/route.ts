@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
 
+const NO_STORE = { "Cache-Control": "no-store" } as const;
+
 export async function GET(request: NextRequest) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: "로그인이 필요해요." }, { status: 401 });
+    return NextResponse.json(
+      { error: "로그인이 필요해요." },
+      { status: 401, headers: NO_STORE }
+    );
   }
 
   const { searchParams } = new URL(request.url);
@@ -49,7 +54,7 @@ export async function GET(request: NextRequest) {
       })),
     ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-    return NextResponse.json({ transactions: gifts });
+    return NextResponse.json({ transactions: gifts }, { headers: NO_STORE });
   }
 
   let query = supabase
@@ -67,8 +72,14 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query;
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500, headers: NO_STORE }
+    );
   }
 
-  return NextResponse.json({ transactions: data || [] });
+  return NextResponse.json(
+    { transactions: data || [] },
+    { headers: NO_STORE }
+  );
 }

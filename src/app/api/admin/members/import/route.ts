@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase";
+import { hashPin } from "@/lib/pin";
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
@@ -29,7 +30,8 @@ export async function POST(request: NextRequest) {
     const slack_user_id = row["slack_user_id"] || null;
     const survey_completed = row["survey_completed"] === "true";
     const cohort = row["cohort"] ? parseInt(row["cohort"]) : null;
-    const pin = row["pin"] || "0000";
+    const rawPin = row["pin"] || "0000";
+    const pin = await hashPin(rawPin);
 
     if (!name) {
       errors.push(`${i + 1}행: name 누락`);

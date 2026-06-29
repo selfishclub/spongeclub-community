@@ -1,19 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase";
+import { hashPin } from "@/lib/pin";
+
+const MEMBER_PUBLIC_COLUMNS =
+  "id, name, phone_last4, email, slack_user_id, survey_completed, shell_balance, is_admin, is_active, created_at, updated_at, group_number, pin_changed, profile_image, cohort";
 
 export async function GET() {
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .from("members")
-    .select("*")
+    .select(MEMBER_PUBLIC_COLUMNS)
     .order("created_at", { ascending: false });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ members: data });
+  return NextResponse.json(
+    { members: data },
+    { headers: { "Cache-Control": "no-store" } }
+  );
 }
 
 // 멤버 수동 등록
@@ -66,7 +73,7 @@ export async function POST(request: NextRequest) {
       is_admin: is_admin || false,
       is_active: true,
     })
-    .select()
+    .select(MEMBER_PUBLIC_COLUMNS)
     .single();
 
   if (insertError) {
@@ -133,14 +140,22 @@ export async function PATCH(request: NextRequest) {
   if (cohort !== undefined) updateData.cohort = cohort;
   if (is_admin !== undefined) updateData.is_admin = is_admin;
   if (is_active !== undefined) updateData.is_active = is_active;
-  if (pin !== undefined) updateData.pin = pin;
+  if (pin !== undefined) {
+    if (!/^\d{4}$/.test(String(pin))) {
+      return NextResponse.json(
+        { error: "PIN은 숫자 4자리여야 해요." },
+        { status: 400 }
+      );
+    }
+    updateData.pin = await hashPin(String(pin));
+  }
   if (pin_changed !== undefined) updateData.pin_changed = pin_changed;
 
   const { data: member, error: updateError } = await supabase
     .from("members")
     .update(updateData)
     .eq("id", id)
-    .select()
+    .select(MEMBER_PUBLIC_COLUMNS)
     .single();
 
   if (updateError) {

@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
 
+const NO_STORE = { "Cache-Control": "no-store" } as const;
+
 export async function GET() {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ member: null });
+    return NextResponse.json({ member: null }, { headers: NO_STORE });
   }
 
   const supabase = createAdminClient();
@@ -15,5 +17,5 @@ export async function GET() {
     .eq("id", session.memberId)
     .single();
 
-  return NextResponse.json({ member });
+  return NextResponse.json({ member }, { headers: NO_STORE });
 }

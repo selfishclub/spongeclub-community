@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase";
 import { setSessionCookie } from "@/lib/auth";
+import { hashPin, isHashed, verifyPin } from "@/lib/pin";
 
 export async function POST(request: NextRequest) {
   const { name, pin } = await request.json();
@@ -31,11 +32,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (member.pin !== pin) {
+  const ok = await verifyPin(pin, member.pin);
+  if (!ok) {
     return NextResponse.json(
       { error: "PIN이 일치하지 않아요." },
       { status: 401 }
     );
+  }
+
+  // 평문 PIN으로 인증된 경우, 같은 PIN을 해시로 즉시 교체한다.
+  if (!isHashed(member.pin)) {
+    const hashed = await hashPin(pin);
+    await supabase
+      .from("members")
+      .update({ pin: hashed })
+      .eq("id", member.id);
   }
 
   await setSessionCookie({ memberId: member.id, name: member.name });

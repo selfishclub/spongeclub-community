@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
+import { hashPin } from "@/lib/pin";
 
 export async function POST(request: NextRequest) {
   const session = await getSession();
@@ -18,10 +19,11 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = createAdminClient();
+  const hashed = await hashPin(new_pin);
 
   const { error } = await supabase
     .from("members")
-    .update({ pin: new_pin, pin_changed: true })
+    .update({ pin: hashed, pin_changed: true })
     .eq("id", session.memberId);
 
   if (error) {
