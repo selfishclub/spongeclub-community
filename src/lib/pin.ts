@@ -8,6 +8,19 @@ export function isHashed(value: string | null | undefined): boolean {
   return value.startsWith("$2");
 }
 
+// 새 비밀번호 정책: 영문+숫자 포함 6자 이상, 공백 없음.
+export const PASSWORD_RULE_MESSAGE =
+  "비밀번호는 영문과 숫자를 포함한 6자 이상이어야 해요.";
+
+export function isValidPassword(pw: unknown): pw is string {
+  if (typeof pw !== "string") return false;
+  if (pw.length < 6 || pw.length > 64) return false;
+  if (!/[a-zA-Z]/.test(pw)) return false;
+  if (!/\d/.test(pw)) return false;
+  if (/\s/.test(pw)) return false;
+  return true;
+}
+
 export async function hashPin(pin: string): Promise<string> {
   return bcrypt.hash(pin, BCRYPT_ROUNDS);
 }

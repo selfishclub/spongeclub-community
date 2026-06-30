@@ -172,8 +172,10 @@ export default function MyPage() {
   }, []);
 
   const handleChangePin = async () => {
-    if (!/^\d{4}$/.test(newPin)) { setPinError("숫자 4자리를 입력해주세요."); return; }
-    if (newPin === "0000") { setPinError("0000 이외의 PIN을 설정해주세요."); return; }
+    if (newPin.length < 6 || newPin.length > 64 || !/[a-zA-Z]/.test(newPin) || !/\d/.test(newPin) || /\s/.test(newPin)) {
+      setPinError("영문과 숫자를 포함한 6자 이상이어야 해요.");
+      return;
+    }
     setPinLoading(true); setPinError("");
     const res = await fetch("/api/auth/change-pin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ new_pin: newPin }) });
     if (!res.ok) { const data = await res.json(); setPinError(data.error || "변경에 실패했어요."); setPinLoading(false); return; }
@@ -640,32 +642,33 @@ export default function MyPage() {
           )}
         </section>
 
-        {/* PIN 변경 */}
+        {/* 비밀번호 변경 */}
         <button onClick={() => setShowPinModal(true)}
           className="w-full px-4 py-3 border-2 border-[var(--ink-10)] text-sm text-[var(--ink-50)] font-bold hover:bg-[var(--ink-05)] transition-colors">
-          PIN 변경하기
+          비밀번호 변경하기
         </button>
 
         </div>
         </div>
       </main>
 
-      {/* PIN 모달 */}
+      {/* 비밀번호 모달 */}
       {showPinModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60 backdrop-blur-sm px-4">
           <div className="bg-[var(--paper)] w-full max-w-sm p-7 shadow-2xl">
             <h2 className="text-xl font-extrabold text-[var(--ink)] mb-2">
-              {member.pin_changed ? "PIN 변경" : "PIN을 설정해주세요"}
+              {member.pin_changed ? "비밀번호 변경" : "비밀번호를 설정해주세요"}
             </h2>
-            {!member.pin_changed && <p className="text-sm text-[var(--ink-50)] mb-5">초기 PIN(0000)을 변경해주세요.</p>}
-            <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">새 PIN (숫자 4자리)</label>
-            <input type="text" inputMode="numeric" maxLength={4} value={newPin}
-              onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))} placeholder="0000"
-              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-center text-lg tracking-[0.5em] font-bold" />
+            {!member.pin_changed && <p className="text-sm text-[var(--ink-50)] mb-5">로그인 정책이 업데이트됐어요. 새 비밀번호를 설정해주세요.</p>}
+            <label className="block text-xs font-bold text-[var(--ink-30)] mb-1.5 uppercase tracking-wider">새 비밀번호</label>
+            <input type="password" autoComplete="new-password" maxLength={64} value={newPin}
+              onChange={(e) => setNewPin(e.target.value)} placeholder="영문+숫자 6자 이상"
+              className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-bold" />
+            <p className="text-xs text-[var(--ink-30)] mt-2">영문과 숫자를 포함한 6자 이상</p>
             {pinError && <p className="text-sm text-red-500 mt-2 font-medium">{pinError}</p>}
-            <button onClick={handleChangePin} disabled={pinLoading || newPin.length !== 4}
+            <button onClick={handleChangePin} disabled={pinLoading || newPin.length < 6}
               className="w-full mt-4 py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
-              {pinLoading ? "변경 중..." : "PIN 변경"}
+              {pinLoading ? "변경 중..." : "비밀번호 변경"}
             </button>
             {member.pin_changed && (
               <button onClick={() => { setShowPinModal(false); setNewPin(""); setPinError(""); }}

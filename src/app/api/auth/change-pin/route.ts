@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase";
-import { hashPin } from "@/lib/pin";
+import { hashPin, isValidPassword, PASSWORD_RULE_MESSAGE } from "@/lib/pin";
 
 export async function POST(request: NextRequest) {
   const session = await getSession();
@@ -11,9 +11,9 @@ export async function POST(request: NextRequest) {
 
   const { new_pin } = await request.json();
 
-  if (!new_pin || !/^\d{4}$/.test(new_pin)) {
+  if (!isValidPassword(new_pin)) {
     return NextResponse.json(
-      { error: "PIN은 숫자 4자리여야 해요." },
+      { error: PASSWORD_RULE_MESSAGE },
       { status: 400 }
     );
   }
