@@ -187,7 +187,7 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: (m
           <div>
             <label className="block text-xs font-bold text-[var(--ink-50)] mb-1.5 uppercase tracking-wider">비밀번호</label>
             <input type="password" autoComplete="current-password" maxLength={64} value={pin}
-              onChange={(e) => setPin(e.target.value)} placeholder="비밀번호 또는 PIN"
+              onChange={(e) => setPin(e.target.value)} placeholder="비밀번호"
               className="w-full px-4 py-3 bg-[var(--ink-05)] border-2 border-transparent focus:border-[var(--yellow)] focus:outline-none text-sm font-bold transition-colors" />
           </div>
           {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
@@ -195,7 +195,7 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: (m
             className="w-full py-3.5 bg-[var(--ink)] text-[var(--paper)] font-bold text-sm hover:opacity-90 disabled:opacity-40 transition-opacity">
             {loading ? "로그인 중..." : "로그인"}
           </button>
-          <p className="text-xs text-[var(--ink-30)] text-center">처음이신가요? 초기 PIN 0000으로 들어와 새 비밀번호를 설정하세요.</p>
+          <p className="text-xs text-[var(--ink-30)] text-center">처음이신가요? 초기 비밀번호 0000으로 들어와 새 비밀번호를 설정하세요.</p>
         </div>
         <button onClick={onClose} className="mt-4 w-full text-center text-sm text-[var(--ink-30)] hover:text-[var(--ink)] transition-colors">닫기</button>
       </div>
