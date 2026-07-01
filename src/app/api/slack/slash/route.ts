@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
       return new NextResponse(null, { status: 200 });
     }
 
-    case "/줌예약": {
+    case "/줌예약하기": {
       const ZOOM_CHANNEL = "C0BAY832V3M";
       if (channelId !== ZOOM_CHANNEL) {
         return NextResponse.json({
