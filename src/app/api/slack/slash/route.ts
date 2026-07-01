@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
   const command = formData.get("command") as string;
   const text = (formData.get("text") as string || "").trim();
   const userId = formData.get("user_id") as string;
+  const channelId = formData.get("channel_id") as string;
   const responseUrl = formData.get("response_url") as string;
 
   // 멤버 확인
@@ -148,6 +149,21 @@ export async function POST(request: NextRequest) {
       });
 
       return new NextResponse(null, { status: 200 });
+    }
+
+    case "/줌예약": {
+      const ZOOM_CHANNEL = "C0BAY832V3M";
+      if (channelId !== ZOOM_CHANNEL) {
+        return NextResponse.json({
+          response_type: "ephemeral",
+          text: "이 명령어는 지정된 채널에서만 사용할 수 있어요.",
+        });
+      }
+
+      return NextResponse.json({
+        response_type: "ephemeral",
+        text: "📅 줌 예약하기\n👉 https://zoomcalendar-tau.vercel.app/calendar",
+      });
     }
 
     case "/sns인증": {
