@@ -48,10 +48,13 @@ export async function POST(req: NextRequest) {
         contentConsent,
         timestamp,
       }),
+      redirect: "follow",
     });
 
-    if (!sheetRes.ok) {
-      console.error("Google Sheet error:", await sheetRes.text());
+    // Apps Script returns 302 redirect then 200; check final response
+    const sheetText = await sheetRes.text();
+    if (!sheetRes.ok && sheetRes.status !== 302) {
+      console.error("Google Sheet error:", sheetRes.status, sheetText);
       return NextResponse.json(
         { error: "기록 중 오류가 발생했습니다. 다시 시도해 주세요." },
         { status: 500 }
